@@ -1,3 +1,51 @@
 #page {
   display: flex;
 }
+
+#gamesDiv {
+  display: flex;
+  gap: 20px;
+  width: 80%;
+}
+
+#sideBar {
+  width: 200px;
+}
+
+dialog {
+  border: none !important;
+  background-color: #ffffff00;
+}
+
+dialog::backdrop {
+  background-color: #12121266;
+}
+
+button,
+input {
+  background-color: #1c1c1c;
+  border: 0;
+  padding: 8px;
+  border-radius: 6px;
+  margin: 0px 10px 0px 0px;
+}
+
+button,
+.gameCard {
+  cursor: pointer;
+}
+
+.gameCard {
+  background-color: #ffffff00;
+}
+
+* {
+  font-family: Helvetica;
+  font-weight: normal;
+  color: #fff;
+  font-size: 14px;
+}
+
+html {
+  background-color: #121212;
+}

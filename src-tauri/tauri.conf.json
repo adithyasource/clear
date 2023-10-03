@@ -8,38 +8,31 @@
   },
   "package": {
     "productName": "clear",
-    "version": "0.0.0"
+    "version": "0.0.2"
   },
   "tauri": {
     "allowlist": {
-      "all": false,
+      "all": true,
       "path": {
         "all": true
       },
       "shell": {
-        "all": false,
         "open": true
       },
       "fs": {
-        "all": true,
         "readFile": true,
         "writeFile": true,
-        "readDir": true,
         "copyFile": true,
-        "createDir": true,
-        "removeDir": true,
-        "removeFile": true,
-        "renameFile": true,
         "exists": true,
-        "scope": ["C:/Users/getsg/Dropbox/PC/Desktop/*"]
+        "createDir": true,
+        "scope": ["$APPDATA/**"]
       },
       "dialog": {
-        "all": true,
-        "ask": true,
-        "confirm": true,
-        "message": true,
-        "open": true,
-        "save": true
+        "open": true
+      },
+      "protocol": {
+        "asset": true,
+        "assetScope": ["**"]
       }
     },
     "bundle": {
@@ -55,7 +48,7 @@
       ]
     },
     "security": {
-      "csp": null
+      "csp": "default-src 'self'; img-src 'self' asset: https://asset.localhost"
     },
     "windows": [
       {
