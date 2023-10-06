@@ -2,9 +2,14 @@
   display: flex;
 }
 
-#gamesDiv {
+.foldersDiv {
   display: flex;
+  flex-direction: row;
   gap: 20px;
+  width: 100%;
+}
+
+#gamesDiv {
   width: 80%;
 }
 
@@ -37,6 +42,7 @@ button,
 
 .gameCard {
   background-color: #ffffff00;
+  width: 15vw;
 }
 
 * {

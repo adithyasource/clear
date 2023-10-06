@@ -8,6 +8,15 @@ import {
   exists,
   createDir,
 } from "@tauri-apps/api/fs";
+
+import { exit } from "@tauri-apps/api/process";
+
+import {
+  isPermissionGranted,
+  requestPermission,
+  sendNotification,
+} from "@tauri-apps/api/notification";
+
 import { appDataDir } from "@tauri-apps/api/path";
 
 import { open } from "@tauri-apps/api/dialog";
@@ -20,9 +29,14 @@ function App() {
   const [locatedGridImage, setLocatedGridImage] = createSignal();
   const [locatedLogo, setLocatedLogo] = createSignal();
   const [gameName, setGameName] = createSignal();
+  const [folderName, setFolderName] = createSignal();
+  const [hideFolder, setHideFolder] = createSignal(false);
   const [libraryData, setLibraryData] = createSignal("");
   const [selectedGame, setSelectedGame] = createSignal({});
   const [appDataDirPath, setAppDataDirPath] = createSignal({});
+  const [permissionGranted, setPermissionGranted] = createSignal(
+    isPermissionGranted()
+  );
 
   async function getData() {
     setAppDataDirPath(await appDataDir());
@@ -56,13 +70,25 @@ function App() {
   }
 
   onMount(async () => {
+    if (!permissionGranted()) {
+      const permission = await requestPermission();
+      setPermissionGranted(permission === "granted");
+    }
     getData();
   });
 
-  function openGame(gameLocation) {
+  async function openGame(gameLocation) {
     invoke("openGame", {
       gameLocation: gameLocation,
     });
+
+    if (permissionGranted()) {
+      sendNotification("enjoy your session!");
+    }
+
+    setTimeout(async () => {
+      await exit(1);
+    }, 500);
   }
 
   async function locateGame() {
@@ -182,64 +208,180 @@ function App() {
     getData();
   }
 
+  async function addFolder() {
+    console.log(folderName(), hideFolder());
+
+    await writeTextFile(
+      {
+        path: "data/lib.json",
+        contents: JSON.stringify({
+          // ...(libraryData() ? true : false ? libraryData() : []),
+          ...libraryData(),
+
+          folders: [
+            ...libraryData().folders,
+            {
+              name: folderName(),
+              hide: hideFolder(),
+            },
+          ],
+        }),
+      },
+      {
+        dir: BaseDirectory.AppData,
+      }
+    );
+    getData();
+  }
+
   return (
     <>
       <div id="page">
         <div id="sideBar">
+          games
           <For each={libraryData().games}>
-            {(game) => (
+            {(game, index) => (
               <>
-                <p>{game.name}</p>
+                <div
+                  draggable={true}
+                  onDragStart={(e) => {
+                    e.dataTransfer.setData("index", index());
+                  }}>
+                  <p style="user-select: none">
+                    {index} {game.name}
+                  </p>
+                </div>
               </>
             )}
           </For>
+          <br />
+          <br /> <hr />
+          folders
+          <For each={libraryData().folders}>
+            {(folder) => (
+              <div
+                onDragOver={(e) => {
+                  e.preventDefault();
+                }}
+                onDrop={async (e) => {
+                  console.log(
+                    e.dataTransfer.getData("index") + " to " + folder.name
+                  );
 
+                  let index = e.dataTransfer.getData("index");
+
+                  await writeTextFile(
+                    {
+                      path: "data/lib.json",
+                      contents: JSON.stringify({
+                        games: [
+                          ...libraryData().games.slice(0, index),
+                          ...libraryData().games.slice(index + 1),
+                          {
+                            ...libraryData().games[index],
+                            folder: folder.name,
+                          },
+                        ],
+
+                        folders: [...libraryData().folders],
+                      }),
+                    },
+                    {
+                      dir: BaseDirectory.AppData,
+                    }
+                  );
+                  getData();
+                }}>
+                <p>{folder.name}</p>
+              </div>
+            )}
+          </For>
           <button
             onClick={() => {
               document.querySelector("[data-newGameModal]").showModal();
-            }}
-          >
+            }}>
             add game
             <svg
               width="20"
               height="20"
               viewBox="0 0 24 24"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+              xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M8 9V13M6 11H10M17 10.0161L17.0161 10M14 12.0161L14.0161 12M16.1836 5H7.81641C5.60774 5 3.71511 6.57359 3.32002 8.73845L2.0451 15.7241C1.84609 16.8145 2.31653 17.9185 3.24219 18.5333C4.3485 19.268 5.82159 19.1227 6.76177 18.1861L7.99615 16.9563C8.36513 16.5887 8.86556 16.3822 9.38737 16.3822H14.6126C15.1344 16.3822 15.6349 16.5887 16.0038 16.9563L17.2382 18.1861C18.1784 19.1227 19.6515 19.268 20.7578 18.5333C21.6835 17.9185 22.1539 16.8145 21.9549 15.7241L20.68 8.73845C20.2849 6.57359 18.3923 5 16.1836 5Z"
                 stroke="rgba(255,255,255,0.5)"
                 stroke-width="1.5"
                 stroke-linecap="round"
-                stroke-linejoin="round"
-              ></path>
+                stroke-linejoin="round"></path>
+            </svg>
+          </button>
+          <br />
+          <br />
+          <button
+            onClick={() => {
+              document.querySelector("[data-newFolderModal]").showModal();
+            }}>
+            add folder
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M4 21H20C21.1046 21 22 20.1046 22 19V8C22 6.89543 21.1046 6 20 6H11L9.29687 3.4453C9.1114 3.1671 8.79917 3 8.46482 3H4C2.89543 3 2 3.89543 2 5V19C2 20.1046 2.89543 21 4 21Z"
+                stroke="rgba(255,255,255,0.5)"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+              <path
+                d="M12 10V16M9 13H15"
+                stroke="rgba(255,255,255,0.5)"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
             </svg>
           </button>
         </div>
 
         <div id="gamesDiv">
-          <For each={libraryData().games}>
-            {(game, index) => (
-              <>
-                <div
-                  className="gameCard"
-                  onClick={async () => {
-                    await setSelectedGame(libraryData()["games"][index()]);
+          <For each={libraryData().folders}>
+            {(folder) => (
+              <div>
+                <h1>{folder.name}</h1>
+                <div className="foldersDiv">
+                  <For each={libraryData().games}>
+                    {(game, index) => (
+                      <>
+                        <Show when={game.folder == folder.name}>
+                          <div
+                            className="gameCard"
+                            onClick={async () => {
+                              await setSelectedGame(
+                                libraryData()["games"][index()]
+                              );
 
-                    console.log(selectedGame());
+                              console.log(selectedGame());
 
-                    document.querySelector("[data-gamePopup]").showModal();
-                  }}
-                >
-                  <img
-                    src={convertFileSrc(appDataDirPath() + game.gridImage)}
-                    alt=""
-                    height="250em"
-                  />
-                  <p>{game.name}</p>
+                              document
+                                .querySelector("[data-gamePopup]")
+                                .showModal();
+                            }}>
+                            <img
+                              src={convertFileSrc(
+                                appDataDirPath() + game.gridImage
+                              )}
+                              alt=""
+                              width="100%"
+                            />
+                            <p>{game.name}</p>
+                          </div>
+                        </Show>
+                      </>
+                    )}
+                  </For>
                 </div>
-              </>
+              </div>
             )}
           </For>
         </div>
@@ -249,8 +391,7 @@ function App() {
           <button
             onClick={() => {
               document.querySelector("[data-newGameModal]").close();
-            }}
-          >
+            }}>
             close
           </button>
 
@@ -272,13 +413,42 @@ function App() {
           <button onClick={addGame}>save</button>
         </dialog>
 
+        <dialog data-newFolderModal onClose={() => {}}>
+          <button
+            onClick={() => {
+              document.querySelector("[data-newFolderModal]").close();
+            }}>
+            close
+          </button>
+
+          <br />
+          <input
+            type="text"
+            name=""
+            id=""
+            onInput={(e) => {
+              console.log(e.currentTarget.value);
+              setFolderName(e.currentTarget.value);
+            }}
+            placeholder="name of folder"
+          />
+          <input
+            type="checkbox"
+            onInput={() => {
+              setHideFolder(!hideFolder());
+
+              console.log(hideFolder());
+            }}
+          />
+          <button onClick={addFolder}>save</button>
+        </dialog>
+
         <dialog data-gamePopup>
           <Show when={selectedGame()}>
             <button
               onClick={() => {
                 document.querySelector("[data-gamePopup]").close();
-              }}
-            >
+              }}>
               close
             </button>
             <br />
@@ -304,8 +474,7 @@ function App() {
             <button
               onClick={() => {
                 openGame(selectedGame().location);
-              }}
-            >
+              }}>
               open game
             </button>
           </Show>
