@@ -1,5 +1,13 @@
+:root {
+  --secondaryColor: #1c1c1c;
+  --primaryColor: #121212;
+}
+
 #page {
+  height: 100%;
   display: flex;
+  gap: 30px;
+  padding: 20px;
 }
 
 .foldersDiv {
@@ -14,12 +22,16 @@
 }
 
 #sideBar {
-  width: 200px;
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100vh - 50px);
 }
 
 dialog {
   border: none !important;
-  background-color: #ffffff00;
+  background-color: #00000000;
 }
 
 dialog::backdrop {
@@ -28,11 +40,25 @@ dialog::backdrop {
 
 button,
 input {
-  background-color: #1c1c1c;
+  background-color: var(--secondaryColor);
   border: 0;
   padding: 8px;
   border-radius: 6px;
-  margin: 0px 10px 0px 0px;
+}
+
+.standardButton {
+  margin: 10px 0px 0px 0px;
+  padding: 10px;
+  display: flex;
+  justify-items: center;
+  justify-content: space-between;
+  width: min-content;
+}
+
+#sideBar {
+  .standardButton {
+    width: 100%;
+  }
 }
 
 button,
@@ -41,17 +67,84 @@ button,
 }
 
 .gameCard {
-  background-color: #ffffff00;
+  background-color: #00000000;
   width: 15vw;
 }
 
 * {
   font-family: Helvetica;
   font-weight: normal;
-  color: #fff;
+  color: #ffffff;
   font-size: 14px;
 }
 
-html {
-  background-color: #121212;
+html,
+body {
+  background-color: var(--primaryColor);
+  height: 100%;
+  margin: 0;
+}
+
+h1 {
+  font-size: 25px;
+  color: #ffffff80;
+}
+
+#searchAndDestroy {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+#searchInput {
+  width: 100%;
+}
+
+.popupLogo {
+  position: absolute;
+}
+
+.popUpDiv {
+  display: flex;
+  flex-direction: column;
+  width: calc(100vw - 50px);
+  height: calc(100vh - 50px);
+
+  align-items: center;
+  justify-content: center;
+}
+
+.popUpMain {
+  position: relative;
+  height: 300px !important;
+  overflow: auto;
+
+  .popUpRight {
+    position: absolute;
+    bottom: 60px;
+    right: 30px;
+    display: flex;
+    gap: 15px;
+  }
+  .popupLogo {
+    position: absolute;
+    bottom: 60px;
+    left: 30px;
+  }
+
+  .standardButton {
+    width: max-content;
+  }
+}
+
+.heroBlur {
+  filter: blur(80px);
+  position: absolute;
+  z-index: -1;
+  opacity: 0.4;
+}
+
+.popUpHero {
+  border-radius: 6px;
 }

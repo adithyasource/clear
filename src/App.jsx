@@ -34,6 +34,7 @@ function App() {
   const [libraryData, setLibraryData] = createSignal("");
   const [selectedGame, setSelectedGame] = createSignal({});
   const [appDataDirPath, setAppDataDirPath] = createSignal({});
+  const [showSideBar, setShowSideBar] = createSignal(true);
   const [permissionGranted, setPermissionGranted] = createSignal(
     isPermissionGranted()
   );
@@ -237,112 +238,155 @@ function App() {
   return (
     <>
       <div id="page">
-        <div id="sideBar">
-          games
-          <For each={libraryData().games}>
-            {(game, index) => (
-              <>
-                <div
-                  draggable={true}
-                  onDragStart={(e) => {
-                    e.dataTransfer.setData("index", index());
-                  }}>
-                  <p style="user-select: none">
-                    {index} {game.name}
-                  </p>
-                </div>
-              </>
-            )}
-          </For>
-          <br />
-          <br /> <hr />
-          folders
-          <For each={libraryData().folders}>
-            {(folder) => (
-              <div
-                onDragOver={(e) => {
-                  e.preventDefault();
-                }}
-                onDrop={async (e) => {
-                  console.log(
-                    e.dataTransfer.getData("index") + " to " + folder.name
-                  );
-
-                  let index = e.dataTransfer.getData("index");
-
-                  await writeTextFile(
-                    {
-                      path: "data/lib.json",
-                      contents: JSON.stringify({
-                        games: [
-                          ...libraryData().games.slice(0, index),
-                          ...libraryData().games.slice(index + 1),
-                          {
-                            ...libraryData().games[index],
-                            folder: folder.name,
-                          },
-                        ],
-
-                        folders: [...libraryData().folders],
-                      }),
-                    },
-                    {
-                      dir: BaseDirectory.AppData,
-                    }
-                  );
-                  getData();
-                }}>
-                <p>{folder.name}</p>
+        <Show when={showSideBar()}>
+          <div id="sideBar">
+            <div id="sideBarTop">
+              <div id="searchAndDestroy">
+                <input
+                  type="text"
+                  name=""
+                  id="searchInput"
+                  placeholder="search"
+                />
+                <svg
+                  onClick={() => {
+                    setShowSideBar(false);
+                  }}
+                  style="cursor: pointer;"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 12 12"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M6 11L1 6L6 1"
+                    stroke="white"
+                    stroke-opacity="0.5"
+                    stroke-width="1.3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M11 11L6 6L11 1"
+                    stroke="white"
+                    stroke-opacity="0.5"
+                    stroke-width="1.3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
               </div>
-            )}
-          </For>
-          <button
-            onClick={() => {
-              document.querySelector("[data-newGameModal]").showModal();
-            }}>
-            add game
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M8 9V13M6 11H10M17 10.0161L17.0161 10M14 12.0161L14.0161 12M16.1836 5H7.81641C5.60774 5 3.71511 6.57359 3.32002 8.73845L2.0451 15.7241C1.84609 16.8145 2.31653 17.9185 3.24219 18.5333C4.3485 19.268 5.82159 19.1227 6.76177 18.1861L7.99615 16.9563C8.36513 16.5887 8.86556 16.3822 9.38737 16.3822H14.6126C15.1344 16.3822 15.6349 16.5887 16.0038 16.9563L17.2382 18.1861C18.1784 19.1227 19.6515 19.268 20.7578 18.5333C21.6835 17.9185 22.1539 16.8145 21.9549 15.7241L20.68 8.73845C20.2849 6.57359 18.3923 5 16.1836 5Z"
-                stroke="rgba(255,255,255,0.5)"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"></path>
-            </svg>
-          </button>
-          <br />
-          <br />
-          <button
-            onClick={() => {
-              document.querySelector("[data-newFolderModal]").showModal();
-            }}>
-            add folder
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M4 21H20C21.1046 21 22 20.1046 22 19V8C22 6.89543 21.1046 6 20 6H11L9.29687 3.4453C9.1114 3.1671 8.79917 3 8.46482 3H4C2.89543 3 2 3.89543 2 5V19C2 20.1046 2.89543 21 4 21Z"
-                stroke="rgba(255,255,255,0.5)"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"></path>
-              <path
-                d="M12 10V16M9 13H15"
-                stroke="rgba(255,255,255,0.5)"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"></path>
-            </svg>
-          </button>
-        </div>
+              <div id="sideBarFolders">
+                games
+                <For each={libraryData().games}>
+                  {(game, index) => (
+                    <>
+                      <div
+                        draggable={true}
+                        onDragStart={(e) => {
+                          e.dataTransfer.setData("index", index());
+                        }}>
+                        <p style="user-select: none">
+                          {index} {game.name}
+                        </p>
+                      </div>
+                    </>
+                  )}
+                </For>
+                <br />
+                <br /> <hr />
+                folders
+                <For each={libraryData().folders}>
+                  {(folder) => (
+                    <div
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                      }}
+                      onDrop={async (e) => {
+                        console.log(
+                          e.dataTransfer.getData("index") + " to " + folder.name
+                        );
+
+                        let index = e.dataTransfer.getData("index");
+
+                        await writeTextFile(
+                          {
+                            path: "data/lib.json",
+                            contents: JSON.stringify({
+                              games: [
+                                ...libraryData().games.slice(0, index),
+                                ...libraryData().games.slice(index + 1),
+                                {
+                                  ...libraryData().games[index],
+                                  folder: folder.name,
+                                },
+                              ],
+
+                              folders: [...libraryData().folders],
+                            }),
+                          },
+                          {
+                            dir: BaseDirectory.AppData,
+                          }
+                        );
+                        getData();
+                      }}>
+                      <p>{folder.name}</p>
+                    </div>
+                  )}
+                </For>
+              </div>
+            </div>
+            <div id="sideBarBottom">
+              <button
+                className="standardButton"
+                onClick={() => {
+                  document.querySelector("[data-newGameModal]").showModal();
+                }}>
+                add game
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M8 9V13M6 11H10M17 10.0161L17.0161 10M14 12.0161L14.0161 12M16.1836 5H7.81641C5.60774 5 3.71511 6.57359 3.32002 8.73845L2.0451 15.7241C1.84609 16.8145 2.31653 17.9185 3.24219 18.5333C4.3485 19.268 5.82159 19.1227 6.76177 18.1861L7.99615 16.9563C8.36513 16.5887 8.86556 16.3822 9.38737 16.3822H14.6126C15.1344 16.3822 15.6349 16.5887 16.0038 16.9563L17.2382 18.1861C18.1784 19.1227 19.6515 19.268 20.7578 18.5333C21.6835 17.9185 22.1539 16.8145 21.9549 15.7241L20.68 8.73845C20.2849 6.57359 18.3923 5 16.1836 5Z"
+                    stroke="rgba(255,255,255,0.5)"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+                </svg>
+              </button>
+              <button
+                className="standardButton"
+                onClick={() => {
+                  document.querySelector("[data-newFolderModal]").showModal();
+                }}>
+                add folder
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M4 21H20C21.1046 21 22 20.1046 22 19V8C22 6.89543 21.1046 6 20 6H11L9.29687 3.4453C9.1114 3.1671 8.79917 3 8.46482 3H4C2.89543 3 2 3.89543 2 5V19C2 20.1046 2.89543 21 4 21Z"
+                    stroke="rgba(255,255,255,0.5)"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+                  <path
+                    d="M12 10V16M9 13H15"
+                    stroke="rgba(255,255,255,0.5)"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </Show>
 
         <div id="gamesDiv">
           <For each={libraryData().folders}>
@@ -445,38 +489,48 @@ function App() {
 
         <dialog data-gamePopup>
           <Show when={selectedGame()}>
-            <button
-              onClick={() => {
-                document.querySelector("[data-gamePopup]").close();
-              }}>
-              close
-            </button>
-            <br />
-            {selectedGame().name} <br />
-            <img
-              src={convertFileSrc(appDataDirPath() + selectedGame().heroImage)}
-              alt=""
-              height="150px"
-            />{" "}
-            <br />
-            <img
-              src={convertFileSrc(appDataDirPath() + selectedGame().gridImage)}
-              alt=""
-              height="150px"
-            />{" "}
-            <br />
-            <img
-              src={convertFileSrc(appDataDirPath() + selectedGame().logo)}
-              alt=""
-              height="40px"
-            />
-            <br />{" "}
-            <button
-              onClick={() => {
-                openGame(selectedGame().location);
-              }}>
-              open game
-            </button>
+            <div className="popUpDiv">
+              <img
+                src={convertFileSrc(
+                  appDataDirPath() + selectedGame().heroImage
+                )}
+                alt=""
+                height="auto"
+                className="heroBlur"
+              />
+              <div className="popUpMain">
+                <div className="popUpRight">
+                  <button
+                    className="standardButton"
+                    onClick={() => {
+                      openGame(selectedGame().location);
+                    }}>
+                    open game
+                  </button>
+                  <button
+                    className="standardButton"
+                    onClick={() => {
+                      document.querySelector("[data-gamePopup]").close();
+                    }}>
+                    close
+                  </button>
+                </div>
+                <img
+                  src={convertFileSrc(
+                    appDataDirPath() + selectedGame().heroImage
+                  )}
+                  alt=""
+                  height="auto"
+                  className="popUpHero"
+                />
+                <img
+                  src={convertFileSrc(appDataDirPath() + selectedGame().logo)}
+                  alt=""
+                  className="popupLogo"
+                  height="60px"
+                />
+              </div>
+            </div>
           </Show>
         </dialog>
       </div>
