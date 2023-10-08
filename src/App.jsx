@@ -35,9 +35,74 @@ function App() {
   const [selectedGame, setSelectedGame] = createSignal({});
   const [appDataDirPath, setAppDataDirPath] = createSignal({});
   const [showSideBar, setShowSideBar] = createSignal(true);
+  const [foldersInUse, setFoldersInUse] = createSignal([]);
   const [permissionGranted, setPermissionGranted] = createSignal(
     isPermissionGranted()
   );
+
+  let showFolderName = false;
+
+  document.addEventListener("keydown", (e) => {
+    if (e.ctrlKey) {
+      for (let i = 0; i < document.querySelectorAll(".draggable").length; i++) {
+        document.querySelectorAll(".draggable")[i].style.cursor = "pointer";
+      }
+
+      for (
+        let i = 0;
+        i < document.querySelectorAll(".folderGames").length;
+        i++
+      ) {
+        document
+          .querySelectorAll(".folderGames")
+          [i].classList.add(
+            "hint--right",
+            "hint--no-animate",
+            "hint--rounded",
+            "hint--no-arrow"
+          );
+      }
+
+      for (let i = 0; i < document.querySelectorAll(".gameCard").length; i++) {
+        document
+          .querySelectorAll(".gameCard")
+          [i].classList.add(
+            "hint--center",
+            "hint--no-animate",
+            "hint--rounded",
+            "hint--no-arrow"
+          );
+      }
+    }
+  });
+
+  document.addEventListener("keyup", (e) => {
+    for (let i = 0; i < document.querySelectorAll(".draggable").length; i++) {
+      document.querySelectorAll(".draggable")[i].style.cursor = "grab";
+    }
+
+    for (let i = 0; i < document.querySelectorAll(".folderGames").length; i++) {
+      document
+        .querySelectorAll(".folderGames")
+        [i].classList.remove(
+          "hint--right",
+          "hint--no-animate",
+          "hint--rounded",
+          "hint--no-arrow"
+        );
+    }
+
+    for (let i = 0; i < document.querySelectorAll(".gameCard").length; i++) {
+      document
+        .querySelectorAll(".gameCard")
+        [i].classList.remove(
+          "hint--center",
+          "hint--no-animate",
+          "hint--rounded",
+          "hint--no-arrow"
+        );
+    }
+  });
 
   async function getData() {
     setAppDataDirPath(await appDataDir());
@@ -52,7 +117,6 @@ function App() {
         console.log("data gotten");
       } else return;
     } else {
-      console.log("create dir");
       await createDir("data", {
         dir: BaseDirectory.AppData,
         recursive: true,
@@ -104,7 +168,6 @@ function App() {
         ],
       })
     );
-    console.log(locatedGame());
   }
 
   async function locateHeroImage() {
@@ -119,7 +182,6 @@ function App() {
         ],
       })
     );
-    console.log(locatedHeroImage());
   }
 
   async function locateGridImage() {
@@ -134,7 +196,6 @@ function App() {
         ],
       })
     );
-    console.log(locatedGridImage());
   }
 
   async function locateLogo() {
@@ -149,7 +210,6 @@ function App() {
         ],
       })
     );
-    console.log(locatedLogo());
   }
 
   async function addGame() {
@@ -210,8 +270,6 @@ function App() {
   }
 
   async function addFolder() {
-    console.log(folderName(), hideFolder());
-
     await writeTextFile(
       {
         path: "data/lib.json",
@@ -237,6 +295,9 @@ function App() {
 
   return (
     <>
+      <head>
+        <link rel="stylesheet" href="hint.min.css" />
+      </head>
       <div id="page">
         <Show when={showSideBar()}>
           <div id="sideBar">
@@ -277,63 +338,161 @@ function App() {
                 </svg>
               </div>
               <div id="sideBarFolders">
-                games
-                <For each={libraryData().games}>
-                  {(game, index) => (
-                    <>
-                      <div
-                        draggable={true}
-                        onDragStart={(e) => {
-                          e.dataTransfer.setData("index", index());
-                        }}>
-                        <p style="user-select: none">
-                          {index} {game.name}
-                        </p>
-                      </div>
-                    </>
-                  )}
-                </For>
-                <br />
-                <br /> <hr />
-                folders
                 <For each={libraryData().folders}>
-                  {(folder) => (
-                    <div
-                      onDragOver={(e) => {
-                        e.preventDefault();
-                      }}
-                      onDrop={async (e) => {
-                        console.log(
-                          e.dataTransfer.getData("index") + " to " + folder.name
-                        );
+                  {(folder) => {
+                    let gamesInFolder = [];
 
-                        let index = e.dataTransfer.getData("index");
+                    for (let i = 0; i < libraryData().games.length; i++) {
+                      if (libraryData().games[i].folder == folder.name) {
+                        gamesInFolder.push(libraryData().games[i].name);
+                      }
+                    }
 
-                        await writeTextFile(
-                          {
-                            path: "data/lib.json",
-                            contents: JSON.stringify({
-                              games: [
-                                ...libraryData().games.slice(0, index),
-                                ...libraryData().games.slice(index + 1),
-                                {
-                                  ...libraryData().games[index],
-                                  folder: folder.name,
-                                },
-                              ],
+                    if (gamesInFolder.length > 0) {
+                      return (
+                        <div
+                          className="sideBarFolder"
+                          onDragOver={(e) => {
+                            e.preventDefault();
+                          }}
+                          onDrop={async (e) => {
+                            let index = e.dataTransfer.getData("index");
 
-                              folders: [...libraryData().folders],
-                            }),
-                          },
-                          {
-                            dir: BaseDirectory.AppData,
-                          }
-                        );
-                        getData();
-                      }}>
-                      <p>{folder.name}</p>
-                    </div>
-                  )}
+                            await writeTextFile(
+                              {
+                                path: "data/lib.json",
+                                contents: JSON.stringify({
+                                  games: [
+                                    ...libraryData().games.slice(0, index),
+                                    ...libraryData().games.slice(index + 1),
+                                    {
+                                      ...libraryData().games[index],
+                                      folder: folder.name,
+                                    },
+                                  ],
+
+                                  folders: [...libraryData().folders],
+                                }),
+                              },
+                              {
+                                dir: BaseDirectory.AppData,
+                              }
+                            );
+                            getData();
+                          }}>
+                          <div className="folderTitleBar">
+                            <p>{folder.name}</p>
+                            <button className="editButton">
+                              <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 18 18"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                  d="M2.5 11.5L12.5 1.50002C13.3284 0.671585 14.6716 0.671585 15.5 1.50002C16.3284 2.32845 16.3284 3.67159 15.5 4.50002L5.5 14.5L1.5 15.5L2.5 11.5Z"
+                                  stroke="white"
+                                  stroke-opacity="0.5"
+                                  stroke-width="1.5"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+
+                          <For each={libraryData().games}>
+                            {(game, index) => (
+                              <>
+                                <Show when={game.folder == folder.name}>
+                                  <div
+                                    className="draggable"
+                                    draggable={true}
+                                    onDragStart={(e) => {
+                                      e.dataTransfer.setData("index", index());
+                                    }}>
+                                    <p
+                                      className="folderGames"
+                                      aria-label="play"
+                                      onClick={(e) => {
+                                        if (e.ctrlKey) {
+                                          openGame(game.location);
+                                        }
+                                      }}>
+                                      {game.name}
+                                    </p>
+                                  </div>
+                                </Show>
+                              </>
+                            )}
+                          </For>
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div
+                          className="sideBarFolder"
+                          onDragOver={(e) => {
+                            e.preventDefault();
+                          }}
+                          onDrop={async (e) => {
+                            let index = e.dataTransfer.getData("index");
+
+                            await writeTextFile(
+                              {
+                                path: "data/lib.json",
+                                contents: JSON.stringify({
+                                  games: [
+                                    ...libraryData().games.slice(0, index),
+                                    ...libraryData().games.slice(index + 1),
+                                    {
+                                      ...libraryData().games[index],
+                                      folder: folder.name,
+                                    },
+                                  ],
+
+                                  folders: [...libraryData().folders],
+                                }),
+                              },
+                              {
+                                dir: BaseDirectory.AppData,
+                              }
+                            );
+                            getData();
+                          }}>
+                          <div className="folderTitleBar">
+                            <s className="folderGames">{folder.name}</s>
+                            <button className="editButton">
+                              <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 18 18"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                  d="M2.5 11.5L12.5 1.50002C13.3284 0.671585 14.6716 0.671585 15.5 1.50002C16.3284 2.32845 16.3284 3.67159 15.5 4.50002L5.5 14.5L1.5 15.5L2.5 11.5Z"
+                                  stroke="white"
+                                  stroke-opacity="0.5"
+                                  stroke-width="1.5"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+
+                          {/* <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="14"
+                            height="14"
+                            fill="#ffffff80"
+                            viewBox="0 0 256 256">
+                            <path d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM48,208V59.31L196.69,208ZM59.31,48H208V196.7Z"></path>
+                          </svg> */}
+                        </div>
+                      );
+                    }
+                  }}
                 </For>
               </div>
             </div>
@@ -390,43 +549,59 @@ function App() {
 
         <div id="gamesDiv">
           <For each={libraryData().folders}>
-            {(folder) => (
-              <div>
-                <h1>{folder.name}</h1>
-                <div className="foldersDiv">
-                  <For each={libraryData().games}>
-                    {(game, index) => (
-                      <>
-                        <Show when={game.folder == folder.name}>
-                          <div
-                            className="gameCard"
-                            onClick={async () => {
-                              await setSelectedGame(
-                                libraryData()["games"][index()]
-                              );
+            {(folder) => {
+              let gamesInFolder = [];
 
-                              console.log(selectedGame());
+              for (let i = 0; i < libraryData().games.length; i++) {
+                if (libraryData().games[i].folder == folder.name) {
+                  gamesInFolder.push(libraryData().games[i].name);
+                }
+              }
+              if (gamesInFolder.length > 0) {
+                return (
+                  <div className="folderRack">
+                    <h1>{folder.name}</h1>
+                    <div className="foldersDiv">
+                      <For each={libraryData().games}>
+                        {(game, index) => (
+                          <>
+                            <Show when={game.folder == folder.name}>
+                              <div
+                                className="gameCard"
+                                aria-label="play"
+                                onClick={async (e) => {
+                                  if (e.ctrlKey) {
+                                    openGame(game.location);
+                                    return;
+                                  }
 
-                              document
-                                .querySelector("[data-gamePopup]")
-                                .showModal();
-                            }}>
-                            <img
-                              src={convertFileSrc(
-                                appDataDirPath() + game.gridImage
-                              )}
-                              alt=""
-                              width="100%"
-                            />
-                            <p>{game.name}</p>
-                          </div>
-                        </Show>
-                      </>
-                    )}
-                  </For>
-                </div>
-              </div>
-            )}
+                                  await setSelectedGame(
+                                    libraryData()["games"][index()]
+                                  );
+
+                                  document
+                                    .querySelector("[data-gamePopup]")
+                                    .showModal();
+                                }}>
+                                <img
+                                  className="gridImage"
+                                  src={convertFileSrc(
+                                    appDataDirPath() + game.gridImage
+                                  )}
+                                  alt=""
+                                  width="100%"
+                                />
+                                <p>{game.name}</p>
+                              </div>
+                            </Show>
+                          </>
+                        )}
+                      </For>
+                    </div>
+                  </div>
+                );
+              }
+            }}
           </For>
         </div>
       </div>
@@ -445,7 +620,6 @@ function App() {
             name=""
             id=""
             onInput={(e) => {
-              console.log(e.currentTarget.value);
               setGameName(e.currentTarget.value);
             }}
             placeholder="name of game"
@@ -471,7 +645,6 @@ function App() {
             name=""
             id=""
             onInput={(e) => {
-              console.log(e.currentTarget.value);
               setFolderName(e.currentTarget.value);
             }}
             placeholder="name of folder"
@@ -480,8 +653,6 @@ function App() {
             type="checkbox"
             onInput={() => {
               setHideFolder(!hideFolder());
-
-              console.log(hideFolder());
             }}
           />
           <button onClick={addFolder}>save</button>
@@ -505,14 +676,41 @@ function App() {
                     onClick={() => {
                       openGame(selectedGame().location);
                     }}>
-                    open game
+                    play
+                    <svg
+                      width="13"
+                      height="16"
+                      viewBox="0 0 13 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M1.69727 14.3947V0.894745L12.1973 7.64474L1.69727 14.3947Z"
+                        stroke="white"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
                   </button>
                   <button
                     className="standardButton"
                     onClick={() => {
                       document.querySelector("[data-gamePopup]").close();
                     }}>
-                    close
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M1 1L11 10.3369M1 10.3369L11 1"
+                        stroke="#FF3636"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
                   </button>
                 </div>
                 <img

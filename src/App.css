@@ -1,5 +1,6 @@
 :root {
   --secondaryColor: #1c1c1c;
+  --secondaryColorForBlur: #1c1c1ccc;
   --primaryColor: #121212;
 }
 
@@ -15,10 +16,17 @@
   flex-direction: row;
   gap: 20px;
   width: 100%;
+  margin: 15px 0px 0px 0px;
+}
+
+.folderRack {
+  margin: 0px 0px 40px 0px;
 }
 
 #gamesDiv {
   width: 80%;
+  height: calc(100vh - 40px);
+  overflow-y: scroll;
 }
 
 #sideBar {
@@ -26,12 +34,14 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: calc(100vh - 50px);
+  height: calc(100vh - 40px);
 }
 
 dialog {
   border: none !important;
   background-color: #00000000;
+  overflow: hidden;
+  padding: 0px 50px 50px 0px;
 }
 
 dialog::backdrop {
@@ -42,17 +52,38 @@ button,
 input {
   background-color: var(--secondaryColor);
   border: 0;
-  padding: 8px;
+  padding: 10px;
   border-radius: 6px;
 }
 
+#searchInput {
+  width: 100%;
+}
+
 .standardButton {
-  margin: 10px 0px 0px 0px;
-  padding: 10px;
+  margin: 12px 0px 0px 0px;
   display: flex;
   justify-items: center;
   justify-content: space-between;
   width: min-content;
+  gap: 5px;
+  align-items: center;
+}
+
+#sideBarFolders {
+  margin: 20px 0px 0px 0px;
+}
+
+.sideBarFolder {
+  margin: 12px 0px 0px 0px;
+  background: var(--secondaryColor);
+  border-radius: 6px;
+  display: flex;
+  justify-items: center;
+  flex-direction: column;
+  padding: 10px;
+  gap: 15px;
+  justify-content: space-between;
 }
 
 #sideBar {
@@ -76,6 +107,24 @@ button,
   font-weight: normal;
   color: #ffffff;
   font-size: 14px;
+  user-select: none;
+  margin: 0;
+  padding: 0;
+  color-scheme: dark;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--primaryColor);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--secondaryColor);
+  border-radius: 10px;
 }
 
 html,
@@ -94,11 +143,7 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
-}
-
-#searchInput {
-  width: 100%;
+  gap: 20px;
 }
 
 .popupLogo {
@@ -108,33 +153,32 @@ h1 {
 .popUpDiv {
   display: flex;
   flex-direction: column;
-  width: calc(100vw - 50px);
-  height: calc(100vh - 50px);
-
+  width: 100vw;
+  height: 100vh;
   align-items: center;
   justify-content: center;
 }
 
 .popUpMain {
   position: relative;
-  height: 300px !important;
-  overflow: auto;
 
   .popUpRight {
     position: absolute;
-    bottom: 60px;
+    bottom: 30px;
     right: 30px;
     display: flex;
     gap: 15px;
   }
   .popupLogo {
     position: absolute;
-    bottom: 60px;
+    bottom: 30px;
     left: 30px;
   }
 
   .standardButton {
     width: max-content;
+    backdrop-filter: blur(10px);
+    background-color: var(--secondaryColorForBlur);
   }
 }
 
@@ -145,6 +189,34 @@ h1 {
   opacity: 0.4;
 }
 
-.popUpHero {
+.popUpHero,
+.gridImage {
   border-radius: 6px;
+}
+
+.gridImage {
+  margin: 0px 0px 7px 0px;
+}
+
+.draggable {
+  cursor: grab;
+}
+
+.folderGames {
+  color: #ffffff80;
+}
+
+button:focus,
+input:focus {
+  outline: 0;
+}
+
+.folderTitleBar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.editButton {
+  padding: 0;
 }
