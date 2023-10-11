@@ -1,4 +1,4 @@
-import { Show, createSignal, onMount } from "solid-js";
+import { For, Show, createSignal, onMount } from "solid-js";
 import { invoke, convertFileSrc } from "@tauri-apps/api/tauri";
 import {
   writeTextFile,
@@ -30,12 +30,16 @@ function App() {
   const [locatedLogo, setLocatedLogo] = createSignal();
   const [gameName, setGameName] = createSignal();
   const [folderName, setFolderName] = createSignal();
+  const [editedFolderName, setEditedFolderName] = createSignal("");
+  const [editedHideFolder, setEditedHideFolder] = createSignal(false);
   const [hideFolder, setHideFolder] = createSignal(false);
-  const [libraryData, setLibraryData] = createSignal("");
+  const [libraryData, setLibraryData] = createSignal({});
   const [selectedGame, setSelectedGame] = createSignal({});
   const [appDataDirPath, setAppDataDirPath] = createSignal({});
   const [showSideBar, setShowSideBar] = createSignal(true);
-  const [foldersInUse, setFoldersInUse] = createSignal([]);
+  const [selectedFolder, setSelectedFolder] = createSignal([]);
+  const [currentGames, setCurrentGames] = createSignal([]);
+  const [currentFolders, setCurrentFolders] = createSignal([]);
   const [permissionGranted, setPermissionGranted] = createSignal(
     isPermissionGranted()
   );
@@ -113,7 +117,10 @@ function App() {
       });
 
       if (getLibraryData != "") {
+        setLibraryData({});
         setLibraryData(JSON.parse(getLibraryData));
+        setCurrentGames(Object.keys(libraryData().games));
+        setCurrentFolders(Object.keys(libraryData().folders));
         console.log("data gotten");
       } else return;
     } else {
@@ -121,7 +128,6 @@ function App() {
         dir: BaseDirectory.AppData,
         recursive: true,
       });
-
       await writeTextFile(
         {
           path: "data/lib.json",
@@ -243,54 +249,74 @@ function App() {
       dir: BaseDirectory.AppData,
     });
 
-    // let iterLib = libraryData().games ? true : false;
+    libraryData().games[gameName()] = {
+      location: locatedGame(),
+      name: gameName(),
+      heroImage: heroImageFileName,
+      gridImage: gridImageFileName,
+      logo: logoFileName,
+    };
+    setLibraryData(libraryData());
 
     await writeTextFile(
       {
         path: "data/lib.json",
-        contents: JSON.stringify({
-          games: [
-            ...(libraryData().games ? true : false ? libraryData().games : []),
-            {
-              location: locatedGame(),
-              name: gameName(),
-              heroImage: heroImageFileName,
-              gridImage: gridImageFileName,
-              logo: logoFileName,
-              folder: "uncategorized",
-            },
-          ],
-        }),
+        contents: JSON.stringify(libraryData()),
       },
       {
         dir: BaseDirectory.AppData,
       }
-    );
-    getData();
+    ).then(() => {
+      location.reload();
+    });
   }
 
   async function addFolder() {
+    libraryData().folders[folderName()] = {
+      name: folderName(),
+      hide: hideFolder(),
+      games: [],
+    };
+    setLibraryData(libraryData());
+
     await writeTextFile(
       {
         path: "data/lib.json",
-        contents: JSON.stringify({
-          // ...(libraryData() ? true : false ? libraryData() : []),
-          ...libraryData(),
-
-          folders: [
-            ...libraryData().folders,
-            {
-              name: folderName(),
-              hide: hideFolder(),
-            },
-          ],
-        }),
+        contents: JSON.stringify(libraryData()),
       },
       {
         dir: BaseDirectory.AppData,
       }
-    );
-    getData();
+    ).then(() => {
+      location.reload();
+    });
+  }
+
+  async function editFolder() {
+    console.log("oldfoldername" + selectedFolder().name);
+    console.log("oldfodlerhide" + selectedFolder().hide);
+    console.log(editedFolderName());
+    console.log(editedHideFolder());
+
+    libraryData().folders[editedFolderName()] = {
+      ...selectedFolder(),
+      name: editedFolderName(),
+      hide: editedHideFolder(),
+    };
+
+    delete libraryData().folders[selectedFolder().name];
+
+    await writeTextFile(
+      {
+        path: "data/lib.json",
+        contents: JSON.stringify(libraryData()),
+      },
+      {
+        dir: BaseDirectory.AppData,
+      }
+    ).then(() => {
+      location.reload();
+    });
   }
 
   return (
@@ -338,17 +364,11 @@ function App() {
                 </svg>
               </div>
               <div id="sideBarFolders">
-                <For each={libraryData().folders}>
-                  {(folder) => {
-                    let gamesInFolder = [];
+                <For each={currentFolders()}>
+                  {(folderName) => {
+                    let folder = libraryData().folders[folderName];
 
-                    for (let i = 0; i < libraryData().games.length; i++) {
-                      if (libraryData().games[i].folder == folder.name) {
-                        gamesInFolder.push(libraryData().games[i].name);
-                      }
-                    }
-
-                    if (gamesInFolder.length > 0) {
+                    if (folder.games.length > 0) {
                       return (
                         <div
                           className="sideBarFolder"
@@ -356,33 +376,48 @@ function App() {
                             e.preventDefault();
                           }}
                           onDrop={async (e) => {
-                            let index = e.dataTransfer.getData("index");
+                            let gameName = e.dataTransfer.getData("gameName");
+                            let oldFolderName =
+                              e.dataTransfer.getData("oldFolderName");
+
+                            if (oldFolderName != "uncategorized") {
+                              const index =
+                                libraryData().folders[
+                                  oldFolderName
+                                ].games.indexOf(gameName);
+
+                              libraryData().folders[oldFolderName].games.splice(
+                                index,
+                                1
+                              );
+                            }
+
+                            libraryData().folders[folder.name].games.push(
+                              gameName
+                            );
 
                             await writeTextFile(
                               {
                                 path: "data/lib.json",
-                                contents: JSON.stringify({
-                                  games: [
-                                    ...libraryData().games.slice(0, index),
-                                    ...libraryData().games.slice(index + 1),
-                                    {
-                                      ...libraryData().games[index],
-                                      folder: folder.name,
-                                    },
-                                  ],
-
-                                  folders: [...libraryData().folders],
-                                }),
+                                contents: JSON.stringify(libraryData()),
                               },
                               {
                                 dir: BaseDirectory.AppData,
                               }
-                            );
-                            getData();
+                            ).then(() => {
+                              location.reload();
+                            });
                           }}>
                           <div className="folderTitleBar">
                             <p>{folder.name}</p>
-                            <button className="editButton">
+                            <button
+                              className="editButton"
+                              onClick={() => {
+                                document
+                                  .querySelector("[data-editFolderModal]")
+                                  .showModal();
+                                setSelectedFolder(folder);
+                              }}>
                               <svg
                                 width="14"
                                 height="14"
@@ -401,28 +436,35 @@ function App() {
                             </button>
                           </div>
 
-                          <For each={libraryData().games}>
-                            {(game, index) => (
+                          <For each={folder.games}>
+                            {(gameName) => (
                               <>
-                                <Show when={game.folder == folder.name}>
-                                  <div
-                                    className="draggable"
-                                    draggable={true}
-                                    onDragStart={(e) => {
-                                      e.dataTransfer.setData("index", index());
+                                <div
+                                  className="draggable"
+                                  draggable={true}
+                                  onDragStart={(e) => {
+                                    e.dataTransfer.setData(
+                                      "gameName",
+                                      gameName
+                                    );
+                                    e.dataTransfer.setData(
+                                      "oldFolderName",
+                                      folder.name
+                                    );
+                                  }}>
+                                  <p
+                                    className="folderGames"
+                                    aria-label="play"
+                                    onClick={(e) => {
+                                      if (e.ctrlKey) {
+                                        openGame(
+                                          libraryData().games[gameName].location
+                                        );
+                                      }
                                     }}>
-                                    <p
-                                      className="folderGames"
-                                      aria-label="play"
-                                      onClick={(e) => {
-                                        if (e.ctrlKey) {
-                                          openGame(game.location);
-                                        }
-                                      }}>
-                                      {game.name}
-                                    </p>
-                                  </div>
-                                </Show>
+                                    {gameName}
+                                  </p>
+                                </div>
                               </>
                             )}
                           </For>
@@ -436,29 +478,37 @@ function App() {
                             e.preventDefault();
                           }}
                           onDrop={async (e) => {
-                            let index = e.dataTransfer.getData("index");
+                            let gameName = e.dataTransfer.getData("gameName");
+                            let oldFolderName =
+                              e.dataTransfer.getData("oldFolderName");
+
+                            if (oldFolderName != "uncategorized") {
+                              const index =
+                                libraryData().folders[
+                                  oldFolderName
+                                ].games.indexOf(gameName);
+
+                              libraryData().folders[oldFolderName].games.splice(
+                                index,
+                                1
+                              );
+                            }
+
+                            libraryData().folders[folder.name].games.push(
+                              gameName
+                            );
 
                             await writeTextFile(
                               {
                                 path: "data/lib.json",
-                                contents: JSON.stringify({
-                                  games: [
-                                    ...libraryData().games.slice(0, index),
-                                    ...libraryData().games.slice(index + 1),
-                                    {
-                                      ...libraryData().games[index],
-                                      folder: folder.name,
-                                    },
-                                  ],
-
-                                  folders: [...libraryData().folders],
-                                }),
+                                contents: JSON.stringify(libraryData()),
                               },
                               {
                                 dir: BaseDirectory.AppData,
                               }
-                            );
-                            getData();
+                            ).then(() => {
+                              location.reload();
+                            });
                           }}>
                           <div className="folderTitleBar">
                             <s className="folderGames">{folder.name}</s>
@@ -480,20 +530,95 @@ function App() {
                               </svg>
                             </button>
                           </div>
-
-                          {/* <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="14"
-                            height="14"
-                            fill="#ffffff80"
-                            viewBox="0 0 256 256">
-                            <path d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM48,208V59.31L196.69,208ZM59.31,48H208V196.7Z"></path>
-                          </svg> */}
                         </div>
                       );
                     }
                   }}
                 </For>
+                {/* uncategorized */}
+
+                <div
+                  className="sideBarFolder"
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                  }}
+                  onDrop={async (e) => {
+                    let gameName = e.dataTransfer.getData("gameName");
+                    let oldFolderName = e.dataTransfer.getData("oldFolderName");
+
+                    const index =
+                      libraryData().folders[oldFolderName].games.indexOf(
+                        gameName
+                      );
+
+                    libraryData().folders[oldFolderName].games.splice(index, 1);
+
+                    await writeTextFile(
+                      {
+                        path: "data/lib.json",
+                        contents: JSON.stringify(libraryData()),
+                      },
+                      {
+                        dir: BaseDirectory.AppData,
+                      }
+                    ).then(() => {
+                      location.reload();
+                    });
+                  }}>
+                  <div className="folderTitleBar">
+                    <p>uncategorized</p>
+                  </div>
+                  <For each={currentGames()}>
+                    {(currentGame, i) => {
+                      let gamesInFolders = [];
+
+                      for (
+                        let x = 0;
+                        x < Object.values(libraryData().folders).length;
+                        x++
+                      ) {
+                        for (
+                          let y = 0;
+                          y <
+                          Object.values(libraryData().folders)[x].games.length;
+                          y++
+                        ) {
+                          gamesInFolders.push(
+                            Object.values(libraryData().folders)[x].games[y]
+                          );
+                        }
+                      }
+                      return (
+                        <Show when={!gamesInFolders.includes(currentGame)}>
+                          <div
+                            className="draggable"
+                            draggable={true}
+                            onDragStart={(e) => {
+                              e.dataTransfer.setData("gameName", currentGame);
+
+                              e.dataTransfer.setData(
+                                "oldFolderName",
+                                "uncategorized"
+                              );
+                            }}>
+                            <p
+                              className="folderGames"
+                              aria-label="play"
+                              onClick={(e) => {
+                                if (e.ctrlKey) {
+                                  openGame(
+                                    libraryData().games[currentGame].location
+                                  );
+                                }
+                              }}>
+                              {currentGame}
+                            </p>
+                          </div>
+                        </Show>
+                      );
+                    }}
+                  </For>
+                </div>
               </div>
             </div>
             <div id="sideBarBottom">
@@ -548,59 +673,53 @@ function App() {
         </Show>
 
         <div id="gamesDiv">
-          <For each={libraryData().folders}>
-            {(folder) => {
-              let gamesInFolder = [];
-
-              for (let i = 0; i < libraryData().games.length; i++) {
-                if (libraryData().games[i].folder == folder.name) {
-                  gamesInFolder.push(libraryData().games[i].name);
-                }
-              }
-              if (gamesInFolder.length > 0) {
-                return (
+          <For each={currentFolders()}>
+            {(folderName) => {
+              let folder = libraryData().folders[folderName];
+              return (
+                <Show when={folder.games != ""}>
                   <div className="folderRack">
                     <h1>{folder.name}</h1>
                     <div className="foldersDiv">
-                      <For each={libraryData().games}>
-                        {(game, index) => (
-                          <>
-                            <Show when={game.folder == folder.name}>
-                              <div
-                                className="gameCard"
-                                aria-label="play"
-                                onClick={async (e) => {
-                                  if (e.ctrlKey) {
-                                    openGame(game.location);
-                                    return;
-                                  }
-
-                                  await setSelectedGame(
-                                    libraryData()["games"][index()]
+                      <For each={folder.games}>
+                        {(gameName) => {
+                          return (
+                            <div
+                              className="gameCard"
+                              aria-label="play"
+                              onClick={async (e) => {
+                                if (e.ctrlKey) {
+                                  openGame(
+                                    libraryData().games[gameName].location
                                   );
-
-                                  document
-                                    .querySelector("[data-gamePopup]")
-                                    .showModal();
-                                }}>
-                                <img
-                                  className="gridImage"
-                                  src={convertFileSrc(
-                                    appDataDirPath() + game.gridImage
-                                  )}
-                                  alt=""
-                                  width="100%"
-                                />
-                                <p>{game.name}</p>
-                              </div>
-                            </Show>
-                          </>
-                        )}
+                                  return;
+                                }
+                                await setSelectedGame(
+                                  libraryData().games[gameName]
+                                );
+                                document
+                                  .querySelector("[data-gamePopup]")
+                                  .showModal();
+                              }}>
+                              <img
+                                className="gridImage"
+                                src={convertFileSrc(
+                                  appDataDirPath() +
+                                    libraryData().games[gameName].gridImage
+                                )}
+                                alt=""
+                                width="100%"
+                              />
+                              {gameName}
+                              {/* <p>{game.name}</p> */}
+                            </div>
+                          );
+                        }}
                       </For>
                     </div>
                   </div>
-                );
-              }
+                </Show>
+              );
             }}
           </For>
         </div>
@@ -656,6 +775,35 @@ function App() {
             }}
           />
           <button onClick={addFolder}>save</button>
+        </dialog>
+
+        <dialog data-editFolderModal onClose={() => {}}>
+          <button
+            onClick={() => {
+              document.querySelector("[data-editFolderModal]").close();
+            }}>
+            close
+          </button>
+
+          <br />
+          <input
+            type="text"
+            name=""
+            id=""
+            onInput={(e) => {
+              setEditedFolderName(e.currentTarget.value);
+            }}
+            placeholder="name of folder"
+            value={selectedFolder().name}
+          />
+          <input
+            type="checkbox"
+            checked={selectedFolder().hide}
+            onInput={() => {
+              setEditedHideFolder(!hideFolder());
+            }}
+          />
+          <button onClick={editFolder}>save</button>
         </dialog>
 
         <dialog data-gamePopup>
