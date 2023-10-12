@@ -58,9 +58,11 @@
         "fullscreen": false,
         "resizable": true,
         "title": "clear",
-        "width": 800,
+        "width": 1220,
         "height": 600,
-        "fileDropEnabled": false
+        "fileDropEnabled": false,
+        "minWidth": 1220,
+        "minHeight": 600
       }
     ]
   }

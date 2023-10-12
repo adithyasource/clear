@@ -21,9 +21,18 @@ import { appDataDir } from "@tauri-apps/api/path";
 
 import { open } from "@tauri-apps/api/dialog";
 
-import "./App.css";
+import { Styles } from "./Styles";
 
 function App() {
+  const [borderRadius, setBorderRadius] = createSignal("6px");
+  const [secondaryColor, setSecondaryColor] = createSignal("#1c1c1c");
+  const [secondaryColorForBlur, setSecondaryColorForBlur] =
+    createSignal("#272727cc");
+  const [primaryColor, setPrimaryColor] = createSignal("#121212");
+  const [modalBackground, setModalBackground] = createSignal("#12121266");
+  const [locatingLogoBackground, setLocatingLogoBackground] =
+    createSignal("#272727");
+
   const [locatedGame, setlocatedGame] = createSignal();
   const [locatedHeroImage, setLocatedHeroImage] = createSignal();
   const [locatedGridImage, setLocatedGridImage] = createSignal();
@@ -324,6 +333,16 @@ function App() {
       <head>
         <link rel="stylesheet" href="hint.min.css" />
       </head>
+
+      <Styles
+        borderRadius={borderRadius}
+        secondaryColor={secondaryColor}
+        secondaryColorForBlur={secondaryColorForBlur}
+        primaryColor={primaryColor}
+        modalBackground={modalBackground}
+        locatingLogoBackground={locatingLogoBackground}
+      />
+
       <div id="page">
         <Show when={showSideBar()}>
           <div id="sideBar">
@@ -626,6 +645,7 @@ function App() {
                 className="standardButton"
                 onClick={() => {
                   document.querySelector("[data-newGameModal]").showModal();
+                  setModalBackground("#121212cc");
                 }}>
                 add game
                 <svg
@@ -725,29 +745,147 @@ function App() {
         </div>
       </div>
       <div id="abovePage">
-        <dialog data-newGameModal onClose={() => {}}>
-          <button
-            onClick={() => {
-              document.querySelector("[data-newGameModal]").close();
-            }}>
-            close
-          </button>
+        <dialog
+          data-newGameModal
+          onClose={() => {
+            setModalBackground("#12121266");
+          }}>
+          <div className="popUpDiv" id="newGame">
+            <div className="newGameLeft">
+              <div className="aboveHero">
+                <h1>add new game</h1>
+                <div className="aboveHeroRight">
+                  <button onClick={addGame} className="functionalInteractables">
+                    save
+                  </button>
+                  <button
+                    className="functionalInteractables"
+                    onClick={() => {
+                      document.querySelector("[data-newGameModal]").close();
+                    }}>
+                    close
+                  </button>
+                </div>
+              </div>
 
-          <br />
-          <input
-            type="text"
-            name=""
-            id=""
-            onInput={(e) => {
-              setGameName(e.currentTarget.value);
-            }}
-            placeholder="name of game"
-          />
-          <button onClick={locateGame}>locate game</button>
-          <button onClick={locateHeroImage}>hero image</button>
-          <button onClick={locateGridImage}>grid image</button>
-          <button onClick={locateLogo}>logo</button>
-          <button onClick={addGame}>save</button>
+              <div className="centerHero">
+                <Show when={locatedHeroImage()}>
+                  <button
+                    onClick={locateHeroImage}
+                    className="locatingHeroImg "
+                    aria-label="hero">
+                    <img
+                      src={convertFileSrc(locatedHeroImage())}
+                      alt=""
+                      style="width: 100%; height:100%"
+                      className="popUpHero"
+                    />
+                    <img
+                      src={convertFileSrc(locatedHeroImage())}
+                      alt=""
+                      className="heroBlur"
+                    />
+                  </button>
+                </Show>
+
+                <Show when={!locatedHeroImage()}>
+                  <button
+                    onClick={locateHeroImage}
+                    className="locatingHeroImg hint--relative hint--no-animate hint--rounded hint--no-arrow"
+                    aria-label="hero"></button>
+                </Show>
+
+                <Show when={locatedLogo()}>
+                  {() => {
+                    setLocatingLogoBackground("#ffffff00");
+                    return (
+                      <>
+                        <Show when={!locatedHeroImage()}>
+                          <button
+                            onClick={locateLogo}
+                            className="locatingLogoImg"
+                            id="locatedLogoImg"
+                            aria-label="logo">
+                            <img
+                              src={convertFileSrc(locatedLogo())}
+                              alt=""
+                              style="height:100%"
+                            />
+                          </button>{" "}
+                        </Show>
+
+                        <Show when={locatedHeroImage()}>
+                          <button
+                            onClick={locateLogo}
+                            className="locatedLogoImgWithHero"
+                            aria-label="logo">
+                            <img
+                              src={convertFileSrc(locatedLogo())}
+                              alt=""
+                              style="height:100%"
+                            />
+                          </button>{" "}
+                        </Show>
+                      </>
+                    );
+                  }}
+                </Show>
+
+                <Show when={!locatedLogo()}>
+                  {() => {
+                    setLocatingLogoBackground("#272727");
+                    return (
+                      <>
+                        <Show when={!locatedHeroImage()}>
+                          <button
+                            onClick={locateLogo}
+                            className="locatingLogoImg hint--relative hint--no-animate hint--rounded hint--no-arrow"
+                            aria-label="logo"></button>
+                        </Show>
+                        <Show when={locatedHeroImage()}>
+                          <button
+                            onClick={locateLogo}
+                            className="noLocatedLogoImgWithHero hint--relative hint--no-animate hint--rounded hint--no-arrow"
+                            aria-label="logo"></button>
+                        </Show>
+                      </>
+                    );
+                  }}
+                </Show>
+              </div>
+
+              <div className="belowHero">
+                <input
+                  type="text"
+                  style="flex-grow: 1"
+                  name=""
+                  id=""
+                  onInput={(e) => {
+                    setGameName(e.currentTarget.value);
+                  }}
+                  className="functionalInteractables"
+                  placeholder="name of game"
+                />
+                <button
+                  onClick={locateGame}
+                  className="functionalInteractables">
+                  locate game{" "}
+                </button>
+              </div>
+            </div>
+            <button
+              onClick={locateGridImage}
+              className="locatingGridImg hint--relative hint--no-animate hint--rounded hint--no-arrow"
+              aria-label="grid/cover">
+              <Show when={locatedGridImage()}>
+                <img
+                  src={convertFileSrc(locatedGridImage())}
+                  alt=""
+                  style="width: 100%; height:100%"
+                />
+              </Show>
+            </button>
+          </div>
         </dialog>
 
         <dialog data-newFolderModal onClose={() => {}}>
