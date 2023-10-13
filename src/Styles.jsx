@@ -150,10 +150,10 @@ export function Styles(props) {
           align-items: center;
           justify-content: center;
         }
-        #newGame {
-          flex-direction: row;
-          position: relative;
-          left: 195px;
+
+        .toolbarRight {
+          display: flex;
+          gap: 10px;
         }
         .newGameLeft {
           display: flex;
@@ -166,90 +166,16 @@ export function Styles(props) {
           margin: 0px;
           padding: 0px;
         }
-        .locatingHeroImg {
-          background-color: #1c1c1c;
-          width: 808px;
-          height: 255px;
-          overflow: hidden;
-          padding: 0px;
-          margin: 0px;
-        }
+
         .centerHero {
           padding: 0px;
           margin: 0px;
-        }
-        .locatingLogoImg {
-          position: relative;
-          background-color: ${props.locatingLogoBackground()};
-          width: 170px;
-          height: 70px;
-          right: 780px;
-          bottom: -70px;
-          padding: 0px;
-          margin: 0px;
-        }
-        #locatedLogoImg {
-          bottom: -100px;
-        }
-
-        .locatedLogoImgWithHero {
-          position: relative;
-          background-color: ${props.locatingLogoBackground()};
-          width: 170px;
-          height: 70px;
-          right: 780px;
-          padding: 0px;
-          margin: 0px;
-          bottom: 30px;
-        }
-
-        .noLocatedLogoImgWithHero {
-          position: relative;
-          background-color: ${props.locatingLogoBackground()};
-          width: 170px;
-          height: 70px;
-          right: 780px;
-          padding: 0px;
-          margin: 0px;
-          bottom: 50px;
         }
 
         img {
           object-fit: cover !important;
         }
-        .locatingGridImg {
-          position: relative;
-          right: 420px;
-          width: 225px;
-          height: 340px;
-          background: #272727;
-          overflow: hidden;
-          padding: 0px;
-          margin: 0px;
-        }
-        .aboveHero {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-between;
-          width: 550px;
-        }
-        .aboveHeroRight {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-between;
-          gap: 10px;
-        }
-        .belowHero {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          text-align: left;
-          justify-content: space-between;
-          width: 550px;
-          gap: 10px;
-        }
+
         .popUpMain {
           position: relative;
           .popUpRight {
@@ -311,6 +237,71 @@ export function Styles(props) {
         }
         .editButton {
           padding: 0;
+        }
+
+        .locatingHeroImg {
+          background-color: #1c1c1c;
+          aspect-ratio: 67 / 26;
+          width: 670px;
+          height: 260px;
+          overflow: hidden;
+          padding: 0px;
+          margin: 0px 0px 10px 0px;
+        }
+
+        .heroContainer {
+          position: relative;
+        }
+        .locatingLogoImg {
+          position: relative;
+          right: 650px;
+          bottom: 20px;
+          background-color: ${props.locatingLogoBackground()};
+          width: 170px;
+          height: 70px;
+          padding: 0px;
+          margin: 0px;
+        }
+        .locatingGridImg {
+          width: 204px;
+          height: 306px;
+          background: #272727;
+          overflow: hidden;
+          padding: 0px;
+          margin: 0px;
+        }
+
+        .belowHero {
+          display: flex;
+          gap: 10px;
+          width: 670px;
+        }
+
+        .toolbar {
+          display: flex;
+          justify-content: space-between;
+          width: 884px;
+          right: 84px;
+          position: relative;
+        }
+
+        .mainNewGame {
+          display: flex;
+          gap: 10px;
+        }
+
+        .newGameDiv {
+          display: flex;
+          height: 50%;
+          gap: 10px;
+
+          flex-direction: column;
+          width: 100vw;
+          height: 100vh;
+          position: relative;
+          left: 5%;
+          align-items: center;
+          justify-content: center;
         }
       `}</style>
     </>

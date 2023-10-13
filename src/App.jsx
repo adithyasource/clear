@@ -750,8 +750,100 @@ function App() {
           onClose={() => {
             setModalBackground("#12121266");
           }}>
-          <div className="popUpDiv" id="newGame">
-            <div className="newGameLeft">
+          <div className="newGameDiv">
+            <div className="toolbar">
+              <h1>add new game</h1>
+              <div className="toolbarRight">
+                <button onClick={addGame} className="functionalInteractables">
+                  save
+                </button>
+                <button
+                  className="functionalInteractables"
+                  onClick={() => {
+                    document.querySelector("[data-newGameModal]").close();
+                  }}>
+                  close
+                </button>
+              </div>
+            </div>
+            <div className="mainNewGame">
+              <button
+                onClick={locateGridImage}
+                className="locatingGridImg"
+                aria-label="grid/cover">
+                <Show when={locatedGridImage()}>
+                  <img
+                    src={convertFileSrc(locatedGridImage())}
+                    alt=""
+                    style="width: 100%; height:100%;"
+                  />
+                </Show>
+              </button>
+
+              <div>
+                <div className="heroContainer">
+                  <Show when={locatedHeroImage()}>
+                    <button
+                      onClick={locateHeroImage}
+                      className="locatingHeroImg "
+                      aria-label="hero">
+                      <img
+                        src={convertFileSrc(locatedHeroImage())}
+                        alt=""
+                        className="popUpHero"
+                      />
+                      <img
+                        src={convertFileSrc(locatedHeroImage())}
+                        alt=""
+                        className="heroBlur"
+                      />
+                    </button>
+                  </Show>
+                  <Show when={!locatedHeroImage()}>
+                    <button
+                      onClick={locateHeroImage}
+                      className="locatingHeroImg hint--relative hint--no-animate hint--rounded hint--no-arrow"
+                      aria-label="hero"></button>
+                  </Show>
+                  <Show when={locatedLogo()}>
+                    <button
+                      onClick={locateLogo}
+                      className="locatingLogoImg"
+                      style="background-color: transparent;"
+                      aria-label="logo">
+                      <img src={convertFileSrc(locatedLogo())} alt="" />
+                    </button>
+                  </Show>
+                  <Show when={!locatedLogo()}>
+                    <button
+                      onClick={locateLogo}
+                      className="locatingLogoImg hint--relative hint--no-animate hint--rounded hint--no-arrow"
+                      aria-label="logo"></button>
+                  </Show>
+                </div>
+
+                <div className="belowHero">
+                  <input
+                    type="text"
+                    style="flex-grow: 1"
+                    name=""
+                    id=""
+                    onInput={(e) => {
+                      setGameName(e.currentTarget.value);
+                    }}
+                    className="functionalInteractables"
+                    placeholder="name of game"
+                  />
+                  <button
+                    onClick={locateGame}
+                    className="functionalInteractables">
+                    locate game{" "}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* <div className="newGameLeft">
               <div className="aboveHero">
                 <h1>add new game</h1>
                 <div className="aboveHeroRight">
@@ -884,7 +976,7 @@ function App() {
                   style="width: 100%; height:100%"
                 />
               </Show>
-            </button>
+            </button> */}
           </div>
         </dialog>
 
