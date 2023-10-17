@@ -8,6 +8,8 @@ fn openGame(gameLocation: &str) {
     open::that(gameLocation);
 }
 
+
+
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![openGame])

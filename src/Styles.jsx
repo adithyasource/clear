@@ -19,9 +19,7 @@ export function Styles(props) {
           margin: 0px 0px 40px 0px;
         }
         #gamesDiv {
-          width: 80%;
-          height: calc(100vh - 40px);
-          overflow-y: scroll;
+          width: 100%;
         }
         #sideBar {
           width: 20%;
@@ -187,26 +185,18 @@ export function Styles(props) {
           }
           .popupLogo {
             position: absolute;
-            bottom: 30px;
+            bottom: 20px;
             left: 30px;
           }
           .standardButton {
             width: max-content;
-            backdrop-filter: blur(10px);
-            background-color: ${props.secondaryColorForBlur()};
           }
         }
 
-        .newGameLeft .functionalInteractables {
-          backdrop-filter: blur(10px);
-          background-color: ${props.secondaryColorForBlur()};
-        }
-
-        .heroBlur {
-          filter: blur(80px);
-          position: absolute;
-          opacity: 0.4;
-          z-index: -1;
+        .functionalInteractables,
+        .standardButton {
+          backdrop-filter: blur(10px) !important;
+          background-color: ${props.secondaryColorForBlur()} !important;
         }
 
         .centerHero .heroBlur {
@@ -239,50 +229,11 @@ export function Styles(props) {
           padding: 0;
         }
 
-        .locatingHeroImg {
-          background-color: #1c1c1c;
-          aspect-ratio: 67 / 26;
-          width: 670px;
-          height: 260px;
-          overflow: hidden;
-          padding: 0px;
-          margin: 0px 0px 10px 0px;
-        }
-
-        .heroContainer {
-          position: relative;
-        }
         .locatingLogoImg {
-          position: relative;
-          right: 650px;
-          bottom: 20px;
-          background-color: ${props.locatingLogoBackground()};
-          width: 170px;
-          height: 70px;
-          padding: 0px;
-          margin: 0px;
+          background-color: #272727;
         }
-        .locatingGridImg {
-          width: 204px;
-          height: 306px;
-          background: #272727;
-          overflow: hidden;
-          padding: 0px;
-          margin: 0px;
-        }
-
-        .belowHero {
-          display: flex;
-          gap: 10px;
-          width: 670px;
-        }
-
-        .toolbar {
-          display: flex;
-          justify-content: space-between;
-          width: 884px;
-          right: 84px;
-          position: relative;
+        .locatedHeroImg {
+          background-color: #27272700;
         }
 
         .mainNewGame {
@@ -292,16 +243,24 @@ export function Styles(props) {
 
         .newGameDiv {
           display: flex;
-          height: 50%;
-          gap: 10px;
-
           flex-direction: column;
           width: 100vw;
           height: 100vh;
-          position: relative;
-          left: 5%;
           align-items: center;
           justify-content: center;
+        }
+
+        .tooltip {
+          background: #272727cc;
+          backdrop-filter: blur(10px);
+          border: 0.5px solid #ffffff10;
+
+          color: #fff;
+          padding: 8px 10px;
+          font-family: Helvetica;
+          line-height: 12px;
+          white-space: nowrap;
+          border-radius: 6px;
         }
       `}</style>
     </>

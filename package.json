@@ -18,6 +18,11 @@
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.4.0",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
+    "prettier": "^3.0.3",
+    "prettier-plugin-tailwindcss": "^0.5.6",
+    "tailwindcss": "^3.3.3",
     "vite": "^4.4.4",
     "vite-plugin-minify": "^1.5.2",
     "vite-plugin-solid": "^2.7.0"
