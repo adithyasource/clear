@@ -207,6 +207,10 @@ export function Styles(props) {
         .gridImage {
           border-radius: ${props.borderRadius()};
         }
+
+        .popUpHero {
+          height: 254px;
+        }
         .gridImage {
           margin: 0px 0px 7px 0px;
         }

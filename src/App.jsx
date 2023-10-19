@@ -25,6 +25,22 @@ import "./App.css";
 import { Styles } from "./Styles";
 
 function App() {
+  // !? Misc / Globals
+  const [permissionGranted, setPermissionGranted] = createSignal(
+    isPermissionGranted(),
+  );
+  const [appDataDirPath, setAppDataDirPath] = createSignal({});
+  const [libraryData, setLibraryData] = createSignal({});
+  const [showSideBar, setShowSideBar] = createSignal(true);
+
+  // !? References
+  const [selectedGame, setSelectedGame] = createSignal({});
+  const [selectedFolder, setSelectedFolder] = createSignal([]);
+  const [currentGames, setCurrentGames] = createSignal([]);
+  const [currentFolders, setCurrentFolders] = createSignal([]);
+  const [searchValue, setSearchValue] = createSignal();
+
+  // !? Styles Signals
   const [borderRadius, setBorderRadius] = createSignal("6px");
   const [secondaryColor, setSecondaryColor] = createSignal("#1c1c1c");
   const [secondaryColorForBlur, setSecondaryColorForBlur] =
@@ -34,27 +50,27 @@ function App() {
   const [locatingLogoBackground, setLocatingLogoBackground] =
     createSignal("#272727");
 
-  const [locatedGame, setlocatedGame] = createSignal();
+  // !? Create Signals
+  const [gameName, setGameName] = createSignal();
+  const [favouriteGame, setFavouriteGame] = createSignal(false);
   const [locatedHeroImage, setLocatedHeroImage] = createSignal();
   const [locatedGridImage, setLocatedGridImage] = createSignal();
   const [locatedLogo, setLocatedLogo] = createSignal();
-  const [gameName, setGameName] = createSignal();
+  const [locatedGame, setlocatedGame] = createSignal();
   const [folderName, setFolderName] = createSignal();
+  const [hideFolder, setHideFolder] = createSignal(false);
+
+  // !? Update Signals
+
+  const [editedGameName, setEditedGameName] = createSignal();
+  const [editedFavouriteGame, setEditedFavouriteGame] = createSignal();
+  const [editedLocatedHeroImage, setEditedLocatedHeroImage] = createSignal();
+  const [editedLocatedGridImage, setEditedLocatedGridImage] = createSignal();
+  const [editedLocatedLogo, setEditedLocatedLogo] = createSignal();
+  const [editedLocatedGame, setEditedlocatedGame] = createSignal();
+
   const [editedFolderName, setEditedFolderName] = createSignal("");
   const [editedHideFolder, setEditedHideFolder] = createSignal(false);
-  const [hideFolder, setHideFolder] = createSignal(false);
-  const [libraryData, setLibraryData] = createSignal({});
-  const [selectedGame, setSelectedGame] = createSignal({});
-  const [appDataDirPath, setAppDataDirPath] = createSignal({});
-  const [showSideBar, setShowSideBar] = createSignal(true);
-  const [selectedFolder, setSelectedFolder] = createSignal([]);
-  const [currentGames, setCurrentGames] = createSignal([]);
-  const [currentFolders, setCurrentFolders] = createSignal([]);
-  const [permissionGranted, setPermissionGranted] = createSignal(
-    isPermissionGranted(),
-  );
-
-  let showFolderName = false;
 
   document.addEventListener("keydown", (e) => {
     if (e.ctrlKey) {
@@ -87,6 +103,15 @@ function App() {
             "hint--no-arrow",
           );
       }
+    }
+
+    if (e.ctrlKey && e.code == "KeyF") {
+      e.preventDefault();
+      document.querySelector("#searchInput").focus();
+    }
+
+    if (e.code == "Escape") {
+      document.querySelector("#searchInput").blur();
     }
   });
 
@@ -131,7 +156,7 @@ function App() {
         setLibraryData(JSON.parse(getLibraryData));
         setCurrentGames(Object.keys(libraryData().games));
         setCurrentFolders(Object.keys(libraryData().folders));
-        console.log("data gotten");
+        console.log("data fetched");
       } else return;
     } else {
       await createDir("data", {
@@ -156,12 +181,6 @@ function App() {
       setPermissionGranted(permission === "granted");
     }
     getData();
-
-    let test = await readTextFile("test.txt", {
-      dir: "C:\\Program Files (x86)\\Steam\\steamapps",
-    });
-
-    console.log(test);
   });
 
   async function openGame(gameLocation) {
@@ -173,13 +192,28 @@ function App() {
       sendNotification("enjoy your session!");
     }
 
-    setTimeout(async () => {
-      await exit(1);
-    }, 500);
+    // ! Uncomment Later
+    // setTimeout(async () => {
+    //   await exit(1);
+    // }, 500);
   }
 
   async function locateGame() {
     setlocatedGame(
+      await open({
+        multiple: false,
+        filters: [
+          {
+            name: "Executable",
+            extensions: ["exe", "lnk"],
+          },
+        ],
+      }),
+    );
+  }
+
+  async function locateEditedGame() {
+    setEditedlocatedGame(
       await open({
         multiple: false,
         filters: [
@@ -206,6 +240,20 @@ function App() {
     );
   }
 
+  async function locateEditedHeroImage() {
+    setEditedLocatedHeroImage(
+      await open({
+        multiple: false,
+        filters: [
+          {
+            name: "Image",
+            extensions: ["png", "jpg", "jpeg"],
+          },
+        ],
+      }),
+    );
+  }
+
   async function locateGridImage() {
     setLocatedGridImage(
       await open({
@@ -220,8 +268,36 @@ function App() {
     );
   }
 
+  async function locateEditedGridImage() {
+    setEditedLocatedGridImage(
+      await open({
+        multiple: false,
+        filters: [
+          {
+            name: "Image",
+            extensions: ["png", "jpg", "jpeg"],
+          },
+        ],
+      }),
+    );
+  }
+
   async function locateLogo() {
     setLocatedLogo(
+      await open({
+        multiple: false,
+        filters: [
+          {
+            name: "Image",
+            extensions: ["png", "jpg", "jpeg"],
+          },
+        ],
+      }),
+    );
+  }
+
+  async function locateEditedLogo() {
+    setEditedLocatedLogo(
       await open({
         multiple: false,
         filters: [
@@ -271,8 +347,152 @@ function App() {
       heroImage: heroImageFileName,
       gridImage: gridImageFileName,
       logo: logoFileName,
+      favourite: favouriteGame(),
     };
     setLibraryData(libraryData());
+
+    await writeTextFile(
+      {
+        path: "data/lib.json",
+        contents: JSON.stringify(libraryData()),
+      },
+      {
+        dir: BaseDirectory.AppData,
+      },
+    ).then(() => {
+      location.reload();
+    });
+  }
+
+  async function updateGame() {
+    console.log(editedGameName());
+
+    delete libraryData().games[selectedGame().name];
+
+    setLibraryData(libraryData());
+
+    if (!editedGameName()) {
+      setEditedGameName(selectedGame().name);
+    }
+    if (!editedLocatedGame()) {
+      setEditedlocatedGame(selectedGame().location);
+    }
+    if (editedFavouriteGame() == undefined) {
+      setEditedFavouriteGame(selectedGame().favourite);
+    }
+
+    if (!editedLocatedGridImage()) {
+      setEditedLocatedGridImage(selectedGame().gridImage);
+    } else {
+      let gridImageFileName =
+        "grid+ " +
+        editedGameName() +
+        "." +
+        editedLocatedGridImage().split(".")[
+          editedLocatedGridImage().split(".").length - 1
+        ];
+      await copyFile(editedLocatedGridImage(), gridImageFileName, {
+        dir: BaseDirectory.AppData,
+      }).then(() => {
+        setEditedLocatedGridImage(gridImageFileName);
+      });
+    }
+
+    if (!editedLocatedHeroImage()) {
+      setEditedLocatedHeroImage(selectedGame().heroImage);
+    } else {
+      let heroImageFileName =
+        "hero+ " +
+        editedGameName() +
+        "." +
+        editedLocatedHeroImage().split(".")[
+          editedLocatedHeroImage().split(".").length - 1
+        ];
+      await copyFile(editedLocatedHeroImage(), heroImageFileName, {
+        dir: BaseDirectory.AppData,
+      }).then(() => {
+        setEditedLocatedHeroImage(heroImageFileName);
+      });
+    }
+
+    if (!editedLocatedLogo()) {
+      setEditedLocatedLogo(selectedGame().logo);
+    } else {
+      let logoFileName =
+        "logo+ " +
+        editedGameName() +
+        "." +
+        editedLocatedLogo().split(".")[
+          editedLocatedLogo().split(".").length - 1
+        ];
+
+      await copyFile(editedLocatedLogo(), logoFileName, {
+        dir: BaseDirectory.AppData,
+      }).then(() => {
+        setEditedLocatedLogo(logoFileName);
+      });
+    }
+
+    libraryData().games[editedGameName()] = {
+      location: editedLocatedGame(),
+      name: editedGameName(),
+      heroImage: editedLocatedHeroImage(),
+      gridImage: editedLocatedGridImage(),
+      logo: editedLocatedLogo(),
+      favourite: editedFavouriteGame(),
+    };
+
+    for (let i = 0; i < Object.values(libraryData().folders).length; i++) {
+      console.log(Object.values(libraryData().folders)[i].games);
+
+      for (
+        let j = 0;
+        j < Object.values(libraryData().folders)[i].games.length;
+        j++
+      ) {
+        if (
+          Object.values(libraryData().folders)[i].games[j] ==
+          selectedGame().name
+        ) {
+          Object.values(libraryData().folders)[i].games.splice(j, 1);
+
+          Object.values(libraryData().folders)[i].games.push(editedGameName());
+        }
+      }
+    }
+
+    await writeTextFile(
+      {
+        path: "data/lib.json",
+        contents: JSON.stringify(libraryData()),
+      },
+      {
+        dir: BaseDirectory.AppData,
+      },
+    ).then(() => {
+      location.reload();
+    });
+  }
+
+  async function deleteGame() {
+    delete libraryData().games[selectedGame().name];
+
+    for (let i = 0; i < Object.values(libraryData().folders).length; i++) {
+      console.log(Object.values(libraryData().folders)[i].games);
+
+      for (
+        let j = 0;
+        j < Object.values(libraryData().folders)[i].games.length;
+        j++
+      ) {
+        if (
+          Object.values(libraryData().folders)[i].games[j] ==
+          selectedGame().name
+        ) {
+          Object.values(libraryData().folders)[i].games.splice(j, 1);
+        }
+      }
+    }
 
     await writeTextFile(
       {
@@ -314,13 +534,13 @@ function App() {
     console.log(editedFolderName());
     console.log(editedHideFolder());
 
+    delete libraryData().folders[selectedFolder().name];
+
     libraryData().folders[editedFolderName()] = {
       ...selectedFolder(),
       name: editedFolderName(),
       hide: editedHideFolder(),
     };
-
-    delete libraryData().folders[selectedFolder().name];
 
     await writeTextFile(
       {
@@ -333,6 +553,10 @@ function App() {
     ).then(() => {
       location.reload();
     });
+  }
+
+  function getGameMetaData() {
+    // TODO Setup IGDB AWS Proxy
   }
 
   return (
@@ -360,6 +584,10 @@ function App() {
                   name=""
                   id="searchInput"
                   placeholder="search"
+                  onInput={(e) => {
+                    setSearchValue(e.currentTarget.value);
+                    console.log(searchValue());
+                  }}
                 />
                 <svg
                   onClick={() => {
@@ -443,6 +671,9 @@ function App() {
                                   .querySelector("[data-editFolderModal]")
                                   .showModal();
                                 setSelectedFolder(folder);
+
+                                setEditedFolderName(selectedFolder().name);
+                                setEditedHideFolder(selectedFolder().hide);
                               }}>
                               <svg
                                 width="14"
@@ -702,74 +933,220 @@ function App() {
 
         <div className="absolute left-[13%] w-[86%] h-[calc(100vh-40px)] overflow-y-scroll pl-[10%] ">
           <div id="gamesDiv">
-            <For each={currentFolders()}>
-              {(folderName) => {
-                let folder = libraryData().folders[folderName];
-                return (
-                  <Show when={folder.games != ""}>
-                    <div className="folderRack">
-                      <h1>{folder.name}</h1>
-                      <div className="foldersDiv">
-                        <For each={folder.games}>
-                          {(gameName) => {
-                            return (
-                              <div
-                                className="relative gameCard  group "
-                                aria-label="play"
-                                onClick={async (e) => {
-                                  if (e.ctrlKey) {
-                                    openGame(
-                                      libraryData().games[gameName].location,
+            <Show when={searchValue() == "" || searchValue() == undefined}>
+              <For each={currentFolders()}>
+                {(folderName) => {
+                  let folder = libraryData().folders[folderName];
+                  return (
+                    <Show when={folder.games != "" && !folder.hide}>
+                      <div className="folderRack">
+                        <h1>{folder.name}</h1>
+                        <div className="foldersDiv">
+                          <For each={folder.games}>
+                            {(gameName) => {
+                              return (
+                                <div
+                                  className="relative gameCard group"
+                                  aria-label="play"
+                                  onDragStart={(e) => {
+                                    e.preventDefault();
+                                  }}
+                                  onClick={async (e) => {
+                                    if (e.ctrlKey) {
+                                      openGame(
+                                        libraryData().games[gameName].location,
+                                      );
+                                      return;
+                                    }
+                                    await setSelectedGame(
+                                      libraryData().games[gameName],
                                     );
-                                    return;
-                                  }
-                                  await setSelectedGame(
-                                    libraryData().games[gameName],
-                                  );
-                                  document
-                                    .querySelector("[data-gamePopup]")
-                                    .showModal();
-                                }}>
-                                <img
-                                  className="relative z-10 gridImage "
-                                  src={convertFileSrc(
-                                    appDataDirPath() +
-                                      libraryData().games[gameName].gridImage,
-                                  )}
-                                  alt=""
-                                  width="100%"
-                                />
-                                <Show
-                                  when={
-                                    libraryData().games[gameName].favourite
-                                  }>
+                                    document
+                                      .querySelector("[data-gamePopup]")
+                                      .showModal();
+                                  }}>
                                   <img
-                                    className=" absolute blur-[50px] opacity-[0.4] inset-0 group-hover:opacity-[0.5] group-hover:blur-[60px] duration-700"
+                                    className="relative z-10 gridImage   group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none"
                                     src={convertFileSrc(
                                       appDataDirPath() +
                                         libraryData().games[gameName].gridImage,
                                     )}
                                     alt=""
+                                    width="100%"
                                   />
-                                </Show>
-                                {gameName}
-                                {/* <p>{game.name}</p> */}
-                              </div>
-                            );
-                          }}
-                        </For>
+                                  <Show
+                                    when={
+                                      libraryData().games[gameName].favourite
+                                    }>
+                                    <div className="absolute inset-0 blur-[40px] group-hover:opacity-80 group-hover:blur-[60px] duration-700 bg-blend-screen">
+                                      <img
+                                        className="absolute inset-0 opacity-50 "
+                                        src={convertFileSrc(
+                                          appDataDirPath() +
+                                            libraryData().games[gameName]
+                                              .gridImage,
+                                        )}
+                                        alt=""
+                                      />
+                                      <div
+                                        className="bg-[#fff] opacity-[10%] w-[100%] aspect-[2/3]"
+                                        alt=""
+                                      />
+                                    </div>
+                                  </Show>
+                                  {gameName}
+                                </div>
+                              );
+                            }}
+                          </For>
+                        </div>
                       </div>
-                    </div>
-                  </Show>
+                    </Show>
+                  );
+                }}
+              </For>
+            </Show>
+
+            <Show when={searchValue() != "" && searchValue() != undefined}>
+              {() => {
+                let searchResults = [];
+
+                // ? Function By Anwarul Islam From codementor.io
+                function levenshteinDistance(str1, str2) {
+                  const len1 = str1.length;
+                  const len2 = str2.length;
+
+                  let matrix = Array(len1 + 1);
+                  for (let i = 0; i <= len1; i++) {
+                    matrix[i] = Array(len2 + 1);
+                  }
+
+                  for (let i = 0; i <= len1; i++) {
+                    matrix[i][0] = i;
+                  }
+
+                  for (let j = 0; j <= len2; j++) {
+                    matrix[0][j] = j;
+                  }
+
+                  for (let i = 1; i <= len1; i++) {
+                    for (let j = 1; j <= len2; j++) {
+                      if (str1[i - 1] === str2[j - 1]) {
+                        matrix[i][j] = matrix[i - 1][j - 1];
+                      } else {
+                        matrix[i][j] = Math.min(
+                          matrix[i - 1][j] + 1,
+                          matrix[i][j - 1] + 1,
+                          matrix[i - 1][j - 1] + 1,
+                        );
+                      }
+                    }
+                  }
+
+                  return matrix[len1][len2];
+                }
+
+                if (searchValue() != "" && searchValue() != undefined) {
+                  for (
+                    let i = 0;
+                    i < Object.values(libraryData().games).length;
+                    i++
+                  ) {
+                    if (
+                      levenshteinDistance(
+                        searchValue(),
+                        Object.keys(libraryData().games)[i],
+                      ) <= 4
+                    ) {
+                      searchResults.unshift(
+                        Object.keys(libraryData().games)[i],
+                      );
+                    }
+                  }
+                }
+
+                return (
+                  <div className="flex gap-[20px]">
+                    <For each={searchResults}>
+                      {(gameName) => {
+                        return (
+                          <div
+                            className="relative gameCard group"
+                            aria-label="play"
+                            onDragStart={(e) => {
+                              e.preventDefault();
+                            }}
+                            onClick={async (e) => {
+                              if (e.ctrlKey) {
+                                openGame(
+                                  libraryData().games[gameName].location,
+                                );
+                                return;
+                              }
+                              await setSelectedGame(
+                                libraryData().games[gameName],
+                              );
+                              document
+                                .querySelector("[data-gamePopup]")
+                                .showModal();
+                            }}>
+                            <img
+                              className="relative z-10 gridImage"
+                              src={convertFileSrc(
+                                appDataDirPath() +
+                                  libraryData().games[gameName].gridImage,
+                              )}
+                              alt=""
+                              width="100%"
+                            />
+                            <Show
+                              when={libraryData().games[gameName].favourite}>
+                              <img
+                                className=" absolute blur-[50px] opacity-[0.4] inset-0 group-hover:opacity-[0.5] group-hover:blur-[60px] duration-700"
+                                src={convertFileSrc(
+                                  appDataDirPath() +
+                                    libraryData().games[gameName].gridImage,
+                                )}
+                                alt=""
+                              />
+                            </Show>
+                            {gameName}
+                          </div>
+                        );
+                      }}
+                    </For>
+
+                    <Show when={searchResults == ""}>
+                      <div className="w-[100%] h-[90vh] flex items-center gap-3 justify-center align-middle">
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M3.04819 12H8.44444L10.2222 14H13.7778L15.5556 12H20.9361M6.70951 5.4902L3.27942 11.2785C3.09651 11.5871 3 11.9393 3 12.2981V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V12.2981C21 11.9393 20.9035 11.5871 20.7206 11.2785L17.2905 5.4902C17.1104 5.18633 16.7834 5 16.4302 5H7.5698C7.21659 5 6.88958 5.18633 6.70951 5.4902Z"
+                            stroke="white"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                        </svg>
+                        no games found
+                      </div>
+                    </Show>
+                  </div>
                 );
               }}
-            </For>
+            </Show>
           </div>
         </div>
       </div>
       <div id="abovePage">
         <dialog
           data-newGameModal
+          onDragStart={(e) => {
+            e.preventDefault();
+          }}
           onClose={() => {
             setModalBackground("#12121266");
           }}>
@@ -778,16 +1155,76 @@ function App() {
               <div>
                 <h1>add new game</h1>
               </div>
-              <div className="flex gap-3">
-                <button onClick={addGame} className="functionalInteractables">
+              <div className="flex items-center gap-4">
+                <div
+                  onClick={() => {
+                    setFavouriteGame(!favouriteGame());
+                    console.log(favouriteGame());
+                  }}>
+                  <Show when={favouriteGame()}>
+                    <div className="relative">
+                      <div className="">favourite</div>
+                      <div className="absolute blur-[5px] opacity-70 -z-10 inset-0">
+                        favourite
+                      </div>
+                    </div>
+                  </Show>
+
+                  <Show when={!favouriteGame()}>
+                    <div className="">favourite</div>
+                  </Show>
+                </div>
+                <button
+                  onClick={addGame}
+                  className="flex items-center gap-1 functionalInteractables">
                   save
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M5 21H19C20.1046 21 21 20.1046 21 19V8.82843C21 8.29799 20.7893 7.78929 20.4142 7.41421L16.5858 3.58579C16.2107 3.21071 15.702 3 15.1716 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21Z"
+                      stroke="white"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                    <path
+                      d="M7 3V8H15V3"
+                      stroke="white"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                    <path
+                      d="M7 21V15H17V21"
+                      stroke="white"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                  </svg>
                 </button>
                 <button
-                  className="functionalInteractables"
+                  className="flex items-center functionalInteractables"
                   onClick={() => {
                     document.querySelector("[data-newGameModal]").close();
+                    location.reload();
                   }}>
-                  close
+                  ​
+                  <svg
+                    width="16"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M1 1L11 10.3369M1 10.3369L11 1"
+                      stroke="#FF3636"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
                 </button>
               </div>
             </div>
@@ -876,20 +1313,30 @@ function App() {
                 </div>
 
                 <div className="flex gap-3">
-                  <input
-                    type="text"
-                    style="flex-grow: 1"
-                    name=""
-                    id=""
-                    onInput={(e) => {
-                      setGameName(e.currentTarget.value);
-                    }}
-                    className="functionalInteractables"
-                    placeholder="name of game"
-                  />
+                  <div
+                    className="flex items-center functionalInteractables"
+                    style="flex-grow: 1">
+                    <input
+                      type="text"
+                      name=""
+                      style="flex-grow: 1; background-color: transparent;"
+                      id=""
+                      onInput={(e) => {
+                        setGameName(e.currentTarget.value);
+                      }}
+                      className=""
+                      placeholder="name of game"
+                    />
+                    <button
+                      className="text-[10px] px-2 py-1 mr-3"
+                      onClick={getGameMetaData}>
+                      find assets
+                    </button>
+                  </div>
+
                   <button
                     onClick={locateGame}
-                    className="functionalInteractables">
+                    className="functionalInteractables ">
                     locate game
                   </button>
                 </div>
@@ -901,32 +1348,144 @@ function App() {
           data-editGameModal
           onClose={() => {
             setModalBackground("#12121266");
+          }}
+          onDragStart={(e) => {
+            e.preventDefault();
           }}>
           <div className="flex flex-col gap-3 newGameDiv">
             <div className="flex justify-between w-[61rem]">
               <div>
                 <h1>edit {selectedGame().name}</h1>
               </div>
-              <div className="flex gap-3">
-                <button onClick={addGame} className="functionalInteractables">
+              <div className="flex items-center gap-4">
+                <div
+                  onClick={() => {
+                    if (editedFavouriteGame() == undefined) {
+                      setEditedFavouriteGame(!selectedGame().favourite);
+                    } else {
+                      setEditedFavouriteGame(!editedFavouriteGame());
+                    }
+
+                    console.log(editedFavouriteGame());
+                  }}>
+                  <Show when={editedFavouriteGame() == undefined}>
+                    <Show when={selectedGame().favourite}>
+                      <div className="relative">
+                        <div className="">favourite</div>
+                        <div className="absolute blur-[5px] opacity-70 -z-10 inset-0">
+                          favourite
+                        </div>
+                      </div>
+                    </Show>
+                    <Show when={!selectedGame().favourite}>
+                      <div className="">favourite</div>
+                    </Show>
+                  </Show>
+
+                  <Show when={editedFavouriteGame() == true}>
+                    <div className="relative">
+                      <div className="">favourite</div>
+                      <div className="absolute blur-[5px] opacity-70 -z-10 inset-0">
+                        favourite
+                      </div>
+                    </div>
+                  </Show>
+
+                  <Show when={editedFavouriteGame() == false}>
+                    <div className="">favourite</div>
+                  </Show>
+                </div>
+                <button
+                  onClick={updateGame}
+                  className="flex items-center gap-1 functionalInteractables">
                   save
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M5 21H19C20.1046 21 21 20.1046 21 19V8.82843C21 8.29799 20.7893 7.78929 20.4142 7.41421L16.5858 3.58579C16.2107 3.21071 15.702 3 15.1716 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21Z"
+                      stroke="white"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                    <path
+                      d="M7 3V8H15V3"
+                      stroke="white"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                    <path
+                      d="M7 21V15H17V21"
+                      stroke="white"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                  </svg>
                 </button>
                 <button
-                  className="functionalInteractables"
+                  onClick={deleteGame}
+                  className="flex items-center gap-1 functionalInteractables">
+                  <span className="text-[#FF3636]">delete</span>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M3 6H21M5 6V20C5 21.1046 5.89543 22 7 22H17C18.1046 22 19 21.1046 19 20V6M8 6V4C8 2.89543 8.89543 2 10 2H14C15.1046 2 16 2.89543 16 4V6"
+                      stroke="#FF3636"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                    <path
+                      d="M14 11V17"
+                      stroke="#FF3636"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                    <path
+                      d="M10 11V17"
+                      stroke="#FF3636"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                  </svg>
+                </button>
+                <button
+                  className="flex items-center functionalInteractables"
                   onClick={() => {
-                    document.querySelector("[data-newGameModal]").close();
+                    document.querySelector("[data-editGameModal]").close();
+                    location.reload();
                   }}>
-                  close
+                  ​
+                  <svg
+                    width="16"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M1 1L11 10.3369M1 10.3369L11 1"
+                      stroke="#FF3636"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
                 </button>
               </div>
             </div>
             <div className="flex gap-[13.5rem]">
               <div>
                 <button
-                  onClick={locateGridImage}
+                  onClick={locateEditedGridImage}
                   className="locatingGridImg h-[100%] aspect-[2/3] group relative overflow-hidden"
                   aria-label="grid/cover">
-                  <Show when={selectedGame().gridImage}>
+                  <Show when={!editedLocatedGridImage()}>
                     <img
                       className="absolute inset-0"
                       src={convertFileSrc(
@@ -938,7 +1497,12 @@ function App() {
                       grid/cover
                     </span>
                   </Show>
-                  <Show when={!selectedGame().gridImage}>
+                  <Show when={editedLocatedGridImage()}>
+                    <img
+                      className="absolute inset-0"
+                      src={convertFileSrc(editedLocatedGridImage())}
+                      alt=""
+                    />
                     <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
                       grid/cover
                     </span>
@@ -950,41 +1514,41 @@ function App() {
                 <div className="relative ">
                   <div>
                     <button
-                      onClick={locateHeroImage}
+                      onClick={locateEditedHeroImage}
                       className="h-[250px] aspect-[67/26] group relative p-0 m-0"
                       aria-label="hero">
                       <Show
-                        when={selectedGame().heroImage}
+                        when={!editedLocatedHeroImage()}
                         className="absolute inset-0 overflow-hidden">
                         <img
                           src={convertFileSrc(
                             appDataDirPath() + selectedGame().heroImage,
                           )}
                           alt=""
-                          className="absolute inset-0 h-[100%] rounded-[6px]"
+                          className="absolute inset-0 h-[254px] rounded-[6px]"
                         />
+                      </Show>
+                      <Show
+                        when={editedLocatedHeroImage()}
+                        className="absolute inset-0 overflow-hidden">
                         <img
-                          src={convertFileSrc(selectedGame().heroImage)}
+                          src={convertFileSrc(editedLocatedHeroImage())}
                           alt=""
-                          className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px]"
+                          className="absolute inset-0 h-[254px] rounded-[6px]"
                         />
-                        <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
-                          hero image
-                        </span>
                       </Show>
-                      <Show when={!locatedHeroImage()}>
-                        <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
-                          hero image
-                        </span>
-                      </Show>
+
+                      <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
+                        hero image
+                      </span>
                     </button>
                   </div>
 
-                  <Show when={selectedGame().logo}>
-                    <button
-                      onClick={locateLogo}
-                      className="locatedHeroImg group  absolute bottom-[20px] left-[20px] "
-                      aria-label="logo">
+                  <button
+                    onClick={locateEditedLogo}
+                    className="locatedHeroImg group  absolute bottom-[20px] left-[20px] "
+                    aria-label="logo">
+                    <Show when={!editedLocatedLogo()}>
                       <img
                         src={convertFileSrc(
                           appDataDirPath() + selectedGame().logo,
@@ -992,22 +1556,18 @@ function App() {
                         alt=""
                         className="h-[60px] "
                       />
-                      <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
-                        logo
-                      </span>
-                    </button>
-                  </Show>
-
-                  <Show when={!selectedGame().logo}>
-                    <button
-                      onClick={locateLogo}
-                      className="locatingLogoImg group absolute bottom-[20px] left-[20px] w-[170px] h-[70px] functionalInteractables"
-                      aria-label="logo">
-                      <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
-                        logo
-                      </span>
-                    </button>
-                  </Show>
+                    </Show>
+                    <Show when={editedLocatedLogo()}>
+                      <img
+                        src={convertFileSrc(editedLocatedLogo())}
+                        alt=""
+                        className="h-[60px] "
+                      />
+                    </Show>
+                    <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
+                      logo
+                    </span>
+                  </button>
                 </div>
 
                 <div className="flex gap-3">
@@ -1017,14 +1577,14 @@ function App() {
                     name=""
                     id=""
                     onInput={(e) => {
-                      setGameName(e.currentTarget.value);
+                      setEditedGameName(e.currentTarget.value);
                     }}
                     className="functionalInteractables"
                     placeholder="name of game"
                     value={selectedGame().name}
                   />
                   <button
-                    onClick={locateGame}
+                    onClick={locateEditedGame}
                     className="functionalInteractables">
                     locate game
                   </button>
@@ -1039,6 +1599,7 @@ function App() {
           <button
             onClick={() => {
               document.querySelector("[data-newFolderModal]").close();
+              location.reload();
             }}>
             close
           </button>
@@ -1066,6 +1627,7 @@ function App() {
           <button
             onClick={() => {
               document.querySelector("[data-editFolderModal]").close();
+              location.reload();
             }}>
             close
           </button>
@@ -1085,13 +1647,17 @@ function App() {
             type="checkbox"
             checked={selectedFolder().hide}
             onInput={() => {
-              setEditedHideFolder(!hideFolder());
+              setEditedHideFolder((x) => !x);
             }}
           />
           <button onClick={editFolder}>save</button>
         </dialog>
 
-        <dialog data-gamePopup>
+        <dialog
+          data-gamePopup
+          onDragStart={(e) => {
+            e.preventDefault();
+          }}>
           <Show when={selectedGame()}>
             <div className="popUpDiv">
               <img
@@ -1099,8 +1665,7 @@ function App() {
                   appDataDirPath() + selectedGame().heroImage,
                 )}
                 alt=""
-                height="auto"
-                className="absolute blur-[80px] opacity-[0.4] -z-10"
+                className="popUpHero absolute blur-[80px] opacity-[0.4] -z-10"
               />
               <div className="popUpMain">
                 <div className="popUpRight">
@@ -1126,12 +1691,13 @@ function App() {
                     </svg>
                   </button>
                   <button
-                    className="standardButton"
+                    className="standardButton "
                     onClick={() => {
                       document.querySelector("[data-gamePopup]").close();
                       document
                         .querySelector("[data-editGameModal]")
                         .showModal();
+                      setModalBackground("#121212cc");
                     }}>
                     <svg
                       width="18"
@@ -1154,12 +1720,12 @@ function App() {
                     </svg>
                   </button>
                   <button
-                    className="standardButton"
+                    className="standardButton "
                     onClick={() => {
                       document.querySelector("[data-gamePopup]").close();
                     }}>
                     <svg
-                      width="12"
+                      width="16"
                       height="12"
                       viewBox="0 0 12 12"
                       fill="none"
@@ -1179,7 +1745,6 @@ function App() {
                     appDataDirPath() + selectedGame().heroImage,
                   )}
                   alt=""
-                  height="auto"
                   className="popUpHero"
                 />
                 <img
