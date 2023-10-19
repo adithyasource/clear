@@ -10,6 +10,7 @@ import {
 } from "@tauri-apps/api/fs";
 
 import { exit } from "@tauri-apps/api/process";
+import { SettingsManager } from "tauri-settings";
 
 import {
   isPermissionGranted,
@@ -39,6 +40,7 @@ function App() {
   const [currentGames, setCurrentGames] = createSignal([]);
   const [currentFolders, setCurrentFolders] = createSignal([]);
   const [searchValue, setSearchValue] = createSignal();
+  const [notificationGameName, setNotificaitonGameName] = createSignal();
 
   // !? Styles Signals
   const [borderRadius, setBorderRadius] = createSignal("6px");
@@ -73,11 +75,11 @@ function App() {
   const [editedHideFolder, setEditedHideFolder] = createSignal(false);
 
   document.addEventListener("keydown", (e) => {
-    if (e.ctrlKey) {
-      for (let i = 0; i < document.querySelectorAll(".draggable").length; i++) {
-        document.querySelectorAll(".draggable")[i].style.cursor = "pointer";
-      }
+    for (let i = 0; i < document.querySelectorAll(".draggable").length; i++) {
+      document.querySelectorAll(".draggable")[i].style.cursor = "pointer";
+    }
 
+    if (e.ctrlKey) {
       for (
         let i = 0;
         i < document.querySelectorAll(".folderGames").length;
@@ -114,6 +116,8 @@ function App() {
       document.querySelector("#searchInput").blur();
     }
   });
+
+  document.addEventListener("contextmenu", (event) => event.preventDefault());
 
   document.addEventListener("keyup", (e) => {
     for (let i = 0; i < document.querySelectorAll(".draggable").length; i++) {
@@ -189,8 +193,10 @@ function App() {
     });
 
     if (permissionGranted()) {
-      sendNotification("enjoy your session!");
+      sendNotification(`launched ${notificationGameName()}!`);
     }
+
+    console.log(selectedGame());
 
     // ! Uncomment Later
     // setTimeout(async () => {
@@ -576,7 +582,7 @@ function App() {
 
       <div id="page">
         <Show when={showSideBar()}>
-          <div id="sideBar" className="z-10">
+          <div id="sideBar" className="z-10 py-[20px] pl-[20px]">
             <div id="sideBarTop">
               <div id="searchAndDestroy">
                 <input
@@ -714,6 +720,7 @@ function App() {
                                     aria-label="play"
                                     onClick={(e) => {
                                       if (e.ctrlKey) {
+                                        setNotificaitonGameName(gameName);
                                         openGame(
                                           libraryData().games[gameName]
                                             .location,
@@ -864,6 +871,7 @@ function App() {
                               aria-label="play"
                               onClick={(e) => {
                                 if (e.ctrlKey) {
+                                  setNotificaitonGameName(currentGame);
                                   openGame(
                                     libraryData().games[currentGame].location,
                                   );
@@ -931,8 +939,8 @@ function App() {
           </div>
         </Show>
 
-        <div className="absolute left-[13%] w-[86%] h-[calc(100vh-40px)] overflow-y-scroll pl-[10%] ">
-          <div id="gamesDiv">
+        <div className="absolute left-[13%] w-[86%] h-[100vh] overflow-y-scroll pl-[10%] py-[20px] pr-[20px]">
+          <div id="gamesDiv" className="">
             <Show when={searchValue() == "" || searchValue() == undefined}>
               <For each={currentFolders()}>
                 {(folderName) => {
@@ -953,6 +961,7 @@ function App() {
                                   }}
                                   onClick={async (e) => {
                                     if (e.ctrlKey) {
+                                      setNotificaitonGameName(gameName);
                                       openGame(
                                         libraryData().games[gameName].location,
                                       );
@@ -1078,6 +1087,7 @@ function App() {
                             }}
                             onClick={async (e) => {
                               if (e.ctrlKey) {
+                                setNotificaitonGameName(gameName);
                                 openGame(
                                   libraryData().games[gameName].location,
                                 );
@@ -1672,6 +1682,7 @@ function App() {
                   <button
                     className="standardButton"
                     onClick={() => {
+                      setNotificaitonGameName(selectedGame().name);
                       openGame(selectedGame().location);
                     }}>
                     play

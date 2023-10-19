@@ -10,6 +10,7 @@
     "productName": "clear",
     "version": "0.0.7"
   },
+
   "tauri": {
     "allowlist": {
       "notification": {
@@ -51,7 +52,7 @@
       ]
     },
     "security": {
-      "csp": "default-src 'self'; img-src 'self' asset: https://asset.localhost/*"
+      "csp": null
     },
     "windows": [
       {
@@ -62,7 +63,8 @@
         "height": 600,
         "fileDropEnabled": false,
         "minWidth": 1220,
-        "minHeight": 600
+        "minHeight": 600,
+        "theme": "Dark"
       }
     ]
   }

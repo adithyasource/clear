@@ -6,7 +6,6 @@ export function Styles(props) {
           height: 100%;
           display: flex;
           gap: 30px;
-          padding: 20px;
         }
         .foldersDiv {
           display: flex;
@@ -26,7 +25,7 @@ export function Styles(props) {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          height: calc(100vh - 40px);
+          height: 100vh;
         }
         dialog {
           border: none !important;
@@ -113,8 +112,8 @@ export function Styles(props) {
         }
         ::-webkit-scrollbar-track {
           background: ${props.primaryColor()};
+          margin: 10px;
         }
-        /* Handle */
         ::-webkit-scrollbar-thumb {
           background: ${props.secondaryColor()};
           border-radius: 10px;

@@ -14,7 +14,8 @@
     "@tauri-apps/api": "^1.4.0",
     "@thisbeyond/solid-dnd": "^0.7.4",
     "dragula": "^3.7.3",
-    "solid-js": "^1.7.8"
+    "solid-js": "^1.7.8",
+    "tauri-settings": "^0.3.4"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.4.0",
