@@ -194,8 +194,11 @@ export function Styles(props) {
           }
         }
 
-        .functionalInteractables,
-        .standardButton {
+        .functionalInteractables {
+          background-color: ${props.secondaryColor()};
+        }
+
+        .bgBlur {
           backdrop-filter: blur(10px) !important;
           background-color: ${props.secondaryColorForBlur()} !important;
         }
@@ -270,6 +273,12 @@ export function Styles(props) {
 
         .currentlyDragging {
           border-top: 3px #646464 solid;
+          border-top-left-radius: 0px;
+          border-top-right-radius: 0px;
+        }
+
+        #uncategorizedTitleBar {
+          cursor: default;
         }
       `}</style>
     </>

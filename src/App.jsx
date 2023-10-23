@@ -213,12 +213,16 @@ function App() {
     console.log(currentFolders());
     currentFolders().splice(pastPositionOfFolder, 1);
 
-    if (toPosition > pastPositionOfFolder) {
-      currentFolders().splice(toPosition - 1, 0, folderName);
-      console.log("greater than");
+    if (toPosition == -1) {
+      currentFolders().push(folderName);
     } else {
-      currentFolders().splice(toPosition, 0, folderName);
-      console.log("less than");
+      if (toPosition > pastPositionOfFolder) {
+        currentFolders().splice(toPosition - 1, 0, folderName);
+        console.log("greater than");
+      } else {
+        currentFolders().splice(toPosition, 0, folderName);
+        console.log("less than");
+      }
     }
 
     console.log(currentFolders());
@@ -731,76 +735,89 @@ function App() {
                 onDragOver={(e) => {
                   e.preventDefault();
 
-                  let siblings = [
-                    ...e.srcElement.querySelectorAll(
-                      ".sideBarFolder:not(.dragging)",
-                    ),
-                  ];
+                  if (
+                    document.querySelectorAll(
+                      ".sideBarFolder:is(.dragging)",
+                    )[0] != undefined
+                  ) {
+                    let siblings = [
+                      ...e.srcElement.querySelectorAll(
+                        ".sideBarFolder:not(.dragging)",
+                      ),
+                    ];
 
-                  let allGames = document.querySelectorAll(".sideBarFolder");
+                    let allGames = document.querySelectorAll(".sideBarFolder");
 
-                  allGames.forEach((game) => {
-                    game.classList.remove("currentlyDragging");
-                  });
+                    allGames.forEach((game) => {
+                      game.classList.remove("currentlyDragging");
+                    });
 
-                  let nextSibling = siblings.find((sibling) => {
-                    return (
-                      e.clientY <= sibling.offsetTop + sibling.offsetHeight / 2
-                    );
-                  });
+                    let nextSibling = siblings.find((sibling) => {
+                      return (
+                        e.clientY <=
+                        sibling.offsetTop + sibling.offsetHeight / 2
+                      );
+                    });
 
-                  try {
-                    nextSibling.classList.add("currentlyDragging");
-                  } catch (error) {
-                    // do nothing
+                    try {
+                      nextSibling.classList.add("currentlyDragging");
+                    } catch (error) {
+                      // do nothing
+                    }
                   }
                 }}
                 onDrop={async (e) => {
                   let folderName = e.dataTransfer.getData("folderName");
 
-                  let siblings = [
-                    ...e.srcElement.querySelectorAll(
-                      ".sideBarFolder:not(.dragging)",
-                    ),
-                  ];
-
-                  let nextSibling = siblings.find((sibling) => {
-                    return (
-                      e.clientY <= sibling.offsetTop + sibling.offsetHeight / 2
-                    );
-                  });
-
-                  console.log(folderName);
-                  console.log();
-
-                  try {
-                    moveFolder(
-                      folderName,
-                      currentFolders().indexOf(
-                        nextSibling.firstChild.textContent,
+                  if (
+                    document.querySelectorAll(
+                      ".sideBarFolder:is(.dragging)",
+                    )[0] != undefined
+                  ) {
+                    let siblings = [
+                      ...e.srcElement.querySelectorAll(
+                        ".sideBarFolder:not(.dragging)",
                       ),
-                    );
+                    ];
 
-                    setTimeout(() => {
+                    let nextSibling = siblings.find((sibling) => {
+                      return (
+                        e.clientY <=
+                        sibling.offsetTop + sibling.offsetHeight / 2
+                      );
+                    });
+
+                    console.log(folderName);
+
+                    try {
+                      moveFolder(
+                        folderName,
+                        currentFolders().indexOf(
+                          nextSibling.firstChild.textContent,
+                        ),
+                      );
+
+                      setTimeout(() => {
+                        location.reload();
+                      }, 100);
+                    } catch (error) {
+                      console.log(error);
                       location.reload();
-                    }, 100);
-                  } catch (error) {
-                    console.log(error);
-                    location.reload();
-                  }
+                    }
 
-                  libraryData().folders[folder.name].games.push(gameName);
-                  await writeTextFile(
-                    {
-                      path: "data/lib.json",
-                      contents: JSON.stringify(libraryData(), null, 4),
-                    },
-                    {
-                      dir: BaseDirectory.AppData,
-                    },
-                  ).then(() => {
-                    location.reload();
-                  });
+                    libraryData().folders[folder.name].games.push(gameName);
+                    await writeTextFile(
+                      {
+                        path: "data/lib.json",
+                        contents: JSON.stringify(libraryData(), null, 4),
+                      },
+                      {
+                        dir: BaseDirectory.AppData,
+                      },
+                    ).then(() => {
+                      location.reload();
+                    });
+                  }
                 }}
                 class="h-[calc(100vh-220px)] overflow-auto rounded-[6px] ">
                 <For each={currentFolders()}>
@@ -826,45 +843,23 @@ function App() {
                           onDragOver={(e) => {
                             e.preventDefault();
 
-                            let siblings = [
-                              ...e.srcElement.querySelectorAll(
-                                ".sideBarGame:not(.dragging)",
-                              ),
-                            ];
-
-                            let allGames =
-                              document.querySelectorAll(".sideBarGame");
-
-                            allGames.forEach((game) => {
-                              game.classList.remove("currentlyDragging");
-                            });
-
-                            let nextSibling = siblings.find((sibling) => {
-                              return (
-                                e.clientY <=
-                                sibling.offsetTop + sibling.offsetHeight / 2
-                              );
-                            });
-
-                            try {
-                              nextSibling.classList.add("currentlyDragging");
-                            } catch (error) {
-                              // do nothing
-                            }
-                          }}
-                          onDrop={async (e) => {
-                            let gameName = e.dataTransfer.getData("gameName");
-                            let oldFolderName =
-                              e.dataTransfer.getData("oldFolderName");
-
-                            if (oldFolderName == folderName) {
-                              const draggingItem =
-                                document.querySelector(".dragging");
+                            if (
+                              document.querySelectorAll(
+                                ".sideBarFolder:is(.dragging)",
+                              )[0] == undefined
+                            ) {
                               let siblings = [
                                 ...e.srcElement.querySelectorAll(
                                   ".sideBarGame:not(.dragging)",
                                 ),
                               ];
+
+                              let allGames =
+                                document.querySelectorAll(".sideBarGame");
+
+                              allGames.forEach((game) => {
+                                game.classList.remove("currentlyDragging");
+                              });
 
                               let nextSibling = siblings.find((sibling) => {
                                 return (
@@ -874,52 +869,85 @@ function App() {
                               });
 
                               try {
-                                moveGameInCurrentFolder(
-                                  draggingItem.textContent,
-                                  libraryData().folders[folderName][
-                                    "games"
-                                  ].indexOf(nextSibling.textContent),
-                                  folderName,
-                                );
-
-                                setTimeout(() => {
-                                  location.reload();
-                                }, 100);
+                                nextSibling.classList.add("currentlyDragging");
                               } catch (error) {
-                                console.log(error);
-                                location.reload();
+                                // do nothing
                               }
-                              return;
                             }
+                          }}
+                          onDrop={async (e) => {
+                            let gameName = e.dataTransfer.getData("gameName");
+                            let oldFolderName =
+                              e.dataTransfer.getData("oldFolderName");
 
-                            if (oldFolderName != "uncategorized") {
-                              const index =
+                            if (
+                              document.querySelectorAll(
+                                ".sideBarFolder:is(.dragging)",
+                              )[0] == undefined
+                            ) {
+                              if (oldFolderName == folderName) {
+                                const draggingItem =
+                                  document.querySelector(".dragging");
+                                let siblings = [
+                                  ...e.srcElement.querySelectorAll(
+                                    ".sideBarGame:not(.dragging)",
+                                  ),
+                                ];
+
+                                let nextSibling = siblings.find((sibling) => {
+                                  return (
+                                    e.clientY <=
+                                    sibling.offsetTop + sibling.offsetHeight / 2
+                                  );
+                                });
+
+                                try {
+                                  moveGameInCurrentFolder(
+                                    draggingItem.textContent,
+                                    libraryData().folders[folderName][
+                                      "games"
+                                    ].indexOf(nextSibling.textContent),
+                                    folderName,
+                                  );
+
+                                  setTimeout(() => {
+                                    location.reload();
+                                  }, 100);
+                                } catch (error) {
+                                  console.log(error);
+                                  location.reload();
+                                }
+                                return;
+                              }
+
+                              if (oldFolderName != "uncategorized") {
+                                const index =
+                                  libraryData().folders[
+                                    oldFolderName
+                                  ].games.indexOf(gameName);
                                 libraryData().folders[
                                   oldFolderName
-                                ].games.indexOf(gameName);
-                              libraryData().folders[oldFolderName].games.splice(
-                                index,
-                                1,
+                                ].games.splice(index, 1);
+                              }
+                              libraryData().folders[folder.name].games.push(
+                                gameName,
                               );
+                              await writeTextFile(
+                                {
+                                  path: "data/lib.json",
+                                  contents: JSON.stringify(
+                                    libraryData(),
+                                    null,
+                                    4,
+                                  ),
+                                },
+                                {
+                                  dir: BaseDirectory.AppData,
+                                },
+                              ).then(() => {
+                                location.reload();
+                              });
                             }
-                            libraryData().folders[folder.name].games.push(
-                              gameName,
-                            );
-                            await writeTextFile(
-                              {
-                                path: "data/lib.json",
-                                contents: JSON.stringify(
-                                  libraryData(),
-                                  null,
-                                  4,
-                                ),
-                              },
-                              {
-                                dir: BaseDirectory.AppData,
-                              },
-                            ).then(() => {
-                              location.reload();
-                            });
                           }}>
                           <div className="folderTitleBar">
                             <p>{folder.name}</p>
@@ -955,7 +983,7 @@ function App() {
                           <For each={folder.games}>
                             {(gameName) => (
                               <p
-                                className="mt-5 sideBarGame"
+                                className="mt-5 sideBarGame "
                                 aria-label="play"
                                 draggable={true}
                                 onDragStart={(e) => {
@@ -1106,7 +1134,7 @@ function App() {
                       location.reload();
                     });
                   }}>
-                  <div className="folderTitleBar">
+                  <div id="uncategorizedTitleBar" className=" folderTitleBar">
                     <p>uncategorized</p>
                   </div>
                   <For each={currentGames()}>
@@ -1600,9 +1628,9 @@ function App() {
                   </Show>
                 </div>
 
-                <div className="flex gap-3">
+                <div className="flex gap-3 ">
                   <div
-                    className="flex items-center functionalInteractables"
+                    className="flex items-center functionalInteractables bgBlur"
                     style="flex-grow: 1">
                     <input
                       type="text"
@@ -1815,6 +1843,13 @@ function App() {
                           alt=""
                           className="absolute inset-0 h-[254px] rounded-[6px]"
                         />
+                        <img
+                          src={convertFileSrc(
+                            appDataDirPath() + selectedGame().heroImage,
+                          )}
+                          alt=""
+                          className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px]"
+                        />
                       </Show>
                       <Show
                         when={editedLocatedHeroImage()}
@@ -1823,6 +1858,11 @@ function App() {
                           src={convertFileSrc(editedLocatedHeroImage())}
                           alt=""
                           className="absolute inset-0 h-[254px] rounded-[6px]"
+                        />
+                        <img
+                          src={convertFileSrc(editedLocatedHeroImage())}
+                          alt=""
+                          className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px]"
                         />
                       </Show>
 
@@ -1867,7 +1907,7 @@ function App() {
                     onInput={(e) => {
                       setEditedGameName(e.currentTarget.value);
                     }}
-                    className="functionalInteractables"
+                    className="functionalInteractables bgBlur"
                     placeholder="name of game"
                     value={selectedGame().name}
                   />
@@ -1958,7 +1998,7 @@ function App() {
               <div className="popUpMain">
                 <div className="popUpRight">
                   <button
-                    className="standardButton"
+                    className="standardButton bgBlur"
                     onClick={() => {
                       setNotificaitonGameName(selectedGame().name);
                       openGame(selectedGame().location);
@@ -1980,7 +2020,7 @@ function App() {
                     </svg>
                   </button>
                   <button
-                    className="standardButton "
+                    className="standardButton bgBlur"
                     onClick={() => {
                       document.querySelector("[data-gamePopup]").close();
                       document
@@ -2009,7 +2049,7 @@ function App() {
                     </svg>
                   </button>
                   <button
-                    className="standardButton "
+                    className="standardButton bgBlur"
                     onClick={() => {
                       document.querySelector("[data-gamePopup]").close();
                     }}>
