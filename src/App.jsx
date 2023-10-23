@@ -82,11 +82,11 @@ function App() {
     if (e.ctrlKey) {
       for (
         let i = 0;
-        i < document.querySelectorAll(".folderGames").length;
+        i < document.querySelectorAll(".sideBarGame").length;
         i++
       ) {
         document
-          .querySelectorAll(".folderGames")
+          .querySelectorAll(".sideBarGame")
           [i].classList.add(
             "hint--right",
             "hint--no-animate",
@@ -124,9 +124,9 @@ function App() {
       document.querySelectorAll(".draggable")[i].style.cursor = "grab";
     }
 
-    for (let i = 0; i < document.querySelectorAll(".folderGames").length; i++) {
+    for (let i = 0; i < document.querySelectorAll(".sideBarGame").length; i++) {
       document
-        .querySelectorAll(".folderGames")
+        .querySelectorAll(".sideBarGame")
         [i].classList.remove(
           "hint--right",
           "hint--no-animate",
@@ -158,8 +158,28 @@ function App() {
       if (getLibraryData != "") {
         setLibraryData({});
         setLibraryData(JSON.parse(getLibraryData));
-        setCurrentGames(Object.keys(libraryData().games));
-        setCurrentFolders(Object.keys(libraryData().folders));
+
+        for (let x = 0; x < Object.keys(libraryData()["folders"]).length; x++) {
+          for (
+            let y = 0;
+            y < Object.keys(libraryData()["folders"]).length;
+            y++
+          ) {
+            if (Object.values(libraryData()["folders"])[y].index == x) {
+              setCurrentFolders((z) => [
+                ...z,
+                Object.keys(libraryData()["folders"])[y],
+              ]);
+            }
+          }
+        }
+
+        setCurrentGames(Object.keys(libraryData()["games"]));
+
+        // Object.keys(libraryData()["games"]).map(
+        //   (key) => libraryData()["games"][key].name,
+        // ),
+
         console.log("data fetched");
       } else return;
     } else {
@@ -184,8 +204,91 @@ function App() {
       const permission = await requestPermission();
       setPermissionGranted(permission === "granted");
     }
-    getData();
+    await getData();
   });
+
+  async function moveFolder(folderName, toPosition) {
+    let pastPositionOfFolder = currentFolders().indexOf(folderName);
+
+    console.log(currentFolders());
+    currentFolders().splice(pastPositionOfFolder, 1);
+
+    if (toPosition > pastPositionOfFolder) {
+      currentFolders().splice(toPosition - 1, 0, folderName);
+      console.log("greater than");
+    } else {
+      currentFolders().splice(toPosition, 0, folderName);
+      console.log("less than");
+    }
+
+    console.log(currentFolders());
+
+    for (let x = 0; x < currentFolders().length; x++) {
+      for (let y = 0; y < Object.keys(libraryData()["folders"]).length; y++) {
+        if (currentFolders()[x] == Object.keys(libraryData()["folders"])[y]) {
+          Object.values(libraryData()["folders"])[y].index = x;
+        }
+      }
+    }
+
+    await writeTextFile(
+      {
+        path: "data/lib.json",
+        contents: JSON.stringify(libraryData(), null, 1),
+      },
+      {
+        dir: BaseDirectory.AppData,
+      },
+    ).then(() => {});
+  }
+
+  async function moveGameInCurrentFolder(
+    gameName,
+    toPosition,
+    currentFolderName,
+  ) {
+    // return;
+
+    let pastPositionOfGame =
+      libraryData().folders[currentFolderName]["games"].indexOf(gameName);
+
+    libraryData().folders[currentFolderName]["games"].splice(
+      libraryData().folders[currentFolderName]["games"].indexOf(gameName),
+      1,
+    );
+
+    console.log(toPosition, pastPositionOfGame);
+
+    if (toPosition == -1) {
+      libraryData().folders[currentFolderName]["games"].push(gameName);
+    } else {
+      if (toPosition > pastPositionOfGame) {
+        libraryData().folders[currentFolderName]["games"].splice(
+          toPosition - 1,
+          0,
+          gameName,
+        );
+        console.log("greater than");
+      } else {
+        libraryData().folders[currentFolderName]["games"].splice(
+          toPosition,
+          0,
+          gameName,
+        );
+        console.log("less than");
+      }
+    }
+
+    await writeTextFile(
+      {
+        path: "data/lib.json",
+        contents: JSON.stringify(libraryData(), null, 1),
+      },
+      {
+        dir: BaseDirectory.AppData,
+      },
+    ).then(() => {});
+  }
 
   async function openGame(gameLocation) {
     invoke("openGame", {
@@ -360,7 +463,7 @@ function App() {
     await writeTextFile(
       {
         path: "data/lib.json",
-        contents: JSON.stringify(libraryData()),
+        contents: JSON.stringify(libraryData(), null, 1),
       },
       {
         dir: BaseDirectory.AppData,
@@ -470,7 +573,7 @@ function App() {
     await writeTextFile(
       {
         path: "data/lib.json",
-        contents: JSON.stringify(libraryData()),
+        contents: JSON.stringify(libraryData(), null, 1),
       },
       {
         dir: BaseDirectory.AppData,
@@ -503,7 +606,7 @@ function App() {
     await writeTextFile(
       {
         path: "data/lib.json",
-        contents: JSON.stringify(libraryData()),
+        contents: JSON.stringify(libraryData(), null, 1),
       },
       {
         dir: BaseDirectory.AppData,
@@ -524,7 +627,7 @@ function App() {
     await writeTextFile(
       {
         path: "data/lib.json",
-        contents: JSON.stringify(libraryData()),
+        contents: JSON.stringify(libraryData(), null, 1),
       },
       {
         dir: BaseDirectory.AppData,
@@ -551,7 +654,7 @@ function App() {
     await writeTextFile(
       {
         path: "data/lib.json",
-        contents: JSON.stringify(libraryData()),
+        contents: JSON.stringify(libraryData(), null, 1),
       },
       {
         dir: BaseDirectory.AppData,
@@ -582,7 +685,7 @@ function App() {
 
       <div id="page">
         <Show when={showSideBar()}>
-          <div id="sideBar" className="z-10 py-[20px] pl-[20px]">
+          <div id="sideBar" className="z-10 py-[20px] pl-[20px] relative">
             <div id="sideBarTop">
               <div id="searchAndDestroy">
                 <input
@@ -623,7 +726,83 @@ function App() {
                   />
                 </svg>
               </div>
-              <div id="sideBarFolders">
+              <div
+                id="sideBarFolders"
+                onDragOver={(e) => {
+                  e.preventDefault();
+
+                  let siblings = [
+                    ...e.srcElement.querySelectorAll(
+                      ".sideBarFolder:not(.dragging)",
+                    ),
+                  ];
+
+                  let allGames = document.querySelectorAll(".sideBarFolder");
+
+                  allGames.forEach((game) => {
+                    game.classList.remove("currentlyDragging");
+                  });
+
+                  let nextSibling = siblings.find((sibling) => {
+                    return (
+                      e.clientY <= sibling.offsetTop + sibling.offsetHeight / 2
+                    );
+                  });
+
+                  try {
+                    nextSibling.classList.add("currentlyDragging");
+                  } catch (error) {
+                    // do nothing
+                  }
+                }}
+                onDrop={async (e) => {
+                  let folderName = e.dataTransfer.getData("folderName");
+
+                  let siblings = [
+                    ...e.srcElement.querySelectorAll(
+                      ".sideBarFolder:not(.dragging)",
+                    ),
+                  ];
+
+                  let nextSibling = siblings.find((sibling) => {
+                    return (
+                      e.clientY <= sibling.offsetTop + sibling.offsetHeight / 2
+                    );
+                  });
+
+                  console.log(folderName);
+                  console.log();
+
+                  try {
+                    moveFolder(
+                      folderName,
+                      currentFolders().indexOf(
+                        nextSibling.firstChild.textContent,
+                      ),
+                    );
+
+                    setTimeout(() => {
+                      location.reload();
+                    }, 100);
+                  } catch (error) {
+                    console.log(error);
+                    location.reload();
+                  }
+
+                  libraryData().folders[folder.name].games.push(gameName);
+                  await writeTextFile(
+                    {
+                      path: "data/lib.json",
+                      contents: JSON.stringify(libraryData(), null, 4),
+                    },
+                    {
+                      dir: BaseDirectory.AppData,
+                    },
+                  ).then(() => {
+                    location.reload();
+                  });
+                }}
+                class="h-[calc(100vh-220px)] overflow-auto rounded-[6px] ">
                 <For each={currentFolders()}>
                   {(folderName) => {
                     let folder = libraryData().folders[folderName];
@@ -632,34 +811,108 @@ function App() {
                       return (
                         <div
                           className="sideBarFolder"
+                          draggable={true}
+                          onDragStart={(e) => {
+                            setTimeout(
+                              () => e.srcElement.classList.add("dragging"),
+                              0,
+                            );
+
+                            e.dataTransfer.setData("folderName", folderName);
+                          }}
+                          onDragEnd={(e) => {
+                            e.srcElement.classList.remove("dragging");
+                          }}
                           onDragOver={(e) => {
                             e.preventDefault();
+
+                            let siblings = [
+                              ...e.srcElement.querySelectorAll(
+                                ".sideBarGame:not(.dragging)",
+                              ),
+                            ];
+
+                            let allGames =
+                              document.querySelectorAll(".sideBarGame");
+
+                            allGames.forEach((game) => {
+                              game.classList.remove("currentlyDragging");
+                            });
+
+                            let nextSibling = siblings.find((sibling) => {
+                              return (
+                                e.clientY <=
+                                sibling.offsetTop + sibling.offsetHeight / 2
+                              );
+                            });
+
+                            try {
+                              nextSibling.classList.add("currentlyDragging");
+                            } catch (error) {
+                              // do nothing
+                            }
                           }}
                           onDrop={async (e) => {
                             let gameName = e.dataTransfer.getData("gameName");
                             let oldFolderName =
                               e.dataTransfer.getData("oldFolderName");
 
+                            if (oldFolderName == folderName) {
+                              const draggingItem =
+                                document.querySelector(".dragging");
+                              let siblings = [
+                                ...e.srcElement.querySelectorAll(
+                                  ".sideBarGame:not(.dragging)",
+                                ),
+                              ];
+
+                              let nextSibling = siblings.find((sibling) => {
+                                return (
+                                  e.clientY <=
+                                  sibling.offsetTop + sibling.offsetHeight / 2
+                                );
+                              });
+
+                              try {
+                                moveGameInCurrentFolder(
+                                  draggingItem.textContent,
+                                  libraryData().folders[folderName][
+                                    "games"
+                                  ].indexOf(nextSibling.textContent),
+                                  folderName,
+                                );
+
+                                setTimeout(() => {
+                                  location.reload();
+                                }, 100);
+                              } catch (error) {
+                                console.log(error);
+                                location.reload();
+                              }
+                              return;
+                            }
+
                             if (oldFolderName != "uncategorized") {
                               const index =
                                 libraryData().folders[
                                   oldFolderName
                                 ].games.indexOf(gameName);
-
                               libraryData().folders[oldFolderName].games.splice(
                                 index,
                                 1,
                               );
                             }
-
                             libraryData().folders[folder.name].games.push(
                               gameName,
                             );
-
                             await writeTextFile(
                               {
                                 path: "data/lib.json",
-                                contents: JSON.stringify(libraryData()),
+                                contents: JSON.stringify(
+                                  libraryData(),
+                                  null,
+                                  4,
+                                ),
                               },
                               {
                                 dir: BaseDirectory.AppData,
@@ -701,38 +954,39 @@ function App() {
 
                           <For each={folder.games}>
                             {(gameName) => (
-                              <>
-                                <div
-                                  className="draggable"
-                                  draggable={true}
-                                  onDragStart={(e) => {
-                                    e.dataTransfer.setData(
-                                      "gameName",
-                                      gameName,
+                              <p
+                                className="mt-5 sideBarGame"
+                                aria-label="play"
+                                draggable={true}
+                                onDragStart={(e) => {
+                                  setTimeout(
+                                    () =>
+                                      e.srcElement.classList.add("dragging"),
+                                    0,
+                                  );
+
+                                  e.dataTransfer.setData("gameName", gameName);
+                                  e.dataTransfer.setData(
+                                    "oldFolderName",
+                                    folder.name,
+                                  );
+                                }}
+                                onDragEnd={(e) => {
+                                  e.srcElement.classList.remove("dragging");
+                                }}
+                                onClick={(e) => {
+                                  if (e.ctrlKey) {
+                                    setNotificaitonGameName(gameName);
+                                    openGame(
+                                      libraryData().games[gameName].location,
                                     );
-                                    e.dataTransfer.setData(
-                                      "oldFolderName",
-                                      folder.name,
-                                    );
-                                  }}>
-                                  <p
-                                    className="folderGames"
-                                    aria-label="play"
-                                    onClick={(e) => {
-                                      if (e.ctrlKey) {
-                                        setNotificaitonGameName(gameName);
-                                        openGame(
-                                          libraryData().games[gameName]
-                                            .location,
-                                        );
-                                      }
-                                    }}>
-                                    {gameName}
-                                  </p>
-                                </div>
-                              </>
+                                  }
+                                }}>
+                                {gameName}
+                              </p>
                             )}
                           </For>
+                          <p className="mt-2 sideBarGame"></p>
                         </div>
                       );
                     } else {
@@ -742,31 +996,43 @@ function App() {
                           onDragOver={(e) => {
                             e.preventDefault();
                           }}
+                          draggable={true}
+                          onDragStart={(e) => {
+                            setTimeout(
+                              () => e.srcElement.classList.add("dragging"),
+                              0,
+                            );
+
+                            e.dataTransfer.setData("folderName", folderName);
+                          }}
+                          onDragEnd={(e) => {
+                            e.srcElement.classList.remove("dragging");
+                          }}
                           onDrop={async (e) => {
                             let gameName = e.dataTransfer.getData("gameName");
                             let oldFolderName =
                               e.dataTransfer.getData("oldFolderName");
-
                             if (oldFolderName != "uncategorized") {
                               const index =
                                 libraryData().folders[
                                   oldFolderName
                                 ].games.indexOf(gameName);
-
                               libraryData().folders[oldFolderName].games.splice(
                                 index,
                                 1,
                               );
                             }
-
                             libraryData().folders[folder.name].games.push(
                               gameName,
                             );
-
                             await writeTextFile(
                               {
                                 path: "data/lib.json",
-                                contents: JSON.stringify(libraryData()),
+                                contents: JSON.stringify(
+                                  libraryData(),
+                                  null,
+                                  4,
+                                ),
                               },
                               {
                                 dir: BaseDirectory.AppData,
@@ -776,8 +1042,18 @@ function App() {
                             });
                           }}>
                           <div className="folderTitleBar">
-                            <s className="folderGames">{folder.name}</s>
-                            <button className="editButton">
+                            <s className="sideBarGame">{folder.name}</s>
+                            <button
+                              className="editButton"
+                              onClick={() => {
+                                document
+                                  .querySelector("[data-editFolderModal]")
+                                  .showModal();
+                                setSelectedFolder(folder);
+
+                                setEditedFolderName(selectedFolder().name);
+                                setEditedHideFolder(selectedFolder().hide);
+                              }}>
                               <svg
                                 width="14"
                                 height="14"
@@ -821,7 +1097,7 @@ function App() {
                     await writeTextFile(
                       {
                         path: "data/lib.json",
-                        contents: JSON.stringify(libraryData()),
+                        contents: JSON.stringify(libraryData(), null, 1),
                       },
                       {
                         dir: BaseDirectory.AppData,
@@ -867,7 +1143,7 @@ function App() {
                               );
                             }}>
                             <p
-                              className="folderGames"
+                              className="sideBarGame"
                               aria-label="play"
                               onClick={(e) => {
                                 if (e.ctrlKey) {
@@ -887,7 +1163,9 @@ function App() {
                 </div>
               </div>
             </div>
-            <div id="sideBarBottom">
+            <div
+              id="sideBarBottom"
+              class="absolute bottom-[20px] w-[100%] pr-[20px]">
               <button
                 className="standardButton "
                 onClick={() => {

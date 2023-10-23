@@ -24,7 +24,6 @@ export function Styles(props) {
           width: 20%;
           display: flex;
           flex-direction: column;
-          justify-content: space-between;
           height: 100vh;
         }
         dialog {
@@ -81,7 +80,6 @@ export function Styles(props) {
           justify-items: center;
           flex-direction: column;
           padding: 10px;
-          gap: 15px;
           justify-content: space-between;
         }
         #sideBar {
@@ -111,13 +109,17 @@ export function Styles(props) {
           width: 10px;
         }
         ::-webkit-scrollbar-track {
-          background: ${props.primaryColor()};
+          background: #00000000;
           margin: 10px;
         }
         ::-webkit-scrollbar-thumb {
           background: ${props.secondaryColor()};
           border-radius: 10px;
         }
+        #sideBarFolders::-webkit-scrollbar {
+          display: none;
+        }
+
         html,
         body {
           background-color: ${props.primaryColor()};
@@ -213,11 +215,10 @@ export function Styles(props) {
         .gridImage {
           margin: 0px 0px 7px 0px;
         }
-        .draggable {
-          cursor: grab;
-        }
-        .folderGames {
+
+        .sideBarGame {
           color: #ffffff80;
+          cursor: grab;
         }
         button:focus,
         input:focus {
@@ -227,6 +228,7 @@ export function Styles(props) {
           display: flex;
           gap: 10px;
           align-items: center;
+          cursor: grab;
         }
         .editButton {
           padding: 0;
@@ -264,6 +266,10 @@ export function Styles(props) {
           line-height: 12px;
           white-space: nowrap;
           border-radius: 6px;
+        }
+
+        .currentlyDragging {
+          border-top: 3px #646464 solid;
         }
       `}</style>
     </>
