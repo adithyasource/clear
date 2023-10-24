@@ -7,17 +7,16 @@ export function Styles(props) {
           display: flex;
           gap: 30px;
         }
-        .foldersDiv {
-          display: flex;
-          flex-direction: row;
-          gap: 20px;
-          width: 100%;
-          margin: 15px 0px 0px 0px;
-        }
+
         .folderRack {
           margin: 0px 0px 40px 0px;
         }
         #gamesDiv {
+          width: 100%;
+          position: absolute;
+          height: 100vh;
+          overflow-y: scroll;
+          padding: 20px 30px 20px ${props.gamesDivLeftPadding()};
           width: 100%;
         }
         #sideBar {
@@ -65,15 +64,15 @@ export function Styles(props) {
           display: flex;
           justify-items: center;
           justify-content: space-between;
-          width: min-content;
           gap: 5px;
+          width: min-content;
           align-items: center;
         }
         #sideBarFolders {
           margin: 20px 0px 0px 0px;
         }
         .sideBarFolder {
-          margin: 12px 0px 0px 0px;
+          margin: 0px 0px 12px 0px;
           background: ${props.secondaryColor()};
           border-radius: ${props.borderRadius()};
           display: flex;
@@ -93,7 +92,7 @@ export function Styles(props) {
         }
         .gameCard {
           background-color: #00000000;
-          width: 15vw;
+          width: 100%;
         }
         * {
           font-family: Helvetica;
@@ -118,6 +117,19 @@ export function Styles(props) {
         }
         #sideBarFolders::-webkit-scrollbar {
           display: none;
+        }
+
+        #sideBarFolders:hover::-webkit-scrollbar-thumb {
+          background: ${props.secondaryColorForBlur()};
+        }
+        #sideBarFolders:hover::-webkit-scrollbar {
+          width: 5px;
+        }
+        #sideBarFolders:hover::-webkit-scrollbar {
+          display: block;
+        }
+        #sideBarFolders:hover::-webkit-scrollbar-track {
+          margin: 5px;
         }
 
         html,

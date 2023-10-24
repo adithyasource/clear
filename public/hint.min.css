@@ -58,16 +58,12 @@
   left: 50%;
 }
 
-.hint--right:before {
-  margin-left: -11px;
-  margin-bottom: -6px;
-}
 .hint--right:after {
   margin-bottom: -14px;
 }
 .hint--right:after,
 .hint--right:before {
-  left: 100%;
+  right: 10%;
   bottom: 50%;
 }
 .hint--right:hover:after,

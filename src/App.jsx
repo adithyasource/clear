@@ -10,7 +10,6 @@ import {
 } from "@tauri-apps/api/fs";
 
 import { exit } from "@tauri-apps/api/process";
-import { SettingsManager } from "tauri-settings";
 
 import {
   isPermissionGranted,
@@ -32,7 +31,6 @@ function App() {
   );
   const [appDataDirPath, setAppDataDirPath] = createSignal({});
   const [libraryData, setLibraryData] = createSignal({});
-  const [showSideBar, setShowSideBar] = createSignal(true);
 
   // !? References
   const [selectedGame, setSelectedGame] = createSignal({});
@@ -51,6 +49,8 @@ function App() {
   const [modalBackground, setModalBackground] = createSignal("#12121266");
   const [locatingLogoBackground, setLocatingLogoBackground] =
     createSignal("#272727");
+  const [gamesDivLeftPadding, setGamesDivLeftPadding] = createSignal("10px");
+  const [showSideBar, setShowSideBar] = createSignal(true);
 
   // !? Create Signals
   const [gameName, setGameName] = createSignal();
@@ -75,8 +75,8 @@ function App() {
   const [editedHideFolder, setEditedHideFolder] = createSignal(false);
 
   document.addEventListener("keydown", (e) => {
-    for (let i = 0; i < document.querySelectorAll(".draggable").length; i++) {
-      document.querySelectorAll(".draggable")[i].style.cursor = "pointer";
+    for (let i = 0; i < document.querySelectorAll(".sideBarGame").length; i++) {
+      document.querySelectorAll(".sideBarGame")[i].style.cursor = "pointer";
     }
 
     if (e.ctrlKey) {
@@ -112,16 +112,62 @@ function App() {
       document.querySelector("#searchInput").focus();
     }
 
+    if (e.ctrlKey && e.code == "KeyW") {
+      e.preventDefault();
+      closeApp();
+    }
+
+    if (e.ctrlKey && e.code == "KeyN") {
+      e.preventDefault();
+      document.querySelector("[data-newGameModal]").showModal();
+      setModalBackground("#121212cc");
+    }
+
+    if (e.ctrlKey && e.code == "KeyM") {
+      e.preventDefault();
+      document.querySelector("[data-newFolderModal]").showModal();
+    }
+
+    if (e.ctrlKey && e.code == "Backslash") {
+      e.preventDefault();
+      toggleSideBar();
+    }
+
     if (e.code == "Escape") {
       document.querySelector("#searchInput").blur();
     }
   });
 
+  async function closeApp() {
+    await exit(1);
+  }
+
+  async function toggleSideBar() {
+    if (
+      libraryData().showSideBar == true ||
+      libraryData().showSideBar == undefined
+    ) {
+      libraryData().showSideBar = false;
+    } else {
+      libraryData().showSideBar = true;
+    }
+
+    await writeTextFile(
+      {
+        path: "data/lib.json",
+        contents: JSON.stringify(libraryData(), null, 1),
+      },
+      {
+        dir: BaseDirectory.AppData,
+      },
+    ).then(location.reload());
+  }
+
   document.addEventListener("contextmenu", (event) => event.preventDefault());
 
   document.addEventListener("keyup", (e) => {
-    for (let i = 0; i < document.querySelectorAll(".draggable").length; i++) {
-      document.querySelectorAll(".draggable")[i].style.cursor = "grab";
+    for (let i = 0; i < document.querySelectorAll(".sideBarGame").length; i++) {
+      document.querySelectorAll(".sideBarGame")[i].style.cursor = "grab";
     }
 
     for (let i = 0; i < document.querySelectorAll(".sideBarGame").length; i++) {
@@ -176,11 +222,15 @@ function App() {
 
         setCurrentGames(Object.keys(libraryData()["games"]));
 
-        // Object.keys(libraryData()["games"]).map(
-        //   (key) => libraryData()["games"][key].name,
-        // ),
-
         console.log("data fetched");
+
+        setShowSideBar(libraryData().showSideBar);
+
+        if (showSideBar() == true || showSideBar() == undefined) {
+          setGamesDivLeftPadding("23%");
+        } else {
+          setGamesDivLeftPadding("30px");
+        }
       } else return;
     } else {
       await createDir("data", {
@@ -685,10 +735,39 @@ function App() {
         primaryColor={primaryColor}
         modalBackground={modalBackground}
         locatingLogoBackground={locatingLogoBackground}
+        gamesDivLeftPadding={gamesDivLeftPadding}
       />
 
       <div id="page">
-        <Show when={showSideBar()}>
+        <Show when={showSideBar() == false}>
+          <svg
+            className="absolute right-[30px] top-[30px] z-10 rotate-180 cursor-pointer"
+            onClick={toggleSideBar}
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M6 11L1 6L6 1"
+              stroke="white"
+              stroke-opacity="0.5"
+              stroke-width="1.3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M11 11L6 6L11 1"
+              stroke="white"
+              stroke-opacity="0.5"
+              stroke-width="1.3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </Show>
+
+        <Show when={showSideBar() || showSideBar() == undefined}>
           <div id="sideBar" className="z-10 py-[20px] pl-[20px] relative">
             <div id="sideBarTop">
               <div id="searchAndDestroy">
@@ -703,9 +782,7 @@ function App() {
                   }}
                 />
                 <svg
-                  onClick={() => {
-                    setShowSideBar(false);
-                  }}
+                  onClick={toggleSideBar}
                   style="cursor: pointer;"
                   width="14"
                   height="14"
@@ -819,7 +896,8 @@ function App() {
                     });
                   }
                 }}
-                class="h-[calc(100vh-220px)] overflow-auto rounded-[6px] ">
+                class="h-[calc(100vh-270px)] overflow-auto rounded-[6px] ">
+                <p className="mt-[5px]"></p>
                 <For each={currentFolders()}>
                   {(folderName) => {
                     let folder = libraryData().folders[folderName];
@@ -979,7 +1057,6 @@ function App() {
                               </svg>
                             </button>
                           </div>
-
                           <For each={folder.games}>
                             {(gameName) => (
                               <p
@@ -1135,7 +1212,7 @@ function App() {
                     });
                   }}>
                   <div id="uncategorizedTitleBar" className=" folderTitleBar">
-                    <p>uncategorized</p>
+                    <p className="text-[#ffffff80] pd-3">uncategorized</p>
                   </div>
                   <For each={currentGames()}>
                     {(currentGame, i) => {
@@ -1159,8 +1236,7 @@ function App() {
                       }
                       return (
                         <Show when={!gamesInFolders.includes(currentGame)}>
-                          <div
-                            className="draggable"
+                          <p
                             draggable={true}
                             onDragStart={(e) => {
                               e.dataTransfer.setData("gameName", currentGame);
@@ -1169,21 +1245,19 @@ function App() {
                                 "oldFolderName",
                                 "uncategorized",
                               );
+                            }}
+                            className=" mt-5 sideBarGame !text-[#ffffff4D]"
+                            aria-label="play"
+                            onClick={(e) => {
+                              if (e.ctrlKey) {
+                                setNotificaitonGameName(currentGame);
+                                openGame(
+                                  libraryData().games[currentGame].location,
+                                );
+                              }
                             }}>
-                            <p
-                              className="sideBarGame"
-                              aria-label="play"
-                              onClick={(e) => {
-                                if (e.ctrlKey) {
-                                  setNotificaitonGameName(currentGame);
-                                  openGame(
-                                    libraryData().games[currentGame].location,
-                                  );
-                                }
-                              }}>
-                              {currentGame}
-                            </p>
-                          </div>
+                            {currentGame}
+                          </p>
                         </Show>
                       );
                     }}
@@ -1241,147 +1315,201 @@ function App() {
                     stroke-linejoin="round"></path>
                 </svg>
               </button>
+
+              <div className="flex gap-3">
+                <button
+                  className=" standardButton"
+                  onClick={() => {
+                    document.querySelector("[data-notepad]").showModal();
+                  }}>
+                  notepad
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M6 22H18C19.1046 22 20 21.1046 20 20V9.82843C20 9.29799 19.7893 8.78929 19.4142 8.41421L13.5858 2.58579C13.2107 2.21071 12.702 2 12.1716 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22Z"
+                      stroke="rgba(255,255,255,0.5)"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                    <path
+                      d="M13 2.5V9H19"
+                      stroke="rgba(255,255,255,0.5)"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                  </svg>
+                </button>
+                <button
+                  className=" standardButton"
+                  onClick={() => {
+                    document.querySelector("[data-settings]").showModal();
+                  }}>
+                  settings
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M10.0761 3.16311C10.136 2.50438 10.6883 2 11.3497 2H12.6503C13.3117 2 13.864 2.50438 13.9239 3.16311C13.9731 3.70392 14.3623 4.14543 14.8708 4.336C15.0015 4.38499 15.1307 4.43724 15.2582 4.49263C15.7613 4.71129 16.3531 4.66938 16.7745 4.31818C17.2953 3.8842 18.0611 3.91894 18.5404 4.39829L19.4584 5.31623C19.9154 5.77326 19.9485 6.50338 19.5347 6.99992C19.1901 7.41349 19.158 7.99745 19.3897 8.48341C19.49 8.69386 19.5816 8.90926 19.664 9.12916C19.8546 9.63767 20.2961 10.0269 20.8369 10.0761C21.4956 10.136 22 10.6883 22 11.3497V12.6503C22 13.3117 21.4956 13.864 20.8369 13.9239C20.2961 13.9731 19.8546 14.3623 19.664 14.8708C19.59 15.0682 19.5086 15.262 19.4202 15.4518C19.2053 15.913 19.2401 16.4637 19.5658 16.8546C19.962 17.33 19.9303 18.0291 19.4927 18.4667L18.4667 19.4927C18.0291 19.9303 17.33 19.962 16.8546 19.5658C16.4637 19.2401 15.913 19.2053 15.4518 19.4202C15.262 19.5086 15.0682 19.59 14.8708 19.664C14.3623 19.8546 13.9731 20.2961 13.9239 20.8369C13.864 21.4956 13.3117 22 12.6503 22H11.3497C10.6883 22 10.136 21.4956 10.0761 20.8369C10.0269 20.2961 9.63767 19.8546 9.12917 19.664C8.90927 19.5816 8.69387 19.49 8.48343 19.3897C7.99746 19.158 7.4135 19.1901 6.99992 19.5347C6.50338 19.9485 5.77325 19.9154 5.31622 19.4584L4.39829 18.5404C3.91893 18.0611 3.8842 17.2953 4.31818 16.7745C4.66939 16.3531 4.71129 15.7613 4.49263 15.2582C4.43724 15.1307 4.385 15.0016 4.336 14.8708C4.14544 14.3623 3.70392 13.9731 3.16311 13.9239C2.50438 13.864 2 13.3117 2 12.6503V11.3497C2 10.6883 2.50438 10.136 3.16311 10.0761C3.70393 10.0269 4.14544 9.63768 4.33601 9.12917C4.3936 8.9755 4.45568 8.82402 4.52209 8.67489C4.7571 8.14716 4.71804 7.52257 4.34821 7.07877C3.89722 6.53758 3.93332 5.74179 4.43145 5.24365L5.24364 4.43146C5.74178 3.93332 6.53757 3.89722 7.07876 4.34822C7.52256 4.71805 8.14715 4.7571 8.67488 4.52209C8.82401 4.45568 8.97549 4.3936 9.12916 4.33601C9.63767 4.14544 10.0269 3.70393 10.0761 3.16311Z"
+                      stroke="rgba(255,255,255,0.5)"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                    <path
+                      d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z"
+                      stroke="rgba(255,255,255,0.5)"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </Show>
 
-        <div className="absolute left-[13%] w-[86%] h-[100vh] overflow-y-scroll pl-[10%] py-[20px] pr-[20px]">
-          <div id="gamesDiv" className="">
-            <Show when={searchValue() == "" || searchValue() == undefined}>
-              <For each={currentFolders()}>
-                {(folderName) => {
-                  let folder = libraryData().folders[folderName];
-                  return (
-                    <Show when={folder.games != "" && !folder.hide}>
-                      <div className="folderRack">
-                        <h1>{folder.name}</h1>
-                        <div className="foldersDiv">
-                          <For each={folder.games}>
-                            {(gameName) => {
-                              return (
-                                <div
-                                  className="relative gameCard group"
-                                  aria-label="play"
-                                  onDragStart={(e) => {
-                                    e.preventDefault();
-                                  }}
-                                  onClick={async (e) => {
-                                    if (e.ctrlKey) {
-                                      setNotificaitonGameName(gameName);
-                                      openGame(
-                                        libraryData().games[gameName].location,
-                                      );
-                                      return;
-                                    }
-                                    await setSelectedGame(
-                                      libraryData().games[gameName],
+        {/* <div className=""> */}
+        <div id="gamesDiv" className="">
+          <Show when={searchValue() == "" || searchValue() == undefined}>
+            <For each={currentFolders()}>
+              {(folderName) => {
+                let folder = libraryData().folders[folderName];
+                return (
+                  <Show when={folder.games != "" && !folder.hide}>
+                    <div className="folderRack">
+                      <h1>{folder.name}</h1>
+                      <div className="grid grid-cols-5 gap-5 mt-4 foldersDiv ">
+                        <For each={folder.games}>
+                          {(gameName) => {
+                            return (
+                              <div
+                                className="relative gameCard group"
+                                aria-label="play"
+                                onDragStart={(e) => {
+                                  e.preventDefault();
+                                }}
+                                onClick={async (e) => {
+                                  if (e.ctrlKey) {
+                                    setNotificaitonGameName(gameName);
+                                    openGame(
+                                      libraryData().games[gameName].location,
                                     );
-                                    document
-                                      .querySelector("[data-gamePopup]")
-                                      .showModal();
-                                  }}>
-                                  <img
-                                    className="relative z-10 gridImage   group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none"
-                                    src={convertFileSrc(
-                                      appDataDirPath() +
-                                        libraryData().games[gameName].gridImage,
-                                    )}
-                                    alt=""
-                                    width="100%"
-                                  />
-                                  <Show
-                                    when={
-                                      libraryData().games[gameName].favourite
-                                    }>
-                                    <div className="absolute inset-0 blur-[40px] group-hover:opacity-80 group-hover:blur-[60px] duration-700 bg-blend-screen">
-                                      <img
-                                        className="absolute inset-0 opacity-50 "
-                                        src={convertFileSrc(
-                                          appDataDirPath() +
-                                            libraryData().games[gameName]
-                                              .gridImage,
-                                        )}
-                                        alt=""
-                                      />
-                                      <div
-                                        className="bg-[#fff] opacity-[10%] w-[100%] aspect-[2/3]"
-                                        alt=""
-                                      />
-                                    </div>
-                                  </Show>
-                                  {gameName}
-                                </div>
-                              );
-                            }}
-                          </For>
-                        </div>
+                                    return;
+                                  }
+                                  await setSelectedGame(
+                                    libraryData().games[gameName],
+                                  );
+                                  document
+                                    .querySelector("[data-gamePopup]")
+                                    .showModal();
+                                }}>
+                                <img
+                                  className="relative z-10 gridImage   group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none"
+                                  src={convertFileSrc(
+                                    appDataDirPath() +
+                                      libraryData().games[gameName].gridImage,
+                                  )}
+                                  alt=""
+                                  width="100%"
+                                />
+                                <Show
+                                  when={
+                                    libraryData().games[gameName].favourite
+                                  }>
+                                  <div className="absolute inset-0 blur-[40px] group-hover:opacity-80 group-hover:blur-[60px] duration-700 bg-blend-screen">
+                                    <img
+                                      className="absolute inset-0 opacity-50 "
+                                      src={convertFileSrc(
+                                        appDataDirPath() +
+                                          libraryData().games[gameName]
+                                            .gridImage,
+                                      )}
+                                      alt=""
+                                    />
+                                    <div
+                                      className="bg-[#fff] opacity-[10%] w-[100%] aspect-[2/3]"
+                                      alt=""
+                                    />
+                                  </div>
+                                </Show>
+                                {gameName}
+                              </div>
+                            );
+                          }}
+                        </For>
                       </div>
-                    </Show>
-                  );
-                }}
-              </For>
-            </Show>
+                    </div>
+                  </Show>
+                );
+              }}
+            </For>
+          </Show>
 
-            <Show when={searchValue() != "" && searchValue() != undefined}>
-              {() => {
-                let searchResults = [];
+          <Show when={searchValue() != "" && searchValue() != undefined}>
+            {() => {
+              let searchResults = [];
 
-                // ? Function By Anwarul Islam From codementor.io
-                function levenshteinDistance(str1, str2) {
-                  const len1 = str1.length;
-                  const len2 = str2.length;
+              // ? Function By Anwarul Islam From codementor.io
+              function levenshteinDistance(str1, str2) {
+                const len1 = str1.length;
+                const len2 = str2.length;
 
-                  let matrix = Array(len1 + 1);
-                  for (let i = 0; i <= len1; i++) {
-                    matrix[i] = Array(len2 + 1);
-                  }
-
-                  for (let i = 0; i <= len1; i++) {
-                    matrix[i][0] = i;
-                  }
-
-                  for (let j = 0; j <= len2; j++) {
-                    matrix[0][j] = j;
-                  }
-
-                  for (let i = 1; i <= len1; i++) {
-                    for (let j = 1; j <= len2; j++) {
-                      if (str1[i - 1] === str2[j - 1]) {
-                        matrix[i][j] = matrix[i - 1][j - 1];
-                      } else {
-                        matrix[i][j] = Math.min(
-                          matrix[i - 1][j] + 1,
-                          matrix[i][j - 1] + 1,
-                          matrix[i - 1][j - 1] + 1,
-                        );
-                      }
-                    }
-                  }
-
-                  return matrix[len1][len2];
+                let matrix = Array(len1 + 1);
+                for (let i = 0; i <= len1; i++) {
+                  matrix[i] = Array(len2 + 1);
                 }
 
-                if (searchValue() != "" && searchValue() != undefined) {
-                  for (
-                    let i = 0;
-                    i < Object.values(libraryData().games).length;
-                    i++
-                  ) {
-                    if (
-                      levenshteinDistance(
-                        searchValue(),
-                        Object.keys(libraryData().games)[i],
-                      ) <= 4
-                    ) {
-                      searchResults.unshift(
-                        Object.keys(libraryData().games)[i],
+                for (let i = 0; i <= len1; i++) {
+                  matrix[i][0] = i;
+                }
+
+                for (let j = 0; j <= len2; j++) {
+                  matrix[0][j] = j;
+                }
+
+                for (let i = 1; i <= len1; i++) {
+                  for (let j = 1; j <= len2; j++) {
+                    if (str1[i - 1] === str2[j - 1]) {
+                      matrix[i][j] = matrix[i - 1][j - 1];
+                    } else {
+                      matrix[i][j] = Math.min(
+                        matrix[i - 1][j] + 1,
+                        matrix[i][j - 1] + 1,
+                        matrix[i - 1][j - 1] + 1,
                       );
                     }
                   }
                 }
 
-                return (
-                  <div className="flex gap-[20px]">
+                return matrix[len1][len2];
+              }
+
+              if (searchValue() != "" && searchValue() != undefined) {
+                for (
+                  let i = 0;
+                  i < Object.values(libraryData().games).length;
+                  i++
+                ) {
+                  if (
+                    levenshteinDistance(
+                      searchValue(),
+                      Object.keys(libraryData().games)[i],
+                    ) <= 4
+                  ) {
+                    searchResults.unshift(Object.keys(libraryData().games)[i]);
+                  }
+                }
+              }
+
+              return (
+                <div>
+                  <div className="grid grid-cols-5 gap-5 mt-4 foldersDiv">
                     <For each={searchResults}>
                       {(gameName) => {
                         return (
@@ -1407,7 +1535,7 @@ function App() {
                                 .showModal();
                             }}>
                             <img
-                              className="relative z-10 gridImage"
+                              className="relative z-10 gridImage group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none"
                               src={convertFileSrc(
                                 appDataDirPath() +
                                   libraryData().games[gameName].gridImage,
@@ -1431,7 +1559,8 @@ function App() {
                         );
                       }}
                     </For>
-
+                  </div>
+                  <div className="items-center">
                     <Show when={searchResults == ""}>
                       <div className="w-[100%] h-[90vh] flex items-center gap-3 justify-center align-middle">
                         <svg
@@ -1451,11 +1580,12 @@ function App() {
                       </div>
                     </Show>
                   </div>
-                );
-              }}
-            </Show>
-          </div>
+                </div>
+              );
+            }}
+          </Show>
         </div>
+        {/* </div> */}
       </div>
       <div id="abovePage">
         <dialog
