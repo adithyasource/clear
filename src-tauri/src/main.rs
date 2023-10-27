@@ -5,10 +5,8 @@
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
 fn openGame(gameLocation: &str) {
-    // format!("Hello, {}! You've been greeted from Rust!", name)
     open::that(gameLocation);
 }
-
 
 
 fn main() {

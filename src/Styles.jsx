@@ -82,8 +82,10 @@ export function Styles(props) {
           justify-content: space-between;
         }
         #sideBar {
-          .standardButton {
+          .standardButton,
+          #searchInput {
             width: 100%;
+            background-color: #232323;
           }
         }
         button,
