@@ -29,6 +29,8 @@ import {
 
 import { exit } from "@tauri-apps/api/process";
 
+import { getData } from "../App";
+
 import {
   isPermissionGranted,
   requestPermission,
@@ -71,7 +73,7 @@ export function NewGame() {
       dir: BaseDirectory.AppData,
     });
 
-    libraryData().games[gameName()] = {
+    libraryData().games[gameName().replaceAll(" ", "_")] = {
       location: locatedGame(),
       name: gameName(),
       heroImage: heroImageFileName,
@@ -90,7 +92,7 @@ export function NewGame() {
         dir: BaseDirectory.AppData,
       },
     ).then(() => {
-      location.reload();
+      getData();
     });
   }
 
@@ -218,7 +220,7 @@ export function NewGame() {
               className="flex items-center functionalInteractables"
               onClick={() => {
                 document.querySelector("[data-newGameModal]").close();
-                location.reload();
+                getData();
               }}>
               ​
               <svg

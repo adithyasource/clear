@@ -18,7 +18,7 @@ import {
   setPermissionGranted,
 } from "./Signals";
 
-import { For, Show, createSignal, onMount } from "solid-js";
+import { For, Show, createSignal, onMount, createEffect } from "solid-js";
 import { invoke, convertFileSrc } from "@tauri-apps/api/tauri";
 import {
   writeTextFile,
@@ -28,6 +28,8 @@ import {
   exists,
   createDir,
 } from "@tauri-apps/api/fs";
+
+import { getData } from "./App";
 
 import { exit } from "@tauri-apps/api/process";
 
@@ -42,6 +44,15 @@ import { appDataDir } from "@tauri-apps/api/path";
 import { open } from "@tauri-apps/api/dialog";
 
 export function SideBar() {
+  let scrollY = " ";
+  onMount(() => {
+    document
+      .getElementById("sideBarFolders")
+      .addEventListener("scroll", function () {
+        scrollY = document.getElementById("sideBarFolders").scrollTop;
+      });
+  });
+
   async function toggleSideBar() {
     if (
       libraryData().showSideBar == true ||
@@ -60,7 +71,7 @@ export function SideBar() {
       {
         dir: BaseDirectory.AppData,
       },
-    ).then(location.reload());
+    ).then(getData());
   }
 
   async function moveFolder(folderName, toPosition) {
@@ -166,6 +177,7 @@ export function SideBar() {
     //   await exit(1);
     // }, 500);
   }
+
   return (
     <>
       <div id="sideBar" className="z-10 py-[20px] pl-[20px] relative">
@@ -229,8 +241,10 @@ export function SideBar() {
                 });
 
                 let nextSibling = siblings.find((sibling) => {
+                  let compensatedY = "";
+                  compensatedY = e.clientY + scrollY;
                   return (
-                    e.clientY <= sibling.offsetTop + sibling.offsetHeight / 2
+                    compensatedY <= sibling.offsetTop + sibling.offsetHeight / 2
                   );
                 });
 
@@ -255,8 +269,10 @@ export function SideBar() {
                 ];
 
                 let nextSibling = siblings.find((sibling) => {
+                  let compensatedY = "";
+                  compensatedY = e.clientY + scrollY;
                   return (
-                    e.clientY <= sibling.offsetTop + sibling.offsetHeight / 2
+                    compensatedY <= sibling.offsetTop + sibling.offsetHeight / 2
                   );
                 });
 
@@ -270,12 +286,16 @@ export function SideBar() {
                     ),
                   );
 
+                  document
+                    .querySelector("#uncategorizedFolder")
+                    .classList.remove("currentlyDragging");
+
                   setTimeout(() => {
-                    location.reload();
+                    getData();
                   }, 100);
                 } catch (error) {
                   console.log(error);
-                  location.reload();
+                  getData();
                 }
 
                 libraryData().folders[folder.name].games.push(gameName);
@@ -288,7 +308,7 @@ export function SideBar() {
                     dir: BaseDirectory.AppData,
                   },
                 ).then(() => {
-                  location.reload();
+                  getData();
                 });
               }
             }}
@@ -336,8 +356,10 @@ export function SideBar() {
                           });
 
                           let nextSibling = siblings.find((sibling) => {
+                            let compensatedY = "";
+                            compensatedY = e.clientY + scrollY;
                             return (
-                              e.clientY <=
+                              compensatedY <=
                               sibling.offsetTop + sibling.offsetHeight / 2
                             );
                           });
@@ -369,27 +391,35 @@ export function SideBar() {
                             ];
 
                             let nextSibling = siblings.find((sibling) => {
+                              let compensatedY = "";
+                              compensatedY = e.clientY + scrollY;
                               return (
-                                e.clientY <=
+                                compensatedY <=
                                 sibling.offsetTop + sibling.offsetHeight / 2
                               );
                             });
 
                             try {
+                              let currentDraggingItem =
+                                draggingItem.textContent.replaceAll(" ", "_");
+
+                              let nextSiblingItem =
+                                nextSibling.textContent.replaceAll(" ", "_");
+
                               moveGameInCurrentFolder(
-                                draggingItem.textContent,
+                                currentDraggingItem,
                                 libraryData().folders[folderName][
                                   "games"
-                                ].indexOf(nextSibling.textContent),
+                                ].indexOf(nextSiblingItem),
                                 folderName,
                               );
 
                               setTimeout(() => {
-                                location.reload();
+                                getData();
                               }, 100);
                             } catch (error) {
                               console.log(error);
-                              location.reload();
+                              getData();
                             }
                             return;
                           }
@@ -416,7 +446,7 @@ export function SideBar() {
                               dir: BaseDirectory.AppData,
                             },
                           ).then(() => {
-                            location.reload();
+                            getData();
                           });
                         }
                       }}>
@@ -457,12 +487,11 @@ export function SideBar() {
                             aria-label="play"
                             draggable={true}
                             onDragStart={(e) => {
-                              setTimeout(
-                                () => e.srcElement.classList.add("dragging"),
-                                0,
-                              );
-
+                              setTimeout(() => {
+                                e.srcElement.classList.add("dragging");
+                              }, 10);
                               e.dataTransfer.setData("gameName", gameName);
+
                               e.dataTransfer.setData(
                                 "oldFolderName",
                                 folder.name,
@@ -479,7 +508,7 @@ export function SideBar() {
                                 );
                               }
                             }}>
-                            {gameName}
+                            {gameName.replaceAll("_", " ")}
                           </p>
                         )}
                       </For>
@@ -529,11 +558,11 @@ export function SideBar() {
                             dir: BaseDirectory.AppData,
                           },
                         ).then(() => {
-                          location.reload();
+                          getData();
                         });
                       }}>
                       <div className="folderTitleBar">
-                        <s className="sideBarGame">{folder.name}</s>
+                        <s className="emptyFolderTitleBar">{folder.name}</s>
                         <button
                           className="editButton"
                           onClick={() => {
@@ -571,6 +600,7 @@ export function SideBar() {
 
             <div
               className="sideBarFolder"
+              id="uncategorizedFolder"
               onDragOver={(e) => {
                 e.preventDefault();
               }}
@@ -592,7 +622,7 @@ export function SideBar() {
                     dir: BaseDirectory.AppData,
                   },
                 ).then(() => {
-                  location.reload();
+                  getData();
                 });
               }}>
               <div id="uncategorizedTitleBar" className=" folderTitleBar">

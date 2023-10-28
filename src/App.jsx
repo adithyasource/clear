@@ -100,6 +100,61 @@ import { NewFolder } from "./modals/NewFolder";
 import { EditFolder } from "./modals/EditFolder";
 import { GamePopUp } from "./modals/GamePopUp";
 
+export async function getData() {
+  setAppDataDirPath(await appDataDir());
+
+  if (await exists("data/lib.json", { dir: BaseDirectory.AppData })) {
+    let getLibraryData = await readTextFile("data/lib.json", {
+      dir: BaseDirectory.AppData,
+    });
+
+    if (getLibraryData != "") {
+      setCurrentGames("");
+      setCurrentFolders("");
+      setLibraryData(JSON.parse(getLibraryData));
+
+      console.log(libraryData());
+
+      for (let x = 0; x < Object.keys(libraryData()["folders"]).length; x++) {
+        for (let y = 0; y < Object.keys(libraryData()["folders"]).length; y++) {
+          if (Object.values(libraryData()["folders"])[y].index == x) {
+            setCurrentFolders((z) => [
+              ...z,
+              Object.keys(libraryData()["folders"])[y],
+            ]);
+          }
+        }
+      }
+
+      setCurrentGames(Object.keys(libraryData()["games"]));
+
+      console.log("data fetched");
+
+      setShowSideBar(libraryData().showSideBar);
+
+      if (showSideBar() == true || showSideBar() == undefined) {
+        setGamesDivLeftPadding("23%");
+      } else {
+        setGamesDivLeftPadding("30px");
+      }
+    } else return;
+  } else {
+    await createDir("data", {
+      dir: BaseDirectory.AppData,
+      recursive: true,
+    });
+    await writeTextFile(
+      {
+        path: "data/lib.json",
+        contents: "",
+      },
+      {
+        dir: BaseDirectory.AppData,
+      },
+    );
+  }
+}
+
 function App() {
   document.addEventListener("keydown", (e) => {
     for (let i = 0; i < document.querySelectorAll(".sideBarGame").length; i++) {
@@ -187,7 +242,7 @@ function App() {
       {
         dir: BaseDirectory.AppData,
       },
-    ).then(location.reload());
+    ).then(getData());
   }
 
   document.addEventListener("contextmenu", (event) => event.preventDefault());
@@ -219,62 +274,6 @@ function App() {
         );
     }
   });
-
-  async function getData() {
-    setAppDataDirPath(await appDataDir());
-
-    if (await exists("data/lib.json", { dir: BaseDirectory.AppData })) {
-      let getLibraryData = await readTextFile("data/lib.json", {
-        dir: BaseDirectory.AppData,
-      });
-
-      if (getLibraryData != "") {
-        setLibraryData({});
-        setLibraryData(JSON.parse(getLibraryData));
-
-        for (let x = 0; x < Object.keys(libraryData()["folders"]).length; x++) {
-          for (
-            let y = 0;
-            y < Object.keys(libraryData()["folders"]).length;
-            y++
-          ) {
-            if (Object.values(libraryData()["folders"])[y].index == x) {
-              setCurrentFolders((z) => [
-                ...z,
-                Object.keys(libraryData()["folders"])[y],
-              ]);
-            }
-          }
-        }
-
-        setCurrentGames(Object.keys(libraryData()["games"]));
-
-        console.log("data fetched");
-
-        setShowSideBar(libraryData().showSideBar);
-
-        if (showSideBar() == true || showSideBar() == undefined) {
-          setGamesDivLeftPadding("23%");
-        } else {
-          setGamesDivLeftPadding("30px");
-        }
-      } else return;
-    } else {
-      await createDir("data", {
-        dir: BaseDirectory.AppData,
-        recursive: true,
-      });
-      await writeTextFile(
-        {
-          path: "data/lib.json",
-          contents: "",
-        },
-        {
-          dir: BaseDirectory.AppData,
-        },
-      );
-    }
-  }
 
   onMount(async () => {
     if (!permissionGranted()) {
@@ -356,11 +355,14 @@ function App() {
             <For each={currentFolders()}>
               {(folderName) => {
                 let folder = libraryData().folders[folderName];
+
                 return (
                   <Show when={folder.games != "" && !folder.hide}>
                     <div className="folderRack">
                       <h1>{folder.name}</h1>
-                      <div className="grid grid-cols-5 gap-5 mt-4 foldersDiv ">
+                      <div
+                        className={`grid gap-5 mt-4 foldersDiv
+                          ${showSideBar() ? "grid-cols-5" : "grid-cols-6"}`}>
                         <For each={folder.games}>
                           {(gameName) => {
                             return (
@@ -428,7 +430,7 @@ function App() {
                                     />
                                   </div>
                                 </Show>
-                                {gameName}
+                                {gameName.replaceAll("_", " ")}
                               </div>
                             );
                           }}
@@ -544,7 +546,7 @@ function App() {
                                 alt=""
                               />
                             </Show>
-                            {gameName}
+                            {gameName.replaceAll("_", " ")}
                           </div>
                         );
                       }}

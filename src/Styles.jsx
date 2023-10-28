@@ -49,6 +49,12 @@ export function Styles(props) {
           opacity: 1;
           animation: dialogFadeIn 0.3s ease normal;
         }
+
+        .modalWindow {
+          border: solid 2px #ffffff1f;
+          background-color: #121212;
+        }
+
         button,
         input {
           background-color: ${props.secondaryColor()};
@@ -215,6 +221,7 @@ export function Styles(props) {
         .bgBlur {
           backdrop-filter: blur(10px) !important;
           background-color: ${props.secondaryColorForBlur()} !important;
+          border-radius: 6px;
         }
 
         .centerHero .heroBlur {
@@ -237,6 +244,10 @@ export function Styles(props) {
           color: #ffffff80;
           cursor: grab;
         }
+        .emptyFolderTitleBar {
+          color: #ffffff80;
+          cursor: move;
+        }
         button:focus,
         input:focus {
           outline: 0;
@@ -245,7 +256,7 @@ export function Styles(props) {
           display: flex;
           gap: 10px;
           align-items: center;
-          cursor: grab;
+          cursor: move;
         }
         .editButton {
           padding: 0;

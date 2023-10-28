@@ -31,6 +31,8 @@ import {
 
 import { exit } from "@tauri-apps/api/process";
 
+import { getData } from "../App";
+
 import {
   isPermissionGranted,
   requestPermission,
@@ -100,7 +102,7 @@ export function EditGame() {
   async function updateGame() {
     console.log(editedGameName());
 
-    delete libraryData().games[selectedGame().name];
+    delete libraryData().games[selectedGame().name.replaceAll(" ", "_")];
 
     setLibraryData(libraryData());
 
@@ -166,7 +168,7 @@ export function EditGame() {
       });
     }
 
-    libraryData().games[editedGameName()] = {
+    libraryData().games[editedGameName().replaceAll(" ", "_")] = {
       location: editedLocatedGame(),
       name: editedGameName(),
       heroImage: editedLocatedHeroImage(),
@@ -185,11 +187,13 @@ export function EditGame() {
       ) {
         if (
           Object.values(libraryData().folders)[i].games[j] ==
-          selectedGame().name
+          selectedGame().name.replaceAll(" ", "_")
         ) {
           Object.values(libraryData().folders)[i].games.splice(j, 1);
 
-          Object.values(libraryData().folders)[i].games.push(editedGameName());
+          Object.values(libraryData().folders)[i].games.push(
+            editedGameName().replaceAll(" ", "_"),
+          );
         }
       }
     }
@@ -203,12 +207,13 @@ export function EditGame() {
         dir: BaseDirectory.AppData,
       },
     ).then(() => {
-      location.reload();
+      getData();
+      document.querySelector("[data-editGameModal]").close();
     });
   }
 
   async function deleteGame() {
-    delete libraryData().games[selectedGame().name];
+    delete libraryData().games[selectedGame().name.replaceAll(" ", "_")];
 
     for (let i = 0; i < Object.values(libraryData().folders).length; i++) {
       console.log(Object.values(libraryData().folders)[i].games);
@@ -236,7 +241,7 @@ export function EditGame() {
         dir: BaseDirectory.AppData,
       },
     ).then(() => {
-      location.reload();
+      getData();
     });
   }
 
@@ -356,7 +361,7 @@ export function EditGame() {
               className="flex items-center functionalInteractables"
               onClick={() => {
                 document.querySelector("[data-editGameModal]").close();
-                location.reload();
+                getData();
               }}>
               ​
               <svg

@@ -21,6 +21,8 @@ import {
 
 import { exit } from "@tauri-apps/api/process";
 
+import { getData } from "../App";
+
 import {
   isPermissionGranted,
   requestPermission,
@@ -55,7 +57,7 @@ export function EditFolder() {
         dir: BaseDirectory.AppData,
       },
     ).then(() => {
-      location.reload();
+      getData();
     });
   }
   return (
@@ -63,7 +65,7 @@ export function EditFolder() {
       <button
         onClick={() => {
           document.querySelector("[data-editFolderModal]").close();
-          location.reload();
+          getData();
         }}>
         close
       </button>
