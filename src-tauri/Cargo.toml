@@ -17,6 +17,8 @@ tauri = { version = "1.4", features = [ "api-all"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 open = "4"
+tauri-plugin-window-state = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
+
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem

@@ -9,6 +9,8 @@ import {
   createDir,
 } from "@tauri-apps/api/fs";
 
+import Fuse from "fuse.js";
+
 import { exit } from "@tauri-apps/api/process";
 
 import {
@@ -446,41 +448,7 @@ function App() {
           <Show when={searchValue() != "" && searchValue() != undefined}>
             {() => {
               let searchResults = [];
-
-              // ? Function By Anwarul Islam From codementor.io
-              function levenshteinDistance(str1, str2) {
-                const len1 = str1.length;
-                const len2 = str2.length;
-
-                let matrix = Array(len1 + 1);
-                for (let i = 0; i <= len1; i++) {
-                  matrix[i] = Array(len2 + 1);
-                }
-
-                for (let i = 0; i <= len1; i++) {
-                  matrix[i][0] = i;
-                }
-
-                for (let j = 0; j <= len2; j++) {
-                  matrix[0][j] = j;
-                }
-
-                for (let i = 1; i <= len1; i++) {
-                  for (let j = 1; j <= len2; j++) {
-                    if (str1[i - 1] === str2[j - 1]) {
-                      matrix[i][j] = matrix[i - 1][j - 1];
-                    } else {
-                      matrix[i][j] = Math.min(
-                        matrix[i - 1][j] + 1,
-                        matrix[i][j - 1] + 1,
-                        matrix[i - 1][j - 1] + 1,
-                      );
-                    }
-                  }
-                }
-
-                return matrix[len1][len2];
-              }
+              let allGameNames = [];
 
               if (searchValue() != "" && searchValue() != undefined) {
                 for (
@@ -488,15 +456,23 @@ function App() {
                   i < Object.values(libraryData().games).length;
                   i++
                 ) {
-                  if (
-                    levenshteinDistance(
-                      searchValue(),
-                      Object.keys(libraryData().games)[i],
-                    ) <= 4
-                  ) {
-                    searchResults.unshift(Object.keys(libraryData().games)[i]);
-                  }
+                  allGameNames.push(
+                    Object.keys(libraryData().games)[i].replaceAll("_", " "),
+                  );
                 }
+              }
+
+              let fuse = new Fuse(Object.values(libraryData().games), {
+                threshold: 0.5,
+                keys: ["name"],
+              });
+
+              for (let i = 0; i < fuse.search(searchValue()).length; i++) {
+                searchResults.push(
+                  fuse
+                    .search(searchValue())
+                    [i].item["name"].replaceAll(" ", "_"),
+                );
               }
 
               return (

@@ -18,6 +18,8 @@ import {
   setPermissionGranted,
 } from "./Signals";
 
+import Fuse from "fuse.js";
+
 import { For, Show, createSignal, onMount, createEffect } from "solid-js";
 import { invoke, convertFileSrc } from "@tauri-apps/api/tauri";
 import {
@@ -494,7 +496,7 @@ export function SideBar() {
 
                               e.dataTransfer.setData(
                                 "oldFolderName",
-                                folder.name,
+                                folderName,
                               );
                             }}
                             onDragEnd={(e) => {
