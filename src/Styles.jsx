@@ -11,16 +11,7 @@ export function Styles(props) {
         .folderRack {
           margin: 0px 0px 40px 0px;
         }
-        #gamesDiv {
-          width: 100%;
-          position: absolute;
-          height: 100vh;
-          overflow-y: scroll;
-          padding: 20px 30px 20px ${props.gamesDivLeftPadding()};
-          width: 100%;
-        }
         #sideBar {
-          width: 20%;
           display: flex;
           flex-direction: column;
           height: 100vh;
@@ -53,6 +44,7 @@ export function Styles(props) {
         .modalWindow {
           border: solid 2px #ffffff1f;
           background-color: #121212;
+          border-radius: ${props.roundedBorders() ? "6px" : "0px"};
         }
 
         button,
@@ -60,7 +52,7 @@ export function Styles(props) {
           background-color: ${props.secondaryColor()};
           border: 0;
           padding: 10px;
-          border-radius: ${props.borderRadius()};
+          border-radius: ${props.roundedBorders() ? "6px" : "0px"};
         }
         #searchInput {
           width: 100%;
@@ -80,7 +72,7 @@ export function Styles(props) {
         .sideBarFolder {
           margin: 0px 0px 12px 0px;
           background: ${props.secondaryColor()};
-          border-radius: ${props.borderRadius()};
+          border-radius: ${props.roundedBorders() ? "6px" : "0px"};
           display: flex;
           justify-items: center;
           flex-direction: column;
@@ -221,7 +213,7 @@ export function Styles(props) {
         .bgBlur {
           backdrop-filter: blur(10px) !important;
           background-color: ${props.secondaryColorForBlur()} !important;
-          border-radius: 6px;
+          border-radius: ${props.roundedBorders() ? "6px" : "0px"};
         }
 
         .centerHero .heroBlur {
@@ -230,7 +222,7 @@ export function Styles(props) {
 
         .popUpHero,
         .gridImage {
-          border-radius: ${props.borderRadius()};
+          border-radius: ${props.roundedBorders() ? "6px" : "0px"};
         }
 
         .popUpHero {
@@ -293,7 +285,7 @@ export function Styles(props) {
           font-family: Helvetica;
           line-height: 12px;
           white-space: nowrap;
-          border-radius: 6px;
+          border-radius: ${props.roundedBorders() ? "6px" : "0px"};
         }
 
         .currentlyDragging {

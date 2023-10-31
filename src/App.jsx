@@ -45,8 +45,6 @@ import {
   setSearchValue,
   notificationGameName,
   setNotificaitonGameName,
-  borderRadius,
-  setBorderRadius,
   secondaryColor,
   setSecondaryColor,
   secondaryColorForBlur,
@@ -93,6 +91,12 @@ import {
   setEditedFolderName,
   editedHideFolder,
   setEditedHideFolder,
+  roundedBorders,
+  setRoundedBorders,
+  gameTitle,
+  setGameTitle,
+  folderTitle,
+  setFolderTitle,
 } from "./Signals";
 
 import { SideBar } from "./SideBar";
@@ -101,6 +105,35 @@ import { EditGame } from "./modals/EditGame";
 import { NewFolder } from "./modals/NewFolder";
 import { EditFolder } from "./modals/EditFolder";
 import { GamePopUp } from "./modals/GamePopUp";
+import { Notepad } from "./modals/Notepad";
+import { Settings } from "./modals/Settings";
+
+export function getSettingsData() {
+  if (
+    libraryData().userSettings.roundedBorders == true ||
+    libraryData().userSettings.roundedBorders == undefined
+  ) {
+    setRoundedBorders(true);
+  } else {
+    setRoundedBorders(false);
+  }
+  if (
+    libraryData().userSettings.gameTitle == true ||
+    libraryData().userSettings.gameTitle == undefined
+  ) {
+    setGameTitle(true);
+  } else {
+    setGameTitle(false);
+  }
+  if (
+    libraryData().userSettings.folderTitle == true ||
+    libraryData().userSettings.folderTitle == undefined
+  ) {
+    setFolderTitle(true);
+  } else {
+    setFolderTitle(false);
+  }
+}
 
 export async function getData() {
   setAppDataDirPath(await appDataDir());
@@ -132,13 +165,17 @@ export async function getData() {
 
       console.log("data fetched");
 
-      setShowSideBar(libraryData().showSideBar);
-
-      if (showSideBar() == true || showSideBar() == undefined) {
+      if (
+        libraryData().userSettings.showSideBar == true ||
+        libraryData().userSettings.showSideBar == undefined
+      ) {
         setGamesDivLeftPadding("23%");
+        setShowSideBar(true);
       } else {
         setGamesDivLeftPadding("30px");
+        setShowSideBar(false);
       }
+      getSettingsData();
     } else return;
   } else {
     await createDir("data", {
@@ -203,22 +240,49 @@ function App() {
 
     if (e.ctrlKey && e.code == "KeyN") {
       e.preventDefault();
-      document.querySelector("[data-newGameModal]").showModal();
-      setModalBackground("#121212cc");
+      if (document.querySelector("[data-newGameModal]").open) {
+        document.querySelector("[data-newGameModal]").close();
+        setModalBackground("#12121266");
+      } else {
+        document.querySelector("[data-newGameModal]").showModal();
+        setModalBackground("#121212cc");
+      }
     }
 
     if (e.ctrlKey && e.code == "KeyM") {
       e.preventDefault();
-      document.querySelector("[data-newFolderModal]").showModal();
+      if (document.querySelector("[data-newFolderModal]").open) {
+        document.querySelector("[data-newFolderModal]").close();
+      } else {
+        document.querySelector("[data-newFolderModal]").showModal();
+      }
+    }
+
+    if (e.ctrlKey && e.code == "KeyL") {
+      e.preventDefault();
+      if (document.querySelector("[data-notepadModal]").open) {
+        document.querySelector("[data-notepadModal]").close();
+      } else {
+        document.querySelector("[data-notepadModal]").showModal();
+      }
+    }
+
+    if (e.ctrlKey && e.code == "Period") {
+      e.preventDefault();
+      if (document.querySelector("[data-settingsModal]").open) {
+        document.querySelector("[data-settingsModal]").close();
+      } else {
+        document.querySelector("[data-settingsModal]").showModal();
+      }
+    }
+
+    if (e.code == "Escape") {
+      document.querySelector("#searchInput").blur();
     }
 
     if (e.ctrlKey && e.code == "Backslash") {
       e.preventDefault();
       toggleSideBar();
-    }
-
-    if (e.code == "Escape") {
-      document.querySelector("#searchInput").blur();
     }
   });
 
@@ -228,12 +292,12 @@ function App() {
 
   async function toggleSideBar() {
     if (
-      libraryData().showSideBar == true ||
-      libraryData().showSideBar == undefined
+      libraryData().userSettings.showSideBar == true ||
+      libraryData().userSettings.showSideBar == undefined
     ) {
-      libraryData().showSideBar = false;
+      libraryData().userSettings.showSideBar = false;
     } else {
-      libraryData().showSideBar = true;
+      libraryData().userSettings.showSideBar = true;
     }
 
     await writeTextFile(
@@ -309,7 +373,8 @@ function App() {
       </head>
 
       <Styles
-        borderRadius={borderRadius}
+        roundedBorders={roundedBorders}
+        gameTitle={gameTitle}
         secondaryColor={secondaryColor}
         secondaryColorForBlur={secondaryColorForBlur}
         primaryColor={primaryColor}
@@ -323,8 +388,8 @@ function App() {
           <svg
             className="absolute right-[30px] top-[30px] z-10 rotate-180 cursor-pointer"
             onClick={toggleSideBar}
-            width="12"
-            height="12"
+            width="12.19"
+            height="14"
             viewBox="0 0 12 12"
             fill="none"
             xmlns="http://www.w3.org/2000/svg">
@@ -346,13 +411,15 @@ function App() {
             />
           </svg>
         </Show>
-
         <Show when={showSideBar() || showSideBar() == undefined}>
-          <SideBar></SideBar>
+          <SideBar />
         </Show>
-
-        {/* <div className=""> */}
-        <div id="gamesDiv" className="">
+        <div
+          className={`w-[100%] absolute h-screen overflow-y-scroll py-[20px] pr-[30px]   ${
+            showSideBar()
+              ? "pl-[23%] min-[1500px]:pl-[17%]"
+              : "pl-[30px] min-[1500px]:pl-[30px]"
+          }`}>
           <Show when={searchValue() == "" || searchValue() == undefined}>
             <For each={currentFolders()}>
               {(folderName) => {
@@ -361,10 +428,16 @@ function App() {
                 return (
                   <Show when={folder.games != "" && !folder.hide}>
                     <div className="folderRack">
-                      <h1>{folder.name}</h1>
+                      <Show when={folderTitle()}>
+                        <h1>{folder.name}</h1>
+                      </Show>
                       <div
-                        className={`grid gap-5 mt-4 foldersDiv
-                          ${showSideBar() ? "grid-cols-5" : "grid-cols-6"}`}>
+                        className={`grid gap-5 mt-4 foldersDiv 
+                          ${
+                            showSideBar()
+                              ? "grid-cols-5 min-[1500px]:grid-cols-7"
+                              : "grid-cols-6 min-[1500px]:grid-cols-8"
+                          }`}>
                         <For each={folder.games}>
                           {(gameName) => {
                             return (
@@ -393,15 +466,17 @@ function App() {
                                   when={
                                     !libraryData().games[gameName].favourite
                                   }>
-                                  <img
-                                    className="relative z-10 gridImage   group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none"
-                                    src={convertFileSrc(
-                                      appDataDirPath() +
-                                        libraryData().games[gameName].gridImage,
-                                    )}
-                                    alt=""
-                                    width="100%"
-                                  />
+                                  <div className="w-[100%]">
+                                    <img
+                                      className="relative z-10 gridImage  object-fill  group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none"
+                                      src={convertFileSrc(
+                                        appDataDirPath() +
+                                          libraryData().games[gameName]
+                                            .gridImage,
+                                      )}
+                                      alt=""
+                                    />
+                                  </div>
                                 </Show>
                                 <Show
                                   when={
@@ -432,7 +507,9 @@ function App() {
                                     />
                                   </div>
                                 </Show>
-                                {gameName.replaceAll("_", " ")}
+                                <Show when={gameTitle()}>
+                                  {gameName.replaceAll("_", " ")}
+                                </Show>
                               </div>
                             );
                           }}
@@ -522,7 +599,9 @@ function App() {
                                 alt=""
                               />
                             </Show>
-                            {gameName.replaceAll("_", " ")}
+                            <Show when={gameTitle()}>
+                              {gameName.replaceAll("_", " ")}
+                            </Show>
                           </div>
                         );
                       }}
@@ -552,8 +631,8 @@ function App() {
               );
             }}
           </Show>
+          <img src="https://app.piratepx.com/ship?p=10ee2af1-5d97-4777-84dc-b537862876af&" />
         </div>
-        {/* </div> */}
       </div>
       <div id="abovePage">
         <NewGame />
@@ -561,6 +640,8 @@ function App() {
         <NewFolder />
         <EditFolder />
         <GamePopUp />
+        <Notepad />
+        <Settings />
       </div>
     </>
   );

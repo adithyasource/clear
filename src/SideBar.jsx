@@ -57,12 +57,12 @@ export function SideBar() {
 
   async function toggleSideBar() {
     if (
-      libraryData().showSideBar == true ||
-      libraryData().showSideBar == undefined
+      libraryData().userSettings.showSideBar == true ||
+      libraryData().userSettings.showSideBar == undefined
     ) {
-      libraryData().showSideBar = false;
+      libraryData().userSettings.showSideBar = false;
     } else {
-      libraryData().showSideBar = true;
+      libraryData().userSettings.showSideBar = true;
     }
 
     await writeTextFile(
@@ -182,7 +182,9 @@ export function SideBar() {
 
   return (
     <>
-      <div id="sideBar" className="z-10 py-[20px] pl-[20px] relative">
+      <div
+        id="sideBar"
+        className="z-10 py-[20px] pl-[20px] relative overflow-hidden w-[20%] min-[1500px]:w-[15%]">
         <div id="sideBarTop">
           <div id="searchAndDestroy">
             <input
@@ -485,7 +487,7 @@ export function SideBar() {
                       <For each={folder.games}>
                         {(gameName) => (
                           <p
-                            className="mt-5 sideBarGame "
+                            className="mt-5 sideBarGame"
                             aria-label="play"
                             draggable={true}
                             onDragStart={(e) => {
@@ -733,7 +735,7 @@ export function SideBar() {
             <button
               className=" standardButton"
               onClick={() => {
-                document.querySelector("[data-notepad]").showModal();
+                document.querySelector("[data-notepadModal]").showModal();
               }}>
               notepad
               <svg
@@ -759,7 +761,7 @@ export function SideBar() {
             <button
               className=" standardButton"
               onClick={() => {
-                document.querySelector("[data-settings]").showModal();
+                document.querySelector("[data-settingsModal]").showModal();
               }}>
               settings
               <svg

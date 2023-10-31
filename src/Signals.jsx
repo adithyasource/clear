@@ -12,6 +12,7 @@ export const [permissionGranted, setPermissionGranted] = createSignal(
 );
 export const [appDataDirPath, setAppDataDirPath] = createSignal({});
 export const [libraryData, setLibraryData] = createSignal({});
+export const [notepadValue, setNotepadValue] = createSignal("");
 
 // !? References
 export const [selectedGame, setSelectedGame] = createSignal({});
@@ -22,7 +23,6 @@ export const [searchValue, setSearchValue] = createSignal();
 export const [notificationGameName, setNotificaitonGameName] = createSignal();
 
 // !? Styles Signals
-export const [borderRadius, setBorderRadius] = createSignal("6px");
 export const [secondaryColor, setSecondaryColor] = createSignal("#1c1c1c");
 export const [secondaryColorForBlur, setSecondaryColorForBlur] =
   createSignal("#272727cc");
@@ -33,6 +33,9 @@ export const [locatingLogoBackground, setLocatingLogoBackground] =
 export const [gamesDivLeftPadding, setGamesDivLeftPadding] =
   createSignal("10px");
 export const [showSideBar, setShowSideBar] = createSignal(true);
+export const [roundedBorders, setRoundedBorders] = createSignal(true);
+export const [gameTitle, setGameTitle] = createSignal(true);
+export const [folderTitle, setFolderTitle] = createSignal(true);
 
 // !? Create Signals
 export const [gameName, setGameName] = createSignal();

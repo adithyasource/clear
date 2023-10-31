@@ -5,35 +5,13 @@ import {
   setFolderName,
   hideFolder,
   setHideFolder,
-  permissionGranted,
-  setPermissionGranted,
   currentFolders,
 } from "../Signals";
 
 import { For, Show, createSignal, onMount } from "solid-js";
-import { invoke, convertFileSrc } from "@tauri-apps/api/tauri";
-import {
-  writeTextFile,
-  BaseDirectory,
-  readTextFile,
-  copyFile,
-  exists,
-  createDir,
-} from "@tauri-apps/api/fs";
-
-import { exit } from "@tauri-apps/api/process";
+import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
 import { getData } from "../App";
-
-import {
-  isPermissionGranted,
-  requestPermission,
-  sendNotification,
-} from "@tauri-apps/api/notification";
-
-import { appDataDir } from "@tauri-apps/api/path";
-
-import { open } from "@tauri-apps/api/dialog";
 
 export function NewFolder() {
   async function addFolder() {
@@ -64,9 +42,26 @@ export function NewFolder() {
         <div className="modalWindow w-[50%]  rounded-[6px] p-6">
           <div className="flex justify-between">
             <div>
-              <h1>add new game</h1>
+              <h1>add new folder</h1>
             </div>
-            <div className="flex gap-3 ">
+            <div className="flex items-center gap-5">
+              <div
+                onClick={() => {
+                  setHideFolder((hideFolder) => !hideFolder);
+                }}
+                className="relative cursor-pointer">
+                <Show when={hideFolder()}>
+                  <div className="relative">
+                    <div className="">hide in expanded view</div>
+                    <div className="absolute blur-[5px] opacity-70 inset-0">
+                      hide in expanded view
+                    </div>
+                  </div>
+                </Show>
+                <Show when={!hideFolder()}>
+                  <div className="">hide in expanded view</div>
+                </Show>
+              </div>
               <button
                 onClick={addFolder}
                 className="flex items-center gap-1 functionalInteractables ">
@@ -126,30 +121,12 @@ export function NewFolder() {
               type="text"
               name=""
               id=""
-              className=""
+              className="w-full"
               onInput={(e) => {
                 setFolderName(e.currentTarget.value);
               }}
               placeholder="name of folder"
             />
-
-            <div
-              onClick={() => {
-                setHideFolder((hideFolder) => !hideFolder);
-              }}
-              className="relative">
-              <Show when={hideFolder()}>
-                <div className="relative">
-                  <div className="">hide in expanded view</div>
-                  <div className="absolute blur-[5px] opacity-70 inset-0">
-                    hide in expanded view
-                  </div>
-                </div>
-              </Show>
-              <Show when={!hideFolder()}>
-                <div className="">hide in expanded view</div>
-              </Show>
-            </div>
           </div>
         </div>
       </div>
