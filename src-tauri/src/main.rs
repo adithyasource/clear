@@ -8,11 +8,15 @@ fn openGame(gameLocation: &str) {
     open::that(gameLocation);
 }
 
+#[tauri::command]
+fn openLibLocation() {
+    open::that(format!("C:\\Users\\{}\\AppData\\Roaming\\com.adithya.clear", whoami::username()));
+}
 
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_window_state::Builder::default().build())
-        .invoke_handler(tauri::generate_handler![openGame])
+        .invoke_handler(tauri::generate_handler![openGame, openLibLocation])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

@@ -14,6 +14,13 @@ import {
   setLocatedLogo,
   locatedGame,
   setlocatedGame,
+  foundGridImage,
+  foundHeroImage,
+  foundLogoImage,
+  setFoundGridImage,
+  setFoundHeroImage,
+  setFoundLogoImage,
+  roundedBorders,
 } from "../Signals";
 
 import { For, Show, createSignal, onMount } from "solid-js";
@@ -40,6 +47,10 @@ import {
 import { appDataDir } from "@tauri-apps/api/path";
 
 import { open } from "@tauri-apps/api/dialog";
+
+import { fetch, getClient, ResponseType } from "@tauri-apps/api/http";
+
+import Fuse from "fuse.js";
 
 export function NewGame() {
   async function addGame() {
@@ -85,8 +96,8 @@ export function NewGame() {
 
     await writeTextFile(
       {
-        path: "data/lib.json",
-        contents: JSON.stringify(libraryData(), null, 1),
+        path: "lib.json",
+        contents: JSON.stringify(libraryData(), null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -149,8 +160,88 @@ export function NewGame() {
     );
   }
 
-  function getGameMetaData() {
-    // TODO Setup IGDB AWS Proxy
+  async function getGameAssets() {
+    let steamAppId;
+    let gridsUrls = [];
+    let heroesUrls = [];
+    let logosUrls = [];
+    let allGames = [];
+
+    const response = await fetch(
+      "https://api.steampowered.com/ISteamApps/GetAppList/v2/",
+      {
+        method: "GET",
+        timeout: 30,
+        contentType: "application/json",
+      },
+    );
+
+    for (let x = 0; x < response.data.applist["apps"].length; x++) {
+      allGames.push(response.data.applist["apps"][x].name);
+    }
+
+    let fuse = new Fuse(allGames, {
+      threshold: 0.3,
+    });
+
+    async function iterateGames(iteration) {
+      let closestMatchingName = fuse.search(gameName())[iteration].item;
+
+      for (let x = 0; x < response.data.applist["apps"].length; x++) {
+        if (response.data.applist["apps"][x].name == closestMatchingName) {
+          steamAppId = response.data.applist["apps"][x].appid;
+          console.log(closestMatchingName);
+        }
+      }
+
+      const client = await getClient();
+
+      const grids = await client.get(
+        `https://www.steamgriddb.com/api/v2/grids/steam/${steamAppId}`,
+        {
+          timeout: 30,
+          responseType: ResponseType.JSON,
+          headers: {
+            Authorization: "Bearer 4e602b67332f3b8afff8d994b40dc1b7",
+          },
+        },
+      );
+
+      const heroes = await client.get(
+        `https://www.steamgriddb.com/api/v2/heroes/steam/${steamAppId}`,
+        {
+          timeout: 30,
+          responseType: ResponseType.JSON,
+          headers: {
+            Authorization: "Bearer 4e602b67332f3b8afff8d994b40dc1b7",
+          },
+        },
+      );
+
+      const logos = await client.get(
+        `https://www.steamgriddb.com/api/v2/logos/steam/${steamAppId}`,
+        {
+          timeout: 30,
+          responseType: ResponseType.JSON,
+          headers: {
+            Authorization: "Bearer 4e602b67332f3b8afff8d994b40dc1b7",
+          },
+        },
+      );
+
+      setFoundGridImage(grids.data["data"][0].thumb);
+
+      setFoundHeroImage(heroes.data["data"][0].thumb);
+
+      setFoundLogoImage(logos.data["data"][0].thumb);
+    }
+
+    try {
+      iterateGames(0);
+      console.log("failed");
+    } catch (error) {
+      iterateGames(1);
+    }
   }
 
   return (
@@ -246,20 +337,33 @@ export function NewGame() {
               onClick={locateGridImage}
               className="locatingGridImg h-[100%] aspect-[2/3] group relative overflow-hidden"
               aria-label="grid/cover">
-              <Show when={locatedGridImage()}>
+              <Show when={foundGridImage()}>
                 <img
                   className="absolute inset-0"
-                  src={convertFileSrc(locatedGridImage())}
+                  src={foundGridImage()}
                   alt=""
                 />
                 <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
                   grid/cover
                 </span>
               </Show>
-              <Show when={!locatedGridImage()}>
-                <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
-                  grid/cover
-                </span>
+              <Show when={!foundGridImage()}>
+                {" "}
+                <Show when={locatedGridImage()}>
+                  <img
+                    className="absolute inset-0"
+                    src={convertFileSrc(locatedGridImage())}
+                    alt=""
+                  />
+                  <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
+                    grid/cover
+                  </span>
+                </Show>
+                <Show when={!locatedGridImage()}>
+                  <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
+                    grid/cover
+                  </span>
+                </Show>
               </Show>
             </button>
           </div>
@@ -272,55 +376,88 @@ export function NewGame() {
                   className="h-[250px] aspect-[67/26] group relative p-0 m-0"
                   aria-label="hero">
                   <Show
-                    when={locatedHeroImage()}
+                    when={foundHeroImage()}
                     className="absolute inset-0 overflow-hidden">
                     <img
-                      src={convertFileSrc(locatedHeroImage())}
+                      src={foundHeroImage()}
                       alt=""
                       className="absolute inset-0 h-[100%] rounded-[6px]"
                     />
                     <img
-                      src={convertFileSrc(locatedHeroImage())}
+                      src={foundHeroImage()}
                       alt=""
-                      className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px]"
+                      className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px] opacity-[0.4]"
                     />
                     <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
                       hero image
                     </span>
                   </Show>
-                  <Show when={!locatedHeroImage()}>
-                    <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
-                      hero image
-                    </span>
+                  <Show when={!foundHeroImage()}>
+                    <Show
+                      when={locatedHeroImage()}
+                      className="absolute inset-0 overflow-hidden">
+                      <img
+                        src={convertFileSrc(locatedHeroImage())}
+                        alt=""
+                        className="absolute inset-0 h-[100%] rounded-[6px]"
+                      />
+                      <img
+                        src={convertFileSrc(locatedHeroImage())}
+                        alt=""
+                        className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px] opacity-[0.4]"
+                      />
+                      <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
+                        hero image
+                      </span>
+                    </Show>
+                    <Show when={!locatedHeroImage()}>
+                      <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
+                        hero image
+                      </span>
+                    </Show>
                   </Show>
                 </button>
               </div>
 
-              <Show when={locatedLogo()}>
+              <Show when={foundLogoImage()}>
                 <button
                   onClick={locateLogo}
                   className="locatedHeroImg group  absolute bottom-[20px] left-[20px] "
                   aria-label="logo">
-                  <img
-                    src={convertFileSrc(locatedLogo())}
-                    alt=""
-                    className="h-[60px] "
-                  />
+                  <img src={foundLogoImage()} alt="" className="h-[60px] " />
                   <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
                     logo
                   </span>
                 </button>
               </Show>
 
-              <Show when={!locatedLogo()}>
-                <button
-                  onClick={locateLogo}
-                  className="locatingLogoImg group  absolute bottom-[20px] left-[20px] w-[170px] h-[70px]  functionalInteractables "
-                  aria-label="logo">
-                  <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
-                    logo
-                  </span>
-                </button>
+              <Show when={!foundLogoImage()}>
+                <Show when={locatedLogo()}>
+                  <button
+                    onClick={locateLogo}
+                    className="locatedHeroImg group  absolute bottom-[20px] left-[20px] "
+                    aria-label="logo">
+                    <img
+                      src={convertFileSrc(locatedLogo())}
+                      alt=""
+                      className="h-[60px] "
+                    />
+                    <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
+                      logo
+                    </span>
+                  </button>
+                </Show>
+
+                <Show when={!locatedLogo()}>
+                  <button
+                    onClick={locateLogo}
+                    className="locatingLogoImg group  absolute bottom-[20px] left-[20px] w-[170px] h-[70px]  functionalInteractables "
+                    aria-label="logo">
+                    <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
+                      logo
+                    </span>
+                  </button>
+                </Show>
               </Show>
             </div>
 
@@ -339,11 +476,14 @@ export function NewGame() {
                   className=""
                   placeholder="name of game"
                 />
-                <button
-                  className="text-[10px] px-2 py-1 mr-3"
-                  onClick={getGameMetaData}>
+                <div
+                  aria-label="not that accurate"
+                  className={`bg-[#1c1c1c] py-1 px-3 mr-2 cursor-pointer w-[max-content] text-[#ffffff80] hint--left hint--no-animate hint--rounded hint--no-arrow rounded-[${
+                    roundedBorders() ? "6px" : "0px"
+                  }] `}
+                  onClick={getGameAssets}>
                   find assets
-                </button>
+                </div>
               </div>
 
               <button onClick={locateGame} className="functionalInteractables ">

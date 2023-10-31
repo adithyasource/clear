@@ -113,7 +113,7 @@ export function Styles(props) {
         }
         ::-webkit-scrollbar-thumb {
           background: ${props.secondaryColor()};
-          border-radius: 10px;
+          border-radius: ${props.roundedBorders() ? "10px" : "0px"};
         }
         #sideBarFolders::-webkit-scrollbar {
           display: none;

@@ -96,6 +96,8 @@ import {
   setGameTitle,
   folderTitle,
   setFolderTitle,
+  quitAfterOpen,
+  setQuitAfterOpen,
 } from "../Signals";
 
 import { getData, getSettingsData } from "../App";
@@ -139,7 +141,7 @@ export function Settings() {
               </button>
             </div>
 
-            <div className="grid grid-cols-3 mt-10">
+            <div className="grid grid-cols-3 mt-[25px] gap-y-4">
               <div
                 onClick={async () => {
                   setRoundedBorders((x) => !x);
@@ -148,8 +150,8 @@ export function Settings() {
 
                   await writeTextFile(
                     {
-                      path: "data/lib.json",
-                      contents: JSON.stringify(libraryData(), null, 1),
+                      path: "lib.json",
+                      contents: JSON.stringify(libraryData(), null, 4),
                     },
                     {
                       dir: BaseDirectory.AppData,
@@ -177,8 +179,8 @@ export function Settings() {
 
                   await writeTextFile(
                     {
-                      path: "data/lib.json",
-                      contents: JSON.stringify(libraryData(), null, 1),
+                      path: "lib.json",
+                      contents: JSON.stringify(libraryData(), null, 4),
                     },
                     {
                       dir: BaseDirectory.AppData,
@@ -206,8 +208,8 @@ export function Settings() {
 
                   await writeTextFile(
                     {
-                      path: "data/lib.json",
-                      contents: JSON.stringify(libraryData(), null, 1),
+                      path: "lib.json",
+                      contents: JSON.stringify(libraryData(), null, 4),
                     },
                     {
                       dir: BaseDirectory.AppData,
@@ -227,22 +229,53 @@ export function Settings() {
                   <div className="">folder title</div>
                 </Show>
               </div>
+              <div
+                onClick={async () => {
+                  setQuitAfterOpen((x) => !x);
+
+                  libraryData().userSettings.quitAfterOpen = quitAfterOpen();
+
+                  await writeTextFile(
+                    {
+                      path: "lib.json",
+                      contents: JSON.stringify(libraryData(), null, 4),
+                    },
+                    {
+                      dir: BaseDirectory.AppData,
+                    },
+                  ).then(getData());
+                }}
+                className="relative cursor-pointer">
+                <Show when={quitAfterOpen()}>
+                  <div className="relative">
+                    <div className="">quit after opening game</div>
+                    <div className="absolute blur-[5px] opacity-70 inset-0">
+                      quit after opening game
+                    </div>
+                  </div>
+                </Show>
+                <Show when={!quitAfterOpen()}>
+                  <div className="">quit after opening game</div>
+                </Show>
+              </div>
             </div>
 
-            <div className="flex gap-5 mt-10">
+            <div className="flex gap-3 items-start mt-[35px]">
               <button
                 className="flex items-center functionalInteractables"
-                onClick={() => {}}>
-                export library
+                onClick={() => {
+                  invoke("openLibLocation");
+                }}>
+                open library location
               </button>
-              <button
-                className="flex items-center functionalInteractables"
-                onClick={() => {}}>
-                import library
-              </button>
+              <span className="text-[#ffffff80] w-[50%]">
+                these are all the files that the app stores on your pc. you can
+                copy these files to the same location on another pc to get your
+                library there
+              </span>
             </div>
 
-            <div className="grid grid-cols-3 mt-10 gap-y-4">
+            <div className="grid grid-cols-3 mt-[35px] gap-y-4">
               <div className="flex items-center gap-3">
                 <div
                   className={`bg-[#1c1c1c] py-1 px-3 w-[max-content] text-[#ffffff80] rounded-[${
@@ -252,24 +285,7 @@ export function Settings() {
                 </div>
                 new game
               </div>
-              <div className="flex items-center gap-3">
-                <div
-                  className={`bg-[#1c1c1c] py-1 px-3 w-[max-content] text-[#ffffff80] rounded-[${
-                    roundedBorders() ? "6px" : "0px"
-                  }] `}>
-                  ctrl + m
-                </div>
-                new folder
-              </div>
-              <div className="flex items-center gap-3">
-                <div
-                  className={`bg-[#1c1c1c] py-1 px-3 w-[max-content] text-[#ffffff80] rounded-[${
-                    roundedBorders() ? "6px" : "0px"
-                  }] `}>
-                  ctrl + w
-                </div>
-                close app
-              </div>
+
               <div className="flex items-center gap-3">
                 <div
                   className={`bg-[#1c1c1c] py-1 px-3 w-[max-content] text-[#ffffff80] rounded-[${
@@ -278,24 +294,6 @@ export function Settings() {
                   ctrl + .
                 </div>
                 open settings
-              </div>
-              <div className="flex items-center gap-3">
-                <div
-                  className={`bg-[#1c1c1c] py-1 px-3 w-[max-content] text-[#ffffff80] rounded-[${
-                    roundedBorders() ? "6px" : "0px"
-                  }] `}>
-                  ctrl + l
-                </div>
-                open notepad
-              </div>
-              <div className="flex items-center gap-3">
-                <div
-                  className={`bg-[#1c1c1c] py-1 px-3 w-[max-content] text-[#ffffff80] rounded-[${
-                    roundedBorders() ? "6px" : "0px"
-                  }] `}>
-                  escape
-                </div>
-                close dialogs
               </div>
               <div className="flex items-center gap-3">
                 <div
@@ -311,10 +309,47 @@ export function Settings() {
                   className={`bg-[#1c1c1c] py-1 px-3 w-[max-content] text-[#ffffff80] rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }] `}>
-                  ctrl + \
+                  ctrl + m
+                </div>
+                new folder
+              </div>
+              <div className="flex items-center gap-3">
+                <div
+                  className={`bg-[#1c1c1c] py-1 px-3 w-[max-content] text-[#ffffff80] rounded-[${
+                    roundedBorders() ? "6px" : "0px"
+                  }] `}>
+                  ctrl + l
+                </div>
+                open notepad
+              </div>
+              <div className="flex items-center gap-3">
+                <div
+                  className={`bg-[#1c1c1c] py-1 px-3 w-[max-content] text-[#ffffff80] rounded-[${
+                    roundedBorders() ? "6px" : "0px"
+                  }] `}>
+                  ctrl + \\
                 </div>
                 hide sidebar
               </div>
+              <div className="flex items-center gap-3">
+                <div
+                  className={`bg-[#1c1c1c] py-1 px-3 w-[max-content] text-[#ffffff80] rounded-[${
+                    roundedBorders() ? "6px" : "0px"
+                  }] `}>
+                  ctrl + w
+                </div>
+                close app
+              </div>
+              <div className="flex items-center gap-3">
+                <div
+                  className={`bg-[#1c1c1c] py-1 px-3 w-[max-content] text-[#ffffff80] rounded-[${
+                    roundedBorders() ? "6px" : "0px"
+                  }] `}>
+                  escape
+                </div>
+                close dialogs
+              </div>
+
               <div className="flex items-center gap-3">
                 <div
                   className={`bg-[#1c1c1c] py-1 px-3 w-[max-content] text-[#ffffff80] rounded-[${
@@ -326,7 +361,7 @@ export function Settings() {
               </div>
             </div>
 
-            <div className="flex justify-between mt-10 ">
+            <div className="flex justify-between mt-[35px] ">
               <div>
                 clear <span className="text-[#ffffff80]">v1.0.0</span>
               </div>

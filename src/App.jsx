@@ -97,6 +97,8 @@ import {
   setGameTitle,
   folderTitle,
   setFolderTitle,
+  quitAfterOpen,
+  setQuitAfterOpen,
 } from "./Signals";
 
 import { SideBar } from "./SideBar";
@@ -133,13 +135,21 @@ export function getSettingsData() {
   } else {
     setFolderTitle(false);
   }
+  if (
+    libraryData().userSettings.quitAfterOpen == true ||
+    libraryData().userSettings.quitAfterOpen == undefined
+  ) {
+    setQuitAfterOpen(true);
+  } else {
+    setQuitAfterOpen(false);
+  }
 }
 
 export async function getData() {
   setAppDataDirPath(await appDataDir());
 
-  if (await exists("data/lib.json", { dir: BaseDirectory.AppData })) {
-    let getLibraryData = await readTextFile("data/lib.json", {
+  if (await exists("lib.json", { dir: BaseDirectory.AppData })) {
+    let getLibraryData = await readTextFile("lib.json", {
       dir: BaseDirectory.AppData,
     });
 
@@ -184,13 +194,32 @@ export async function getData() {
     });
     await writeTextFile(
       {
-        path: "data/lib.json",
+        path: "lib.json",
         contents: "",
       },
       {
         dir: BaseDirectory.AppData,
       },
     );
+  }
+}
+
+export async function openGame(gameLocation) {
+  invoke("openGame", {
+    gameLocation: gameLocation,
+  });
+
+  if (permissionGranted()) {
+    sendNotification(`launched ${notificationGameName()}!`);
+  }
+
+  console.log(selectedGame());
+
+  console.log(quitAfterOpen());
+  if (quitAfterOpen() == true || quitAfterOpen() == undefined) {
+    setTimeout(async () => {
+      await exit(1);
+    }, 500);
   }
 }
 
@@ -302,8 +331,8 @@ function App() {
 
     await writeTextFile(
       {
-        path: "data/lib.json",
-        contents: JSON.stringify(libraryData(), null, 1),
+        path: "lib.json",
+        contents: JSON.stringify(libraryData(), null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -348,23 +377,6 @@ function App() {
     }
     await getData();
   });
-
-  async function openGame(gameLocation) {
-    invoke("openGame", {
-      gameLocation: gameLocation,
-    });
-
-    if (permissionGranted()) {
-      sendNotification(`launched ${notificationGameName()}!`);
-    }
-
-    console.log(selectedGame());
-
-    // ! Uncomment Later
-    // setTimeout(async () => {
-    //   await exit(1);
-    // }, 500);
-  }
 
   return (
     <>

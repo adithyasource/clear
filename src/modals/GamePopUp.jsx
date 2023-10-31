@@ -31,22 +31,7 @@ import { appDataDir } from "@tauri-apps/api/path";
 
 import { open } from "@tauri-apps/api/dialog";
 
-async function openGame(gameLocation) {
-  invoke("openGame", {
-    gameLocation: gameLocation,
-  });
-
-  if (permissionGranted()) {
-    sendNotification(`launched ${notificationGameName()}!`);
-  }
-
-  console.log(selectedGame());
-
-  // ! Uncomment Later
-  // setTimeout(async () => {
-  //   await exit(1);
-  // }, 500);
-}
+import { openGame } from "../App";
 
 export function GamePopUp() {
   return (

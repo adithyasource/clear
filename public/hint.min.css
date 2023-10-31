@@ -114,3 +114,18 @@
   -moz-transform: translateX(-50%) translateY(8px);
   transform: translateX(-50%) translateY(8px);
 }
+
+.hint--left:after {
+  margin-bottom: -14px;
+}
+.hint--left:after,
+.hint--left:before {
+  right: 115%;
+  bottom: 50%;
+}
+.hint--left:hover:after,
+.hint--left:hover:before {
+  -webkit-transform: translateX(8px);
+  -moz-transform: translateX(8px);
+  transform: translateX(8px);
+}

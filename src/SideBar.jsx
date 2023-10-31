@@ -16,6 +16,7 @@ import {
   selectedGame,
   setSelectedGame,
   setPermissionGranted,
+  roundedBorders,
 } from "./Signals";
 
 import Fuse from "fuse.js";
@@ -31,7 +32,7 @@ import {
   createDir,
 } from "@tauri-apps/api/fs";
 
-import { getData } from "./App";
+import { getData, openGame } from "./App";
 
 import { exit } from "@tauri-apps/api/process";
 
@@ -67,8 +68,8 @@ export function SideBar() {
 
     await writeTextFile(
       {
-        path: "data/lib.json",
-        contents: JSON.stringify(libraryData(), null, 1),
+        path: "lib.json",
+        contents: JSON.stringify(libraryData(), null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -106,8 +107,8 @@ export function SideBar() {
 
     await writeTextFile(
       {
-        path: "data/lib.json",
-        contents: JSON.stringify(libraryData(), null, 1),
+        path: "lib.json",
+        contents: JSON.stringify(libraryData(), null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -154,30 +155,13 @@ export function SideBar() {
 
     await writeTextFile(
       {
-        path: "data/lib.json",
-        contents: JSON.stringify(libraryData(), null, 1),
+        path: "lib.json",
+        contents: JSON.stringify(libraryData(), null, 4),
       },
       {
         dir: BaseDirectory.AppData,
       },
     ).then(() => {});
-  }
-
-  async function openGame(gameLocation) {
-    invoke("openGame", {
-      gameLocation: gameLocation,
-    });
-
-    if (permissionGranted()) {
-      sendNotification(`launched ${notificationGameName()}!`);
-    }
-
-    console.log(selectedGame());
-
-    // ! Uncomment Later
-    // setTimeout(async () => {
-    //   await exit(1);
-    // }, 500);
   }
 
   return (
@@ -305,7 +289,7 @@ export function SideBar() {
                 libraryData().folders[folder.name].games.push(gameName);
                 await writeTextFile(
                   {
-                    path: "data/lib.json",
+                    path: "lib.json",
                     contents: JSON.stringify(libraryData(), null, 4),
                   },
                   {
@@ -316,7 +300,9 @@ export function SideBar() {
                 });
               }
             }}
-            class="h-[calc(100vh-275px)] overflow-auto rounded-[6px] ">
+            class={`h-[calc(100vh-275px)] overflow-auto  rounded-[${
+              roundedBorders() ? "6px" : "0px"
+            }]`}>
             <p className="mt-[5px]"></p>
             <For each={currentFolders()}>
               {(folderName) => {
@@ -443,7 +429,7 @@ export function SideBar() {
                           );
                           await writeTextFile(
                             {
-                              path: "data/lib.json",
+                              path: "lib.json",
                               contents: JSON.stringify(libraryData(), null, 4),
                             },
                             {
@@ -555,7 +541,7 @@ export function SideBar() {
                         libraryData().folders[folder.name].games.push(gameName);
                         await writeTextFile(
                           {
-                            path: "data/lib.json",
+                            path: "lib.json",
                             contents: JSON.stringify(libraryData(), null, 4),
                           },
                           {
@@ -619,8 +605,8 @@ export function SideBar() {
 
                 await writeTextFile(
                   {
-                    path: "data/lib.json",
-                    contents: JSON.stringify(libraryData(), null, 1),
+                    path: "lib.json",
+                    contents: JSON.stringify(libraryData(), null, 4),
                   },
                   {
                     dir: BaseDirectory.AppData,

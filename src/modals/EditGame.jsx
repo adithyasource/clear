@@ -200,8 +200,8 @@ export function EditGame() {
 
     await writeTextFile(
       {
-        path: "data/lib.json",
-        contents: JSON.stringify(libraryData(), null, 1),
+        path: "lib.json",
+        contents: JSON.stringify(libraryData(), null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -234,8 +234,8 @@ export function EditGame() {
 
     await writeTextFile(
       {
-        path: "data/lib.json",
-        contents: JSON.stringify(libraryData(), null, 1),
+        path: "lib.json",
+        contents: JSON.stringify(libraryData(), null, 4),
       },
       {
         dir: BaseDirectory.AppData,

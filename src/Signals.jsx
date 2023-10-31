@@ -21,6 +21,9 @@ export const [currentGames, setCurrentGames] = createSignal([]);
 export const [currentFolders, setCurrentFolders] = createSignal([]);
 export const [searchValue, setSearchValue] = createSignal();
 export const [notificationGameName, setNotificaitonGameName] = createSignal();
+export const [foundGridImage, setFoundGridImage] = createSignal();
+export const [foundHeroImage, setFoundHeroImage] = createSignal();
+export const [foundLogoImage, setFoundLogoImage] = createSignal();
 
 // !? Styles Signals
 export const [secondaryColor, setSecondaryColor] = createSignal("#1c1c1c");
@@ -36,6 +39,7 @@ export const [showSideBar, setShowSideBar] = createSignal(true);
 export const [roundedBorders, setRoundedBorders] = createSignal(true);
 export const [gameTitle, setGameTitle] = createSignal(true);
 export const [folderTitle, setFolderTitle] = createSignal(true);
+export const [quitAfterOpen, setQuitAfterOpen] = createSignal(true);
 
 // !? Create Signals
 export const [gameName, setGameName] = createSignal();
