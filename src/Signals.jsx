@@ -26,20 +26,22 @@ export const [foundHeroImage, setFoundHeroImage] = createSignal();
 export const [foundLogoImage, setFoundLogoImage] = createSignal();
 
 // !? Styles Signals
-export const [secondaryColor, setSecondaryColor] = createSignal("#1c1c1c");
+export const [secondaryColor, setSecondaryColor] = createSignal("");
 export const [secondaryColorForBlur, setSecondaryColorForBlur] =
-  createSignal("#272727cc");
-export const [primaryColor, setPrimaryColor] = createSignal("#121212");
-export const [modalBackground, setModalBackground] = createSignal("#12121266");
+  createSignal("");
+export const [primaryColor, setPrimaryColor] = createSignal("");
+export const [modalBackground, setModalBackground] = createSignal("");
 export const [locatingLogoBackground, setLocatingLogoBackground] =
-  createSignal("#272727");
-export const [gamesDivLeftPadding, setGamesDivLeftPadding] =
-  createSignal("10px");
+  createSignal("");
+export const [gamesDivLeftPadding, setGamesDivLeftPadding] = createSignal("");
+
+// !? Settings Signals
 export const [showSideBar, setShowSideBar] = createSignal(true);
 export const [roundedBorders, setRoundedBorders] = createSignal(true);
 export const [gameTitle, setGameTitle] = createSignal(true);
 export const [folderTitle, setFolderTitle] = createSignal(true);
 export const [quitAfterOpen, setQuitAfterOpen] = createSignal(true);
+export const [fontName, setFontName] = createSignal("Sans Serif");
 
 // !? Create Signals
 export const [gameName, setGameName] = createSignal();

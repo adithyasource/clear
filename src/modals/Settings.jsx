@@ -98,6 +98,8 @@ import {
   setFolderTitle,
   quitAfterOpen,
   setQuitAfterOpen,
+  setFontName,
+  fontName,
 } from "../Signals";
 
 import { getData, getSettingsData } from "../App";
@@ -111,7 +113,7 @@ export function Settings() {
     <>
       <dialog data-settingsModal onClose={() => {}} className="outline-none">
         <div className="flex items-center justify-center w-screen h-screen align-middle ">
-          <div className="modalWindow w-[50%]  rounded-[6px] p-6">
+          <div className="modalWindow w-[70%]  rounded-[6px] p-6">
             <div className="flex justify-between">
               <div>
                 <h1>settings</h1>
@@ -257,6 +259,39 @@ export function Settings() {
                 <Show when={!quitAfterOpen()}>
                   <div className="">quit after opening game</div>
                 </Show>
+              </div>
+              <div
+                onClick={async () => {
+                  if (fontName() == "Sans Serif") {
+                    setFontName("Serif");
+                  } else {
+                    if (fontName() == "Serif") {
+                      setFontName("Mono");
+                    } else {
+                      if (fontName() == "Mono") {
+                        setFontName("Sans Serif");
+                      }
+                    }
+                  }
+                  console.log(fontName());
+
+                  libraryData().userSettings.fontName = fontName();
+
+                  await writeTextFile(
+                    {
+                      path: "lib.json",
+                      contents: JSON.stringify(libraryData(), null, 4),
+                    },
+                    {
+                      dir: BaseDirectory.AppData,
+                    },
+                  ).then(getData());
+                }}
+                className="flex gap-2 cursor-pointer ">
+                <span className="text-[#ffffff80]">[font]</span>
+                <div className="">
+                  {fontName().toLowerCase() || "sans serif"}
+                </div>
               </div>
             </div>
 

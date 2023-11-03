@@ -97,6 +97,8 @@ import {
   setGameTitle,
   folderTitle,
   setFolderTitle,
+  setFontName,
+  fontName,
   quitAfterOpen,
   setQuitAfterOpen,
 } from "./Signals";
@@ -143,6 +145,8 @@ export function getSettingsData() {
   } else {
     setQuitAfterOpen(false);
   }
+
+  setFontName(libraryData().userSettings.fontName || "Sans Serif");
 }
 
 export async function getData() {
@@ -376,6 +380,26 @@ function App() {
       setPermissionGranted(permission === "granted");
     }
     await getData();
+
+    console.log(document.documentElement.classList);
+    document.documentElement.classList.add("dark");
+
+    if (document.documentElement.classList[0] == undefined) {
+      setSecondaryColor("#F3F3F2");
+      setSecondaryColorForBlur("#272727cc");
+      setPrimaryColor("#FFFFFC");
+      setModalBackground("#12121266");
+      setLocatingLogoBackground("#272727");
+      setGamesDivLeftPadding("10px");
+    } else {
+      document.documentElement.classList.add("dark");
+      setSecondaryColor("#1c1c1c");
+      setSecondaryColorForBlur("#272727cc");
+      setPrimaryColor("#121212");
+      setModalBackground("#12121266");
+      setLocatingLogoBackground("#272727");
+      setGamesDivLeftPadding("10px");
+    }
   });
 
   return (
@@ -386,6 +410,7 @@ function App() {
 
       <Styles
         roundedBorders={roundedBorders}
+        fontName={fontName}
         gameTitle={gameTitle}
         secondaryColor={secondaryColor}
         secondaryColorForBlur={secondaryColorForBlur}
@@ -395,7 +420,7 @@ function App() {
         gamesDivLeftPadding={gamesDivLeftPadding}
       />
 
-      <div id="page">
+      <div id="page" className="">
         <Show when={showSideBar() == false}>
           <svg
             className="absolute right-[30px] top-[30px] z-10 rotate-180 cursor-pointer"
@@ -441,7 +466,9 @@ function App() {
                   <Show when={folder.games != "" && !folder.hide}>
                     <div className="folderRack">
                       <Show when={folderTitle()}>
-                        <h1>{folder.name}</h1>
+                        <h1 className="dark:text-[#ffffff80] text-[#000000]">
+                          {folder.name}
+                        </h1>
                       </Show>
                       <div
                         className={`grid gap-5 mt-4 foldersDiv 
@@ -480,7 +507,7 @@ function App() {
                                   }>
                                   <div className="w-[100%]">
                                     <img
-                                      className="relative z-10 gridImage  object-fill  group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none"
+                                      className="relative z-10 gridImage  object-fill  dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none"
                                       src={convertFileSrc(
                                         appDataDirPath() +
                                           libraryData().games[gameName]
@@ -495,7 +522,7 @@ function App() {
                                     libraryData().games[gameName].favourite
                                   }>
                                   <img
-                                    className="relative z-10 gridImage  outline-[#ffffff1a] outline-[2px] outline-none group-hover:outline-[#ffffff28] duration-700"
+                                    className="relative z-10 gridImage  dark:outline-[#ffffff1a] outline-[2px] outline-none dark:group-hover:outline-[#ffffff28] duration-700"
                                     src={convertFileSrc(
                                       appDataDirPath() +
                                         libraryData().games[gameName].gridImage,
@@ -514,7 +541,7 @@ function App() {
                                       alt=""
                                     />
                                     <div
-                                      className="bg-[#fff] opacity-[10%] w-[100%] aspect-[2/3]"
+                                      className="dark:bg-[#fff] opacity-[10%] w-[100%] aspect-[2/3]"
                                       alt=""
                                     />
                                   </div>
@@ -592,7 +619,7 @@ function App() {
                                 .showModal();
                             }}>
                             <img
-                              className="relative z-10 gridImage group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none"
+                              className="relative z-10 gridImage dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none"
                               src={convertFileSrc(
                                 appDataDirPath() +
                                   libraryData().games[gameName].gridImage,

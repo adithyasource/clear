@@ -168,13 +168,14 @@ export function SideBar() {
     <>
       <div
         id="sideBar"
-        className="z-10 py-[20px] pl-[20px] relative overflow-hidden w-[20%] min-[1500px]:w-[15%]">
+        className="text-black z-10 py-[20px] pl-[20px] relative overflow-hidden w-[20%] min-[1500px]:w-[15%]">
         <div id="sideBarTop">
           <div id="searchAndDestroy">
             <input
               type="text"
               name=""
               id="searchInput"
+              className="dark:bg-[#232323]"
               placeholder="search"
               onInput={(e) => {
                 setSearchValue(e.currentTarget.value);
@@ -441,7 +442,9 @@ export function SideBar() {
                         }
                       }}>
                       <div className="folderTitleBar">
-                        <p>{folder.name}</p>
+                        <p className="text-black dark:text-white">
+                          {folder.name}
+                        </p>
                         <button
                           className="editButton"
                           onClick={() => {
@@ -473,7 +476,7 @@ export function SideBar() {
                       <For each={folder.games}>
                         {(gameName) => (
                           <p
-                            className="mt-5 sideBarGame"
+                            className="mt-5 sideBarGame text-[#000000] dark:text-[#ffffff80]"
                             aria-label="play"
                             draggable={true}
                             onDragStart={(e) => {
@@ -649,7 +652,7 @@ export function SideBar() {
                             "uncategorized",
                           );
                         }}
-                        className=" mt-5 sideBarGame !text-[#ffffff4D]"
+                        className="mt-5 sideBarGame"
                         aria-label="play"
                         onClick={(e) => {
                           if (e.ctrlKey) {
@@ -670,7 +673,7 @@ export function SideBar() {
           id="sideBarBottom"
           class="absolute bottom-[20px] w-[100%] pr-[20px]">
           <button
-            className="standardButton "
+            className="standardButton dark:bg-[#232323] text-black dark:text-white"
             onClick={() => {
               document.querySelector("[data-newGameModal]").showModal();
               setModalBackground("#121212cc");
@@ -691,7 +694,7 @@ export function SideBar() {
             </svg>
           </button>
           <button
-            className="standardButton"
+            className="standardButton dark:bg-[#232323] text-black dark:text-white"
             onClick={() => {
               document.querySelector("[data-newFolderModal]").showModal();
             }}>
@@ -719,7 +722,7 @@ export function SideBar() {
 
           <div className="flex gap-3">
             <button
-              className=" standardButton"
+              className=" standardButton dark:bg-[#232323] text-black dark:text-white"
               onClick={() => {
                 document.querySelector("[data-notepadModal]").showModal();
               }}>
@@ -745,7 +748,7 @@ export function SideBar() {
               </svg>
             </button>
             <button
-              className=" standardButton"
+              className=" standardButton dark:bg-[#232323] text-black dark:text-white"
               onClick={() => {
                 document.querySelector("[data-settingsModal]").showModal();
               }}>

@@ -434,7 +434,7 @@ export function EditGame() {
                         appDataDirPath() + selectedGame().heroImage,
                       )}
                       alt=""
-                      className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px]"
+                      className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px] opacity-[0.4]"
                     />
                   </Show>
                   <Show
@@ -448,7 +448,7 @@ export function EditGame() {
                     <img
                       src={convertFileSrc(editedLocatedHeroImage())}
                       alt=""
-                      className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px]"
+                      className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px] opacity-[0.4]"
                     />
                   </Show>
 

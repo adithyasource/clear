@@ -1,3 +1,5 @@
+import { fontName } from "./Signals";
+
 export function Styles(props) {
   return (
     <>
@@ -83,7 +85,6 @@ export function Styles(props) {
           .standardButton,
           #searchInput {
             width: 100%;
-            background-color: #232323;
           }
         }
         button,
@@ -95,7 +96,11 @@ export function Styles(props) {
           width: 100%;
         }
         * {
-          font-family: Helvetica;
+          font-family: ${fontName() == "Sans Serif"
+            ? "Helvetica, Arial, sans-serif"
+            : fontName() == "Serif"
+            ? "Times New Roman"
+            : "IBM Plex Mono, Consolas"};
           font-weight: normal;
           color: #ffffff;
           font-size: 14px;
@@ -233,11 +238,9 @@ export function Styles(props) {
         }
 
         .sideBarGame {
-          color: #ffffff80;
           cursor: grab;
         }
         .emptyFolderTitleBar {
-          color: #ffffff80;
           cursor: move;
         }
         button:focus,
