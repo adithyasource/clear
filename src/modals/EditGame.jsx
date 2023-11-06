@@ -371,7 +371,7 @@ export function EditGame() {
                 <img
                   className="absolute inset-0"
                   src={convertFileSrc(
-                    appDataDirPath() + selectedGame().gridImage,
+                    appDataDirPath() + "grids\\" + selectedGame().gridImage,
                   )}
                   alt=""
                 />
@@ -404,14 +404,18 @@ export function EditGame() {
                     className="absolute inset-0 overflow-hidden">
                     <img
                       src={convertFileSrc(
-                        appDataDirPath() + selectedGame().heroImage,
+                        appDataDirPath() +
+                          "heroes\\" +
+                          selectedGame().heroImage,
                       )}
                       alt=""
                       className="absolute inset-0 h-[254px] rounded-[6px]"
                     />
                     <img
                       src={convertFileSrc(
-                        appDataDirPath() + selectedGame().heroImage,
+                        appDataDirPath() +
+                          "heroes\\" +
+                          selectedGame().heroImage,
                       )}
                       alt=""
                       className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px] opacity-[0.4]"
@@ -444,7 +448,9 @@ export function EditGame() {
                 aria-label="logo">
                 <Show when={!editedLocatedLogo()}>
                   <img
-                    src={convertFileSrc(appDataDirPath() + selectedGame().logo)}
+                    src={convertFileSrc(
+                      appDataDirPath() + "logos\\" + selectedGame().logo,
+                    )}
                     alt=""
                     className="h-[60px] "
                   />

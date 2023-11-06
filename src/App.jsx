@@ -6,6 +6,7 @@ import {
   readTextFile,
   exists,
   createDir,
+  removeDir,
 } from "@tauri-apps/api/fs";
 
 import Fuse from "fuse.js";
@@ -83,48 +84,48 @@ import { Settings } from "./modals/Settings";
 
 export function getSettingsData() {
   if (
-    libraryData().userSettings.roundedBorders == true ||
-    libraryData().userSettings.roundedBorders == undefined
+    libraryData().userSettings.roundedBorders == undefined ||
+    libraryData().userSettings.roundedBorders == true
   ) {
     setRoundedBorders(true);
   } else {
     setRoundedBorders(false);
   }
   if (
-    libraryData().userSettings.gameTitle == true ||
-    libraryData().userSettings.gameTitle == undefined
+    libraryData().userSettings.gameTitle == undefined ||
+    libraryData().userSettings.gameTitle == true
   ) {
     setGameTitle(true);
   } else {
     setGameTitle(false);
   }
   if (
-    libraryData().userSettings.folderTitle == true ||
-    libraryData().userSettings.folderTitle == undefined
+    libraryData().userSettings.folderTitle == undefined ||
+    libraryData().userSettings.folderTitle == true
   ) {
     setFolderTitle(true);
   } else {
     setFolderTitle(false);
   }
   if (
-    libraryData().userSettings.quitAfterOpen == true ||
-    libraryData().userSettings.quitAfterOpen == undefined
+    libraryData().userSettings.quitAfterOpen == undefined ||
+    libraryData().userSettings.quitAfterOpen == true
   ) {
     setQuitAfterOpen(true);
   } else {
     setQuitAfterOpen(false);
   }
   if (
-    libraryData().userSettings.showFPS == false ||
-    libraryData().userSettings.showFPS == undefined
+    libraryData().userSettings.showFPS == undefined ||
+    libraryData().userSettings.showFPS == false
   ) {
     setShowFPS(false);
   } else {
     setShowFPS(true);
   }
   if (
-    libraryData().userSettings.theme == "dark" ||
-    libraryData().userSettings.theme == undefined
+    libraryData().userSettings.theme == undefined ||
+    libraryData().userSettings.theme == "dark"
   ) {
     setCurrentTheme("dark");
   } else {
@@ -150,6 +151,18 @@ export function getSettingsData() {
     setLocatingLogoBackground("#272727");
     setGamesDivLeftPadding("10px");
   }
+
+  try {
+    setGamesDivLeftPadding("23%");
+    setShowSideBar(libraryData().userSettings.showSideBar || true);
+  } catch (error) {
+    setGamesDivLeftPadding("30px");
+    setShowSideBar(false);
+  }
+
+  libraryData().userSettings.showSideBar == undefined
+    ? setShowSideBar(true)
+    : setShowSideBar(libraryData().userSettings.showSideBar);
 }
 
 export async function getData() {
@@ -160,7 +173,10 @@ export async function getData() {
       dir: BaseDirectory.AppData,
     });
 
-    if (getLibraryData != "") {
+    if (
+      getLibraryData != "" &&
+      JSON.parse(getLibraryData).folders != undefined
+    ) {
       setCurrentGames("");
       setCurrentFolders("");
       setLibraryData(JSON.parse(getLibraryData));
@@ -182,32 +198,39 @@ export async function getData() {
 
       console.log("data fetched");
 
-      if (
-        libraryData().userSettings.showSideBar == true ||
-        libraryData().userSettings.showSideBar == undefined
-      ) {
-        setGamesDivLeftPadding("23%");
-        setShowSideBar(true);
-      } else {
-        setGamesDivLeftPadding("30px");
-        setShowSideBar(false);
-      }
       getSettingsData();
     } else return;
   } else {
-    await createDir("data", {
+    await createDir("heroes", {
       dir: BaseDirectory.AppData,
       recursive: true,
     });
+    await createDir("grids\\", {
+      dir: BaseDirectory.AppData,
+      recursive: true,
+    });
+    await createDir("logos", {
+      dir: BaseDirectory.AppData,
+      recursive: true,
+    });
+
+    let emptyLibrary = {
+      games: {},
+      folders: {},
+      notepad: "",
+      userSettings: {},
+    };
     await writeTextFile(
       {
         path: "lib.json",
-        contents: "",
+        contents: JSON.stringify(emptyLibrary, null, 4),
       },
       {
         dir: BaseDirectory.AppData,
       },
     );
+
+    getData();
   }
 }
 
@@ -311,7 +334,6 @@ function App() {
     }
 
     if (e.code == "Escape") {
-      document.querySelector("#searchInput").blur();
       document.querySelector("[data-settingsModal]").close();
       document.querySelector("[data-newGameModal]").close();
       document.querySelector("[data-newFolderModal]").close();
@@ -319,6 +341,7 @@ function App() {
       document.querySelector("[data-gamePopup]").close();
       document.querySelector("[data-editGameModal]").close();
       document.querySelector("[data-editFolderModal]").close();
+      document.querySelector("#searchInput").blur();
     }
 
     if (e.ctrlKey && e.code == "Backslash") {
@@ -332,14 +355,10 @@ function App() {
   }
 
   async function toggleSideBar() {
-    if (
-      libraryData().userSettings.showSideBar == true ||
-      libraryData().userSettings.showSideBar == undefined
-    ) {
-      libraryData().userSettings.showSideBar = false;
-    } else {
-      libraryData().userSettings.showSideBar = true;
-    }
+    libraryData().userSettings.showSideBar == undefined
+      ? (libraryData().userSettings.showSideBar = false)
+      : (libraryData().userSettings.showSideBar =
+          !libraryData().userSettings.showSideBar);
 
     await writeTextFile(
       {
@@ -420,7 +439,7 @@ function App() {
 
       <div
         data-tauri-drag-region
-        class="flex w-screen h-[32px] bg-[#fff] dark:bg-[#000] items-center  fixed">
+        class="flex w-screen h-[32px] bg-[#fff] dark:bg-[#000] items-center z-[10000] fixed">
         <div data-tauri-drag-region className="pl-[8px] ">
           <Show when={currentTheme() == "dark"}>
             <img
@@ -549,7 +568,7 @@ function App() {
             />
           </svg>
         </Show>
-        <Show when={showSideBar() || showSideBar() == undefined}>
+        <Show when={showSideBar()}>
           <SideBar />
         </Show>
         <div
@@ -611,6 +630,7 @@ function App() {
                                       className="relative z-10 gridImage  object-fill group-hover:outline-[#0000001f] dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none"
                                       src={convertFileSrc(
                                         appDataDirPath() +
+                                          "grids\\" +
                                           libraryData().games[gameName]
                                             .gridImage,
                                       )}
@@ -626,6 +646,7 @@ function App() {
                                     className="relative z-10 gridImage outline-[#0000001a] hover:outline-[#00000028] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff28] outline-[2px] outline-none  duration-700"
                                     src={convertFileSrc(
                                       appDataDirPath() +
+                                        "grids\\" +
                                         libraryData().games[gameName].gridImage,
                                     )}
                                     alt=""
@@ -636,6 +657,7 @@ function App() {
                                       className="absolute inset-0 duration-500 opacity-[100%] dark:opacity-[40%] group-hover:opacity-45"
                                       src={convertFileSrc(
                                         appDataDirPath() +
+                                          "grids\\" +
                                           libraryData().games[gameName]
                                             .gridImage,
                                       )}
@@ -723,6 +745,7 @@ function App() {
                               className="relative z-10 gridImage dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none"
                               src={convertFileSrc(
                                 appDataDirPath() +
+                                  "grids\\" +
                                   libraryData().games[gameName].gridImage,
                               )}
                               alt=""
@@ -734,6 +757,7 @@ function App() {
                                 className=" absolute blur-[50px] opacity-[0.4] inset-0 group-hover:opacity-[0.5] group-hover:blur-[60px] duration-700"
                                 src={convertFileSrc(
                                   appDataDirPath() +
+                                    "grids\\" +
                                     libraryData().games[gameName].gridImage,
                                 )}
                                 alt=""

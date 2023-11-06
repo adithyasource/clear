@@ -38,33 +38,32 @@ import Fuse from "fuse.js";
 
 export function NewGame() {
   async function addGame() {
+    console.log(locatedHeroImage());
+
     let heroImageFileName =
-      "hero+ " +
       gameName() +
       "." +
       locatedHeroImage().split(".")[locatedHeroImage().split(".").length - 1];
 
     let gridImageFileName =
-      "grid+ " +
       gameName() +
       "." +
       locatedGridImage().split(".")[locatedGridImage().split(".").length - 1];
 
     let logoFileName =
-      "logo+ " +
       gameName() +
       "." +
       locatedLogo().split(".")[locatedLogo().split(".").length - 1];
 
-    await copyFile(locatedHeroImage(), heroImageFileName, {
+    await copyFile(locatedHeroImage(), "heroes\\" + heroImageFileName, {
       dir: BaseDirectory.AppData,
     });
 
-    await copyFile(locatedGridImage(), gridImageFileName, {
+    await copyFile(locatedGridImage(), "grids\\" + gridImageFileName, {
       dir: BaseDirectory.AppData,
     });
 
-    await copyFile(locatedLogo(), logoFileName, {
+    await copyFile(locatedLogo(), "logos\\" + logoFileName, {
       dir: BaseDirectory.AppData,
     });
 

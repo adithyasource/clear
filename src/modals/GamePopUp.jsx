@@ -20,7 +20,9 @@ export function GamePopUp() {
       <Show when={selectedGame()}>
         <div className="popUpDiv">
           <img
-            src={convertFileSrc(appDataDirPath() + selectedGame().heroImage)}
+            src={convertFileSrc(
+              appDataDirPath() + "heroes\\" + selectedGame().heroImage,
+            )}
             alt=""
             className="popUpHero absolute blur-[80px] opacity-[0.4] -z-10"
           />
@@ -96,12 +98,16 @@ export function GamePopUp() {
               </button>
             </div>
             <img
-              src={convertFileSrc(appDataDirPath() + selectedGame().heroImage)}
+              src={convertFileSrc(
+                appDataDirPath() + "heroes\\" + selectedGame().heroImage,
+              )}
               alt=""
               className="popUpHero"
             />
             <img
-              src={convertFileSrc(appDataDirPath() + selectedGame().logo)}
+              src={convertFileSrc(
+                appDataDirPath() + "logos\\" + selectedGame().logo,
+              )}
               alt=""
               className="popupLogo h-[70px]"
             />
