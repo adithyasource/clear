@@ -32,7 +32,7 @@ export function Notepad() {
         onClose={() => {
           setNotepadValue(libraryData().notepad || "");
         }}
-        className="">
+        className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#ffffff66]">
         <div className="flex items-center justify-center w-screen h-screen align-middle ">
           <div className="modalWindow w-[50%]  rounded-[6px] p-6">
             <div className="flex justify-between">

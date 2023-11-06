@@ -1,10 +1,6 @@
 import { createSignal } from "solid-js";
 
-import {
-  isPermissionGranted,
-  requestPermission,
-  sendNotification,
-} from "@tauri-apps/api/notification";
+import { isPermissionGranted } from "@tauri-apps/api/notification";
 
 // !? Misc / Globals
 export const [permissionGranted, setPermissionGranted] = createSignal(
@@ -43,6 +39,7 @@ export const [gameTitle, setGameTitle] = createSignal(true);
 export const [folderTitle, setFolderTitle] = createSignal(true);
 export const [quitAfterOpen, setQuitAfterOpen] = createSignal(true);
 export const [fontName, setFontName] = createSignal("Sans Serif");
+export const [showFPS, setShowFPS] = createSignal(false);
 
 // !? Create Signals
 export const [gameName, setGameName] = createSignal();
@@ -55,7 +52,6 @@ export const [folderName, setFolderName] = createSignal();
 export const [hideFolder, setHideFolder] = createSignal(false);
 
 // !? Update Signals
-
 export const [editedGameName, setEditedGameName] = createSignal();
 export const [editedFavouriteGame, setEditedFavouriteGame] = createSignal();
 export const [editedLocatedHeroImage, setEditedLocatedHeroImage] =

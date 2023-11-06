@@ -1,35 +1,11 @@
 import {
   appDataDirPath,
   selectedGame,
-  notificationGameName,
   setNotificaitonGameName,
-  setModalBackground,
-  permissionGranted,
-  setPermissionGranted,
 } from "../Signals";
 
-import { For, Show, createSignal, onMount } from "solid-js";
-import { invoke, convertFileSrc } from "@tauri-apps/api/tauri";
-import {
-  writeTextFile,
-  BaseDirectory,
-  readTextFile,
-  copyFile,
-  exists,
-  createDir,
-} from "@tauri-apps/api/fs";
-
-import { exit } from "@tauri-apps/api/process";
-
-import {
-  isPermissionGranted,
-  requestPermission,
-  sendNotification,
-} from "@tauri-apps/api/notification";
-
-import { appDataDir } from "@tauri-apps/api/path";
-
-import { open } from "@tauri-apps/api/dialog";
+import { Show } from "solid-js";
+import { convertFileSrc } from "@tauri-apps/api/tauri";
 
 import { openGame } from "../App";
 
@@ -37,6 +13,7 @@ export function GamePopUp() {
   return (
     <dialog
       data-gamePopup
+      className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#ffffff66]"
       onDragStart={(e) => {
         e.preventDefault();
       }}>
@@ -75,8 +52,7 @@ export function GamePopUp() {
                 className="standardButton bgBlur"
                 onClick={() => {
                   document.querySelector("[data-gamePopup]").close();
-                  document.querySelector("[data-editGameModal]").showModal();
-                  setModalBackground("#121212cc");
+                  document.querySelector("[data-editGameModal]").show();
                 }}>
                 <svg
                   width="18"

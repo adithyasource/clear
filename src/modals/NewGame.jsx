@@ -1,7 +1,6 @@
 import {
   libraryData,
   setLibraryData,
-  setModalBackground,
   gameName,
   setGameName,
   favouriteGame,
@@ -23,28 +22,11 @@ import {
   roundedBorders,
 } from "../Signals";
 
-import { For, Show, createSignal, onMount } from "solid-js";
-import { invoke, convertFileSrc } from "@tauri-apps/api/tauri";
-import {
-  writeTextFile,
-  BaseDirectory,
-  readTextFile,
-  copyFile,
-  exists,
-  createDir,
-} from "@tauri-apps/api/fs";
-
-import { exit } from "@tauri-apps/api/process";
+import { Show } from "solid-js";
+import { convertFileSrc } from "@tauri-apps/api/tauri";
+import { writeTextFile, BaseDirectory, copyFile } from "@tauri-apps/api/fs";
 
 import { getData } from "../App";
-
-import {
-  isPermissionGranted,
-  requestPermission,
-  sendNotification,
-} from "@tauri-apps/api/notification";
-
-import { appDataDir } from "@tauri-apps/api/path";
 
 import { open } from "@tauri-apps/api/dialog";
 
@@ -252,9 +234,7 @@ export function NewGame() {
       onDragStart={(e) => {
         e.preventDefault();
       }}
-      onClose={() => {
-        setModalBackground("#12121266");
-      }}>
+      className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#121212cc] bg-[#ffffffcc]">
       <div className="flex flex-col gap-3 newGameDiv">
         <div className="flex justify-between w-[61rem]">
           <div>

@@ -39,11 +39,6 @@ export function Styles(props) {
             opacity: 1;
           }
         }
-        dialog::backdrop {
-          background-color: ${props.modalBackground()};
-          opacity: 1;
-          animation: dialogFadeIn 0.3s ease normal;
-        }
 
         .modalWindow {
           border: solid 2px #ffffff1f;

@@ -1,95 +1,9 @@
-import { For, Show, createSignal, onMount } from "solid-js";
-import { invoke, convertFileSrc } from "@tauri-apps/api/tauri";
-import {
-  writeTextFile,
-  BaseDirectory,
-  readTextFile,
-  copyFile,
-  exists,
-  createDir,
-} from "@tauri-apps/api/fs";
-
-import Fuse from "fuse.js";
-
-import { exit } from "@tauri-apps/api/process";
+import { Show } from "solid-js";
+import { invoke } from "@tauri-apps/api/tauri";
+import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
 import {
-  isPermissionGranted,
-  requestPermission,
-  sendNotification,
-} from "@tauri-apps/api/notification";
-
-import { appDataDir } from "@tauri-apps/api/path";
-
-import { open } from "@tauri-apps/api/dialog";
-
-import { Styles } from "../Styles";
-
-import {
-  permissionGranted,
-  setPermissionGranted,
-  appDataDirPath,
-  setAppDataDirPath,
   libraryData,
-  setLibraryData,
-  selectedGame,
-  setSelectedGame,
-  selectedFolder,
-  setSelectedFolder,
-  currentGames,
-  setCurrentGames,
-  currentFolders,
-  setCurrentFolders,
-  searchValue,
-  setSearchValue,
-  notificationGameName,
-  setNotificaitonGameName,
-  secondaryColor,
-  setSecondaryColor,
-  secondaryColorForBlur,
-  setSecondaryColorForBlur,
-  primaryColor,
-  setPrimaryColor,
-  modalBackground,
-  setModalBackground,
-  locatingLogoBackground,
-  setLocatingLogoBackground,
-  gamesDivLeftPadding,
-  setGamesDivLeftPadding,
-  showSideBar,
-  setShowSideBar,
-  gameName,
-  setGameName,
-  favouriteGame,
-  setFavouriteGame,
-  locatedHeroImage,
-  setLocatedHeroImage,
-  locatedGridImage,
-  setLocatedGridImage,
-  locatedLogo,
-  setLocatedLogo,
-  locatedGame,
-  setlocatedGame,
-  folderName,
-  setFolderName,
-  hideFolder,
-  setHideFolder,
-  editedGameName,
-  setEditedGameName,
-  editedFavouriteGame,
-  setEditedFavouriteGame,
-  editedLocatedHeroImage,
-  setEditedLocatedHeroImage,
-  editedLocatedGridImage,
-  setEditedLocatedGridImage,
-  editedLocatedLogo,
-  setEditedLocatedLogo,
-  editedLocatedGame,
-  setEditedlocatedGame,
-  editedFolderName,
-  setEditedFolderName,
-  editedHideFolder,
-  setEditedHideFolder,
   roundedBorders,
   setRoundedBorders,
   gameTitle,
@@ -102,6 +16,8 @@ import {
   fontName,
   currentTheme,
   setCurrentTheme,
+  showFPS,
+  setShowFPS,
 } from "../Signals";
 
 import { getData, getSettingsData } from "../App";
@@ -113,7 +29,10 @@ export function Settings() {
 
   return (
     <>
-      <dialog data-settingsModal onClose={() => {}} className="outline-none">
+      <dialog
+        data-settingsModal
+        onClose={() => {}}
+        className="outline-none absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#ffffff66]">
         <div className="flex items-center justify-center w-screen h-screen align-middle ">
           <div className="modalWindow w-[70%]  rounded-[6px] p-6">
             <div className="flex justify-between">
@@ -260,6 +179,59 @@ export function Settings() {
                 </Show>
                 <Show when={!quitAfterOpen()}>
                   <div className="">quit after opening game</div>
+                </Show>
+              </div>
+              <div
+                onClick={async () => {
+                  setShowFPS((x) => !x);
+
+                  libraryData().userSettings.showFPS = showFPS();
+
+                  await writeTextFile(
+                    {
+                      path: "lib.json",
+                      contents: JSON.stringify(libraryData(), null, 4),
+                    },
+                    {
+                      dir: BaseDirectory.AppData,
+                    },
+                  ).then(getData());
+
+                  //? FPS Counter by https://codepen.io/lnfnunes/pen/Qjeeyg
+
+                  if (showFPS() == true) {
+                    function tick() {
+                      var time = Date.now();
+                      frame++;
+                      if (time - startTime > 1000) {
+                        fps.innerHTML = (
+                          frame /
+                          ((time - startTime) / 1000)
+                        ).toFixed(1);
+                        startTime = time;
+                        frame = 0;
+                      }
+                      window.requestAnimationFrame(tick);
+                    }
+
+                    var fps = document.getElementById("fps");
+                    var startTime = Date.now();
+                    var frame = 0;
+
+                    tick();
+                  }
+                }}
+                className="relative cursor-pointer">
+                <Show when={showFPS()}>
+                  <div className="relative">
+                    <div className="">show fps</div>
+                    <div className="absolute blur-[5px] opacity-70 inset-0">
+                      show fps
+                    </div>
+                  </div>
+                </Show>
+                <Show when={!showFPS()}>
+                  <div className="">show fps</div>
                 </Show>
               </div>
               <div

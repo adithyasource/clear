@@ -3,4 +3,14 @@ import { render } from "solid-js/web";
 
 import App from "./App";
 
-render(() => <App />, document.getElementById("root"));
+render(
+  () => (
+    <>
+      <head>
+        <link rel="stylesheet" href="hint.min.css" />
+      </head>
+      <App />
+    </>
+  ),
+  document.getElementById("root"),
+);

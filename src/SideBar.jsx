@@ -6,45 +6,17 @@ import {
   currentFolders,
   searchValue,
   setSearchValue,
-  notificationGameName,
   setNotificaitonGameName,
-  setModalBackground,
   gameName,
   setEditedFolderName,
   setEditedHideFolder,
-  permissionGranted,
-  selectedGame,
-  setSelectedGame,
-  setPermissionGranted,
   roundedBorders,
 } from "./Signals";
 
-import Fuse from "fuse.js";
-
-import { For, Show, createSignal, onMount, createEffect } from "solid-js";
-import { invoke, convertFileSrc } from "@tauri-apps/api/tauri";
-import {
-  writeTextFile,
-  BaseDirectory,
-  readTextFile,
-  copyFile,
-  exists,
-  createDir,
-} from "@tauri-apps/api/fs";
+import { For, Show, onMount } from "solid-js";
+import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
 import { getData, openGame } from "./App";
-
-import { exit } from "@tauri-apps/api/process";
-
-import {
-  isPermissionGranted,
-  requestPermission,
-  sendNotification,
-} from "@tauri-apps/api/notification";
-
-import { appDataDir } from "@tauri-apps/api/path";
-
-import { open } from "@tauri-apps/api/dialog";
 
 export function SideBar() {
   let scrollY = " ";
@@ -121,8 +93,6 @@ export function SideBar() {
     toPosition,
     currentFolderName,
   ) {
-    // return;
-
     let pastPositionOfGame =
       libraryData().folders[currentFolderName]["games"].indexOf(gameName);
 
@@ -175,7 +145,7 @@ export function SideBar() {
               type="text"
               name=""
               id="searchInput"
-              className="dark:bg-[#232323] bg-[#E8E8E8]"
+              className="dark:bg-[#232323] bg-[#E8E8E8] dark:text-white text-black"
               placeholder="search"
               onInput={(e) => {
                 setSearchValue(e.currentTarget.value);
@@ -349,7 +319,7 @@ export function SideBar() {
                             compensatedY = e.clientY + scrollY;
                             return (
                               compensatedY <=
-                              sibling.offsetTop + sibling.offsetHeight / 2
+                              sibling.offsetTop + sibling.offsetHeight / 2 + 32
                             );
                           });
 
@@ -384,7 +354,9 @@ export function SideBar() {
                               compensatedY = e.clientY + scrollY;
                               return (
                                 compensatedY <=
-                                sibling.offsetTop + sibling.offsetHeight / 2
+                                sibling.offsetTop +
+                                  sibling.offsetHeight / 2 +
+                                  32
                               );
                             });
 
@@ -448,7 +420,7 @@ export function SideBar() {
                           onClick={() => {
                             document
                               .querySelector("[data-editFolderModal]")
-                              .showModal();
+                              .show();
                             setSelectedFolder(folder);
 
                             setEditedFolderName(selectedFolder().name);
@@ -560,7 +532,7 @@ export function SideBar() {
                           onClick={() => {
                             document
                               .querySelector("[data-editFolderModal]")
-                              .showModal();
+                              .show();
                             setSelectedFolder(folder);
 
                             setEditedFolderName(selectedFolder().name);
@@ -675,8 +647,7 @@ export function SideBar() {
           <button
             className="standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8]"
             onClick={() => {
-              document.querySelector("[data-newGameModal]").showModal();
-              setModalBackground("#121212cc");
+              document.querySelector("[data-newGameModal]").show();
             }}>
             add game
             <svg
@@ -696,7 +667,7 @@ export function SideBar() {
           <button
             className="standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8]"
             onClick={() => {
-              document.querySelector("[data-newFolderModal]").showModal();
+              document.querySelector("[data-newFolderModal]").show();
             }}>
             add folder
             <svg
@@ -724,7 +695,7 @@ export function SideBar() {
             <button
               className=" standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8]"
               onClick={() => {
-                document.querySelector("[data-notepadModal]").showModal();
+                document.querySelector("[data-notepadModal]").show();
               }}>
               notepad
               <svg
@@ -750,7 +721,7 @@ export function SideBar() {
             <button
               className=" standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8]"
               onClick={() => {
-                document.querySelector("[data-settingsModal]").showModal();
+                document.querySelector("[data-settingsModal]").show();
               }}>
               settings
               <svg

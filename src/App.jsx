@@ -1,10 +1,9 @@
-import { For, Show, createSignal, onMount } from "solid-js";
+import { For, Show, onMount } from "solid-js";
 import { invoke, convertFileSrc } from "@tauri-apps/api/tauri";
 import {
   writeTextFile,
   BaseDirectory,
   readTextFile,
-  copyFile,
   exists,
   createDir,
 } from "@tauri-apps/api/fs";
@@ -14,19 +13,16 @@ import Fuse from "fuse.js";
 import { exit } from "@tauri-apps/api/process";
 
 import {
-  isPermissionGranted,
   requestPermission,
   sendNotification,
 } from "@tauri-apps/api/notification";
 
 import { appDataDir } from "@tauri-apps/api/path";
 
-import { open } from "@tauri-apps/api/dialog";
 import "./App.css";
 
 import { Styles } from "./Styles";
 
-import { WebviewWindow } from "@tauri-apps/api/window";
 import { appWindow } from "@tauri-apps/api/window";
 
 import {
@@ -38,14 +34,10 @@ import {
   setLibraryData,
   selectedGame,
   setSelectedGame,
-  selectedFolder,
-  setSelectedFolder,
-  currentGames,
   setCurrentGames,
   currentFolders,
   setCurrentFolders,
   searchValue,
-  setSearchValue,
   notificationGameName,
   setNotificaitonGameName,
   secondaryColor,
@@ -55,45 +47,12 @@ import {
   primaryColor,
   setPrimaryColor,
   modalBackground,
-  setModalBackground,
   locatingLogoBackground,
   setLocatingLogoBackground,
   gamesDivLeftPadding,
   setGamesDivLeftPadding,
   showSideBar,
   setShowSideBar,
-  gameName,
-  setGameName,
-  favouriteGame,
-  setFavouriteGame,
-  locatedHeroImage,
-  setLocatedHeroImage,
-  locatedGridImage,
-  setLocatedGridImage,
-  locatedLogo,
-  setLocatedLogo,
-  locatedGame,
-  setlocatedGame,
-  folderName,
-  setFolderName,
-  hideFolder,
-  setHideFolder,
-  editedGameName,
-  setEditedGameName,
-  editedFavouriteGame,
-  setEditedFavouriteGame,
-  editedLocatedHeroImage,
-  setEditedLocatedHeroImage,
-  editedLocatedGridImage,
-  setEditedLocatedGridImage,
-  editedLocatedLogo,
-  setEditedLocatedLogo,
-  editedLocatedGame,
-  setEditedlocatedGame,
-  editedFolderName,
-  setEditedFolderName,
-  editedHideFolder,
-  setEditedHideFolder,
   roundedBorders,
   setRoundedBorders,
   gameTitle,
@@ -106,6 +65,8 @@ import {
   setQuitAfterOpen,
   currentTheme,
   setCurrentTheme,
+  showFPS,
+  setShowFPS,
 } from "./Signals";
 
 import logo from "./assets/128x128.png";
@@ -154,6 +115,14 @@ export function getSettingsData() {
     setQuitAfterOpen(false);
   }
   if (
+    libraryData().userSettings.showFPS == false ||
+    libraryData().userSettings.showFPS == undefined
+  ) {
+    setShowFPS(false);
+  } else {
+    setShowFPS(true);
+  }
+  if (
     libraryData().userSettings.theme == "dark" ||
     libraryData().userSettings.theme == undefined
   ) {
@@ -171,7 +140,6 @@ export function getSettingsData() {
     setSecondaryColor("#F3F3F2");
     setSecondaryColorForBlur("#272727cc");
     setPrimaryColor("#FFFFFC");
-    setModalBackground("#12121266");
     setLocatingLogoBackground("#272727");
     setGamesDivLeftPadding("10px");
   } else {
@@ -179,7 +147,6 @@ export function getSettingsData() {
     setSecondaryColor("#1c1c1c");
     setSecondaryColorForBlur("#272727cc");
     setPrimaryColor("#121212");
-    setModalBackground("#12121266");
     setLocatingLogoBackground("#272727");
     setGamesDivLeftPadding("10px");
   }
@@ -311,10 +278,8 @@ function App() {
       e.preventDefault();
       if (document.querySelector("[data-newGameModal]").open) {
         document.querySelector("[data-newGameModal]").close();
-        setModalBackground("#12121266");
       } else {
-        document.querySelector("[data-newGameModal]").showModal();
-        setModalBackground("#121212cc");
+        document.querySelector("[data-newGameModal]").show();
       }
     }
 
@@ -323,7 +288,7 @@ function App() {
       if (document.querySelector("[data-newFolderModal]").open) {
         document.querySelector("[data-newFolderModal]").close();
       } else {
-        document.querySelector("[data-newFolderModal]").showModal();
+        document.querySelector("[data-newFolderModal]").show();
       }
     }
 
@@ -332,7 +297,7 @@ function App() {
       if (document.querySelector("[data-notepadModal]").open) {
         document.querySelector("[data-notepadModal]").close();
       } else {
-        document.querySelector("[data-notepadModal]").showModal();
+        document.querySelector("[data-notepadModal]").show();
       }
     }
 
@@ -341,12 +306,19 @@ function App() {
       if (document.querySelector("[data-settingsModal]").open) {
         document.querySelector("[data-settingsModal]").close();
       } else {
-        document.querySelector("[data-settingsModal]").showModal();
+        document.querySelector("[data-settingsModal]").show();
       }
     }
 
     if (e.code == "Escape") {
       document.querySelector("#searchInput").blur();
+      document.querySelector("[data-settingsModal]").close();
+      document.querySelector("[data-newGameModal]").close();
+      document.querySelector("[data-newFolderModal]").close();
+      document.querySelector("[data-notepadModal]").close();
+      document.querySelector("[data-gamePopup]").close();
+      document.querySelector("[data-editGameModal]").close();
+      document.querySelector("[data-editFolderModal]").close();
     }
 
     if (e.ctrlKey && e.code == "Backslash") {
@@ -417,30 +389,83 @@ function App() {
     }
     await getData();
     appWindow.setDecorations(false);
+
+    //? FPS Counter by https://codepen.io/lnfnunes/pen/Qjeeyg
+
+    if (showFPS() == true) {
+      function tick() {
+        var time = Date.now();
+        frame++;
+        if (time - startTime > 1000) {
+          fps.innerHTML = (frame / ((time - startTime) / 1000)).toFixed(1);
+          startTime = time;
+          frame = 0;
+        }
+        window.requestAnimationFrame(tick);
+      }
+
+      var fps = document.getElementById("fps");
+      var startTime = Date.now();
+      var frame = 0;
+
+      tick();
+    }
   });
 
   return (
-    <>
+    <div>
       {
         //? Windows 10 UI Title Bar by https://codepen.io/agrimsrud/pen/WGgRPP
       }
+
       <div
         data-tauri-drag-region
-        class="flex absolute w-screen h-[32px] bg-[#fff] dark:bg-[#000] items-center">
-        <div data-tauri-drag-region className="pl-[8px]">
+        class="flex w-screen h-[32px] bg-[#fff] dark:bg-[#000] items-center  fixed">
+        <div data-tauri-drag-region className="pl-[8px] ">
           <Show when={currentTheme() == "dark"}>
-            <img src={logo} alt="" className="w-[18px] h-[18px] select-none" />
+            <img
+              data-tauri-drag-region
+              draggable={false}
+              src={logo}
+              alt=""
+              className="w-[18px] h-[18px] select-none"
+            />
           </Show>
           <Show when={currentTheme() == "light"}>
-            <img src={logoW} alt="" className="w-[18px] h-[18px] select-none" />
+            <img
+              data-tauri-drag-region
+              draggable={false}
+              src={logoW}
+              alt=""
+              className="w-[18px] h-[18px] select-none"
+            />
           </Show>
         </div>
 
         <div
           data-tauri-drag-region
-          class="flex-grow-[2] max-h-[32px] w-auto titleText text-[#000] dark:text-[#fff]">
-          clear
+          class="flex-grow-[2] max-h-[32px] titleText text-[#000] dark:text-[#fff] flex gap-[30px]">
+          <span
+            data-tauri-drag-region
+            className="text-[#000] dark:text-[#fff] ">
+            clear
+          </span>
+          <Show when={showFPS()}>
+            <span data-tauri-drag-region>
+              <span
+                id="fps"
+                data-tauri-drag-region
+                className="text-[#00000080] dark:text-[#ffffff80]">
+                --
+              </span>
+              &nbsp;
+              <span className="text-[#00000080] dark:text-[#ffffff80]">
+                FPS
+              </span>
+            </span>
+          </Show>
         </div>
+
         <div data-tauri-drag-region class="titleControls">
           <button
             class="titleButton dark:hover:bg-[#ffffff1A] hover:bg-[#0000001A] minimize cursor-default  !rounded-none"
@@ -483,10 +508,6 @@ function App() {
           </button>
         </div>
       </div>
-
-      <head>
-        <link rel="stylesheet" href="hint.min.css" />
-      </head>
 
       <Styles
         roundedBorders={roundedBorders}
@@ -579,7 +600,7 @@ function App() {
                                   );
                                   document
                                     .querySelector("[data-gamePopup]")
-                                    .showModal();
+                                    .show();
                                 }}>
                                 <Show
                                   when={
@@ -587,7 +608,7 @@ function App() {
                                   }>
                                   <div className="w-[100%]">
                                     <img
-                                      className="relative z-10 gridImage  object-fill  dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none"
+                                      className="relative z-10 gridImage  object-fill group-hover:outline-[#0000001f] dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none"
                                       src={convertFileSrc(
                                         appDataDirPath() +
                                           libraryData().games[gameName]
@@ -602,7 +623,7 @@ function App() {
                                     libraryData().games[gameName].favourite
                                   }>
                                   <img
-                                    className="relative z-10 gridImage  dark:outline-[#ffffff1a] outline-[2px] outline-none dark:group-hover:outline-[#ffffff28] duration-700"
+                                    className="relative z-10 gridImage outline-[#0000001a] hover:outline-[#00000028] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff28] outline-[2px] outline-none  duration-700"
                                     src={convertFileSrc(
                                       appDataDirPath() +
                                         libraryData().games[gameName].gridImage,
@@ -610,9 +631,9 @@ function App() {
                                     alt=""
                                     width="100%"
                                   />
-                                  <div className="absolute inset-0 blur-[30px]  group-hover:blur-[40px] duration-500 bg-blend-screen ">
+                                  <div className="absolute inset-0 blur-[20px] dark:blur-[30px]  group-hover:blur-[40px] duration-500 bg-blend-screen ">
                                     <img
-                                      className="absolute inset-0 duration-500 opacity-40 group-hover:opacity-45"
+                                      className="absolute inset-0 duration-500 opacity-[100%] dark:opacity-[40%] group-hover:opacity-45"
                                       src={convertFileSrc(
                                         appDataDirPath() +
                                           libraryData().games[gameName]
@@ -621,7 +642,7 @@ function App() {
                                       alt=""
                                     />
                                     <div
-                                      className="dark:bg-[#fff] opacity-[10%] w-[100%] aspect-[2/3]"
+                                      className="dark:bg-[#fff] bg-[#000] opacity-[0%] dark:opacity-[10%] w-[100%] aspect-[2/3]"
                                       alt=""
                                     />
                                   </div>
@@ -696,9 +717,7 @@ function App() {
                               await setSelectedGame(
                                 libraryData().games[gameName],
                               );
-                              document
-                                .querySelector("[data-gamePopup]")
-                                .showModal();
+                              document.querySelector("[data-gamePopup]").show();
                             }}>
                             <img
                               className="relative z-10 gridImage dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none"
@@ -764,7 +783,7 @@ function App() {
         <Notepad />
         <Settings />
       </div>
-    </>
+    </div>
   );
 }
 

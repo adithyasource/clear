@@ -8,7 +8,7 @@ import {
   currentFolders,
 } from "../Signals";
 
-import { For, Show, createSignal, onMount } from "solid-js";
+import { Show } from "solid-js";
 import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
 import { getData } from "../App";
@@ -22,7 +22,6 @@ export function NewFolder() {
       index: currentFolders().length,
     };
     setLibraryData(libraryData());
-    //
     await writeTextFile(
       {
         path: "lib.json",
@@ -37,7 +36,10 @@ export function NewFolder() {
   }
 
   return (
-    <dialog data-newFolderModal onClose={() => {}} className="">
+    <dialog
+      data-newFolderModal
+      onClose={() => {}}
+      className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#ffffff66]">
       <div className="flex items-center justify-center w-screen h-screen align-middle ">
         <div className="modalWindow w-[50%]  rounded-[6px] p-6">
           <div className="flex justify-between">

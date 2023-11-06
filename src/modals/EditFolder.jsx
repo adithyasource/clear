@@ -5,33 +5,10 @@ import {
   setEditedFolderName,
   editedHideFolder,
   setEditedHideFolder,
-  permissionGranted,
-  setPermissionGranted,
 } from "../Signals";
-import { For, Show, createSignal, onMount } from "solid-js";
-import { invoke, convertFileSrc } from "@tauri-apps/api/tauri";
-import {
-  writeTextFile,
-  BaseDirectory,
-  readTextFile,
-  copyFile,
-  exists,
-  createDir,
-} from "@tauri-apps/api/fs";
-
-import { exit } from "@tauri-apps/api/process";
+import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
 import { getData } from "../App";
-
-import {
-  isPermissionGranted,
-  requestPermission,
-  sendNotification,
-} from "@tauri-apps/api/notification";
-
-import { appDataDir } from "@tauri-apps/api/path";
-
-import { open } from "@tauri-apps/api/dialog";
 
 export function EditFolder() {
   async function editFolder() {
@@ -61,7 +38,10 @@ export function EditFolder() {
     });
   }
   return (
-    <dialog data-editFolderModal onClose={() => {}}>
+    <dialog
+      data-editFolderModal
+      onClose={() => {}}
+      className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#ffffff66]">
       <button
         onClick={() => {
           document.querySelector("[data-editFolderModal]").close();
