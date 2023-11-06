@@ -8,6 +8,8 @@ export function Styles(props) {
           height: 100%;
           display: flex;
           gap: 30px;
+          padding-top: 32px;
+          overflow-y: hidden;
         }
 
         .folderRack {
@@ -16,7 +18,7 @@ export function Styles(props) {
         #sideBar {
           display: flex;
           flex-direction: column;
-          height: 100vh;
+          height: calc(100vh - 32px);
         }
         dialog {
           border: none !important;
@@ -299,6 +301,32 @@ export function Styles(props) {
 
         #uncategorizedTitleBar {
           cursor: default;
+        }
+
+        .titleText {
+          font:
+            12px/32px "Segoe UI",
+            Arial,
+            sans-serif;
+          text-indent: 10px;
+        }
+        .titleControls {
+          max-width: 144px;
+          max-height: 32px;
+          flex-grow: 1;
+        }
+        .titleButton {
+          margin: 0;
+          width: 48px;
+          height: 32px;
+          border: 0;
+          outline: 0;
+          padding: 0px 10px 0px 17px;
+          background: transparent;
+        }
+        .titleButton svg {
+          width: 10px;
+          height: 10px;
         }
       `}</style>
     </>

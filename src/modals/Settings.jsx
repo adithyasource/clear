@@ -100,6 +100,8 @@ import {
   setQuitAfterOpen,
   setFontName,
   fontName,
+  currentTheme,
+  setCurrentTheme,
 } from "../Signals";
 
 import { getData, getSettingsData } from "../App";
@@ -292,6 +294,28 @@ export function Settings() {
                 <div className="">
                   {fontName().toLowerCase() || "sans serif"}
                 </div>
+              </div>
+              <div
+                onClick={async () => {
+                  currentTheme() == "dark"
+                    ? setCurrentTheme("light")
+                    : setCurrentTheme("dark");
+
+                  libraryData().userSettings.theme = currentTheme();
+
+                  await writeTextFile(
+                    {
+                      path: "lib.json",
+                      contents: JSON.stringify(libraryData(), null, 4),
+                    },
+                    {
+                      dir: BaseDirectory.AppData,
+                    },
+                  ).then(getData());
+                }}
+                className="flex gap-2 cursor-pointer ">
+                <span className="text-[#ffffff80]">[theme]</span>
+                <div className="">{currentTheme().toLowerCase() || "dark"}</div>
               </div>
             </div>
 

@@ -26,6 +26,7 @@ export const [foundHeroImage, setFoundHeroImage] = createSignal();
 export const [foundLogoImage, setFoundLogoImage] = createSignal();
 
 // !? Styles Signals
+export const [currentTheme, setCurrentTheme] = createSignal("");
 export const [secondaryColor, setSecondaryColor] = createSignal("");
 export const [secondaryColorForBlur, setSecondaryColorForBlur] =
   createSignal("");

@@ -62,11 +62,11 @@
         "resizable": true,
         "title": "clear",
         "width": 1220,
-        "height": 600,
+        "height": 760,
         "fileDropEnabled": false,
         "minWidth": 1220,
         "minHeight": 600,
-        "theme": "Dark"
+        "decorations": false
       }
     ]
   }

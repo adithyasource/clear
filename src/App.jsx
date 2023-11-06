@@ -26,6 +26,9 @@ import "./App.css";
 
 import { Styles } from "./Styles";
 
+import { WebviewWindow } from "@tauri-apps/api/window";
+import { appWindow } from "@tauri-apps/api/window";
+
 import {
   permissionGranted,
   setPermissionGranted,
@@ -101,7 +104,12 @@ import {
   fontName,
   quitAfterOpen,
   setQuitAfterOpen,
+  currentTheme,
+  setCurrentTheme,
 } from "./Signals";
+
+import logo from "./assets/128x128.png";
+import logoW from "./assets/128x128W.png";
 
 import { SideBar } from "./SideBar";
 import { NewGame } from "./modals/NewGame";
@@ -145,8 +153,36 @@ export function getSettingsData() {
   } else {
     setQuitAfterOpen(false);
   }
+  if (
+    libraryData().userSettings.theme == "dark" ||
+    libraryData().userSettings.theme == undefined
+  ) {
+    setCurrentTheme("dark");
+  } else {
+    setCurrentTheme("light");
+  }
 
   setFontName(libraryData().userSettings.fontName || "Sans Serif");
+
+  document.documentElement.classList.add("dark");
+
+  if (currentTheme() == "light") {
+    document.documentElement.classList.remove("dark");
+    setSecondaryColor("#F3F3F2");
+    setSecondaryColorForBlur("#272727cc");
+    setPrimaryColor("#FFFFFC");
+    setModalBackground("#12121266");
+    setLocatingLogoBackground("#272727");
+    setGamesDivLeftPadding("10px");
+  } else {
+    document.documentElement.classList.add("dark");
+    setSecondaryColor("#1c1c1c");
+    setSecondaryColorForBlur("#272727cc");
+    setPrimaryColor("#121212");
+    setModalBackground("#12121266");
+    setLocatingLogoBackground("#272727");
+    setGamesDivLeftPadding("10px");
+  }
 }
 
 export async function getData() {
@@ -380,30 +416,74 @@ function App() {
       setPermissionGranted(permission === "granted");
     }
     await getData();
-
-    console.log(document.documentElement.classList);
-    document.documentElement.classList.add("dark");
-
-    if (document.documentElement.classList[0] == undefined) {
-      setSecondaryColor("#F3F3F2");
-      setSecondaryColorForBlur("#272727cc");
-      setPrimaryColor("#FFFFFC");
-      setModalBackground("#12121266");
-      setLocatingLogoBackground("#272727");
-      setGamesDivLeftPadding("10px");
-    } else {
-      document.documentElement.classList.add("dark");
-      setSecondaryColor("#1c1c1c");
-      setSecondaryColorForBlur("#272727cc");
-      setPrimaryColor("#121212");
-      setModalBackground("#12121266");
-      setLocatingLogoBackground("#272727");
-      setGamesDivLeftPadding("10px");
-    }
+    appWindow.setDecorations(false);
   });
 
   return (
     <>
+      {
+        //? Windows 10 UI Title Bar by https://codepen.io/agrimsrud/pen/WGgRPP
+      }
+      <div
+        data-tauri-drag-region
+        class="flex absolute w-screen h-[32px] bg-[#fff] dark:bg-[#000] items-center">
+        <div data-tauri-drag-region className="pl-[8px]">
+          <Show when={currentTheme() == "dark"}>
+            <img src={logo} alt="" className="w-[18px] h-[18px] select-none" />
+          </Show>
+          <Show when={currentTheme() == "light"}>
+            <img src={logoW} alt="" className="w-[18px] h-[18px] select-none" />
+          </Show>
+        </div>
+
+        <div
+          data-tauri-drag-region
+          class="flex-grow-[2] max-h-[32px] w-auto titleText text-[#000] dark:text-[#fff]">
+          clear
+        </div>
+        <div data-tauri-drag-region class="titleControls">
+          <button
+            class="titleButton dark:hover:bg-[#ffffff1A] hover:bg-[#0000001A] minimize cursor-default  !rounded-none"
+            onClick={() => {
+              appWindow.minimize();
+            }}>
+            <svg x="0px" y="0px" viewBox="0 0 10 10">
+              <rect
+                className="fill-[#000] dark:fill-[#fff]"
+                x="0"
+                y="50%"
+                width="10.2"
+                height="1"
+              />
+            </svg>
+          </button>
+          <button
+            class="titleButton dark:hover:bg-[#ffffff1A] hover:bg-[#0000001A] maximize cursor-default  !rounded-none"
+            onClick={() => {
+              appWindow.toggleMaximize();
+            }}>
+            <svg viewBox="0 0 10 10">
+              <path
+                className="fill-[#000] dark:fill-[#fff]"
+                d="M0,0v10h10V0H0z M9,9H1V1h8V9z"
+              />
+            </svg>
+          </button>
+          <button
+            class="titleButton hover:bg-[#e81123] close cursor-default !rounded-none "
+            onClick={() => {
+              appWindow.close();
+            }}>
+            <svg viewBox="0 0 10 10">
+              <polygon
+                className="fill-[#000] dark:fill-[#fff]"
+                points="10.2,0.7 9.5,0 5.1,4.4 0.7,0 0,0.7 4.4,5.1 0,9.5 0.7,10.2 5.1,5.8 9.5,10.2 10.2,9.5 5.8,5.1"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
       <head>
         <link rel="stylesheet" href="hint.min.css" />
       </head>
@@ -452,7 +532,7 @@ function App() {
           <SideBar />
         </Show>
         <div
-          className={`w-[100%] absolute h-screen overflow-y-scroll py-[20px] pr-[30px]   ${
+          className={`w-[100%] absolute h-[calc(100vh-32px)] overflow-y-scroll py-[20px] pr-[30px]   ${
             showSideBar()
               ? "pl-[23%] min-[1500px]:pl-[17%]"
               : "pl-[30px] min-[1500px]:pl-[30px]"
@@ -481,7 +561,7 @@ function App() {
                           {(gameName) => {
                             return (
                               <div
-                                className="relative gameCard group"
+                                className="relative gameCard group "
                                 aria-label="play"
                                 onDragStart={(e) => {
                                   e.preventDefault();
@@ -547,7 +627,9 @@ function App() {
                                   </div>
                                 </Show>
                                 <Show when={gameTitle()}>
-                                  {gameName.replaceAll("_", " ")}
+                                  <span className="text-[#000000] dark:text-white">
+                                    {gameName.replaceAll("_", " ")}
+                                  </span>
                                 </Show>
                               </div>
                             );

@@ -48,6 +48,8 @@ import { appDataDir } from "@tauri-apps/api/path";
 
 import { open } from "@tauri-apps/api/dialog";
 
+import { open as shellOpen } from "@tauri-apps/api/shell";
+
 import { fetch, getClient, ResponseType } from "@tauri-apps/api/http";
 
 import Fuse from "fuse.js";
@@ -477,12 +479,28 @@ export function NewGame() {
                   placeholder="name of game"
                 />
                 <div
+                  className={`bg-[#1c1c1c] py-1 px-3 mr-2 cursor-pointer w-[max-content] text-[#ffffff80] rounded-[${
+                    roundedBorders() ? "6px" : "0px"
+                  }] `}
+                  onClick={async () => {
+                    gameName() == undefined
+                      ? await shellOpen("https://www.steamgriddb.com/")
+                      : gameName() == ""
+                      ? await shellOpen("https://www.steamgriddb.com/")
+                      : await shellOpen(
+                          "https://www.steamgriddb.com/search/grids?term=" +
+                            gameName().replaceAll(" ", "+"),
+                        );
+                  }}>
+                  find assets
+                </div>
+                <div
                   aria-label="not that accurate"
                   className={`bg-[#1c1c1c] py-1 px-3 mr-2 cursor-pointer w-[max-content] text-[#ffffff80] hint--left hint--no-animate hint--rounded hint--no-arrow rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }] `}
                   onClick={getGameAssets}>
-                  find assets
+                  auto find assets
                 </div>
               </div>
 
