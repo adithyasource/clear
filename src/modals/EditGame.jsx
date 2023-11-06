@@ -84,7 +84,7 @@ export function EditGame() {
   async function updateGame() {
     console.log(editedGameName());
 
-    delete libraryData().games[selectedGame().name.replaceAll(" ", "_")];
+    delete libraryData().games[selectedGame().name];
 
     setLibraryData(libraryData());
 
@@ -150,7 +150,7 @@ export function EditGame() {
       });
     }
 
-    libraryData().games[editedGameName().replaceAll(" ", "_")] = {
+    libraryData().games[editedGameName()] = {
       location: editedLocatedGame(),
       name: editedGameName(),
       heroImage: editedLocatedHeroImage(),
@@ -169,13 +169,11 @@ export function EditGame() {
       ) {
         if (
           Object.values(libraryData().folders)[i].games[j] ==
-          selectedGame().name.replaceAll(" ", "_")
+          selectedGame().name
         ) {
           Object.values(libraryData().folders)[i].games.splice(j, 1);
 
-          Object.values(libraryData().folders)[i].games.push(
-            editedGameName().replaceAll(" ", "_"),
-          );
+          Object.values(libraryData().folders)[i].games.push(editedGameName());
         }
       }
     }
@@ -195,7 +193,7 @@ export function EditGame() {
   }
 
   async function deleteGame() {
-    delete libraryData().games[selectedGame().name.replaceAll(" ", "_")];
+    delete libraryData().games[selectedGame().name];
 
     for (let i = 0; i < Object.values(libraryData().folders).length; i++) {
       console.log(Object.values(libraryData().folders)[i].games);

@@ -362,10 +362,9 @@ export function SideBar() {
 
                             try {
                               let currentDraggingItem =
-                                draggingItem.textContent.replaceAll(" ", "_");
+                                draggingItem.textContent;
 
-                              let nextSiblingItem =
-                                nextSibling.textContent.replaceAll(" ", "_");
+                              let nextSiblingItem = nextSibling.textContent;
 
                               moveGameInCurrentFolder(
                                 currentDraggingItem,
@@ -470,7 +469,7 @@ export function SideBar() {
                                 );
                               }
                             }}>
-                            {gameName.replaceAll("_", " ")}
+                            {gameName}
                           </p>
                         )}
                       </For>

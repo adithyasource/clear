@@ -92,6 +92,16 @@ export function Styles(props) {
           background-color: #00000000;
           width: 100%;
         }
+
+        .titleBarText {
+          font-family: ${fontName() == "Sans Serif"
+            ? "Segoe UI"
+            : fontName() == "Serif"
+            ? "Times New Roman"
+            : "IBM Plex Mono, Consolas"};
+          font-size: 12px;
+        }
+
         * {
           font-family: ${fontName() == "Sans Serif"
             ? "Helvetica, Arial, sans-serif"
@@ -303,7 +313,7 @@ export function Styles(props) {
             12px/32px "Segoe UI",
             Arial,
             sans-serif;
-          text-indent: 10px;
+          text-indent: 7px;
         }
         .titleControls {
           max-width: 144px;

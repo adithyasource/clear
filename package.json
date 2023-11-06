@@ -13,9 +13,7 @@
   "dependencies": {
     "@tauri-apps/api": "^1.4.0",
     "fuse.js": "^7.0.0",
-    "solid-js": "^1.7.8",
-    "steamgriddb": "^2.1.1",
-    "tauri-plugin-window-state-api": "github:tauri-apps/tauri-plugin-window-state#v1"
+    "solid-js": "^1.7.8"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.4.0",

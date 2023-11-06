@@ -447,7 +447,7 @@ function App() {
               draggable={false}
               src={logo}
               alt=""
-              className="w-[18px] h-[18px] select-none"
+              className="w-[16px] h-[16px] select-none"
             />
           </Show>
           <Show when={currentTheme() == "light"}>
@@ -456,7 +456,7 @@ function App() {
               draggable={false}
               src={logoW}
               alt=""
-              className="w-[18px] h-[18px] select-none"
+              className="w-[16px] h-[16px] select-none"
             />
           </Show>
         </div>
@@ -466,7 +466,7 @@ function App() {
           class="flex-grow-[2] max-h-[32px] titleText text-[#000] dark:text-[#fff] flex gap-[30px]">
           <span
             data-tauri-drag-region
-            className="text-[#000] dark:text-[#fff] ">
+            className="text-[#000] dark:text-[#fff] titleBarText">
             clear
           </span>
           <Show when={showFPS()}>
@@ -474,11 +474,11 @@ function App() {
               <span
                 id="fps"
                 data-tauri-drag-region
-                className="text-[#00000080] dark:text-[#ffffff80]">
+                className="text-[#00000080] dark:text-[#ffffff80] titleBarText">
                 --
               </span>
               &nbsp;
-              <span className="text-[#00000080] dark:text-[#ffffff80]">
+              <span className="text-[#00000080] dark:text-[#ffffff80] titleBarText">
                 FPS
               </span>
             </span>
@@ -671,7 +671,7 @@ function App() {
                                 </Show>
                                 <Show when={gameTitle()}>
                                   <span className="text-[#000000] dark:text-white">
-                                    {gameName.replaceAll("_", " ")}
+                                    {gameName}
                                   </span>
                                 </Show>
                               </div>
@@ -697,9 +697,7 @@ function App() {
                   i < Object.values(libraryData().games).length;
                   i++
                 ) {
-                  allGameNames.push(
-                    Object.keys(libraryData().games)[i].replaceAll("_", " "),
-                  );
+                  allGameNames.push(Object.keys(libraryData().games)[i]);
                 }
               }
 
@@ -709,11 +707,7 @@ function App() {
               });
 
               for (let i = 0; i < fuse.search(searchValue()).length; i++) {
-                searchResults.push(
-                  fuse
-                    .search(searchValue())
-                    [i].item["name"].replaceAll(" ", "_"),
-                );
+                searchResults.push(fuse.search(searchValue())[i].item["name"]);
               }
 
               return (
@@ -763,9 +757,7 @@ function App() {
                                 alt=""
                               />
                             </Show>
-                            <Show when={gameTitle()}>
-                              {gameName.replaceAll("_", " ")}
-                            </Show>
+                            <Show when={gameTitle()}>{gameName}</Show>
                           </div>
                         );
                       }}

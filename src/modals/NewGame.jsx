@@ -44,7 +44,6 @@ export function NewGame() {
       gameName() +
       "." +
       locatedHeroImage().split(".")[locatedHeroImage().split(".").length - 1];
-
     let gridImageFileName =
       gameName() +
       "." +
@@ -67,7 +66,7 @@ export function NewGame() {
       dir: BaseDirectory.AppData,
     });
 
-    libraryData().games[gameName().replaceAll(" ", "_")] = {
+    libraryData().games[gameName()] = {
       location: locatedGame(),
       name: gameName(),
       heroImage: heroImageFileName,
@@ -468,7 +467,7 @@ export function NewGame() {
                       ? await shellOpen("https://www.steamgriddb.com/")
                       : await shellOpen(
                           "https://www.steamgriddb.com/search/grids?term=" +
-                            gameName().replaceAll(" ", "+"),
+                            gameName(),
                         );
                   }}>
                   find assets
