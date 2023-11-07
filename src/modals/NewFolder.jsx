@@ -6,6 +6,9 @@ import {
   hideFolder,
   setHideFolder,
   currentFolders,
+  showToast,
+  setShowToast,
+  setToastError,
 } from "../Signals";
 
 import { Show } from "solid-js";
@@ -15,6 +18,15 @@ import { getData } from "../App";
 
 export function NewFolder() {
   async function addFolder() {
+    if (folderName() == "" || folderName() == undefined) {
+      setShowToast(true);
+      setToastError("no folder name");
+      setTimeout(() => {
+        setShowToast(false);
+      }, 1500);
+      return;
+    }
+
     libraryData().folders[folderName()] = {
       name: folderName(),
       hide: hideFolder(),

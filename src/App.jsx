@@ -23,6 +23,7 @@ import { appDataDir } from "@tauri-apps/api/path";
 import "./App.css";
 
 import { Styles } from "./Styles";
+import { Toast } from "./components/Toast";
 
 import { appWindow } from "@tauri-apps/api/window";
 
@@ -68,6 +69,8 @@ import {
   setCurrentTheme,
   showFPS,
   setShowFPS,
+  toastError,
+  setToastError,
 } from "./Signals";
 
 import logo from "./assets/128x128.png";
@@ -539,6 +542,8 @@ function App() {
         locatingLogoBackground={locatingLogoBackground}
         gamesDivLeftPadding={gamesDivLeftPadding}
       />
+
+      <Toast error={toastError} />
 
       <div id="page" className="">
         <Show when={showSideBar() == false}>

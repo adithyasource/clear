@@ -31,12 +31,32 @@ export function Styles(props) {
           animation: dialogFadeIn 0.3s ease normal;
           opacity: 1;
         }
+        dialog[close] {
+          animation: dialogFadeOut 0.3s ease normal;
+        }
+
+        .toast {
+          animation:
+            dialogFadeIn 0.2s,
+            dialogFadeOut 0.3s 1.3s;
+          opacity: 1;
+        }
+
         @keyframes dialogFadeIn {
           from {
             opacity: 0;
           }
           to {
             opacity: 1;
+          }
+        }
+
+        @keyframes dialogFadeOut {
+          from {
+            opacity: 1;
+          }
+          to {
+            opacity: 0;
           }
         }
 
@@ -47,7 +67,8 @@ export function Styles(props) {
         }
 
         button,
-        input {
+        input,
+        .toast {
           background-color: ${props.secondaryColor()};
           border: 0;
           padding: 10px;

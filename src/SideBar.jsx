@@ -201,7 +201,8 @@ export function SideBar() {
                   let compensatedY = "";
                   compensatedY = e.clientY + scrollY;
                   return (
-                    compensatedY <= sibling.offsetTop + sibling.offsetHeight / 2
+                    compensatedY <=
+                    sibling.offsetTop + sibling.offsetHeight / 2 + 32
                   );
                 });
 
@@ -229,7 +230,8 @@ export function SideBar() {
                   let compensatedY = "";
                   compensatedY = e.clientY + scrollY;
                   return (
-                    compensatedY <= sibling.offsetTop + sibling.offsetHeight / 2
+                    compensatedY <=
+                    sibling.offsetTop + sibling.offsetHeight / 2 + 32
                   );
                 });
 

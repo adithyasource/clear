@@ -9,6 +9,8 @@ export const [permissionGranted, setPermissionGranted] = createSignal(
 export const [appDataDirPath, setAppDataDirPath] = createSignal({});
 export const [libraryData, setLibraryData] = createSignal({});
 export const [notepadValue, setNotepadValue] = createSignal("");
+export const [toastError, setToastError] = createSignal("");
+export const [showToast, setShowToast] = createSignal(false);
 
 // !? References
 export const [selectedGame, setSelectedGame] = createSignal({});

@@ -20,6 +20,8 @@ import {
   setFoundHeroImage,
   setFoundLogoImage,
   roundedBorders,
+  setShowToast,
+  setToastError,
 } from "../Signals";
 
 import { Show } from "solid-js";
@@ -38,7 +40,46 @@ import Fuse from "fuse.js";
 
 export function NewGame() {
   async function addGame() {
-    console.log(locatedHeroImage());
+    if (locatedHeroImage() == "" || locatedHeroImage() == undefined) {
+      setShowToast(true);
+      setToastError("no hero");
+      setTimeout(() => {
+        setShowToast(false);
+      }, 1500);
+      return;
+    }
+    if (locatedGridImage() == "" || locatedGridImage() == undefined) {
+      setShowToast(true);
+      setToastError("no grid");
+      setTimeout(() => {
+        setShowToast(false);
+      }, 1500);
+      return;
+    }
+    if (locatedLogo() == "" || locatedLogo() == undefined) {
+      setShowToast(true);
+      setToastError("no logo");
+      setTimeout(() => {
+        setShowToast(false);
+      }, 1500);
+      return;
+    }
+    if (gameName() == "" || gameName() == undefined) {
+      setShowToast(true);
+      setToastError("no game name");
+      setTimeout(() => {
+        setShowToast(false);
+      }, 1500);
+      return;
+    }
+    if (locatedGame() == "" || locatedGame() == undefined) {
+      setShowToast(true);
+      setToastError("no game startup file");
+      setTimeout(() => {
+        setShowToast(false);
+      }, 1500);
+      return;
+    }
 
     let heroImageFileName =
       gameName() +
