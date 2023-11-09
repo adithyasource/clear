@@ -137,11 +137,12 @@ export function NewGame() {
         filters: [
           {
             name: "Executable",
-            extensions: ["exe", "lnk"],
+            extensions: ["exe", "lnk", "url"],
           },
         ],
       }),
     );
+    console.log(locatedGame());
   }
   async function locateHeroImage() {
     setLocatedHeroImage(

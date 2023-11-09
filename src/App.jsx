@@ -548,7 +548,7 @@ function App() {
       <div id="page" className="">
         <Show when={showSideBar() == false}>
           <svg
-            className="absolute right-[30px] top-[30px] z-10 rotate-180 cursor-pointer"
+            className="absolute right-[30px] top-[66px] z-10 rotate-180 cursor-pointer"
             onClick={toggleSideBar}
             width="12.19"
             height="14"

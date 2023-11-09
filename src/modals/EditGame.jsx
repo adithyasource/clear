@@ -102,13 +102,12 @@ export function EditGame() {
       setEditedLocatedGridImage(selectedGame().gridImage);
     } else {
       let gridImageFileName =
-        "grid+ " +
         editedGameName() +
         "." +
         editedLocatedGridImage().split(".")[
           editedLocatedGridImage().split(".").length - 1
         ];
-      await copyFile(editedLocatedGridImage(), gridImageFileName, {
+      await copyFile(editedLocatedGridImage(), "grids\\" + gridImageFileName, {
         dir: BaseDirectory.AppData,
       }).then(() => {
         setEditedLocatedGridImage(gridImageFileName);
@@ -119,13 +118,12 @@ export function EditGame() {
       setEditedLocatedHeroImage(selectedGame().heroImage);
     } else {
       let heroImageFileName =
-        "hero+ " +
         editedGameName() +
         "." +
         editedLocatedHeroImage().split(".")[
           editedLocatedHeroImage().split(".").length - 1
         ];
-      await copyFile(editedLocatedHeroImage(), heroImageFileName, {
+      await copyFile(editedLocatedHeroImage(), "heroes\\" + heroImageFileName, {
         dir: BaseDirectory.AppData,
       }).then(() => {
         setEditedLocatedHeroImage(heroImageFileName);
@@ -136,14 +134,13 @@ export function EditGame() {
       setEditedLocatedLogo(selectedGame().logo);
     } else {
       let logoFileName =
-        "logo+ " +
         editedGameName() +
         "." +
         editedLocatedLogo().split(".")[
           editedLocatedLogo().split(".").length - 1
         ];
 
-      await copyFile(editedLocatedLogo(), logoFileName, {
+      await copyFile(editedLocatedLogo(), "logos\\" + logoFileName, {
         dir: BaseDirectory.AppData,
       }).then(() => {
         setEditedLocatedLogo(logoFileName);
