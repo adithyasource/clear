@@ -142,7 +142,6 @@ export function NewGame() {
         ],
       }),
     );
-    console.log(locatedGame());
   }
   async function locateHeroImage() {
     setLocatedHeroImage(
@@ -214,7 +213,6 @@ export function NewGame() {
       for (let x = 0; x < response.data.applist["apps"].length; x++) {
         if (response.data.applist["apps"][x].name == closestMatchingName) {
           steamAppId = response.data.applist["apps"][x].appid;
-          console.log(closestMatchingName);
         }
       }
 
@@ -262,7 +260,6 @@ export function NewGame() {
 
     try {
       iterateGames(0);
-      console.log("failed");
     } catch (error) {
       iterateGames(1);
     }
@@ -275,16 +272,17 @@ export function NewGame() {
         e.preventDefault();
       }}
       className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#121212cc] bg-[#ffffffcc]">
-      <div className="flex flex-col gap-3 newGameDiv">
+      <div className="flex flex-col items-center justify-center w-screen h-screen gap-3">
         <div className="flex justify-between w-[61rem]">
           <div>
-            <h1>add new game</h1>
+            <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
+              add new game
+            </p>
           </div>
           <div className="flex items-center gap-4">
             <div
               onClick={() => {
                 setFavouriteGame(!favouriteGame());
-                console.log(favouriteGame());
               }}>
               <Show when={favouriteGame()}>
                 <div className="relative">
@@ -444,7 +442,7 @@ export function NewGame() {
               <Show when={foundLogoImage()}>
                 <button
                   onClick={locateLogo}
-                  className="locatedHeroImg group  absolute bottom-[20px] left-[20px] "
+                  className="bg-[#27272700] group  absolute bottom-[20px] left-[20px] "
                   aria-label="logo">
                   <img src={foundLogoImage()} alt="" className="h-[60px] " />
                   <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
@@ -457,7 +455,7 @@ export function NewGame() {
                 <Show when={locatedLogo()}>
                   <button
                     onClick={locateLogo}
-                    className="locatedHeroImg group  absolute bottom-[20px] left-[20px] "
+                    className="bg-[#27272700] group  absolute bottom-[20px] left-[20px] "
                     aria-label="logo">
                     <img
                       src={convertFileSrc(locatedLogo())}
@@ -473,7 +471,7 @@ export function NewGame() {
                 <Show when={!locatedLogo()}>
                   <button
                     onClick={locateLogo}
-                    className="locatingLogoImg group  absolute bottom-[20px] left-[20px] w-[170px] h-[70px]  functionalInteractables "
+                    className="bg-[#272727] group  absolute bottom-[20px] left-[20px] w-[170px] h-[70px]  functionalInteractables "
                     aria-label="logo">
                     <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
                       logo

@@ -2,6 +2,7 @@ import {
   appDataDirPath,
   selectedGame,
   setNotificaitonGameName,
+  roundedBorders,
 } from "../Signals";
 
 import { Show } from "solid-js";
@@ -18,16 +19,18 @@ export function GamePopUp() {
         e.preventDefault();
       }}>
       <Show when={selectedGame()}>
-        <div className="popUpDiv">
+        <div className="flex flex-col items-center justify-center w-screen h-screen">
           <img
             src={convertFileSrc(
               appDataDirPath() + "heroes\\" + selectedGame().heroImage,
             )}
             alt=""
-            className="popUpHero absolute blur-[80px] opacity-[0.4] -z-10"
+            className={`h-[254px] rounded-[${
+              roundedBorders() ? "6px" : "0px"
+            }] absolute blur-[80px] opacity-[0.4] -z-10`}
           />
-          <div className="popUpMain">
-            <div className="popUpRight">
+          <div className="relative">
+            <div className="absolute bottom-[30px] right-[30px] flex gap-[15px]">
               <button
                 className="standardButton bgBlur"
                 onClick={() => {
@@ -102,14 +105,16 @@ export function GamePopUp() {
                 appDataDirPath() + "heroes\\" + selectedGame().heroImage,
               )}
               alt=""
-              className="popUpHero"
+              className={`h-[254px] rounded-[${
+                roundedBorders() ? "6px" : "0px"
+              }]`}
             />
             <img
               src={convertFileSrc(
                 appDataDirPath() + "logos\\" + selectedGame().logo,
               )}
               alt=""
-              className="popupLogo h-[70px]"
+              className="absolute bottom-[20px] left-[25px] h-[70px] "
             />
           </div>
         </div>

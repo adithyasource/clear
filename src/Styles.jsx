@@ -1,360 +1,84 @@
-import { fontName } from "./Signals";
+import {
+  fontName,
+  secondaryColor,
+  roundedBorders,
+  secondaryColorForBlur,
+  primaryColor,
+} from "./Signals";
 
-export function Styles(props) {
+export function Styles() {
   return (
-    <>
-      <style jsx>{`
-        #page {
-          height: 100%;
-          display: flex;
-          gap: 30px;
-          padding-top: 32px;
-          overflow-y: hidden;
-        }
-
-        .folderRack {
-          margin: 0px 0px 40px 0px;
-        }
-        #sideBar {
-          display: flex;
-          flex-direction: column;
-          height: calc(100vh - 32px);
-        }
-        dialog {
-          border: none !important;
-          background-color: #00000000;
-          overflow: hidden;
-          padding: 0px 50px 50px 0px;
-          opacity: 0;
-        }
-        dialog[open] {
-          animation: dialogFadeIn 0.3s ease normal;
-          opacity: 1;
-        }
-        dialog[close] {
-          animation: dialogFadeOut 0.3s ease normal;
-        }
-
-        .toast {
-          animation:
-            dialogFadeIn 0.2s,
-            dialogFadeOut 0.3s 1.3s;
-          opacity: 1;
-        }
-
-        @keyframes dialogFadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-
-        @keyframes dialogFadeOut {
-          from {
-            opacity: 1;
-          }
-          to {
-            opacity: 0;
-          }
-        }
-
-        .modalWindow {
-          border: solid 2px #ffffff1f;
-          background-color: #121212;
-          border-radius: ${props.roundedBorders() ? "6px" : "0px"};
-        }
-
-        button,
-        input,
-        .toast {
-          background-color: ${props.secondaryColor()};
-          border: 0;
-          padding: 10px;
-          border-radius: ${props.roundedBorders() ? "6px" : "0px"};
-        }
-        #searchInput {
-          width: 100%;
-        }
-        .standardButton {
-          margin: 12px 0px 0px 0px;
-          display: flex;
-          justify-items: center;
-          justify-content: space-between;
-          gap: 5px;
-          width: min-content;
-          align-items: center;
-        }
-        #sideBarFolders {
-          margin: 20px 0px 0px 0px;
-        }
-        .sideBarFolder {
-          margin: 0px 0px 12px 0px;
-          background: ${props.secondaryColor()};
-          border-radius: ${props.roundedBorders() ? "6px" : "0px"};
-          display: flex;
-          justify-items: center;
-          flex-direction: column;
-          padding: 10px;
-          justify-content: space-between;
-        }
-        #sideBar {
-          .standardButton,
-          #searchInput {
-            width: 100%;
-          }
-        }
-        button,
-        .gameCard {
-          cursor: pointer;
-        }
-        .gameCard {
-          background-color: #00000000;
-          width: 100%;
-        }
-
-        .titleBarText {
-          font-family: ${fontName() == "Sans Serif"
-            ? "Segoe UI"
-            : fontName() == "Serif"
-            ? "Times New Roman"
-            : "IBM Plex Mono, Consolas"};
-          font-size: 12px;
-        }
-
-        * {
-          font-family: ${fontName() == "Sans Serif"
-            ? "Helvetica, Arial, sans-serif"
-            : fontName() == "Serif"
-            ? "Times New Roman"
-            : "IBM Plex Mono, Consolas"};
-          font-weight: normal;
-          color: #ffffff;
-          font-size: 14px;
-          user-select: none;
-          margin: 0;
-          padding: 0;
-          color-scheme: dark;
-        }
-        ::-webkit-scrollbar {
-          width: 10px;
-        }
-        ::-webkit-scrollbar-track {
-          background: #00000000;
-          margin: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-          background: ${props.secondaryColor()};
-          border-radius: ${props.roundedBorders() ? "10px" : "0px"};
-        }
-        #sideBarFolders::-webkit-scrollbar {
-          display: none;
-        }
-
-        #sideBarFolders:hover::-webkit-scrollbar-thumb {
-          background: ${props.secondaryColorForBlur()};
-        }
-        #sideBarFolders:hover::-webkit-scrollbar {
-          width: 5px;
-        }
-        #sideBarFolders:hover::-webkit-scrollbar {
-          display: block;
-        }
-        #sideBarFolders:hover::-webkit-scrollbar-track {
-          margin: 5px;
-        }
-
-        html,
-        body {
-          background-color: ${props.primaryColor()};
-          height: 100%;
-          margin: 0;
-        }
-
-        h1 {
-          font-size: 25px;
-          /* color: #ffffff80; */
-          color: #a3a3a3;
-        }
-        #searchAndDestroy {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          gap: 20px;
-        }
-        .popupLogo {
-          position: absolute;
-        }
-        .popUpDiv {
-          display: flex;
-          flex-direction: column;
-          width: 100vw;
-          height: 100vh;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .toolbarRight {
-          display: flex;
-          gap: 10px;
-        }
-        .newGameLeft {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          gap: 7px;
-        }
-        .newGameLeft > button,
-        .newGameRight > button {
-          margin: 0px;
-          padding: 0px;
-        }
-
-        .centerHero {
-          padding: 0px;
-          margin: 0px;
-        }
-
-        img {
-          object-fit: cover !important;
-        }
-
-        .popUpMain {
-          position: relative;
-          .popUpRight {
-            position: absolute;
-            bottom: 30px;
-            right: 30px;
-            display: flex;
-            gap: 15px;
-          }
-          .popupLogo {
-            position: absolute;
-            bottom: 20px;
-            left: 30px;
-          }
-          .standardButton {
-            width: max-content;
-          }
-        }
-
-        .functionalInteractables {
-          background-color: ${props.secondaryColor()};
-        }
-
-        .bgBlur {
-          backdrop-filter: blur(10px) !important;
-          background-color: ${props.secondaryColorForBlur()} !important;
-          border-radius: ${props.roundedBorders() ? "6px" : "0px"};
-        }
-
-        .centerHero .heroBlur {
-          left: 0px;
-        }
-
-        .popUpHero,
-        .gridImage {
-          border-radius: ${props.roundedBorders() ? "6px" : "0px"};
-        }
-
-        .popUpHero {
-          height: 254px;
-        }
-        .gridImage {
-          margin: 0px 0px 7px 0px;
-        }
-
-        .sideBarGame {
-          cursor: grab;
-        }
-        .emptyFolderTitleBar {
-          cursor: move;
-        }
-        button:focus,
-        input:focus {
-          outline: 0;
-        }
-        .folderTitleBar {
-          display: flex;
-          gap: 10px;
-          align-items: center;
-          cursor: move;
-        }
-        .editButton {
-          padding: 0;
-        }
-
-        .locatingLogoImg {
-          background-color: #272727;
-        }
-        .locatedHeroImg {
-          background-color: #27272700;
-        }
-
-        .mainNewGame {
-          display: flex;
-          gap: 10px;
-        }
-
-        .newGameDiv {
-          display: flex;
-          flex-direction: column;
-          width: 100vw;
-          height: 100vh;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .tooltip {
-          background: #272727cc;
-          backdrop-filter: blur(10px);
-          border: 0.5px solid #ffffff10;
-
-          color: #fff;
-          padding: 8px 10px;
-          font-family: Helvetica;
-          line-height: 12px;
-          white-space: nowrap;
-          border-radius: ${props.roundedBorders() ? "6px" : "0px"};
-        }
-
-        .currentlyDragging {
-          border-top: 3px #646464 solid;
-          border-top-left-radius: 0px;
-          border-top-right-radius: 0px;
-        }
-
-        #uncategorizedTitleBar {
-          cursor: default;
-        }
-
-        .titleText {
-          font:
-            12px/32px "Segoe UI",
-            Arial,
-            sans-serif;
-          text-indent: 7px;
-        }
-        .titleControls {
-          max-width: 144px;
-          max-height: 32px;
-          flex-grow: 1;
-        }
-        .titleButton {
-          margin: 0;
-          width: 48px;
-          height: 32px;
-          border: 0;
-          outline: 0;
-          padding: 0px 10px 0px 17px;
-          background: transparent;
-        }
-        .titleButton svg {
-          width: 10px;
-          height: 10px;
-        }
-      `}</style>
-    </>
+    <style jsx>{`
+      button,
+      input {
+        background-color: ${secondaryColor()};
+        border: 0;
+        padding: 10px;
+        border-radius: ${roundedBorders() ? "6px" : "0px"};
+      }
+      .sideBarFolder {
+        margin: 0px 0px 12px 0px;
+        background: ${secondaryColor()};
+        border-radius: ${roundedBorders() ? "6px" : "0px"};
+        display: flex;
+        justify-items: center;
+        flex-direction: column;
+        padding: 10px;
+        justify-content: space-between;
+      }
+      .titleBarText {
+        font-family: ${fontName() == "Sans Serif"
+          ? "Segoe UI"
+          : fontName() == "Serif"
+          ? "Times New Roman"
+          : "IBM Plex Mono, Consolas"};
+      }
+      * {
+        font-family: ${fontName() == "Sans Serif"
+          ? "Helvetica, Arial, sans-serif"
+          : fontName() == "Serif"
+          ? "Times New Roman"
+          : "IBM Plex Mono, Consolas"};
+        font-weight: normal;
+        color: #ffffff;
+        font-size: 14px;
+        user-select: none;
+        margin: 0;
+        padding: 0;
+        color-scheme: dark;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: ${secondaryColor()};
+        border-radius: ${roundedBorders() ? "10px" : "0px"};
+      }
+      #sideBarFolders:hover::-webkit-scrollbar-thumb {
+        background: ${secondaryColorForBlur()};
+      }
+      html,
+      body {
+        background-color: ${primaryColor()};
+        height: 100%;
+        margin: 0;
+      }
+      .functionalInteractables {
+        background-color: ${secondaryColor()};
+      }
+      .bgBlur {
+        backdrop-filter: blur(10px) !important;
+        background-color: ${secondaryColorForBlur()} !important;
+        border-radius: ${roundedBorders() ? "6px" : "0px"};
+      }
+      .tooltip {
+        background: #272727cc;
+        backdrop-filter: blur(10px);
+        border: 0.5px solid #ffffff10;
+        color: #fff;
+        padding: 8px 10px;
+        font-family: Helvetica;
+        line-height: 12px;
+        white-space: nowrap;
+        border-radius: ${roundedBorders() ? "6px" : "0px"};
+      }
+    `}</style>
   );
 }

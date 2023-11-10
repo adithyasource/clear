@@ -34,10 +34,15 @@ export function Settings() {
         onClose={() => {}}
         className="outline-none absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#ffffff66]">
         <div className="flex items-center justify-center w-screen h-screen align-middle ">
-          <div className="modalWindow w-[70%]  rounded-[6px] p-6">
+          <div
+            className={`border-2 border-solid border-[#ffffff1f] bg-[#121212] rounded-[${
+              roundedBorders() ? "6px" : "0px"
+            }] w-[70%] p-6`}>
             <div className="flex justify-between">
               <div>
-                <h1>settings</h1>
+                <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
+                  settings
+                </p>
               </div>
 
               <button
@@ -247,7 +252,6 @@ export function Settings() {
                       }
                     }
                   }
-                  console.log(fontName());
 
                   libraryData().userSettings.fontName = fontName();
 

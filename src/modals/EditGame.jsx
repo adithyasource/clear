@@ -82,8 +82,6 @@ export function EditGame() {
   }
 
   async function updateGame() {
-    console.log(editedGameName());
-
     delete libraryData().games[selectedGame().name];
 
     setLibraryData(libraryData());
@@ -157,8 +155,6 @@ export function EditGame() {
     };
 
     for (let i = 0; i < Object.values(libraryData().folders).length; i++) {
-      console.log(Object.values(libraryData().folders)[i].games);
-
       for (
         let j = 0;
         j < Object.values(libraryData().folders)[i].games.length;
@@ -193,8 +189,6 @@ export function EditGame() {
     delete libraryData().games[selectedGame().name];
 
     for (let i = 0; i < Object.values(libraryData().folders).length; i++) {
-      console.log(Object.values(libraryData().folders)[i].games);
-
       for (
         let j = 0;
         j < Object.values(libraryData().folders)[i].games.length;
@@ -229,10 +223,12 @@ export function EditGame() {
         e.preventDefault();
       }}
       className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#121212cc] bg-[#ffffffcc]">
-      <div className="flex flex-col gap-3 newGameDiv">
+      <div className="flex flex-col items-center justify-center w-screen h-screen gap-3">
         <div className="flex justify-between w-[61rem]">
           <div>
-            <h1>edit {selectedGame().name}</h1>
+            <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
+              edit {selectedGame().name}
+            </p>
           </div>
           <div className="flex items-center gap-4">
             <div
@@ -242,8 +238,6 @@ export function EditGame() {
                 } else {
                   setEditedFavouriteGame(!editedFavouriteGame());
                 }
-
-                console.log(editedFavouriteGame());
               }}>
               <Show when={editedFavouriteGame() == undefined}>
                 <Show when={selectedGame().favourite}>
@@ -439,7 +433,7 @@ export function EditGame() {
 
               <button
                 onClick={locateEditedLogo}
-                className="locatedHeroImg group  absolute bottom-[20px] left-[20px] "
+                className="bg-[#27272700] group  absolute bottom-[20px] left-[20px] "
                 aria-label="logo">
                 <Show when={!editedLocatedLogo()}>
                   <img

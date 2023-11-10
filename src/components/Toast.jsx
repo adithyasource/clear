@@ -1,16 +1,20 @@
-import { createSignal, onMount } from "solid-js";
+import {
+  showToast,
+  toastError,
+  secondaryColor,
+  roundedBorders,
+} from "../Signals";
 
-import { showToast, setShowToast } from "../Signals";
-
-export function Toast(props) {
-  console.log(props.error);
-
+export function Toast() {
   return (
     <>
       <Show when={showToast()}>
         <div className="absolute bottom-[20px] w-screen justify-center self-center content-center flex items-center">
-          <div className="toast relative gap-1 functionalInteractables z-[100000000] w-max h-max ">
-            {props.error}
+          <div
+            className={`border-0 p-[10px] rounded-[${
+              roundedBorders() ? "6px" : "0px"
+            }] relative gap-1 functionalInteractables z-[100000000] w-max h-max bg-[${secondaryColor()}]`}>
+            {toastError()}
           </div>
         </div>
       </Show>

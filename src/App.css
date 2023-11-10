@@ -1,3 +1,106 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+button:focus,
+input:focus {
+  outline: 0;
+}
+
+img {
+  object-fit: cover !important;
+}
+
+#sideBarFolders:hover::-webkit-scrollbar {
+  width: 5px;
+}
+#sideBarFolders:hover::-webkit-scrollbar {
+  display: block;
+}
+#sideBarFolders:hover::-webkit-scrollbar-track {
+  margin: 5px;
+}
+
+#sideBarFolders::-webkit-scrollbar {
+  display: none;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #00000000;
+  margin: 10px;
+}
+
+.standardButton {
+  margin: 12px 0px 0px 0px;
+  display: flex;
+  justify-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  width: 100%;
+  align-items: center;
+}
+
+@keyframes dialogFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dialogFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+dialog {
+  opacity: 0;
+  overflow: hidden;
+  padding: 0px 50px 50px 0px;
+  background-color: #00000000;
+  border: none !important;
+}
+
+dialog[open] {
+  opacity: 1;
+  animation: dialogFadeIn 0.3s ease normal;
+}
+
+dialog[close] {
+  animation: dialogFadeOut 0.3s ease normal;
+}
+
+.toast {
+  opacity: 1;
+  animation:
+    dialogFadeIn 0.2s,
+    dialogFadeOut 0.3s 1.3s;
+}
+
+.currentlyDragging {
+  border-top: 3px #646464 solid;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+.titleButton {
+  outline: 0;
+  width: 48px;
+  height: 32px;
+  margin: 0;
+  padding: 0px 10px 0px 17px;
+  background: transparent;
+  border: 0;
+}
+.titleButton svg {
+  width: 10px;
+  height: 10px;
+}

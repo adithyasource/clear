@@ -184,8 +184,6 @@ export async function getData() {
       setCurrentFolders("");
       setLibraryData(JSON.parse(getLibraryData));
 
-      console.log(libraryData());
-
       for (let x = 0; x < Object.keys(libraryData()["folders"]).length; x++) {
         for (let y = 0; y < Object.keys(libraryData()["folders"]).length; y++) {
           if (Object.values(libraryData()["folders"])[y].index == x) {
@@ -246,9 +244,6 @@ export async function openGame(gameLocation) {
     sendNotification(`launched ${notificationGameName()}!`);
   }
 
-  console.log(selectedGame());
-
-  console.log(quitAfterOpen());
   if (quitAfterOpen() == true || quitAfterOpen() == undefined) {
     setTimeout(async () => {
       await exit(1);
@@ -466,10 +461,10 @@ function App() {
 
         <div
           data-tauri-drag-region
-          class="flex-grow-[2] max-h-[32px] titleText text-[#000] dark:text-[#fff] flex gap-[30px]">
+          class="flex-grow-[2] max-h-[32px] indent-[7px] text-[#000] dark:text-[#fff] flex gap-[30px]">
           <span
             data-tauri-drag-region
-            className="text-[#000] dark:text-[#fff] titleBarText">
+            className="text-[#000] dark:text-[#fff] titleBarText text-[12px]">
             clear
           </span>
           <Show when={showFPS()}>
@@ -477,18 +472,20 @@ function App() {
               <span
                 id="fps"
                 data-tauri-drag-region
-                className="text-[#00000080] dark:text-[#ffffff80] titleBarText">
+                className="text-[#00000080] dark:text-[#ffffff80] titleBarText text-[12px]">
                 --
               </span>
               &nbsp;
-              <span className="text-[#00000080] dark:text-[#ffffff80] titleBarText">
+              <span className="text-[#00000080] dark:text-[#ffffff80] titleBarText text-[12px]">
                 FPS
               </span>
             </span>
           </Show>
         </div>
 
-        <div data-tauri-drag-region class="titleControls">
+        <div
+          data-tauri-drag-region
+          class="max-w-[144px] max-h-[32px] flex-grow-[1]">
           <button
             class="titleButton dark:hover:bg-[#ffffff1A] hover:bg-[#0000001A] minimize cursor-default  !rounded-none"
             onClick={() => {
@@ -531,21 +528,11 @@ function App() {
         </div>
       </div>
 
-      <Styles
-        roundedBorders={roundedBorders}
-        fontName={fontName}
-        gameTitle={gameTitle}
-        secondaryColor={secondaryColor}
-        secondaryColorForBlur={secondaryColorForBlur}
-        primaryColor={primaryColor}
-        modalBackground={modalBackground}
-        locatingLogoBackground={locatingLogoBackground}
-        gamesDivLeftPadding={gamesDivLeftPadding}
-      />
+      <Styles />
 
-      <Toast error={toastError} />
+      <Toast />
 
-      <div id="page" className="">
+      <div className="h-full flex gap-[30px] pt-[32px] overflow-y-hidden">
         <Show when={showSideBar() == false}>
           <svg
             className="absolute right-[30px] top-[66px] z-10 rotate-180 cursor-pointer"
@@ -589,11 +576,11 @@ function App() {
 
                 return (
                   <Show when={folder.games != "" && !folder.hide}>
-                    <div className="folderRack">
+                    <div className="mb-[40px]">
                       <Show when={folderTitle()}>
-                        <h1 className="dark:text-[#ffffff80] text-[#000000]">
+                        <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
                           {folder.name}
-                        </h1>
+                        </p>
                       </Show>
                       <div
                         className={`grid gap-5 mt-4 foldersDiv 
@@ -606,7 +593,7 @@ function App() {
                           {(gameName) => {
                             return (
                               <div
-                                className="relative gameCard group "
+                                className="relative w-full bg-transparent cursor-pointer gameCard group"
                                 aria-label="play"
                                 onDragStart={(e) => {
                                   e.preventDefault();
@@ -632,7 +619,9 @@ function App() {
                                   }>
                                   <div className="w-[100%]">
                                     <img
-                                      className="relative z-10 gridImage  object-fill group-hover:outline-[#0000001f] dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none"
+                                      className={`relative z-10 mb-[7px] rounded-[${
+                                        roundedBorders() ? "6px" : "0px"
+                                      }]  object-fill group-hover:outline-[#0000001f] dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
                                       src={convertFileSrc(
                                         appDataDirPath() +
                                           "grids\\" +
@@ -648,7 +637,9 @@ function App() {
                                     libraryData().games[gameName].favourite
                                   }>
                                   <img
-                                    className="relative z-10 gridImage outline-[#0000001a] hover:outline-[#00000028] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff28] outline-[2px] outline-none  duration-700"
+                                    className={`relative z-10 mb-[7px] rounded-[${
+                                      roundedBorders() ? "6px" : "0px"
+                                    }] outline-[#0000001a] hover:outline-[#00000028] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff28] outline-[2px] outline-none  duration-700`}
                                     src={convertFileSrc(
                                       appDataDirPath() +
                                         "grids\\" +
@@ -722,7 +713,7 @@ function App() {
                       {(gameName) => {
                         return (
                           <div
-                            className="relative gameCard group"
+                            className="relative w-full bg-transparent cursor-pointer gameCard group"
                             aria-label="play"
                             onDragStart={(e) => {
                               e.preventDefault();
@@ -741,7 +732,9 @@ function App() {
                               document.querySelector("[data-gamePopup]").show();
                             }}>
                             <img
-                              className="relative z-10 gridImage dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none"
+                              className={`relative z-10 mb-[7px] rounded-[${
+                                roundedBorders() ? "6px" : "0px"
+                              }] dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
                               src={convertFileSrc(
                                 appDataDirPath() +
                                   "grids\\" +

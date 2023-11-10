@@ -1,6 +1,11 @@
 import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
-import { libraryData, setNotepadValue, notepadValue } from "../Signals";
+import {
+  libraryData,
+  setNotepadValue,
+  notepadValue,
+  roundedBorders,
+} from "../Signals";
 
 import { getData } from "../App";
 
@@ -34,10 +39,15 @@ export function Notepad() {
         }}
         className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#ffffff66]">
         <div className="flex items-center justify-center w-screen h-screen align-middle ">
-          <div className="modalWindow w-[50%]  rounded-[6px] p-6">
+          <div
+            className={`border-2 border-solid border-[#ffffff1f] bg-[#121212] rounded-[${
+              roundedBorders() ? "6px" : "0px"
+            }] w-[50%] p-6`}>
             <div className="flex justify-between">
               <div>
-                <h1>notepad</h1>
+                <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
+                  notepad
+                </p>
               </div>
 
               <button

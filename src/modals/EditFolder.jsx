@@ -12,11 +12,6 @@ import { getData } from "../App";
 
 export function EditFolder() {
   async function editFolder() {
-    console.log("oldfoldername" + selectedFolder().name);
-    console.log("oldfodlerhide" + selectedFolder().hide);
-    console.log(editedFolderName());
-    console.log(editedHideFolder());
-
     delete libraryData().folders[selectedFolder().name];
 
     libraryData().folders[editedFolderName()] = {

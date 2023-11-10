@@ -4,7 +4,6 @@ import {
   setSelectedFolder,
   currentGames,
   currentFolders,
-  searchValue,
   setSearchValue,
   setNotificaitonGameName,
   gameName,
@@ -52,7 +51,6 @@ export function SideBar() {
   async function moveFolder(folderName, toPosition) {
     let pastPositionOfFolder = currentFolders().indexOf(folderName);
 
-    console.log(currentFolders());
     currentFolders().splice(pastPositionOfFolder, 1);
 
     if (toPosition == -1) {
@@ -60,14 +58,10 @@ export function SideBar() {
     } else {
       if (toPosition > pastPositionOfFolder) {
         currentFolders().splice(toPosition - 1, 0, folderName);
-        console.log("greater than");
       } else {
         currentFolders().splice(toPosition, 0, folderName);
-        console.log("less than");
       }
     }
-
-    console.log(currentFolders());
 
     for (let x = 0; x < currentFolders().length; x++) {
       for (let y = 0; y < Object.keys(libraryData()["folders"]).length; y++) {
@@ -101,8 +95,6 @@ export function SideBar() {
       1,
     );
 
-    console.log(toPosition, pastPositionOfGame);
-
     if (toPosition == -1) {
       libraryData().folders[currentFolderName]["games"].push(gameName);
     } else {
@@ -112,14 +104,12 @@ export function SideBar() {
           0,
           gameName,
         );
-        console.log("greater than");
       } else {
         libraryData().folders[currentFolderName]["games"].splice(
           toPosition,
           0,
           gameName,
         );
-        console.log("less than");
       }
     }
 
@@ -136,20 +126,17 @@ export function SideBar() {
 
   return (
     <>
-      <div
-        id="sideBar"
-        className="text-black z-10 py-[20px] pl-[20px] relative overflow-hidden w-[20%] min-[1500px]:w-[15%]">
-        <div id="sideBarTop ">
-          <div id="searchAndDestroy">
+      <div className="flex  flex-col h-[calc(100vh-32px)] text-black z-10 py-[20px] pl-[20px] relative overflow-hidden w-[20%] min-[1500px]:w-[15%]">
+        <div id="sideBarTop">
+          <div className="flex justify-between items-center gap-[20px]">
             <input
               type="text"
-              name=""
               id="searchInput"
-              className="dark:bg-[#232323] bg-[#E8E8E8] dark:text-white text-black"
+              name=""
+              className="dark:bg-[#232323] bg-[#E8E8E8] dark:text-white text-black w-full"
               placeholder="search"
               onInput={(e) => {
                 setSearchValue(e.currentTarget.value);
-                console.log(searchValue());
               }}
             />
             <svg
@@ -178,6 +165,7 @@ export function SideBar() {
           </div>
           <div
             id="sideBarFolders"
+            className="mt-[20px]"
             onDragOver={(e) => {
               e.preventDefault();
 
@@ -235,8 +223,6 @@ export function SideBar() {
                   );
                 });
 
-                console.log(folderName);
-
                 try {
                   moveFolder(
                     folderName,
@@ -253,7 +239,6 @@ export function SideBar() {
                     getData();
                   }, 100);
                 } catch (error) {
-                  console.log(error);
                   getData();
                 }
 
@@ -380,7 +365,6 @@ export function SideBar() {
                                 getData();
                               }, 100);
                             } catch (error) {
-                              console.log(error);
                               getData();
                             }
                             return;
@@ -412,12 +396,12 @@ export function SideBar() {
                           });
                         }
                       }}>
-                      <div className="folderTitleBar">
+                      <div className="flex gap-[10px] items-center cursor-move">
                         <span className="text-black dark:text-white">
                           {folder.name}
                         </span>
                         <button
-                          className="editButton"
+                          className="p-0"
                           onClick={() => {
                             document
                               .querySelector("[data-editFolderModal]")
@@ -446,7 +430,7 @@ export function SideBar() {
                       <For each={folder.games}>
                         {(gameName) => (
                           <p
-                            className="mt-5 sideBarGame text-[#00000080] dark:text-[#ffffff80]"
+                            className="mt-5 sideBarGame cursor-grab text-[#00000080] dark:text-[#ffffff80]"
                             aria-label="play"
                             draggable={true}
                             onDragStart={(e) => {
@@ -475,7 +459,7 @@ export function SideBar() {
                           </p>
                         )}
                       </For>
-                      <p className="mt-2 sideBarGame"></p>
+                      <p className="mt-2 sideBarGame cursor-grab"></p>
                     </div>
                   );
                 } else {
@@ -524,12 +508,12 @@ export function SideBar() {
                           getData();
                         });
                       }}>
-                      <div className="folderTitleBar">
-                        <s className="text-black emptyFolderTitleBar dark:text-white">
+                      <div className="flex gap-[10px] items-center cursor-move">
+                        <s className="text-black cursor-move dark:text-white">
                           {folder.name}
                         </s>
                         <button
-                          className="editButton"
+                          className="p-0"
                           onClick={() => {
                             document
                               .querySelector("[data-editFolderModal]")
@@ -589,7 +573,7 @@ export function SideBar() {
                   getData();
                 });
               }}>
-              <div id="uncategorizedTitleBar" className=" folderTitleBar">
+              <div className=" flex gap-[10px] items-center cursor-default">
                 <p className=" pd-3 text-[#00000080] dark:text-[#ffffff80]">
                   uncategorized
                 </p>
@@ -625,7 +609,7 @@ export function SideBar() {
                             "uncategorized",
                           );
                         }}
-                        className="mt-5 sideBarGame"
+                        className="mt-5 sideBarGame cursor-grab"
                         aria-label="play"
                         onClick={(e) => {
                           if (e.ctrlKey) {
@@ -646,7 +630,7 @@ export function SideBar() {
           id="sideBarBottom"
           class="absolute bottom-[20px] w-[100%] pr-[20px]">
           <button
-            className="standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8]"
+            className="standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8] "
             onClick={() => {
               document.querySelector("[data-newGameModal]").show();
             }}>

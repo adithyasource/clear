@@ -6,7 +6,7 @@ import {
   hideFolder,
   setHideFolder,
   currentFolders,
-  showToast,
+  roundedBorders,
   setShowToast,
   setToastError,
 } from "../Signals";
@@ -53,10 +53,15 @@ export function NewFolder() {
       onClose={() => {}}
       className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#ffffff66]">
       <div className="flex items-center justify-center w-screen h-screen align-middle ">
-        <div className="modalWindow w-[50%]  rounded-[6px] p-6">
+        <div
+          className={`border-2 border-solid border-[#ffffff1f] bg-[#121212] rounded-[${
+            roundedBorders() ? "6px" : "0px"
+          }] w-[50%] p-6 `}>
           <div className="flex justify-between">
             <div>
-              <h1>add new folder</h1>
+              <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
+                add new folder
+              </p>
             </div>
             <div className="flex items-center gap-5">
               <div
