@@ -127,6 +127,7 @@ export function NewGame() {
       },
     ).then(() => {
       getData();
+      location.reload();
     });
   }
 

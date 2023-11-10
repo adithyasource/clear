@@ -69,8 +69,15 @@ import {
   setCurrentTheme,
   showFPS,
   setShowFPS,
-  toastError,
-  setToastError,
+  setSelectedFolder,
+  setEditedGameName,
+  setEditedFavouriteGame,
+  setEditedLocatedHeroImage,
+  setEditedLocatedGridImage,
+  setEditedLocatedLogo,
+  setEditedlocatedGame,
+  setEditedFolderName,
+  setEditedHideFolder,
 } from "./Signals";
 
 import logo from "./assets/128x128.png";
@@ -182,6 +189,7 @@ export async function getData() {
     ) {
       setCurrentGames("");
       setCurrentFolders("");
+
       setLibraryData(JSON.parse(getLibraryData));
 
       for (let x = 0; x < Object.keys(libraryData()["folders"]).length; x++) {
@@ -200,6 +208,12 @@ export async function getData() {
       console.log("data fetched");
 
       getSettingsData();
+
+      document.querySelector("[data-newGameModal]").close();
+      document.querySelector("[data-newFolderModal]").close();
+      document.querySelector("[data-gamePopup]").close();
+      document.querySelector("[data-editGameModal]").close();
+      document.querySelector("[data-editFolderModal]").close();
     } else return;
   } else {
     await createDir("heroes", {

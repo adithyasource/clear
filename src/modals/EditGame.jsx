@@ -182,6 +182,7 @@ export function EditGame() {
     ).then(() => {
       getData();
       document.querySelector("[data-editGameModal]").close();
+      location.reload();
     });
   }
 

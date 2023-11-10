@@ -44,6 +44,7 @@ export function NewFolder() {
       },
     ).then(() => {
       getData();
+      location.reload();
     });
   }
 
