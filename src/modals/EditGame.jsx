@@ -233,6 +233,7 @@ export function EditGame() {
           </div>
           <div className="flex items-center gap-4">
             <div
+              className="cursor-pointer"
               onClick={() => {
                 if (editedFavouriteGame() == undefined) {
                   setEditedFavouriteGame(!selectedGame().favourite);
@@ -267,9 +268,7 @@ export function EditGame() {
                 <div className="">favourite</div>
               </Show>
             </div>
-            <button
-              onClick={updateGame}
-              className="flex items-center gap-1 functionalInteractables">
+            <button onClick={updateGame} className="flex items-center gap-1 ">
               save
               <svg
                 width="18"
@@ -297,9 +296,7 @@ export function EditGame() {
                   stroke-linejoin="round"></path>
               </svg>
             </button>
-            <button
-              onClick={deleteGame}
-              className="flex items-center gap-1 functionalInteractables">
+            <button onClick={deleteGame} className="flex items-center gap-1 ">
               <span className="text-[#FF3636]">delete</span>
               <svg
                 width="18"
@@ -328,7 +325,7 @@ export function EditGame() {
               </svg>
             </button>
             <button
-              className="flex items-center functionalInteractables"
+              className="flex items-center "
               onClick={() => {
                 document.querySelector("[data-editGameModal]").close();
                 getData();
@@ -353,9 +350,9 @@ export function EditGame() {
         </div>
         <div className="flex gap-[13.5rem]">
           <div>
-            <button
+            <div
               onClick={locateEditedGridImage}
-              className="locatingGridImg h-[100%] aspect-[2/3] group relative overflow-hidden"
+              className="panelButton locatingGridImg h-[100%] aspect-[2/3] group relative overflow-hidden"
               aria-label="grid/cover">
               <Show when={!editedLocatedGridImage()}>
                 <img
@@ -379,15 +376,15 @@ export function EditGame() {
                   grid/cover
                 </span>
               </Show>
-            </button>
+            </div>
           </div>
 
           <div className="flex flex-col gap-3">
             <div className="relative ">
               <div>
-                <button
+                <div
                   onClick={locateEditedHeroImage}
-                  className="h-[250px] aspect-[67/26] group relative p-0 m-0"
+                  className="h-[250px] aspect-[67/26] group relative p-0 m-0 panelButton"
                   aria-label="hero">
                   <Show
                     when={!editedLocatedHeroImage()}
@@ -408,7 +405,7 @@ export function EditGame() {
                           selectedGame().heroImage,
                       )}
                       alt=""
-                      className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px] opacity-[0.4]"
+                      className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px] opacity-[0.6]"
                     />
                   </Show>
                   <Show
@@ -422,19 +419,19 @@ export function EditGame() {
                     <img
                       src={convertFileSrc(editedLocatedHeroImage())}
                       alt=""
-                      className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px] opacity-[0.4]"
+                      className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px] opacity-[0.6]"
                     />
                   </Show>
 
                   <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
                     hero image
                   </span>
-                </button>
+                </div>
               </div>
 
-              <button
+              <div
                 onClick={locateEditedLogo}
-                className="bg-[#27272700] group  absolute bottom-[20px] left-[20px] "
+                className="panelButton !bg-[#27272700] group  absolute bottom-[20px] left-[20px] "
                 aria-label="logo">
                 <Show when={!editedLocatedLogo()}>
                   <img
@@ -455,10 +452,10 @@ export function EditGame() {
                 <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
                   logo
                 </span>
-              </button>
+              </div>
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex gap-3 ">
               <input
                 type="text"
                 style="flex-grow: 1"
@@ -467,20 +464,17 @@ export function EditGame() {
                 onInput={(e) => {
                   setEditedGameName(e.currentTarget.value);
                 }}
-                className="functionalInteractables bgBlur"
+                className="bgBlur"
                 placeholder="name of game"
                 value={selectedGame().name}
               />
-              <button
-                onClick={locateEditedGame}
-                className="functionalInteractables">
+              <button onClick={locateEditedGame} className="">
                 locate game
               </button>
             </div>
           </div>
         </div>
       </div>
-      damn
     </dialog>
   );
 }

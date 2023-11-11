@@ -21,7 +21,7 @@
         ]
       },
       "notification": {
-        "all": true
+        "all": false
       },
       "all": true,
       "path": {
@@ -64,8 +64,6 @@
         "width": 1220,
         "height": 760,
         "fileDropEnabled": false,
-        "minWidth": 1220,
-        "minHeight": 600,
         "decorations": false
       }
     ]

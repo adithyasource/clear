@@ -1,16 +1,13 @@
 import { createSignal } from "solid-js";
 
-import { isPermissionGranted } from "@tauri-apps/api/notification";
-
 // !? Misc / Globals
-export const [permissionGranted, setPermissionGranted] = createSignal(
-  isPermissionGranted(),
-);
+
 export const [appDataDirPath, setAppDataDirPath] = createSignal({});
 export const [libraryData, setLibraryData] = createSignal({});
 export const [notepadValue, setNotepadValue] = createSignal("");
 export const [toastError, setToastError] = createSignal("");
 export const [showToast, setShowToast] = createSignal(false);
+export const [windowWidth, setWindowWidth] = createSignal(window.innerWidth);
 
 // !? References
 export const [selectedGame, setSelectedGame] = createSignal({});
@@ -18,7 +15,6 @@ export const [selectedFolder, setSelectedFolder] = createSignal([]);
 export const [currentGames, setCurrentGames] = createSignal([]);
 export const [currentFolders, setCurrentFolders] = createSignal([]);
 export const [searchValue, setSearchValue] = createSignal();
-export const [notificationGameName, setNotificaitonGameName] = createSignal();
 export const [foundGridImage, setFoundGridImage] = createSignal();
 export const [foundHeroImage, setFoundHeroImage] = createSignal();
 export const [foundLogoImage, setFoundLogoImage] = createSignal();
@@ -64,4 +60,4 @@ export const [editedLocatedLogo, setEditedLocatedLogo] = createSignal();
 export const [editedLocatedGame, setEditedlocatedGame] = createSignal();
 
 export const [editedFolderName, setEditedFolderName] = createSignal("");
-export const [editedHideFolder, setEditedHideFolder] = createSignal(false);
+export const [editedHideFolder, setEditedHideFolder] = createSignal();

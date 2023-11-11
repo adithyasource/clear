@@ -13,7 +13,7 @@ export function Toast() {
           <div
             className={`border-0 p-[10px] rounded-[${
               roundedBorders() ? "6px" : "0px"
-            }] relative gap-1 functionalInteractables z-[100000000] w-max h-max bg-[${secondaryColor()}]`}>
+            }] relative gap-1 z-[100000000] w-max h-max bg-[${secondaryColor()}]`}>
             {toastError()}
           </div>
         </div>

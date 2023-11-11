@@ -5,7 +5,6 @@ import {
   currentGames,
   currentFolders,
   setSearchValue,
-  setNotificaitonGameName,
   gameName,
   setEditedFolderName,
   setEditedHideFolder,
@@ -126,7 +125,7 @@ export function SideBar() {
 
   return (
     <>
-      <div className="flex  flex-col h-[calc(100vh-32px)] text-black z-10 py-[20px] pl-[20px] relative overflow-hidden w-[20%] min-[1500px]:w-[15%]">
+      <div className="flex sideBar flex-col h-[calc(100vh-32px)] text-black z-10 py-[20px] pl-[20px] relative overflow-hidden w-[20%] min-[1500px]:w-[15%]">
         <div id="sideBarTop">
           <div className="flex justify-between items-center gap-[20px]">
             <input
@@ -256,7 +255,7 @@ export function SideBar() {
                 });
               }
             }}
-            class={`h-[calc(100vh-275px-32px)] overflow-auto  rounded-[${
+            class={` h-[calc(100vh-275px-32px)] max-[1100px]:h-[calc(100vh-215px-32px)] overflow-auto  rounded-[${
               roundedBorders() ? "6px" : "0px"
             }]`}>
             <p className="mt-[5px]"></p>
@@ -430,7 +429,7 @@ export function SideBar() {
                       <For each={folder.games}>
                         {(gameName) => (
                           <p
-                            className="mt-5 sideBarGame cursor-grab text-[#00000080] dark:text-[#ffffff80]"
+                            className="bg-transparent mt-5 sideBarGame cursor-grab text-[#00000080] dark:text-[#ffffff80] active:dark:text-[#ffffff3a] active:text-[#0000003a]"
                             aria-label="play"
                             draggable={true}
                             onDragStart={(e) => {
@@ -449,7 +448,6 @@ export function SideBar() {
                             }}
                             onClick={(e) => {
                               if (e.ctrlKey) {
-                                setNotificaitonGameName(gameName);
                                 openGame(
                                   libraryData().games[gameName].location,
                                 );
@@ -574,7 +572,7 @@ export function SideBar() {
                 });
               }}>
               <div className=" flex gap-[10px] items-center cursor-default">
-                <p className=" pd-3 text-[#00000080] dark:text-[#ffffff80]">
+                <p className="pd-3 text-[#00000080] dark:text-[#ffffff80] ">
                   uncategorized
                 </p>
               </div>
@@ -609,11 +607,10 @@ export function SideBar() {
                             "uncategorized",
                           );
                         }}
-                        className="mt-5 sideBarGame cursor-grab"
+                        className="mt-5 sideBarGame cursor-grab text-[#00000080] dark:text-[#ffffff80]  active:dark:text-[#ffffff3a] active:text-[#0000003a]"
                         aria-label="play"
                         onClick={(e) => {
                           if (e.ctrlKey) {
-                            setNotificaitonGameName(currentGame);
                             openGame(libraryData().games[currentGame].location);
                           }
                         }}>
@@ -629,60 +626,62 @@ export function SideBar() {
         <div
           id="sideBarBottom"
           class="absolute bottom-[20px] w-[100%] pr-[20px]">
-          <button
-            className="standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8] "
-            onClick={() => {
-              document.querySelector("[data-newGameModal]").show();
-            }}>
-            add game
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M8 9V13M6 11H10M17 10.0161L17.0161 10M14 12.0161L14.0161 12M16.1836 5H7.81641C5.60774 5 3.71511 6.57359 3.32002 8.73845L2.0451 15.7241C1.84609 16.8145 2.31653 17.9185 3.24219 18.5333C4.3485 19.268 5.82159 19.1227 6.76177 18.1861L7.99615 16.9563C8.36513 16.5887 8.86556 16.3822 9.38737 16.3822H14.6126C15.1344 16.3822 15.6349 16.5887 16.0038 16.9563L17.2382 18.1861C18.1784 19.1227 19.6515 19.268 20.7578 18.5333C21.6835 17.9185 22.1539 16.8145 21.9549 15.7241L20.68 8.73845C20.2849 6.57359 18.3923 5 16.1836 5Z"
-                className="stroke-[#00000080] dark:stroke-[#ffffff80] "
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"></path>
-            </svg>
-          </button>
-          <button
-            className="standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8]"
-            onClick={() => {
-              document.querySelector("[data-newFolderModal]").show();
-            }}>
-            add folder
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M4 21H20C21.1046 21 22 20.1046 22 19V8C22 6.89543 21.1046 6 20 6H11L9.29687 3.4453C9.1114 3.1671 8.79917 3 8.46482 3H4C2.89543 3 2 3.89543 2 5V19C2 20.1046 2.89543 21 4 21Z"
-                className="stroke-[#00000080] dark:stroke-[#ffffff80] "
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"></path>
-              <path
-                d="M12 10V16M9 13H15"
-                className="stroke-[#00000080] dark:stroke-[#ffffff80] "
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"></path>
-            </svg>
-          </button>
+          <div className="max-[1100px]:flex max-[1100px]:gap-3">
+            <button
+              className=" standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8] max-[1100px]:!justify-center "
+              onClick={() => {
+                document.querySelector("[data-newGameModal]").show();
+              }}>
+              <span className="max-[1100px]:hidden"> add game </span>
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M8 9V13M6 11H10M17 10.0161L17.0161 10M14 12.0161L14.0161 12M16.1836 5H7.81641C5.60774 5 3.71511 6.57359 3.32002 8.73845L2.0451 15.7241C1.84609 16.8145 2.31653 17.9185 3.24219 18.5333C4.3485 19.268 5.82159 19.1227 6.76177 18.1861L7.99615 16.9563C8.36513 16.5887 8.86556 16.3822 9.38737 16.3822H14.6126C15.1344 16.3822 15.6349 16.5887 16.0038 16.9563L17.2382 18.1861C18.1784 19.1227 19.6515 19.268 20.7578 18.5333C21.6835 17.9185 22.1539 16.8145 21.9549 15.7241L20.68 8.73845C20.2849 6.57359 18.3923 5 16.1836 5Z"
+                  className="stroke-[#00000080] dark:stroke-[#ffffff80] "
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path>
+              </svg>
+            </button>
+            <button
+              className="standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8] max-[1100px]:!justify-center "
+              onClick={() => {
+                document.querySelector("[data-newFolderModal]").show();
+              }}>
+              <span className="max-[1100px]:hidden">add folder</span>
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M4 21H20C21.1046 21 22 20.1046 22 19V8C22 6.89543 21.1046 6 20 6H11L9.29687 3.4453C9.1114 3.1671 8.79917 3 8.46482 3H4C2.89543 3 2 3.89543 2 5V19C2 20.1046 2.89543 21 4 21Z"
+                  className="stroke-[#00000080] dark:stroke-[#ffffff80] "
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path>
+                <path
+                  d="M12 10V16M9 13H15"
+                  className="stroke-[#00000080] dark:stroke-[#ffffff80] "
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path>
+              </svg>
+            </button>
+          </div>
 
           <div className="flex gap-3">
             <button
-              className=" standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8]"
+              className="standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8] max-[1100px]:!justify-center "
               onClick={() => {
                 document.querySelector("[data-notepadModal]").show();
               }}>
-              notepad
+              <span className="max-[1100px]:hidden">notepad</span>
               <svg
                 width="18"
                 height="18"
@@ -704,11 +703,11 @@ export function SideBar() {
               </svg>
             </button>
             <button
-              className=" standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8]"
+              className=" standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8] max-[1100px]:!justify-center "
               onClick={() => {
                 document.querySelector("[data-settingsModal]").show();
               }}>
-              settings
+              <span className="max-[1100px]:hidden">settings</span>
               <svg
                 width="18"
                 height="18"

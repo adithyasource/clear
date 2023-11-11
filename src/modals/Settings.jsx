@@ -46,7 +46,7 @@ export function Settings() {
               </div>
 
               <button
-                className="flex items-center functionalInteractables"
+                className="flex items-center "
                 onClick={() => {
                   document.querySelector("[data-settingsModal]").close();
                   getData();
@@ -297,7 +297,7 @@ export function Settings() {
 
             <div className="flex gap-3 items-start mt-[35px]">
               <button
-                className="flex items-center functionalInteractables"
+                className="flex items-center "
                 onClick={() => {
                   invoke("openLibLocation");
                 }}>

@@ -13,23 +13,13 @@ import Fuse from "fuse.js";
 
 import { exit } from "@tauri-apps/api/process";
 
-import {
-  requestPermission,
-  sendNotification,
-} from "@tauri-apps/api/notification";
-
 import { appDataDir } from "@tauri-apps/api/path";
 
 import "./App.css";
 
-import { Styles } from "./Styles";
 import { Toast } from "./components/Toast";
 
-import { appWindow } from "@tauri-apps/api/window";
-
 import {
-  permissionGranted,
-  setPermissionGranted,
   appDataDirPath,
   setAppDataDirPath,
   libraryData,
@@ -40,8 +30,6 @@ import {
   currentFolders,
   setCurrentFolders,
   searchValue,
-  notificationGameName,
-  setNotificaitonGameName,
   secondaryColor,
   setSecondaryColor,
   secondaryColorForBlur,
@@ -78,6 +66,8 @@ import {
   setEditedlocatedGame,
   setEditedFolderName,
   setEditedHideFolder,
+  setWindowWidth,
+  windowWidth,
 } from "./Signals";
 
 import logo from "./assets/128x128.png";
@@ -91,6 +81,8 @@ import { EditFolder } from "./modals/EditFolder";
 import { GamePopUp } from "./modals/GamePopUp";
 import { Notepad } from "./modals/Notepad";
 import { Settings } from "./modals/Settings";
+
+import { appWindow } from "@tauri-apps/api/window";
 
 export function getSettingsData() {
   if (
@@ -254,10 +246,6 @@ export async function openGame(gameLocation) {
     gameLocation: gameLocation,
   });
 
-  if (permissionGranted()) {
-    sendNotification(`launched ${notificationGameName()}!`);
-  }
-
   if (quitAfterOpen() == true || quitAfterOpen() == undefined) {
     setTimeout(async () => {
       await exit(1);
@@ -266,6 +254,10 @@ export async function openGame(gameLocation) {
 }
 
 function App() {
+  window.addEventListener("resize", () => {
+    setWindowWidth(window.innerWidth);
+  });
+
   document.addEventListener("keydown", (e) => {
     for (let i = 0; i < document.querySelectorAll(".sideBarGame").length; i++) {
       document.querySelectorAll(".sideBarGame")[i].style.cursor = "pointer";
@@ -414,12 +406,7 @@ function App() {
   });
 
   onMount(async () => {
-    if (!permissionGranted()) {
-      const permission = await requestPermission();
-      setPermissionGranted(permission === "granted");
-    }
     await getData();
-    appWindow.setDecorations(false);
 
     //? FPS Counter by https://codepen.io/lnfnunes/pen/Qjeeyg
 
@@ -445,8 +432,58 @@ function App() {
 
   return (
     <div>
+      <style jsx>{`
+        button,
+        input,
+        .panelButton {
+          background-color: ${secondaryColor()};
+          border-radius: ${roundedBorders() ? "6px" : "0px"};
+        }
+        .sideBarFolder {
+          background: ${secondaryColor()};
+          border-radius: ${roundedBorders() ? "6px" : "0px"};
+        }
+        .titleBarText {
+          font-family: ${fontName() == "Sans Serif"
+            ? "Segoe UI"
+            : fontName() == "Serif"
+            ? "Times New Roman"
+            : "IBM Plex Mono, Consolas"};
+        }
+        * {
+          font-family: ${fontName() == "Sans Serif"
+            ? "Helvetica, Arial, sans-serif"
+            : fontName() == "Serif"
+            ? "Times New Roman"
+            : "IBM Plex Mono, Consolas"};
+        }
+        ::-webkit-scrollbar-thumb {
+          background: ${secondaryColor()};
+          border-radius: ${roundedBorders() ? "10px" : "0px"};
+        }
+        #sideBarFolders:hover::-webkit-scrollbar-thumb {
+          background: ${secondaryColorForBlur()};
+        }
+        html,
+        body {
+          background-color: ${primaryColor()};
+        }
+        .bgBlur {
+          background-color: ${secondaryColorForBlur()} !important;
+          border-radius: ${roundedBorders() ? "6px" : "0px"};
+        }
+        .tooltip {
+          border-radius: ${roundedBorders() ? "6px" : "0px"};
+        }
+        .currentlyDragging {
+          border-top: 3px #646464 solid;
+          border-top-left-radius: 0px;
+          border-top-right-radius: 0px;
+        }
+      `}</style>
+
       {
-        //? Windows 10 UI Title Bar by https://codepen.io/agrimsrud/pen/WGgRPP
+        //? Windows UI Title Bar by https://codepen.io/agrimsrud/pen/WGgRPP
       }
 
       <div
@@ -542,12 +579,10 @@ function App() {
         </div>
       </div>
 
-      <Styles />
-
       <Toast />
 
       <div className="h-full flex gap-[30px] pt-[32px] overflow-y-hidden">
-        <Show when={showSideBar() == false}>
+        <Show when={showSideBar() == false && windowWidth() >= 800}>
           <svg
             className="absolute right-[30px] top-[66px] z-10 rotate-180 cursor-pointer"
             onClick={toggleSideBar}
@@ -574,12 +609,12 @@ function App() {
             />
           </svg>
         </Show>
-        <Show when={showSideBar()}>
+        <Show when={showSideBar() && windowWidth() >= 800}>
           <SideBar />
         </Show>
         <div
-          className={`w-[100%] absolute h-[calc(100vh-32px)] overflow-y-scroll py-[20px] pr-[30px]   ${
-            showSideBar()
+          className={`w-[100%] absolute h-[calc(100vh-32px)] overflow-y-scroll py-[20px] pr-[30px]  ${
+            showSideBar() && windowWidth() >= 800
               ? "pl-[23%] min-[1500px]:pl-[17%]"
               : "pl-[30px] min-[1500px]:pl-[30px]"
           }`}>
@@ -600,8 +635,8 @@ function App() {
                         className={`grid gap-5 mt-4 foldersDiv 
                           ${
                             showSideBar()
-                              ? "grid-cols-5 min-[1500px]:grid-cols-7"
-                              : "grid-cols-6 min-[1500px]:grid-cols-8"
+                              ? "grid-cols-5 min-[1500px]:grid-cols-7 max-[1100px]:grid-cols-4 max-[800px]:grid-cols-3"
+                              : "grid-cols-6 min-[1500px]:grid-cols-8 max-[1100px]:grid-cols-5 max-[800px]:grid-cols-3"
                           }`}>
                         <For each={folder.games}>
                           {(gameName) => {
@@ -614,7 +649,6 @@ function App() {
                                 }}
                                 onClick={async (e) => {
                                   if (e.ctrlKey) {
-                                    setNotificaitonGameName(gameName);
                                     openGame(
                                       libraryData().games[gameName].location,
                                     );
@@ -734,7 +768,6 @@ function App() {
                             }}
                             onClick={async (e) => {
                               if (e.ctrlKey) {
-                                setNotificaitonGameName(gameName);
                                 openGame(
                                   libraryData().games[gameName].location,
                                 );

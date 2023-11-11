@@ -7,6 +7,60 @@ input:focus {
   outline: 0;
 }
 
+button,
+input,
+.panelButton {
+  padding: 10px;
+  border: 0;
+}
+
+.panelButton {
+  cursor: pointer;
+}
+
+.sideBarFolder {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 0px 0px 12px 0px;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: normal;
+  user-select: none;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+.bgBlur {
+  backdrop-filter: blur(10px) !important;
+}
+
+.bgBlur:hover {
+  backdrop-filter: blur(5px) !important;
+}
+
+.tooltip {
+  padding: 8px 10px;
+  border: 0.5px solid #ffffff10;
+  background: #272727cc;
+  color: #fff;
+  font-family: Helvetica;
+  line-height: 12px;
+  white-space: nowrap;
+  backdrop-filter: blur(10px);
+}
+
 img {
   object-fit: cover !important;
 }
@@ -29,18 +83,31 @@ img {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #00000000;
   margin: 10px;
+  background: #00000000;
 }
 
 .standardButton {
-  margin: 12px 0px 0px 0px;
   display: flex;
   justify-items: center;
   justify-content: space-between;
-  gap: 5px;
-  width: 100%;
   align-items: center;
+  width: 100%;
+  margin: 12px 0px 0px 0px;
+  gap: 5px;
+  transition: 0.2s;
+}
+
+button,
+input,
+#searchInput {
+  transition: 0.2s;
+}
+
+.standardButton:hover,
+#searchInput:hover,
+button:hover {
+  background: #2b2b2b !important;
 }
 
 @keyframes dialogFadeIn {
@@ -62,11 +129,11 @@ img {
 }
 
 dialog {
-  opacity: 0;
   overflow: hidden;
   padding: 0px 50px 50px 0px;
-  background-color: #00000000;
   border: none !important;
+  background-color: #00000000;
+  opacity: 0;
 }
 
 dialog[open] {
@@ -85,20 +152,14 @@ dialog[close] {
     dialogFadeOut 0.3s 1.3s;
 }
 
-.currentlyDragging {
-  border-top: 3px #646464 solid;
-  border-top-left-radius: 0px;
-  border-top-right-radius: 0px;
-}
-
 .titleButton {
-  outline: 0;
   width: 48px;
   height: 32px;
-  margin: 0;
   padding: 0px 10px 0px 17px;
-  background: transparent;
   border: 0;
+  margin: 0;
+  background: transparent;
+  outline: 0;
 }
 .titleButton svg {
   width: 10px;

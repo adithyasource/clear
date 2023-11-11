@@ -82,9 +82,7 @@ export function NewFolder() {
                   <div className="">hide in expanded view</div>
                 </Show>
               </div>
-              <button
-                onClick={addFolder}
-                className="flex items-center gap-1 functionalInteractables ">
+              <button onClick={addFolder} className="flex items-center gap-1 ">
                 save
                 <svg
                   width="18"
@@ -113,7 +111,7 @@ export function NewFolder() {
                 </svg>
               </button>
               <button
-                className="flex items-center functionalInteractables"
+                className="flex items-center "
                 onClick={() => {
                   document.querySelector("[data-newFolderModal]").close();
                   getData();

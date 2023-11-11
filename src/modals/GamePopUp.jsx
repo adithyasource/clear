@@ -1,9 +1,4 @@
-import {
-  appDataDirPath,
-  selectedGame,
-  setNotificaitonGameName,
-  roundedBorders,
-} from "../Signals";
+import { appDataDirPath, selectedGame, roundedBorders } from "../Signals";
 
 import { Show } from "solid-js";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
@@ -34,7 +29,6 @@ export function GamePopUp() {
               <button
                 className="standardButton bgBlur"
                 onClick={() => {
-                  setNotificaitonGameName(selectedGame().name);
                   openGame(selectedGame().location);
                 }}>
                 play

@@ -51,7 +51,7 @@ export function Notepad() {
               </div>
 
               <button
-                className="flex items-center functionalInteractables"
+                className="flex items-center  "
                 onClick={() => {
                   document.querySelector("[data-notepadModal]").close();
                   getData();

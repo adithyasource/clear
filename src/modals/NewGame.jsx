@@ -298,9 +298,7 @@ export function NewGame() {
                 <div className="">favourite</div>
               </Show>
             </div>
-            <button
-              onClick={addGame}
-              className="flex items-center gap-1 functionalInteractables">
+            <button onClick={addGame} className="flex items-center gap-1 ">
               save
               <svg
                 width="18"
@@ -329,7 +327,7 @@ export function NewGame() {
               </svg>
             </button>
             <button
-              className="flex items-center functionalInteractables"
+              className="flex items-center "
               onClick={() => {
                 document.querySelector("[data-newGameModal]").close();
                 getData();
@@ -354,9 +352,9 @@ export function NewGame() {
         </div>
         <div className="flex gap-[13.5rem]">
           <div>
-            <button
+            <div
               onClick={locateGridImage}
-              className="locatingGridImg h-[100%] aspect-[2/3] group relative overflow-hidden"
+              className="panelButton locatingGridImg h-[100%] aspect-[2/3] group relative overflow-hidden"
               aria-label="grid/cover">
               <Show when={foundGridImage()}>
                 <img
@@ -386,15 +384,15 @@ export function NewGame() {
                   </span>
                 </Show>
               </Show>
-            </button>
+            </div>
           </div>
 
           <div className="flex flex-col gap-3">
             <div className="relative ">
               <div>
-                <button
+                <div
                   onClick={locateHeroImage}
-                  className="h-[250px] aspect-[67/26] group relative p-0 m-0"
+                  className="h-[250px] aspect-[67/26] group relative p-0 m-0 panelButton"
                   aria-label="hero">
                   <Show
                     when={foundHeroImage()}
@@ -437,26 +435,26 @@ export function NewGame() {
                       </span>
                     </Show>
                   </Show>
-                </button>
+                </div>
               </div>
 
               <Show when={foundLogoImage()}>
-                <button
+                <div
                   onClick={locateLogo}
-                  className="bg-[#27272700] group  absolute bottom-[20px] left-[20px] "
+                  className="bg-[#27272700] group  absolute bottom-[20px] left-[20px] panelButton"
                   aria-label="logo">
                   <img src={foundLogoImage()} alt="" className="h-[60px] " />
                   <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
                     logo
                   </span>
-                </button>
+                </div>
               </Show>
 
               <Show when={!foundLogoImage()}>
                 <Show when={locatedLogo()}>
-                  <button
+                  <div
                     onClick={locateLogo}
-                    className="bg-[#27272700] group  absolute bottom-[20px] left-[20px] "
+                    className="bg-[#27272700] group  absolute bottom-[20px] left-[20px] panelButton"
                     aria-label="logo">
                     <img
                       src={convertFileSrc(locatedLogo())}
@@ -466,26 +464,24 @@ export function NewGame() {
                     <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
                       logo
                     </span>
-                  </button>
+                  </div>
                 </Show>
 
                 <Show when={!locatedLogo()}>
-                  <button
+                  <div
                     onClick={locateLogo}
-                    className="bg-[#272727] group  absolute bottom-[20px] left-[20px] w-[170px] h-[70px]  functionalInteractables "
+                    className="panelButton !bg-[#272727] group  absolute bottom-[20px] left-[20px] w-[170px] h-[70px] z-[100] "
                     aria-label="logo">
                     <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
                       logo
                     </span>
-                  </button>
+                  </div>
                 </Show>
               </Show>
             </div>
 
             <div className="flex gap-3 ">
-              <div
-                className="flex items-center functionalInteractables bgBlur"
-                style="flex-grow: 1">
+              <div className="flex items-center bgBlur" style="flex-grow: 1">
                 <input
                   type="text"
                   name=""
@@ -497,7 +493,7 @@ export function NewGame() {
                   className=""
                   placeholder="name of game"
                 />
-                <div
+                <button
                   className={`bg-[#1c1c1c] py-1 px-3 mr-2 cursor-pointer w-[max-content] text-[#ffffff80] rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }] `}
@@ -512,18 +508,18 @@ export function NewGame() {
                         );
                   }}>
                   find assets
-                </div>
-                <div
+                </button>
+                <button
                   aria-label="not that accurate"
                   className={`bg-[#1c1c1c] py-1 px-3 mr-2 cursor-pointer w-[max-content] text-[#ffffff80] hint--left hint--no-animate hint--rounded hint--no-arrow rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }] `}
                   onClick={getGameAssets}>
                   auto find assets
-                </div>
+                </button>
               </div>
 
-              <button onClick={locateGame} className="functionalInteractables ">
+              <button onClick={locateGame} className="">
                 locate game
               </button>
             </div>
