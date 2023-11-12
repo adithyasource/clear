@@ -12,6 +12,8 @@ import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 import { getData } from "../App";
 import { onMount } from "solid-js";
 
+import YAML from "yamljs";
+
 export function EditFolder() {
   async function editFolder() {
     delete libraryData().folders[selectedFolder().name];
@@ -24,8 +26,8 @@ export function EditFolder() {
 
     await writeTextFile(
       {
-        path: "lib.json",
-        contents: JSON.stringify(libraryData(), null, 4),
+        path: "data.yaml",
+        contents: YAML.stringify(libraryData(), 4),
       },
       {
         dir: BaseDirectory.AppData,

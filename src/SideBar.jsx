@@ -16,6 +16,8 @@ import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
 import { getData, openGame } from "./App";
 
+import YAML from "yamljs";
+
 export function SideBar() {
   let scrollY = " ";
   onMount(() => {
@@ -38,8 +40,8 @@ export function SideBar() {
 
     await writeTextFile(
       {
-        path: "lib.json",
-        contents: JSON.stringify(libraryData(), null, 4),
+        path: "data.yaml",
+        contents: YAML.stringify(libraryData(), 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -72,8 +74,8 @@ export function SideBar() {
 
     await writeTextFile(
       {
-        path: "lib.json",
-        contents: JSON.stringify(libraryData(), null, 4),
+        path: "data.yaml",
+        contents: YAML.stringify(libraryData(), 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -114,8 +116,8 @@ export function SideBar() {
 
     await writeTextFile(
       {
-        path: "lib.json",
-        contents: JSON.stringify(libraryData(), null, 4),
+        path: "data.yaml",
+        contents: YAML.stringify(libraryData(), 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -244,8 +246,8 @@ export function SideBar() {
                 libraryData().folders[folder.name].games.push(gameName);
                 await writeTextFile(
                   {
-                    path: "lib.json",
-                    contents: JSON.stringify(libraryData(), null, 4),
+                    path: "data.yaml",
+                    contents: YAML.stringify(libraryData(), 4),
                   },
                   {
                     dir: BaseDirectory.AppData,
@@ -384,8 +386,8 @@ export function SideBar() {
                           );
                           await writeTextFile(
                             {
-                              path: "lib.json",
-                              contents: JSON.stringify(libraryData(), null, 4),
+                              path: "data.yaml",
+                              contents: YAML.stringify(libraryData(), 4),
                             },
                             {
                               dir: BaseDirectory.AppData,
@@ -496,8 +498,8 @@ export function SideBar() {
                         libraryData().folders[folder.name].games.push(gameName);
                         await writeTextFile(
                           {
-                            path: "lib.json",
-                            contents: JSON.stringify(libraryData(), null, 4),
+                            path: "data.yaml",
+                            contents: YAML.stringify(libraryData(), 4),
                           },
                           {
                             dir: BaseDirectory.AppData,
@@ -561,8 +563,8 @@ export function SideBar() {
 
                 await writeTextFile(
                   {
-                    path: "lib.json",
-                    contents: JSON.stringify(libraryData(), null, 4),
+                    path: "data.yaml",
+                    contents: YAML.stringify(libraryData(), 4),
                   },
                   {
                     dir: BaseDirectory.AppData,

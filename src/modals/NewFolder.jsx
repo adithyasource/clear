@@ -16,6 +16,8 @@ import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
 import { getData } from "../App";
 
+import YAML from "yamljs";
+
 export function NewFolder() {
   async function addFolder() {
     if (folderName() == "" || folderName() == undefined) {
@@ -36,8 +38,8 @@ export function NewFolder() {
     setLibraryData(libraryData());
     await writeTextFile(
       {
-        path: "lib.json",
-        contents: JSON.stringify(libraryData(), null, 4),
+        path: "data.yaml",
+        contents: YAML.stringify(libraryData(), 4),
       },
       {
         dir: BaseDirectory.AppData,

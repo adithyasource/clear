@@ -28,6 +28,8 @@ import { Show } from "solid-js";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { writeTextFile, BaseDirectory, copyFile } from "@tauri-apps/api/fs";
 
+import YAML from "yamljs";
+
 import { getData } from "../App";
 
 import { open } from "@tauri-apps/api/dialog";
@@ -119,8 +121,8 @@ export function NewGame() {
 
     await writeTextFile(
       {
-        path: "lib.json",
-        contents: JSON.stringify(libraryData(), null, 4),
+        path: "data.yaml",
+        contents: YAML.stringify(libraryData(), 4),
       },
       {
         dir: BaseDirectory.AppData,

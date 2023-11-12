@@ -9,14 +9,16 @@ import {
 
 import { getData } from "../App";
 
+import YAML from "yamljs";
+
 export function Notepad() {
   async function saveNotepad() {
     libraryData().notepad = notepadValue();
 
     await writeTextFile(
       {
-        path: "lib.json",
-        contents: JSON.stringify(libraryData(), null, 4),
+        path: "data.yaml",
+        contents: YAML.stringify(libraryData(), 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -51,7 +53,7 @@ export function Notepad() {
               </div>
 
               <button
-                className="flex items-center  "
+                className="flex items-center "
                 onClick={() => {
                   document.querySelector("[data-notepadModal]").close();
                   getData();

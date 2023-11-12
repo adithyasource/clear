@@ -70,6 +70,8 @@ import {
   windowWidth,
 } from "./Signals";
 
+import YAML from "yamljs";
+
 import logo from "./assets/128x128.png";
 import logoW from "./assets/128x128W.png";
 
@@ -170,19 +172,19 @@ export function getSettingsData() {
 export async function getData() {
   setAppDataDirPath(await appDataDir());
 
-  if (await exists("lib.json", { dir: BaseDirectory.AppData })) {
-    let getLibraryData = await readTextFile("lib.json", {
+  if (await exists("data.yaml", { dir: BaseDirectory.AppData })) {
+    let getLibraryData = await readTextFile("data.yaml", {
       dir: BaseDirectory.AppData,
     });
 
     if (
       getLibraryData != "" &&
-      JSON.parse(getLibraryData).folders != undefined
+      YAML.parse(getLibraryData).folders != undefined
     ) {
       setCurrentGames("");
       setCurrentFolders("");
 
-      setLibraryData(JSON.parse(getLibraryData));
+      setLibraryData(YAML.parse(getLibraryData));
 
       for (let x = 0; x < Object.keys(libraryData()["folders"]).length; x++) {
         for (let y = 0; y < Object.keys(libraryData()["folders"]).length; y++) {
@@ -229,8 +231,8 @@ export async function getData() {
     };
     await writeTextFile(
       {
-        path: "lib.json",
-        contents: JSON.stringify(emptyLibrary, null, 4),
+        path: "data.yaml",
+        contents: YAML.stringify(emptyLibrary, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -366,8 +368,8 @@ function App() {
 
     await writeTextFile(
       {
-        path: "lib.json",
-        contents: JSON.stringify(libraryData(), null, 4),
+        path: "data.yaml",
+        contents: YAML.stringify(libraryData(), 4),
       },
       {
         dir: BaseDirectory.AppData,
