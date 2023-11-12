@@ -34,9 +34,6 @@ devDependencies:
   tailwindcss:
     specifier: ^3.3.3
     version: 3.3.3
-  typescript:
-    specifier: ^5.2.2
-    version: 5.2.2
   vite:
     specifier: ^4.4.4
     version: 4.4.4
@@ -1690,12 +1687,6 @@ packages:
 
   /tslib@2.6.2:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
-    dev: true
-
-  /typescript@5.2.2:
-    resolution: {integrity: sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==}
-    engines: {node: '>=14.17'}
-    hasBin: true
     dev: true
 
   /update-browserslist-db@1.0.13(browserslist@4.22.1):

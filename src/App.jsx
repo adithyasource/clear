@@ -582,12 +582,12 @@ function App() {
       <Toast />
 
       <div className="h-full flex gap-[30px] pt-[32px] overflow-y-hidden">
-        <Show when={showSideBar() == false && windowWidth() >= 800}>
+        <Show when={showSideBar() == false && windowWidth() >= 1000}>
           <svg
-            className="absolute right-[30px] top-[66px] z-10 rotate-180 cursor-pointer"
+            className={`absolute right-[30px] top-[66px] z-10 rotate-180 cursor-pointer hover:bg-[#232323] duration-150 p-2 w-[25.25px] rounded-[${
+              roundedBorders() ? "6px" : "0px"
+            }]`}
             onClick={toggleSideBar}
-            width="12.19"
-            height="14"
             viewBox="0 0 12 12"
             fill="none"
             xmlns="http://www.w3.org/2000/svg">
@@ -609,14 +609,14 @@ function App() {
             />
           </svg>
         </Show>
-        <Show when={showSideBar() && windowWidth() >= 800}>
+        <Show when={showSideBar() && windowWidth() >= 1000}>
           <SideBar />
         </Show>
         <div
           className={`w-[100%] absolute h-[calc(100vh-32px)] overflow-y-scroll py-[20px] pr-[30px]  ${
-            showSideBar() && windowWidth() >= 800
-              ? "pl-[23%] min-[1500px]:pl-[17%]"
-              : "pl-[30px] min-[1500px]:pl-[30px]"
+            showSideBar() && windowWidth() >= 1000
+              ? "pl-[23%] large:pl-[17%]"
+              : "pl-[30px] large:pl-[30px]"
           }`}>
           <Show when={searchValue() == "" || searchValue() == undefined}>
             <For each={currentFolders()}>
@@ -635,8 +635,8 @@ function App() {
                         className={`grid gap-5 mt-4 foldersDiv 
                           ${
                             showSideBar()
-                              ? "grid-cols-5 min-[1500px]:grid-cols-7 max-[1100px]:grid-cols-4 max-[800px]:grid-cols-3"
-                              : "grid-cols-6 min-[1500px]:grid-cols-8 max-[1100px]:grid-cols-5 max-[800px]:grid-cols-3"
+                              ? "medium:grid-cols-4 grid-cols-3 large:grid-cols-6"
+                              : "medium:grid-cols-5 grid-cols-3 large:grid-cols-7"
                           }`}>
                         <For each={folder.games}>
                           {(gameName) => {
@@ -687,7 +687,7 @@ function App() {
                                   <img
                                     className={`relative z-10 mb-[7px] rounded-[${
                                       roundedBorders() ? "6px" : "0px"
-                                    }] outline-[#0000001a] hover:outline-[#00000028] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff28] outline-[2px] outline-none  duration-700`}
+                                    }] outline-[#0000001a] hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] outline-[2px] outline-none duration-200`}
                                     src={convertFileSrc(
                                       appDataDirPath() +
                                         "grids\\" +
@@ -696,9 +696,9 @@ function App() {
                                     alt=""
                                     width="100%"
                                   />
-                                  <div className="absolute inset-0 blur-[20px] dark:blur-[30px]  group-hover:blur-[40px] duration-500 bg-blend-screen ">
+                                  <div className="absolute inset-0 blur-[20px] dark:blur-[30px]  group-hover:blur-[50px] duration-500 bg-blend-screen ">
                                     <img
-                                      className="absolute inset-0 duration-500 opacity-[100%] dark:opacity-[40%] group-hover:opacity-45"
+                                      className="absolute inset-0 duration-500 opacity-[100%] dark:opacity-[40%] group-hover:opacity-60"
                                       src={convertFileSrc(
                                         appDataDirPath() +
                                           "grids\\" +
@@ -708,7 +708,7 @@ function App() {
                                       alt=""
                                     />
                                     <div
-                                      className="dark:bg-[#fff] bg-[#000] opacity-[0%] dark:opacity-[10%] w-[100%] aspect-[2/3]"
+                                      className="dark:bg-[#fff] bg-[#000]  opacity-[0%] dark:opacity-[10%] w-[100%] aspect-[2/3]"
                                       alt=""
                                     />
                                   </div>
@@ -832,7 +832,6 @@ function App() {
               );
             }}
           </Show>
-          <img src="https://app.piratepx.com/ship?p=10ee2af1-5d97-4777-84dc-b537862876af&" />
         </div>
       </div>
       <div id="abovePage">

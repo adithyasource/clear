@@ -127,7 +127,7 @@ export function SideBar() {
     <>
       <div className="flex sideBar flex-col h-[calc(100vh-32px)] text-black z-10 py-[20px] pl-[20px] relative overflow-hidden w-[20%] min-[1500px]:w-[15%]">
         <div id="sideBarTop">
-          <div className="flex justify-between items-center gap-[20px]">
+          <div className="flex justify-between items-center gap-[15px]">
             <input
               type="text"
               id="searchInput"
@@ -140,9 +140,9 @@ export function SideBar() {
             />
             <svg
               onClick={toggleSideBar}
-              style="cursor: pointer;"
-              width="14"
-              height="14"
+              className={`cursor-pointer hover:bg-[#232323] duration-150 p-2 w-[28px] rounded-[${
+                roundedBorders() ? "6px" : "0px"
+              }]`}
               viewBox="0 0 12 12"
               fill="none"
               xmlns="http://www.w3.org/2000/svg">
@@ -255,7 +255,7 @@ export function SideBar() {
                 });
               }
             }}
-            class={` h-[calc(100vh-275px-32px)] max-[1100px]:h-[calc(100vh-215px-32px)] overflow-auto  rounded-[${
+            class={` h-[calc(100vh-275px-32px)]  overflow-auto  rounded-[${
               roundedBorders() ? "6px" : "0px"
             }]`}>
             <p className="mt-[5px]"></p>
@@ -626,13 +626,13 @@ export function SideBar() {
         <div
           id="sideBarBottom"
           class="absolute bottom-[20px] w-[100%] pr-[20px]">
-          <div className="max-[1100px]:flex max-[1100px]:gap-3">
+          <div className="">
             <button
-              className=" standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8] max-[1100px]:!justify-center "
+              className=" standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8] "
               onClick={() => {
                 document.querySelector("[data-newGameModal]").show();
               }}>
-              <span className="max-[1100px]:hidden"> add game </span>
+              <span className=""> add game </span>
               <svg
                 width="18"
                 height="18"
@@ -648,11 +648,11 @@ export function SideBar() {
               </svg>
             </button>
             <button
-              className="standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8] max-[1100px]:!justify-center "
+              className="standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8] "
               onClick={() => {
                 document.querySelector("[data-newFolderModal]").show();
               }}>
-              <span className="max-[1100px]:hidden">add folder</span>
+              <span className="">add folder</span>
               <svg
                 width="18"
                 height="18"
@@ -677,11 +677,11 @@ export function SideBar() {
 
           <div className="flex gap-3">
             <button
-              className="standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8] max-[1100px]:!justify-center "
+              className="standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8] "
               onClick={() => {
                 document.querySelector("[data-notepadModal]").show();
               }}>
-              <span className="max-[1100px]:hidden">notepad</span>
+              <span className="">notepad</span>
               <svg
                 width="18"
                 height="18"
@@ -703,11 +703,11 @@ export function SideBar() {
               </svg>
             </button>
             <button
-              className=" standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8] max-[1100px]:!justify-center "
+              className=" standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8]  "
               onClick={() => {
                 document.querySelector("[data-settingsModal]").show();
               }}>
-              <span className="max-[1100px]:hidden">settings</span>
+              <span className="">settings</span>
               <svg
                 width="18"
                 height="18"
