@@ -410,7 +410,7 @@ function App() {
   onMount(async () => {
     await getData();
 
-    //? FPS Counter by https://codepen.io/lnfnunes/pen/Qjeeyg
+    //* FPS Counter by https://codepen.io/lnfnunes/pen/Qjeeyg
 
     if (showFPS() == true) {
       function tick() {
@@ -434,59 +434,39 @@ function App() {
 
   return (
     <div>
+      {
+        //* disabling code formatting for upcoming styled jsx
+        //* since this jsx goes unminified into the final build
+        //* for apparently no reason whatsoever
+        //* there's not much in here so its pretty easy to 
+        //* read normally anyways
+        
+        // prettier-ignore
+      }
       <style jsx>{`
-        button,
-        input,
-        .panelButton {
-          background-color: ${secondaryColor()};
-          border-radius: ${roundedBorders() ? "6px" : "0px"};
-        }
-        .sideBarFolder {
-          background: ${secondaryColor()};
-          border-radius: ${roundedBorders() ? "6px" : "0px"};
-        }
-        .titleBarText {
-          font-family: ${fontName() == "Sans Serif"
-            ? "Segoe UI"
-            : fontName() == "Serif"
-            ? "Times New Roman"
-            : "IBM Plex Mono, Consolas"};
-        }
-        * {
-          font-family: ${fontName() == "Sans Serif"
-            ? "Helvetica, Arial, sans-serif"
-            : fontName() == "Serif"
-            ? "Times New Roman"
-            : "IBM Plex Mono, Consolas"};
-        }
-        ::-webkit-scrollbar-thumb {
-          background: ${secondaryColor()};
-          border-radius: ${roundedBorders() ? "10px" : "0px"};
-        }
-        #sideBarFolders:hover::-webkit-scrollbar-thumb {
-          background: ${secondaryColorForBlur()};
-        }
-        html,
-        body {
-          background-color: ${primaryColor()};
-        }
-        .bgBlur {
-          background-color: ${secondaryColorForBlur()} !important;
-          border-radius: ${roundedBorders() ? "6px" : "0px"};
-        }
-        .tooltip {
-          border-radius: ${roundedBorders() ? "6px" : "0px"};
-        }
-        .currentlyDragging {
-          border-top: 3px #646464 solid;
-          border-top-left-radius: 0px;
-          border-top-right-radius: 0px;
-        }
-      `}</style>
+button, input, .panelButton { background-color: ${secondaryColor()}; border-radius: ${roundedBorders() ? "6px" : "0px"};}
+.sideBarFolder { background: ${secondaryColor()}; border-radius: ${roundedBorders() ? "6px" : "0px"};}
+.titleBarText { font-family: ${fontName() == "Sans Serif" ? "Segoe UI" : fontName() == "Serif" ? "Times New Roman" : "IBM Plex Mono, Consolas"}; }
+* { font-family: ${fontName() == "Sans Serif" ? "Helvetica, Arial, sans-serif" : fontName() == "Serif" ? "Times New Roman" : "IBM Plex Mono, Consolas"}; }
+::-webkit-scrollbar-thumb { background: ${secondaryColor()}; border-radius: ${roundedBorders() ? "10px" : "0px"}; }
+#sideBarFolders:hover::-webkit-scrollbar-thumb { background: ${secondaryColorForBlur()}; }
+html, body { background-color: ${primaryColor()}; }
+.bgBlur { background-color: ${secondaryColorForBlur()} !important; border-radius: ${roundedBorders() ? "6px" : "0px"}; }
+.tooltip { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
+.currentlyDragging { box-shadow: 0 -3px 0 0 #646464; border-top-left-radius: 0; border-top-right-radius: 0; }
+`}</style>
 
       {
-        //? Windows UI Title Bar by https://codepen.io/agrimsrud/pen/WGgRPP
+        // prettier-ignore
       }
+
+      {
+        //* Windows UI Title Bar by https://codepen.io/agrimsrud/pen/WGgRPP
+      }
+
+      <div className="pointer-events-none items-center justify-center flex loading w-screen h-screen bg-[#121212] absolute z-[1000]">
+        <p className=""></p>
+      </div>
 
       <div
         data-tauri-drag-region

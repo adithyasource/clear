@@ -152,6 +152,21 @@ dialog[close] {
     dialogFadeOut 0.3s 1.3s;
 }
 
+.loading {
+  opacity: 1;
+  animation: loadingFadeOut 0.3s;
+  opacity: 0;
+}
+
+@keyframes loadingFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 .titleButton {
   width: 48px;
   height: 32px;

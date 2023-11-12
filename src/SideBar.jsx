@@ -262,13 +262,13 @@ export function SideBar() {
             }]`}>
             <p className="mt-[5px]"></p>
             <For each={currentFolders()}>
-              {(folderName) => {
+              {(folderName, i) => {
                 let folder = libraryData().folders[folderName];
 
                 if (folder.games.length > 0) {
                   return (
                     <div
-                      className="sideBarFolder"
+                      className="!py-2 sideBarFolder"
                       draggable={true}
                       onDragStart={(e) => {
                         setTimeout(
@@ -305,6 +305,7 @@ export function SideBar() {
                           let nextSibling = siblings.find((sibling) => {
                             let compensatedY = "";
                             compensatedY = e.clientY + scrollY;
+
                             return (
                               compensatedY <=
                               sibling.offsetTop + sibling.offsetHeight / 2 + 32
@@ -397,12 +398,14 @@ export function SideBar() {
                           });
                         }
                       }}>
-                      <div className="flex gap-[10px] items-center cursor-move">
+                      <div className="flex gap-[10px] items-center cursor-move  ">
                         <span className="text-black dark:text-white">
                           {folder.name}
                         </span>
                         <button
-                          className="p-0"
+                          className={`hover:bg-[#232323] duration-150 p-2 w-[25.25px] rounded-[${
+                            roundedBorders() ? "6px" : "0px"
+                          }]`}
                           onClick={() => {
                             document
                               .querySelector("[data-editFolderModal]")
@@ -429,9 +432,11 @@ export function SideBar() {
                         </button>
                       </div>
                       <For each={folder.games}>
-                        {(gameName) => (
+                        {(gameName, i) => (
                           <p
-                            className="bg-transparent mt-5 sideBarGame cursor-grab text-[#00000080] dark:text-[#ffffff80] active:dark:text-[#ffffff3a] active:text-[#0000003a]"
+                            className={`bg-transparent ${
+                              i() == 0 ? "mt-4" : "mt-5"
+                            }  sideBarGame cursor-grab text-[#00000080] dark:text-[#ffffff80] active:dark:text-[#ffffff3a] active:text-[#0000003a]`}
                             aria-label="play"
                             draggable={true}
                             onDragStart={(e) => {
@@ -459,7 +464,9 @@ export function SideBar() {
                           </p>
                         )}
                       </For>
-                      <p className="mt-2 sideBarGame cursor-grab"></p>
+                      <p className="mt-[10px] w-full h-[3px] sideBarGame cursor-grab">
+                        &nbsp;
+                      </p>
                     </div>
                   );
                 } else {
@@ -508,12 +515,14 @@ export function SideBar() {
                           getData();
                         });
                       }}>
-                      <div className="flex gap-[10px] items-center cursor-move">
+                      <div className="flex gap-[10px] items-center cursor-move my-[-4px]">
                         <s className="text-black cursor-move dark:text-white">
                           {folder.name}
                         </s>
                         <button
-                          className="p-0"
+                          className={`hover:bg-[#232323] duration-150 p-2 w-[25.25px] rounded-[${
+                            roundedBorders() ? "6px" : "0px"
+                          }]`}
                           onClick={() => {
                             document
                               .querySelector("[data-editFolderModal]")

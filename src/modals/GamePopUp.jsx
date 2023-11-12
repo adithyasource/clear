@@ -14,7 +14,7 @@ export function GamePopUp() {
         e.preventDefault();
       }}>
       <Show when={selectedGame()}>
-        <div className="flex flex-col items-center justify-center w-screen h-screen">
+        <div className="flex flex-col items-center justify-center w-screen h-screen px-[40px]">
           <img
             src={convertFileSrc(
               appDataDirPath() + "heroes\\" + selectedGame().heroImage,

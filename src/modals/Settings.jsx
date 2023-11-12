@@ -204,7 +204,7 @@ export function Settings() {
                     },
                   ).then(getData());
 
-                  //? FPS Counter by https://codepen.io/lnfnunes/pen/Qjeeyg
+                  //* FPS Counter by https://codepen.io/lnfnunes/pen/Qjeeyg
 
                   if (showFPS() == true) {
                     function tick() {
