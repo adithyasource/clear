@@ -1,0 +1,65 @@
+/*
+
+* Hint.css - v2.7.0 - 2021-10-01
+* https://kushagra.dev/lab/hint/
+* Copyright (c) 2021 Kushagra Gour
+
+* Heavily modified for "clear"
+* https://github.com/adithyasource/clear
+* Probably not the best idea to use this
+* version for your projects
+
+*/
+
+[class*="hint--"] {
+  position: relative;
+  display: inline-block;
+}
+
+[class*="hint--"]:after {
+  position: absolute;
+  transform: translate3d(0, 0, 0);
+  visibility: hidden;
+  opacity: 0;
+  z-index: 1000000;
+  pointer-events: none;
+}
+
+[class*="hint--"]:hover:after {
+  visibility: visible;
+  opacity: 1;
+}
+
+[class*="hint--"]:after {
+  background: #272727cc;
+  backdrop-filter: blur(10px);
+  border: 0.5px solid #ffffff10;
+  border-radius: 6px;
+  color: #fff;
+  padding: 8px 10px;
+  line-height: 12px;
+  white-space: nowrap;
+}
+
+[class*="hint--"][aria-label]:after {
+  content: attr(aria-label);
+}
+
+.hint--right:after {
+  right: 10%;
+  bottom: 50%;
+  margin-bottom: -14px;
+  transform: translateX(8px);
+}
+
+.hint--center:after {
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+}
+
+.hint--bottom:after {
+  right: 2%;
+  bottom: -130%;
+  transform: translateX(8px);
+}

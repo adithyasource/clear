@@ -23,11 +23,22 @@
       "notification": {
         "all": false
       },
+      "os": {
+        "all": true
+      },
       "path": {
         "all": true
       },
       "shell": {
         "open": true
+      },
+      "window": {
+        "close": true,
+        "minimize": true,
+        "maximize": true,
+        "startDragging": true,
+        "unmaximize": true,
+        "setDecorations": true
       },
       "fs": {
         "readFile": true,
@@ -62,8 +73,8 @@
         "title": "clear",
         "width": 1220,
         "height": 760,
-        "fileDropEnabled": false,
         "decorations": false,
+        "fileDropEnabled": false,
         "minHeight": 390,
         "minWidth": 640
       }

@@ -6,13 +6,8 @@ use tauri::Manager;
 use window_shadows::set_shadow;
 
 #[tauri::command]
-fn openGame(gameLocation: &str) {
-    open::that(gameLocation);
-}
-
-#[tauri::command]
-fn openLibLocation() {
-    open::that(format!("C:\\Users\\{}\\AppData\\Roaming\\com.adithya.clear", whoami::username()));
+fn openExplorer(location: &str) {
+    open::that(location);
 }
 
 fn main() {
@@ -25,7 +20,7 @@ fn main() {
             }
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![openGame, openLibLocation])
+        .invoke_handler(tauri::generate_handler![openExplorer])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

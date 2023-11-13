@@ -2,6 +2,7 @@ import { createSignal } from "solid-js";
 
 // !? Misc / Globals
 
+export const [appVersion, setAppVersion] = createSignal("0.0.15");
 export const [appDataDirPath, setAppDataDirPath] = createSignal({});
 export const [libraryData, setLibraryData] = createSignal({});
 export const [notepadValue, setNotepadValue] = createSignal("");
@@ -18,6 +19,8 @@ export const [searchValue, setSearchValue] = createSignal();
 export const [foundGridImage, setFoundGridImage] = createSignal();
 export const [foundHeroImage, setFoundHeroImage] = createSignal();
 export const [foundLogoImage, setFoundLogoImage] = createSignal();
+export const [maximizeIconToggle, setMaximizeIconToggle] = createSignal(false);
+export const [windowsVersion, setWindowsVersion] = createSignal();
 
 // !? Styles Signals
 export const [currentTheme, setCurrentTheme] = createSignal("");

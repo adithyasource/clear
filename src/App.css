@@ -170,7 +170,7 @@ dialog[close] {
 .titleButton {
   width: 48px;
   height: 32px;
-  padding: 0px 10px 0px 17px;
+  padding: 0px 10px 0px 18px;
   border: 0;
   margin: 0;
   background: transparent;
@@ -179,4 +179,9 @@ dialog[close] {
 .titleButton svg {
   width: 10px;
   height: 10px;
+}
+
+body {
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  font-size: 16px;
 }

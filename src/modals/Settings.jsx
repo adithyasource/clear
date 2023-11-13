@@ -22,7 +22,12 @@ import {
 
 import { getData, getSettingsData } from "../App";
 
+import { appDataDir } from "@tauri-apps/api/path";
+
 import YAML from "yamljs";
+import { version } from "@tauri-apps/api/os";
+
+import { open } from "@tauri-apps/api/shell";
 
 export function Settings() {
   setTimeout(() => {
@@ -204,7 +209,7 @@ export function Settings() {
                     },
                   ).then(getData());
 
-                  //* FPS Counter by https://codepen.io/lnfnunes/pen/Qjeeyg
+                  // * FPS Counter by https://codepen.io/lnfnunes/pen/Qjeeyg
 
                   if (showFPS() == true) {
                     function tick() {
@@ -299,9 +304,13 @@ export function Settings() {
 
             <div className="flex gap-3 items-start mt-[35px]">
               <button
-                className="flex items-center "
-                onClick={() => {
-                  invoke("openLibLocation");
+                className="flex items-center"
+                onClick={async () => {
+                  const appDataDirPath = await appDataDir();
+
+                  invoke("openExplorer", {
+                    location: appDataDirPath,
+                  });
                 }}>
                 open library location
               </button>
@@ -402,16 +411,27 @@ export function Settings() {
               <div>
                 clear <span className="text-[#ffffff80]">v1.0.0</span>
               </div>
-              <a href="https://clear.adithya.zip" className="underline">
+              <p
+                onClick={() => {
+                  open("https://clear.adithya.zip/");
+                }}
+                className="underline cursor-pointer">
                 visit website
-              </a>
+              </p>
               <div>
-                made by{" "}
-                <a href="https://adithya.zip" className="underline">
+                <a
+                  onClick={() => {
+                    open("https://adithya.zip/");
+                  }}
+                  className="underline cursor-pointer">
                   adithya
                 </a>
               </div>
-              <a href="https://ko-fi.com/adithyasource" className="underline">
+              <a
+                onClick={() => {
+                  open("https://ko-fi.com/adithyasource/");
+                }}
+                className="underline cursor-pointer">
                 buy me a coffee
               </a>
             </div>

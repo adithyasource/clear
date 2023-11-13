@@ -103,13 +103,15 @@ export function GamePopUp() {
                 roundedBorders() ? "6px" : "0px"
               }]`}
             />
-            <img
-              src={convertFileSrc(
-                appDataDirPath() + "logos\\" + selectedGame().logo,
-              )}
-              alt=""
-              className="absolute bottom-[20px] left-[25px] h-[70px] "
-            />
+            <div className="absolute bottom-[15px] left-[25px] h-[70px] w-[300px] items-center flex align-middle">
+              <img
+                src={convertFileSrc(
+                  appDataDirPath() + "logos\\" + selectedGame().logo,
+                )}
+                alt=""
+                className="relative aspect-auto max-h-[70px] max-w-[300px]"
+              />
+            </div>
           </div>
         </div>
       </Show>

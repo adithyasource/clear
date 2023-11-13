@@ -513,7 +513,7 @@ export function NewGame() {
                 </button>
                 <button
                   aria-label="not that accurate"
-                  className={`bg-[#1c1c1c] py-1 px-3 mr-2 cursor-pointer w-[max-content] text-[#ffffff80] hint--left hint--no-animate hint--rounded hint--no-arrow rounded-[${
+                  className={`bg-[#1c1c1c] py-1 px-3 mr-2 cursor-pointer w-[max-content] text-[#ffffff80] hint--bottom hint--no-animate hint--no-arrow rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }] `}
                   onClick={getGameAssets}>

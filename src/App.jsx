@@ -11,13 +11,13 @@ import {
 
 import Fuse from "fuse.js";
 
-import { exit } from "@tauri-apps/api/process";
-
 import { appDataDir } from "@tauri-apps/api/path";
 
 import "./App.css";
 
 import { Toast } from "./components/Toast";
+
+import { version } from "@tauri-apps/api/os";
 
 import {
   appDataDirPath,
@@ -68,6 +68,13 @@ import {
   setEditedHideFolder,
   setWindowWidth,
   windowWidth,
+  maximizeIconToggle,
+  setMaximizeIconToggle,
+  windowsVersion,
+  setWindowsVersion,
+  setSearchValue,
+  appVersion,
+  setAppVersion,
 } from "./Signals";
 
 import YAML from "yamljs";
@@ -244,22 +251,18 @@ export async function getData() {
 }
 
 export async function openGame(gameLocation) {
-  invoke("openGame", {
-    gameLocation: gameLocation,
+  invoke("openExplorer", {
+    location: gameLocation,
   });
 
   if (quitAfterOpen() == true || quitAfterOpen() == undefined) {
     setTimeout(async () => {
-      await exit(1);
+      appWindow.close();
     }, 500);
   }
 }
 
 function App() {
-  window.addEventListener("resize", () => {
-    setWindowWidth(window.innerWidth);
-  });
-
   document.addEventListener("keydown", (e) => {
     for (let i = 0; i < document.querySelectorAll(".sideBarGame").length; i++) {
       document.querySelectorAll(".sideBarGame")[i].style.cursor = "pointer";
@@ -271,25 +274,21 @@ function App() {
         i < document.querySelectorAll(".sideBarGame").length;
         i++
       ) {
-        document
-          .querySelectorAll(".sideBarGame")
-          [i].classList.add(
-            "hint--right",
-            "hint--no-animate",
-            "hint--rounded",
-            "hint--no-arrow",
-          );
+        document.querySelectorAll(".sideBarGame")[i].classList.add(
+          "hint--right",
+          "hint--no-animate",
+
+          "hint--no-arrow",
+        );
       }
 
       for (let i = 0; i < document.querySelectorAll(".gameCard").length; i++) {
-        document
-          .querySelectorAll(".gameCard")
-          [i].classList.add(
-            "hint--center",
-            "hint--no-animate",
-            "hint--rounded",
-            "hint--no-arrow",
-          );
+        document.querySelectorAll(".gameCard")[i].classList.add(
+          "hint--center",
+          "hint--no-animate",
+
+          "hint--no-arrow",
+        );
       }
     }
 
@@ -353,14 +352,17 @@ function App() {
     if (e.ctrlKey && e.code == "Backslash") {
       e.preventDefault();
       toggleSideBar();
+      document.querySelector("#searchInput").blur();
     }
   });
 
   async function closeApp() {
-    await exit(1);
+    appWindow.close();
   }
 
   async function toggleSideBar() {
+    setSearchValue("");
+
     libraryData().userSettings.showSideBar == undefined
       ? (libraryData().userSettings.showSideBar = false)
       : (libraryData().userSettings.showSideBar =
@@ -385,32 +387,49 @@ function App() {
     }
 
     for (let i = 0; i < document.querySelectorAll(".sideBarGame").length; i++) {
-      document
-        .querySelectorAll(".sideBarGame")
-        [i].classList.remove(
-          "hint--right",
-          "hint--no-animate",
-          "hint--rounded",
-          "hint--no-arrow",
-        );
+      document.querySelectorAll(".sideBarGame")[i].classList.remove(
+        "hint--right",
+        "hint--no-animate",
+
+        "hint--no-arrow",
+      );
     }
 
     for (let i = 0; i < document.querySelectorAll(".gameCard").length; i++) {
-      document
-        .querySelectorAll(".gameCard")
-        [i].classList.remove(
-          "hint--center",
-          "hint--no-animate",
-          "hint--rounded",
-          "hint--no-arrow",
-        );
+      document.querySelectorAll(".gameCard")[i].classList.remove(
+        "hint--center",
+        "hint--no-animate",
+
+        "hint--no-arrow",
+      );
     }
   });
 
   onMount(async () => {
+    const osVersion = await version();
+
+    if (osVersion.split(".")[0] == 10) {
+      setWindowsVersion("10+11");
+    } else {
+      appWindow.setDecorations(true);
+      osVersion.split(".")[0] + "." + osVersion.split(".")[1] == "6.2" ||
+      osVersion.split(".")[0] + "." + osVersion.split(".")[1] == "6.3"
+        ? setWindowsVersion("8+8.1")
+        : setWindowsVersion("7");
+    }
+
+    appWindow.onResized(() => {
+      appWindow.isMaximized().then((x) => {
+        setMaximizeIconToggle(x);
+        console.log(x);
+      });
+
+      setWindowWidth(window.innerWidth);
+    });
+
     await getData();
 
-    //* FPS Counter by https://codepen.io/lnfnunes/pen/Qjeeyg
+    // * FPS Counter by https://codepen.io/lnfnunes/pen/Qjeeyg
 
     if (showFPS() == true) {
       function tick() {
@@ -433,140 +452,170 @@ function App() {
   });
 
   return (
-    <div>
-      {
-        //* disabling code formatting for upcoming styled jsx
-        //* since this jsx goes unminified into the final build
-        //* for apparently no reason whatsoever
-        //* there's not much in here so its pretty easy to 
-        //* read normally anyways
-        
-        // prettier-ignore
-      }
-      <style jsx>{`
-button, input, .panelButton { background-color: ${secondaryColor()}; border-radius: ${roundedBorders() ? "6px" : "0px"};}
-.sideBarFolder { background: ${secondaryColor()}; border-radius: ${roundedBorders() ? "6px" : "0px"};}
-.titleBarText { font-family: ${fontName() == "Sans Serif" ? "Segoe UI" : fontName() == "Serif" ? "Times New Roman" : "IBM Plex Mono, Consolas"}; }
-* { font-family: ${fontName() == "Sans Serif" ? "Helvetica, Arial, sans-serif" : fontName() == "Serif" ? "Times New Roman" : "IBM Plex Mono, Consolas"}; }
-::-webkit-scrollbar-thumb { background: ${secondaryColor()}; border-radius: ${roundedBorders() ? "10px" : "0px"}; }
-#sideBarFolders:hover::-webkit-scrollbar-thumb { background: ${secondaryColorForBlur()}; }
-html, body { background-color: ${primaryColor()}; }
-.bgBlur { background-color: ${secondaryColorForBlur()} !important; border-radius: ${roundedBorders() ? "6px" : "0px"}; }
-.tooltip { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
-.currentlyDragging { box-shadow: 0 -3px 0 0 #646464; border-top-left-radius: 0; border-top-right-radius: 0; }
-`}</style>
+    <>
+      <head>
+        <link rel="stylesheet" href="hint.css" />
+      </head>
 
       {
-        // prettier-ignore
-      }
-
-      {
-        //* Windows UI Title Bar by https://codepen.io/agrimsrud/pen/WGgRPP
+        // * fading out bg color to make the app loading look a
+        // * bit more smoother
       }
 
       <div className="pointer-events-none items-center justify-center flex loading w-screen h-screen bg-[#121212] absolute z-[1000]">
         <p className=""></p>
       </div>
 
-      <div
-        data-tauri-drag-region
-        class="flex w-screen h-[32px] bg-[#fff] dark:bg-[#000] items-center z-[10000] fixed">
-        <div data-tauri-drag-region className="pl-[8px] ">
-          <Show when={currentTheme() == "dark"}>
-            <img
-              data-tauri-drag-region
-              draggable={false}
-              src={logo}
-              alt=""
-              className="w-[16px] h-[16px] select-none"
-            />
-          </Show>
-          <Show when={currentTheme() == "light"}>
-            <img
-              data-tauri-drag-region
-              draggable={false}
-              src={logoW}
-              alt=""
-              className="w-[16px] h-[16px] select-none"
-            />
-          </Show>
-        </div>
+      {
+        // * disabling code formatting for upcoming styled jsx.
+        // * since this jsx goes unminified into the final build
+        // * for apparently no reason whatsoever.
+        // * there's not much in here so its pretty easy to 
+        // * read normally anyways.
+        // prettier-ignore
+      }
 
+      <style jsx>{`
+      button, input, .panelButton { background-color: ${secondaryColor()}; border-radius: ${roundedBorders() ? "6px" : "0px"};}
+      .sideBarFolder { background: ${secondaryColor()}; border-radius: ${roundedBorders() ? "6px" : "0px"};}
+      .titleBarText { font-family: ${fontName() == "Sans Serif" ? "Segoe UI" : fontName() == "Serif" ? "Times New Roman" : "IBM Plex Mono, Consolas"}; }
+      * { font-family: ${fontName() == "Sans Serif" ? "Helvetica, Arial, sans-serif" : fontName() == "Serif" ? "Times New Roman" : "IBM Plex Mono, Consolas"}; }
+      ::-webkit-scrollbar-thumb { background: ${secondaryColor()}; border-radius: ${roundedBorders() ? "10px" : "0px"}; }
+      #sideBarFolders:hover::-webkit-scrollbar-thumb { background: ${secondaryColorForBlur()}; }
+      html, body { background-color: ${primaryColor()}; }
+      .bgBlur { background-color: ${secondaryColorForBlur()} !important; border-radius: ${roundedBorders() ? "6px" : "0px"}; }
+      .tooltip { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
+      .currentlyDragging { box-shadow: 0 -3px 0 0 #646464; border-top-left-radius: 0; border-top-right-radius: 0; }
+      `}</style>
+
+      {
+        // prettier-ignore
+      }
+
+      {
+        // * Windows 10+11 UI Title Bar by https://codepen.io/agrimsrud/pen/WGgRPP
+      }
+
+      <Show when={windowsVersion() == "10+11"}>
         <div
           data-tauri-drag-region
-          class="flex-grow-[2] max-h-[32px] indent-[7px] text-[#000] dark:text-[#fff] flex gap-[30px]">
-          <span
-            data-tauri-drag-region
-            className="text-[#000] dark:text-[#fff] titleBarText text-[12px]">
-            clear
-          </span>
-          <Show when={showFPS()}>
-            <span data-tauri-drag-region>
-              <span
-                id="fps"
+          class="flex w-screen h-[32px] bg-[#fff] dark:bg-[#000] items-center z-[10000] fixed">
+          <div data-tauri-drag-region className="pl-[8px] ">
+            <Show when={currentTheme() == "dark"}>
+              <img
                 data-tauri-drag-region
-                className="text-[#00000080] dark:text-[#ffffff80] titleBarText text-[12px]">
-                --
-              </span>
-              &nbsp;
-              <span className="text-[#00000080] dark:text-[#ffffff80] titleBarText text-[12px]">
-                FPS
-              </span>
-            </span>
-          </Show>
-        </div>
+                draggable={false}
+                src={logo}
+                alt=""
+                className="w-[16px] h-[16px] select-none"
+              />
+            </Show>
+            <Show when={currentTheme() == "light"}>
+              <img
+                data-tauri-drag-region
+                draggable={false}
+                src={logoW}
+                alt=""
+                className="w-[16px] h-[16px] select-none"
+              />
+            </Show>
+          </div>
 
-        <div
-          data-tauri-drag-region
-          class="max-w-[144px] max-h-[32px] flex-grow-[1]">
-          <button
-            class="titleButton dark:hover:bg-[#ffffff1A] hover:bg-[#0000001A] minimize cursor-default  !rounded-none"
-            onClick={() => {
-              appWindow.minimize();
-            }}>
-            <svg x="0px" y="0px" viewBox="0 0 10 10">
-              <rect
-                className="fill-[#000] dark:fill-[#fff]"
-                x="0"
-                y="50%"
-                width="10.2"
-                height="1"
-              />
-            </svg>
-          </button>
-          <button
-            class="titleButton dark:hover:bg-[#ffffff1A] hover:bg-[#0000001A] maximize cursor-default  !rounded-none"
-            onClick={() => {
-              appWindow.toggleMaximize();
-            }}>
-            <svg viewBox="0 0 10 10">
-              <path
-                className="fill-[#000] dark:fill-[#fff]"
-                d="M0,0v10h10V0H0z M9,9H1V1h8V9z"
-              />
-            </svg>
-          </button>
-          <button
-            class="titleButton hover:bg-[#e81123] close cursor-default !rounded-none "
-            onClick={() => {
-              appWindow.close();
-            }}>
-            <svg viewBox="0 0 10 10">
-              <polygon
-                className="fill-[#000] dark:fill-[#fff]"
-                points="10.2,0.7 9.5,0 5.1,4.4 0.7,0 0,0.7 4.4,5.1 0,9.5 0.7,10.2 5.1,5.8 9.5,10.2 10.2,9.5 5.8,5.1"
-              />
-            </svg>
-          </button>
+          <div
+            data-tauri-drag-region
+            class="flex-grow-[2] max-h-[32px] indent-[7px] text-[#000] dark:text-[#fff] flex gap-[30px]">
+            <span
+              data-tauri-drag-region
+              className="text-[#000] dark:text-[#fff] titleBarText text-[12px]">
+              clear
+            </span>
+            <Show when={showFPS()}>
+              <span data-tauri-drag-region>
+                <span
+                  id="fps"
+                  data-tauri-drag-region
+                  className="text-[#00000080] dark:text-[#ffffff80] titleBarText text-[12px]">
+                  --
+                </span>
+                &nbsp;
+                <span className="text-[#00000080] dark:text-[#ffffff80] titleBarText text-[12px]">
+                  FPS
+                </span>
+              </span>
+            </Show>
+          </div>
+
+          <div
+            data-tauri-drag-region
+            class="max-w-[144px] max-h-[32px] flex-grow-[1]">
+            <button
+              class="titleButton dark:hover:bg-[#ffffff1A] hover:bg-[#0000001A] minimize cursor-default  !rounded-none"
+              onClick={() => {
+                appWindow.minimize();
+              }}>
+              <svg x="0px" y="0px" viewBox="0 0 10 10">
+                <rect
+                  className="fill-[#000] dark:fill-[#fff]"
+                  x="0"
+                  y="50%"
+                  width="10.2"
+                  height="1"
+                />
+              </svg>
+            </button>
+            <button
+              class="titleButton dark:hover:bg-[#ffffff1A] hover:bg-[#0000001A] maximize cursor-default  !rounded-none"
+              onClick={() => {
+                appWindow.isMaximized().then((x) => {
+                  setMaximizeIconToggle(!x);
+                });
+                appWindow.toggleMaximize();
+              }}>
+              <Show when={maximizeIconToggle()}>
+                <svg viewBox="0 0 10.2 10.1">
+                  <path
+                    className="fill-[#000] dark:fill-[#fff]"
+                    d="M2.1,0v2H0v8.1h8.2v-2h2V0H2.1z M7.2,9.2H1.1V3h6.1V9.2z M9.2,7.1h-1V2H3.1V1h6.1V7.1z"
+                  />
+                </svg>
+              </Show>
+
+              <Show when={!maximizeIconToggle()}>
+                <svg viewBox="0 0 10 10">
+                  <path
+                    className="fill-[#000] dark:fill-[#fff]"
+                    d="M0,0v10h10V0H0z M9,9H1V1h8V9z"
+                  />
+                </svg>
+              </Show>
+            </button>
+            <button
+              class="titleButton hover:!bg-[#e81123] close cursor-default !rounded-none"
+              onClick={() => {
+                appWindow.close();
+              }}>
+              <svg viewBox="0 0 10 10">
+                <polygon
+                  className="fill-[#000] dark:fill-[#fff]"
+                  points="10.2,0.7 9.5,0 5.1,4.4 0.7,0 0,0.7 4.4,5.1 0,9.5 0.7,10.2 5.1,5.8 9.5,10.2 10.2,9.5 5.8,5.1"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
-      </div>
+      </Show>
 
       <Toast />
 
-      <div className="h-full flex gap-[30px] pt-[32px] overflow-y-hidden">
+      <div
+        className={`h-full flex gap-[30px] ${
+          windowsVersion() == "10+11" ? "pt-[32px]" : ""
+        }  overflow-y-hidden`}>
         <Show when={showSideBar() == false && windowWidth() >= 1000}>
           <svg
-            className={`absolute right-[30px] top-[66px] z-10 rotate-180 cursor-pointer hover:bg-[#232323] duration-150 p-2 w-[25.25px] rounded-[${
+            className={`absolute right-[30px] ${
+              windowsVersion() == "10+11" ? "top-[66px]" : "top-[32px]"
+            }  z-10 rotate-180 cursor-pointer hover:bg-[#232323] duration-150 p-2 w-[25.25px] rounded-[${
               roundedBorders() ? "6px" : "0px"
             }]`}
             onClick={toggleSideBar}
@@ -595,7 +644,9 @@ html, body { background-color: ${primaryColor()}; }
           <SideBar />
         </Show>
         <div
-          className={`w-[100%] absolute h-[calc(100vh-32px)] overflow-y-scroll py-[20px] pr-[30px]  ${
+          className={`w-[100%] absolute ${
+            windowsVersion() == "10+11" ? "h-[calc(100vh-32px)]" : "h-[100vh]"
+          } overflow-y-scroll py-[20px] pr-[30px]  ${
             showSideBar() && windowWidth() >= 1000
               ? "pl-[23%] large:pl-[17%]"
               : "pl-[30px] large:pl-[30px]"
@@ -738,7 +789,7 @@ html, body { background-color: ${primaryColor()}; }
 
               return (
                 <div>
-                  <div className="grid grid-cols-5 gap-5 mt-4 foldersDiv">
+                  <div className="grid grid-cols-3 gap-5 mt-4 medium:grid-cols-4 large:grid-cols-6 foldersDiv">
                     <For each={searchResults}>
                       {(gameName) => {
                         return (
@@ -760,29 +811,51 @@ html, body { background-color: ${primaryColor()}; }
                               );
                               document.querySelector("[data-gamePopup]").show();
                             }}>
-                            <img
-                              className={`relative z-10 mb-[7px] rounded-[${
-                                roundedBorders() ? "6px" : "0px"
-                              }] dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
-                              src={convertFileSrc(
-                                appDataDirPath() +
-                                  "grids\\" +
-                                  libraryData().games[gameName].gridImage,
-                              )}
-                              alt=""
-                              width="100%"
-                            />
+                            <Show
+                              when={!libraryData().games[gameName].favourite}>
+                              <div className="w-[100%]">
+                                <img
+                                  className={`relative z-10 mb-[7px] rounded-[${
+                                    roundedBorders() ? "6px" : "0px"
+                                  }]  object-fill group-hover:outline-[#0000001f] dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
+                                  src={convertFileSrc(
+                                    appDataDirPath() +
+                                      "grids\\" +
+                                      libraryData().games[gameName].gridImage,
+                                  )}
+                                  alt=""
+                                />
+                              </div>
+                            </Show>
                             <Show
                               when={libraryData().games[gameName].favourite}>
                               <img
-                                className=" absolute blur-[50px] opacity-[0.4] inset-0 group-hover:opacity-[0.5] group-hover:blur-[60px] duration-700"
+                                className={`relative z-10 mb-[7px] rounded-[${
+                                  roundedBorders() ? "6px" : "0px"
+                                }] outline-[#0000001a] hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] outline-[2px] outline-none duration-200`}
                                 src={convertFileSrc(
                                   appDataDirPath() +
                                     "grids\\" +
                                     libraryData().games[gameName].gridImage,
                                 )}
                                 alt=""
+                                width="100%"
                               />
+                              <div className="absolute inset-0 blur-[20px] dark:blur-[30px]  group-hover:blur-[50px] duration-500 bg-blend-screen ">
+                                <img
+                                  className="absolute inset-0 duration-500 opacity-[100%] dark:opacity-[40%] group-hover:opacity-60"
+                                  src={convertFileSrc(
+                                    appDataDirPath() +
+                                      "grids\\" +
+                                      libraryData().games[gameName].gridImage,
+                                  )}
+                                  alt=""
+                                />
+                                <div
+                                  className="dark:bg-[#fff] bg-[#000]  opacity-[0%] dark:opacity-[10%] w-[100%] aspect-[2/3]"
+                                  alt=""
+                                />
+                              </div>
                             </Show>
                             <Show when={gameTitle()}>{gameName}</Show>
                           </div>
@@ -825,7 +898,7 @@ html, body { background-color: ${primaryColor()}; }
         <Notepad />
         <Settings />
       </div>
-    </div>
+    </>
   );
 }
 

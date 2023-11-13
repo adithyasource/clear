@@ -9,6 +9,7 @@ import {
   setEditedFolderName,
   setEditedHideFolder,
   roundedBorders,
+  windowsVersion,
 } from "./Signals";
 
 import { For, Show, onMount } from "solid-js";
@@ -127,7 +128,10 @@ export function SideBar() {
 
   return (
     <>
-      <div className="flex sideBar flex-col h-[calc(100vh-32px)] text-black z-10 py-[20px] pl-[20px] relative overflow-hidden w-[20%] min-[1500px]:w-[15%]">
+      <div
+        className={`flex sideBar flex-col ${
+          windowsVersion() == "10+11" ? "h-[calc(100vh-32px)]" : "h-[100vh]"
+        } text-black z-10 py-[20px] pl-[20px] relative overflow-hidden w-[20%] min-[1500px]:w-[15%]`}>
         <div id="sideBarTop">
           <div className="flex justify-between items-center gap-[15px]">
             <input
@@ -189,10 +193,18 @@ export function SideBar() {
                 let nextSibling = siblings.find((sibling) => {
                   let compensatedY = "";
                   compensatedY = e.clientY + scrollY;
-                  return (
-                    compensatedY <=
-                    sibling.offsetTop + sibling.offsetHeight / 2 + 32
-                  );
+
+                  if (windowsVersion() == "10+11") {
+                    return (
+                      compensatedY <=
+                      sibling.offsetTop + sibling.offsetHeight / 2 + 32
+                    );
+                  } else {
+                    return (
+                      compensatedY <=
+                      sibling.offsetTop + sibling.offsetHeight / 2
+                    );
+                  }
                 });
 
                 try {
@@ -218,10 +230,18 @@ export function SideBar() {
                 let nextSibling = siblings.find((sibling) => {
                   let compensatedY = "";
                   compensatedY = e.clientY + scrollY;
-                  return (
-                    compensatedY <=
-                    sibling.offsetTop + sibling.offsetHeight / 2 + 32
-                  );
+
+                  if (windowsVersion() == "10+11") {
+                    return (
+                      compensatedY <=
+                      sibling.offsetTop + sibling.offsetHeight / 2 + 32
+                    );
+                  } else {
+                    return (
+                      compensatedY <=
+                      sibling.offsetTop + sibling.offsetHeight / 2
+                    );
+                  }
                 });
 
                 try {
@@ -257,9 +277,11 @@ export function SideBar() {
                 });
               }
             }}
-            class={` h-[calc(100vh-275px-32px)]  overflow-auto  rounded-[${
-              roundedBorders() ? "6px" : "0px"
-            }]`}>
+            class={` ${
+              windowsVersion() == "10+11"
+                ? "h-[calc(100vh-275px-32px)]"
+                : "h-[calc(100vh-275px)]"
+            } overflow-auto  rounded-[${roundedBorders() ? "6px" : "0px"}]`}>
             <p className="mt-[5px]"></p>
             <For each={currentFolders()}>
               {(folderName, i) => {
@@ -306,10 +328,19 @@ export function SideBar() {
                             let compensatedY = "";
                             compensatedY = e.clientY + scrollY;
 
-                            return (
-                              compensatedY <=
-                              sibling.offsetTop + sibling.offsetHeight / 2 + 32
-                            );
+                            if (windowsVersion() == "10+11") {
+                              return (
+                                compensatedY <=
+                                sibling.offsetTop +
+                                  sibling.offsetHeight / 2 +
+                                  32
+                              );
+                            } else {
+                              return (
+                                compensatedY <=
+                                sibling.offsetTop + sibling.offsetHeight / 2
+                              );
+                            }
                           });
 
                           try {
@@ -341,12 +372,20 @@ export function SideBar() {
                             let nextSibling = siblings.find((sibling) => {
                               let compensatedY = "";
                               compensatedY = e.clientY + scrollY;
-                              return (
-                                compensatedY <=
-                                sibling.offsetTop +
-                                  sibling.offsetHeight / 2 +
-                                  32
-                              );
+
+                              if (windowsVersion() == "10+11") {
+                                return (
+                                  compensatedY <=
+                                  sibling.offsetTop +
+                                    sibling.offsetHeight / 2 +
+                                    32
+                                );
+                              } else {
+                                return (
+                                  compensatedY <=
+                                  sibling.offsetTop + sibling.offsetHeight / 2
+                                );
+                              }
                             });
 
                             try {
