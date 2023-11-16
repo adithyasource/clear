@@ -107,7 +107,7 @@ input,
 .standardButton:hover,
 #searchInput:hover,
 button:hover {
-  background: #2b2b2b !important;
+  background: #2b2b2b;
 }
 
 @keyframes dialogFadeIn {

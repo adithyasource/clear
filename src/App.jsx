@@ -1,97 +1,79 @@
 import { For, Show, onMount } from "solid-js";
-import { invoke, convertFileSrc } from "@tauri-apps/api/tauri";
+
+import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
 import {
-  writeTextFile,
   BaseDirectory,
-  readTextFile,
-  exists,
   createDir,
-  removeDir,
+  exists,
+  readTextFile,
+  writeTextFile,
 } from "@tauri-apps/api/fs";
-
-import Fuse from "fuse.js";
-
 import { appDataDir } from "@tauri-apps/api/path";
-
-import "./App.css";
-
-import { Toast } from "./components/Toast";
-
 import { version } from "@tauri-apps/api/os";
+import { appWindow } from "@tauri-apps/api/window";
 
 import {
   appDataDirPath,
-  setAppDataDirPath,
-  libraryData,
-  setLibraryData,
-  selectedGame,
-  setSelectedGame,
-  setCurrentGames,
   currentFolders,
-  setCurrentFolders,
+  currentTheme,
+  folderTitle,
+  fontName,
+  gameTitle,
+  libraryData,
+  maximizeIconToggle,
+  primaryColor,
+  quitAfterOpen,
+  roundedBorders,
   searchValue,
   secondaryColor,
-  setSecondaryColor,
   secondaryColorForBlur,
-  setSecondaryColorForBlur,
-  primaryColor,
-  setPrimaryColor,
-  modalBackground,
-  locatingLogoBackground,
-  setLocatingLogoBackground,
-  gamesDivLeftPadding,
-  setGamesDivLeftPadding,
-  showSideBar,
-  setShowSideBar,
-  roundedBorders,
-  setRoundedBorders,
-  gameTitle,
-  setGameTitle,
-  folderTitle,
+  setAppDataDirPath,
+  setCurrentFolders,
+  setCurrentGames,
+  setCurrentTheme,
   setFolderTitle,
   setFontName,
-  fontName,
-  quitAfterOpen,
-  setQuitAfterOpen,
-  currentTheme,
-  setCurrentTheme,
-  showFPS,
-  setShowFPS,
-  setSelectedFolder,
-  setEditedGameName,
-  setEditedFavouriteGame,
-  setEditedLocatedHeroImage,
-  setEditedLocatedGridImage,
-  setEditedLocatedLogo,
-  setEditedlocatedGame,
-  setEditedFolderName,
-  setEditedHideFolder,
-  setWindowWidth,
-  windowWidth,
-  maximizeIconToggle,
+  setGameTitle,
+  setGamesDivLeftPadding,
+  setLibraryData,
+  setLocatingLogoBackground,
   setMaximizeIconToggle,
-  windowsVersion,
-  setWindowsVersion,
+  setPrimaryColor,
+  setQuitAfterOpen,
+  setRoundedBorders,
   setSearchValue,
-  appVersion,
-  setAppVersion,
+  setSecondaryColor,
+  setSecondaryColorForBlur,
+  setSelectedGame,
+  setShowFPS,
+  setShowSideBar,
+  setWindowWidth,
+  setWindowsVersion,
+  showFPS,
+  showSideBar,
+  windowWidth,
+  windowsVersion,
 } from "./Signals";
-
-import YAML from "yamljs";
 
 import logo from "./assets/128x128.png";
 import logoW from "./assets/128x128W.png";
 
 import { SideBar } from "./SideBar";
-import { NewGame } from "./modals/NewGame";
-import { EditGame } from "./modals/EditGame";
-import { NewFolder } from "./modals/NewFolder";
+
 import { EditFolder } from "./modals/EditFolder";
+import { EditGame } from "./modals/EditGame";
 import { GamePopUp } from "./modals/GamePopUp";
+import { NewFolder } from "./modals/NewFolder";
+import { NewGame } from "./modals/NewGame";
 import { Notepad } from "./modals/Notepad";
 import { Settings } from "./modals/Settings";
 
-import { appWindow } from "@tauri-apps/api/window";
+import { Toast } from "./components/Toast";
+
+import "./App.css";
+
+import YAML from "yamljs";
+import Fuse from "fuse.js";
 
 export function getSettingsData() {
   if (
@@ -467,29 +449,61 @@ function App() {
       </div>
 
       {
-        // * disabling code formatting for upcoming styled jsx.
-        // * since this jsx goes unminified into the final build
-        // * for apparently no reason whatsoever.
-        // * there's not much in here so its pretty easy to 
-        // * read normally anyways.
-        // prettier-ignore
+        // prettier - ignore
       }
 
       <style jsx>{`
-      button, input, .panelButton { background-color: ${secondaryColor()}; border-radius: ${roundedBorders() ? "6px" : "0px"};}
-      .sideBarFolder { background: ${secondaryColor()}; border-radius: ${roundedBorders() ? "6px" : "0px"};}
-      .titleBarText { font-family: ${fontName() == "Sans Serif" ? "Segoe UI" : fontName() == "Serif" ? "Times New Roman" : "IBM Plex Mono, Consolas"}; }
-      * { font-family: ${fontName() == "Sans Serif" ? "Helvetica, Arial, sans-serif" : fontName() == "Serif" ? "Times New Roman" : "IBM Plex Mono, Consolas"}; }
-      ::-webkit-scrollbar-thumb { background: ${secondaryColor()}; border-radius: ${roundedBorders() ? "10px" : "0px"}; }
-      #sideBarFolders:hover::-webkit-scrollbar-thumb { background: ${secondaryColorForBlur()}; }
-      html, body { background-color: ${primaryColor()}; }
-      .bgBlur { background-color: ${secondaryColorForBlur()} !important; border-radius: ${roundedBorders() ? "6px" : "0px"}; }
-      .tooltip { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
-      .currentlyDragging { box-shadow: 0 -3px 0 0 #646464; border-top-left-radius: 0; border-top-right-radius: 0; }
+        button,
+        input,
+        .panelButton {
+          background-color: ${secondaryColor()};
+          border-radius: ${roundedBorders() ? "6px" : "0px"};
+        }
+        .sideBarFolder {
+          background: ${secondaryColor()};
+          border-radius: ${roundedBorders() ? "6px" : "0px"};
+        }
+        .titleBarText {
+          font-family: ${fontName() == "Sans Serif"
+            ? "Segoe UI"
+            : fontName() == "Serif"
+            ? "Times New Roman"
+            : "IBM Plex Mono, Consolas"};
+        }
+        * {
+          font-family: ${fontName() == "Sans Serif"
+            ? "Helvetica, Arial, sans-serif"
+            : fontName() == "Serif"
+            ? "Times New Roman"
+            : "IBM Plex Mono, Consolas"};
+        }
+        ::-webkit-scrollbar-thumb {
+          background: ${secondaryColor()};
+          border-radius: ${roundedBorders() ? "10px" : "0px"};
+        }
+        #sideBarFolders:hover::-webkit-scrollbar-thumb {
+          background: ${secondaryColorForBlur()};
+        }
+        html,
+        body {
+          background-color: ${primaryColor()};
+        }
+        .bgBlur {
+          background-color: ${secondaryColorForBlur()} !important;
+          border-radius: ${roundedBorders() ? "6px" : "0px"};
+        }
+        .tooltip {
+          border-radius: ${roundedBorders() ? "6px" : "0px"};
+        }
+        .currentlyDragging {
+          box-shadow: 0 -3px 0 0 #646464;
+          border-top-left-radius: 0;
+          border-top-right-radius: 0;
+        }
       `}</style>
 
       {
-        // prettier-ignore
+        //prettier - ignore
       }
 
       {
@@ -702,7 +716,7 @@ function App() {
                                     <img
                                       className={`relative z-10 mb-[7px] rounded-[${
                                         roundedBorders() ? "6px" : "0px"
-                                      }]  object-fill group-hover:outline-[#0000001f] dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
+                                      }] group-hover:outline-[#0000001f] dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
                                       src={convertFileSrc(
                                         appDataDirPath() +
                                           "grids\\" +
@@ -720,7 +734,7 @@ function App() {
                                   <img
                                     className={`relative z-10 mb-[7px] rounded-[${
                                       roundedBorders() ? "6px" : "0px"
-                                    }] outline-[#0000001a] hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] outline-[2px] outline-none duration-200`}
+                                    }] outline-[#0000001c] hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
                                     src={convertFileSrc(
                                       appDataDirPath() +
                                         "grids\\" +
@@ -729,9 +743,9 @@ function App() {
                                     alt=""
                                     width="100%"
                                   />
-                                  <div className="absolute inset-0 blur-[20px] dark:blur-[30px]  group-hover:blur-[50px] duration-500 bg-blend-screen ">
+                                  <div className="absolute inset-0 dark:blur-[30px]  dark:group-hover:blur-[50px] duration-500 dark:bg-blend-screen ">
                                     <img
-                                      className="absolute inset-0 duration-500 opacity-[100%] dark:opacity-[40%] group-hover:opacity-60"
+                                      className="absolute inset-0 duration-500 opacity-0 dark:opacity-[40%] dark:group-hover:opacity-60"
                                       src={convertFileSrc(
                                         appDataDirPath() +
                                           "grids\\" +

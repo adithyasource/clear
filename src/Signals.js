@@ -4,6 +4,9 @@ import { createSignal } from "solid-js";
 
 export const [appVersion, setAppVersion] = createSignal("0.0.15");
 export const [appDataDirPath, setAppDataDirPath] = createSignal({});
+/**
+ * libray date somtehing amn what
+ */
 export const [libraryData, setLibraryData] = createSignal({});
 export const [notepadValue, setNotepadValue] = createSignal("");
 export const [toastError, setToastError] = createSignal("");

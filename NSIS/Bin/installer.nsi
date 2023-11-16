@@ -4,7 +4,7 @@ VIAddVersionKey "FileDescription" "clear - video game library"
 VIProductVersion "0.0.15.0"
 VIAddVersionKey "FileVersion" "0.0.15"
 VIAddVersionKey "ProductVersion" "0.0.15"
-VIAddVersionKey "LegalCopyright" "Copyright © 2023 adithya"
+VIAddVersionKey "LegalCopyright" "Unlicense"
 
 
 ;--------------------------------
@@ -33,6 +33,11 @@ InstallDirRegKey HKLM "Software\clear" "Install_Dir"
 
 Page components
 Page instfiles
+
+; Displays logs while installing by default
+ShowInstDetails show
+
+
 UninstPage uninstConfirm
 UninstPage instfiles
 
@@ -40,7 +45,7 @@ UninstPage instfiles
 ;--------------------------------
 
 
-Section "clear"
+Section "clear - video game library"
 
   ; Removes option to uncheck the app from installing
   SectionIn RO
@@ -61,7 +66,6 @@ Section "clear"
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\clear" "NoRepair" 1
   WriteUninstaller "$INSTDIR\uninstall.exe"
 
-  ; Automatically closes the installer after installation
   SetAutoClose true
   
 SectionEnd
@@ -72,13 +76,6 @@ SectionEnd
 
 ; Following three sections are shown as checkboxes in the components page
 ; And their contents are executed if they are checked
-
-Section "open clear after install"
-
-    ; Opens after install
-    ExecShell "" '"$INSTDIR\clear.exe"'
-
-SectionEnd
 
 Section "desktop shortcut"
 
@@ -93,6 +90,22 @@ Section "start menu shortcut"
     CreateDirectory "$SMPROGRAMS\clear"
     CreateShortcut "$SMPROGRAMS\clear\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
     CreateShortcut "$SMPROGRAMS\clear\clear.lnk" "$INSTDIR\clear.exe" "" "$INSTDIR\clear.exe" 0
+
+SectionEnd
+
+Section "open after install"
+
+    ; Opens after install
+    ExecShell "" '"$INSTDIR\clear.exe"'
+
+SectionEnd
+
+; Unchecked by default
+
+Section /o "show installer logs"
+
+  ; Doesn't close the installer by default so that user can look at the logs
+  SetAutoClose false
 
 SectionEnd
 

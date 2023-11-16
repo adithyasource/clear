@@ -138,7 +138,7 @@ export function SideBar() {
               type="text"
               id="searchInput"
               name=""
-              className="dark:bg-[#232323] bg-[#E8E8E8] dark:text-white text-black w-full"
+              className="dark:bg-[#232323] bg-[#E8E8E8] dark:text-white text-black w-full hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b]"
               placeholder="search"
               onInput={(e) => {
                 setSearchValue(e.currentTarget.value);
@@ -678,11 +678,11 @@ export function SideBar() {
           class="absolute bottom-[20px] w-[100%] pr-[20px]">
           <div className="">
             <button
-              className=" standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8] "
+              className=" standardButton dark:bg-[#232323] text-black  dark:text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
                 document.querySelector("[data-newGameModal]").show();
               }}>
-              <span className=""> add game </span>
+              add game
               <svg
                 width="18"
                 height="18"
@@ -698,11 +698,11 @@ export function SideBar() {
               </svg>
             </button>
             <button
-              className="standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8] "
+              className="standardButton dark:bg-[#232323] text-black  dark:text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
                 document.querySelector("[data-newFolderModal]").show();
               }}>
-              <span className="">add folder</span>
+              add folder
               <svg
                 width="18"
                 height="18"
@@ -727,11 +727,11 @@ export function SideBar() {
 
           <div className="flex gap-3">
             <button
-              className="standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8] "
+              className="standardButton dark:bg-[#232323] text-black  dark:text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
                 document.querySelector("[data-notepadModal]").show();
               }}>
-              <span className="">notepad</span>
+              notepad
               <svg
                 width="18"
                 height="18"
@@ -753,11 +753,11 @@ export function SideBar() {
               </svg>
             </button>
             <button
-              className=" standardButton dark:bg-[#232323] text-black dark:text-white bg-[#E8E8E8]  "
+              className=" standardButton dark:bg-[#232323] text-black  dark:text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] "
               onClick={() => {
                 document.querySelector("[data-settingsModal]").show();
               }}>
-              <span className="">settings</span>
+              settings
               <svg
                 width="18"
                 height="18"

@@ -3,7 +3,7 @@ name = "clear"
 version = "0.0.15"
 description = "clear - video game library"
 authors = ["adithya.zip"]
-license = ""
+license = "Unlicense"
 repository = "https://github.com/adithyasource/clear"
 edition = "2021"
 
