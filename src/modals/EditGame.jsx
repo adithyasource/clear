@@ -269,7 +269,9 @@ export function EditGame() {
                 <div className="">favourite</div>
               </Show>
             </div>
-            <button onClick={updateGame} className="flex items-center gap-1 ">
+            <button
+              onClick={updateGame}
+              className="flex items-center standardButton ">
               save
               <svg
                 width="18"
@@ -279,25 +281,27 @@ export function EditGame() {
                 xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M5 21H19C20.1046 21 21 20.1046 21 19V8.82843C21 8.29799 20.7893 7.78929 20.4142 7.41421L16.5858 3.58579C16.2107 3.21071 15.702 3 15.1716 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21Z"
-                  stroke="white"
+                  className="dark:stroke-white stroke-black"
                   stroke-width="1.5"
                   stroke-linecap="round"
                   stroke-linejoin="round"></path>
                 <path
                   d="M7 3V8H15V3"
-                  stroke="white"
+                  className="dark:stroke-white stroke-black"
                   stroke-width="1.5"
                   stroke-linecap="round"
                   stroke-linejoin="round"></path>
                 <path
                   d="M7 21V15H17V21"
-                  stroke="white"
+                  className="dark:stroke-white stroke-black"
                   stroke-width="1.5"
                   stroke-linecap="round"
                   stroke-linejoin="round"></path>
               </svg>
             </button>
-            <button onClick={deleteGame} className="flex items-center gap-1 ">
+            <button
+              onClick={deleteGame}
+              className="flex items-center standardButton ">
               <span className="text-[#FF3636]">delete</span>
               <svg
                 width="18"
@@ -326,7 +330,7 @@ export function EditGame() {
               </svg>
             </button>
             <button
-              className="flex items-center "
+              className="flex items-center standardButton !gap-0 "
               onClick={() => {
                 document.querySelector("[data-editGameModal]").close();
                 getData();
@@ -465,11 +469,13 @@ export function EditGame() {
                 onInput={(e) => {
                   setEditedGameName(e.currentTarget.value);
                 }}
-                className="bgBlur"
+                className="dark:bg-[#272727cc] bg-[#E8E8E8cc] backdrop-blur-[10px]"
                 placeholder="name of game"
                 value={selectedGame().name}
               />
-              <button onClick={locateEditedGame} className="">
+              <button
+                onClick={locateEditedGame}
+                className="standardButton !w-max">
                 locate game
               </button>
             </div>

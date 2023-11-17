@@ -42,7 +42,7 @@ export function Settings() {
         className="outline-none absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#ffffff66]">
         <div className="flex items-center justify-center w-screen h-screen align-middle ">
           <div
-            className={`border-2 border-solid border-[#ffffff1f] bg-[#121212] rounded-[${
+            className={`border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
               roundedBorders() ? "6px" : "0px"
             }] w-[70%] p-6`}>
             <div className="flex justify-between">
@@ -53,7 +53,7 @@ export function Settings() {
               </div>
 
               <button
-                className="flex items-center "
+                className="standardButton !w-max !gap-0"
                 onClick={() => {
                   document.querySelector("[data-settingsModal]").close();
                   getData();
@@ -95,9 +95,9 @@ export function Settings() {
                 }}
                 className="relative cursor-pointer">
                 <Show when={roundedBorders()}>
-                  <div className="relative">
+                  <div className="relative ">
                     <div className="">rounded borders</div>
-                    <div className="absolute blur-[5px] opacity-70 inset-0">
+                    <div className="absolute blur-[5px] opacity-70 inset-0  ">
                       rounded borders
                     </div>
                   </div>
@@ -126,7 +126,7 @@ export function Settings() {
                 <Show when={gameTitle()}>
                   <div className="relative">
                     <div className="">game title</div>
-                    <div className="absolute blur-[5px] opacity-70 inset-0">
+                    <div className="absolute blur-[5px] opacity-70 inset-0  ">
                       game title
                     </div>
                   </div>
@@ -155,7 +155,7 @@ export function Settings() {
                 <Show when={folderTitle()}>
                   <div className="relative">
                     <div className="">folder title</div>
-                    <div className="absolute blur-[5px] opacity-70 inset-0">
+                    <div className="absolute blur-[5px] opacity-70 inset-0  ">
                       folder title
                     </div>
                   </div>
@@ -184,7 +184,7 @@ export function Settings() {
                 <Show when={quitAfterOpen()}>
                   <div className="relative">
                     <div className="">quit after opening game</div>
-                    <div className="absolute blur-[5px] opacity-70 inset-0">
+                    <div className="absolute blur-[5px] opacity-70 inset-0  ">
                       quit after opening game
                     </div>
                   </div>
@@ -237,7 +237,7 @@ export function Settings() {
                 <Show when={showFPS()}>
                   <div className="relative">
                     <div className="">show fps</div>
-                    <div className="absolute blur-[5px] opacity-70 inset-0">
+                    <div className="absolute blur-[5px] opacity-70 inset-0  ">
                       show fps
                     </div>
                   </div>
@@ -273,7 +273,9 @@ export function Settings() {
                   ).then(getData());
                 }}
                 className="flex gap-2 cursor-pointer ">
-                <span className="text-[#ffffff80]">[font]</span>
+                <span className="dark:text-[#ffffff80] text-[#12121280]">
+                  [font]
+                </span>
                 <div className="">
                   {fontName().toLowerCase() || "sans serif"}
                 </div>
@@ -297,14 +299,16 @@ export function Settings() {
                   ).then(getData());
                 }}
                 className="flex gap-2 cursor-pointer ">
-                <span className="text-[#ffffff80]">[theme]</span>
+                <span className="dark:text-[#ffffff80] text-[#12121280]">
+                  [theme]
+                </span>
                 <div className="">{currentTheme().toLowerCase() || "dark"}</div>
               </div>
             </div>
 
             <div className="flex gap-3 items-start mt-[35px]">
               <button
-                className="flex items-center"
+                className="flex items-center standardButton !w-max !m-0"
                 onClick={async () => {
                   const appDataDirPath = await appDataDir();
 
@@ -314,7 +318,7 @@ export function Settings() {
                 }}>
                 open library location
               </button>
-              <span className="text-[#ffffff80] w-[50%]">
+              <span className="dark:text-[#ffffff80] text-[#12121280] w-[50%]">
                 these are all the files that the app stores on your pc. you can
                 copy these files to the same location on another pc to get your
                 library there
@@ -324,7 +328,7 @@ export function Settings() {
             <div className="grid grid-cols-3 mt-[35px] gap-y-4">
               <div className="flex items-center gap-3">
                 <div
-                  className={`bg-[#1c1c1c] py-1 px-3 w-[max-content] text-[#ffffff80] rounded-[${
+                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }] `}>
                   ctrl + n
@@ -334,7 +338,7 @@ export function Settings() {
 
               <div className="flex items-center gap-3">
                 <div
-                  className={`bg-[#1c1c1c] py-1 px-3 w-[max-content] text-[#ffffff80] rounded-[${
+                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }] `}>
                   ctrl + .
@@ -343,7 +347,7 @@ export function Settings() {
               </div>
               <div className="flex items-center gap-3">
                 <div
-                  className={`bg-[#1c1c1c] py-1 px-3 w-[max-content] text-[#ffffff80] rounded-[${
+                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }] `}>
                   ctrl + f
@@ -352,7 +356,7 @@ export function Settings() {
               </div>
               <div className="flex items-center gap-3">
                 <div
-                  className={`bg-[#1c1c1c] py-1 px-3 w-[max-content] text-[#ffffff80] rounded-[${
+                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }] `}>
                   ctrl + m
@@ -361,7 +365,7 @@ export function Settings() {
               </div>
               <div className="flex items-center gap-3">
                 <div
-                  className={`bg-[#1c1c1c] py-1 px-3 w-[max-content] text-[#ffffff80] rounded-[${
+                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }] `}>
                   ctrl + l
@@ -370,7 +374,7 @@ export function Settings() {
               </div>
               <div className="flex items-center gap-3">
                 <div
-                  className={`bg-[#1c1c1c] py-1 px-3 w-[max-content] text-[#ffffff80] rounded-[${
+                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }] `}>
                   ctrl + \\
@@ -379,7 +383,7 @@ export function Settings() {
               </div>
               <div className="flex items-center gap-3">
                 <div
-                  className={`bg-[#1c1c1c] py-1 px-3 w-[max-content] text-[#ffffff80] rounded-[${
+                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }] `}>
                   ctrl + w
@@ -388,7 +392,7 @@ export function Settings() {
               </div>
               <div className="flex items-center gap-3">
                 <div
-                  className={`bg-[#1c1c1c] py-1 px-3 w-[max-content] text-[#ffffff80] rounded-[${
+                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }] `}>
                   escape
@@ -398,7 +402,7 @@ export function Settings() {
 
               <div className="flex items-center gap-3">
                 <div
-                  className={`bg-[#1c1c1c] py-1 px-3 w-[max-content] text-[#ffffff80] rounded-[${
+                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }] `}>
                   ctrl + click
@@ -409,8 +413,18 @@ export function Settings() {
 
             <div className="flex justify-between mt-[35px] ">
               <div>
-                clear <span className="text-[#ffffff80]">v1.0.0</span>
+                clear{" "}
+                <span className="dark:text-[#ffffff80] text-[#12121280]">
+                  v0.0.16
+                </span>
               </div>
+              <p
+                onClick={() => {
+                  open("https://github.com/adithyasource/clear");
+                }}
+                className="underline cursor-pointer">
+                code repository
+              </p>
               <p
                 onClick={() => {
                   open("https://clear.adithya.zip/");
@@ -424,7 +438,7 @@ export function Settings() {
                     open("https://adithya.zip/");
                   }}
                   className="underline cursor-pointer">
-                  adithya
+                  made by adithya
                 </a>
               </div>
               <a

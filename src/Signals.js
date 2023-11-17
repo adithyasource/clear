@@ -2,7 +2,7 @@ import { createSignal } from "solid-js";
 
 // !? Misc / Globals
 
-export const [appVersion, setAppVersion] = createSignal("0.0.15");
+export const [appVersion, setAppVersion] = createSignal("0.0.16");
 export const [appDataDirPath, setAppDataDirPath] = createSignal({});
 /**
  * libray date somtehing amn what
@@ -27,13 +27,6 @@ export const [windowsVersion, setWindowsVersion] = createSignal();
 
 // !? Styles Signals
 export const [currentTheme, setCurrentTheme] = createSignal("");
-export const [secondaryColor, setSecondaryColor] = createSignal("");
-export const [secondaryColorForBlur, setSecondaryColorForBlur] =
-  createSignal("");
-export const [primaryColor, setPrimaryColor] = createSignal("");
-export const [modalBackground, setModalBackground] = createSignal("");
-export const [locatingLogoBackground, setLocatingLogoBackground] =
-  createSignal("");
 export const [gamesDivLeftPadding, setGamesDivLeftPadding] = createSignal("");
 
 // !? Settings Signals

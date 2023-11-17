@@ -45,7 +45,7 @@ export function EditFolder() {
       className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#ffffff66]">
       <div className="flex items-center justify-center w-screen h-screen align-middle ">
         <div
-          className={`border-2 border-solid border-[#ffffff1f] bg-[#121212] rounded-[${
+          className={`border-2 border-solid border-[#ffffff1f] bg-[#121212]  rounded-[${
             roundedBorders() ? "6px" : "0px"
           }] w-[50%] p-6 `}>
           <div className="flex justify-between">

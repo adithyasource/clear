@@ -278,12 +278,13 @@ export function NewGame() {
       <div className="flex flex-col items-center justify-center w-screen h-screen gap-3">
         <div className="flex justify-between w-[61rem]">
           <div>
-            <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
+            <p className="dark:text-[#ffffff80] text-[#00000080] text-[25px]">
               add new game
             </p>
           </div>
           <div className="flex items-center gap-4">
             <div
+              className="cursor-pointer"
               onClick={() => {
                 setFavouriteGame(!favouriteGame());
               }}>
@@ -300,7 +301,9 @@ export function NewGame() {
                 <div className="">favourite</div>
               </Show>
             </div>
-            <button onClick={addGame} className="flex items-center gap-1 ">
+            <button
+              onClick={addGame}
+              className="flex items-center gap-1 standardButton">
               save
               <svg
                 width="18"
@@ -310,26 +313,26 @@ export function NewGame() {
                 xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M5 21H19C20.1046 21 21 20.1046 21 19V8.82843C21 8.29799 20.7893 7.78929 20.4142 7.41421L16.5858 3.58579C16.2107 3.21071 15.702 3 15.1716 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21Z"
-                  stroke="white"
+                  className="stroke-black dark:stroke-white"
                   stroke-width="1.5"
                   stroke-linecap="round"
                   stroke-linejoin="round"></path>
                 <path
                   d="M7 3V8H15V3"
-                  stroke="white"
+                  className="stroke-black dark:stroke-white"
                   stroke-width="1.5"
                   stroke-linecap="round"
                   stroke-linejoin="round"></path>
                 <path
                   d="M7 21V15H17V21"
-                  stroke="white"
+                  className="stroke-black dark:stroke-white"
                   stroke-width="1.5"
                   stroke-linecap="round"
                   stroke-linejoin="round"></path>
               </svg>
             </button>
             <button
-              className="flex items-center "
+              className="flex items-center standardButton !gap-0"
               onClick={() => {
                 document.querySelector("[data-newGameModal]").close();
                 getData();
@@ -443,7 +446,7 @@ export function NewGame() {
               <Show when={foundLogoImage()}>
                 <div
                   onClick={locateLogo}
-                  className="bg-[#27272700] group  absolute bottom-[20px] left-[20px] panelButton"
+                  className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[20px] left-[20px] panelButton"
                   aria-label="logo">
                   <img src={foundLogoImage()} alt="" className="h-[60px] " />
                   <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
@@ -456,7 +459,7 @@ export function NewGame() {
                 <Show when={locatedLogo()}>
                   <div
                     onClick={locateLogo}
-                    className="bg-[#27272700] group  absolute bottom-[20px] left-[20px] panelButton"
+                    className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[20px] left-[20px] panelButton"
                     aria-label="logo">
                     <img
                       src={convertFileSrc(locatedLogo())}
@@ -472,7 +475,7 @@ export function NewGame() {
                 <Show when={!locatedLogo()}>
                   <div
                     onClick={locateLogo}
-                    className="panelButton !bg-[#272727] group  absolute bottom-[20px] left-[20px] w-[170px] h-[70px] z-[100] "
+                    className="panelButton bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[20px] left-[20px] w-[170px] h-[70px] z-[100] "
                     aria-label="logo">
                     <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
                       logo
@@ -483,20 +486,22 @@ export function NewGame() {
             </div>
 
             <div className="flex gap-3 ">
-              <div className="flex items-center bgBlur" style="flex-grow: 1">
+              <div
+                className="flex items-center gameInput dark:bg-[#272727cc] bg-[#E8E8E8cc] backdrop-blur-[10px]"
+                style="flex-grow: 1">
                 <input
                   type="text"
                   name=""
-                  style="flex-grow: 1; background-color: transparent;"
+                  style="flex-grow: 1;"
                   id=""
                   onInput={(e) => {
                     setGameName(e.currentTarget.value);
                   }}
-                  className=""
+                  className="!bg-transparent"
                   placeholder="name of game"
                 />
                 <button
-                  className={`bg-[#1c1c1c] py-1 px-3 mr-2 cursor-pointer w-[max-content] text-[#ffffff80] rounded-[${
+                  className={`standardButton !w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80] rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }] `}
                   onClick={async () => {
@@ -513,7 +518,7 @@ export function NewGame() {
                 </button>
                 <button
                   aria-label="not that accurate"
-                  className={`bg-[#1c1c1c] py-1 px-3 mr-2 cursor-pointer w-[max-content] text-[#ffffff80] hint--bottom hint--no-animate hint--no-arrow rounded-[${
+                  className={`!w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer standardButton  text-[#ffffff80] hint--bottom hint--no-animate hint--no-arrow rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }] `}
                   onClick={getGameAssets}>
@@ -521,7 +526,9 @@ export function NewGame() {
                 </button>
               </div>
 
-              <button onClick={locateGame} className="">
+              <button
+                onClick={locateGame}
+                className="standardButton !w-max !mt-0">
                 locate game
               </button>
             </div>

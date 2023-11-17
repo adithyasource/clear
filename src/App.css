@@ -2,6 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .standardButton {
+    @apply dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b];
+  }
+  .panelButton,
+  .sideBarFolder {
+    @apply bg-[#f1f1f1] dark:bg-[#1c1c1c];
+  }
+  html,
+  body {
+    @apply dark:bg-[#121212] bg-[#FFFFFC];
+  }
+
+  *::-webkit-scrollbar-thumb {
+    @apply bg-[#E8E8E8] dark:bg-[#1c1c1c];
+  }
+
+  #sideBarFolders:hover::-webkit-scrollbar-thumb {
+    @apply bg-[#E8E8E8] dark:bg-[#232323];
+  }
+}
+
 button:focus,
 input:focus {
   outline: 0;
@@ -30,7 +52,6 @@ input,
 * {
   padding: 0;
   margin: 0;
-  color: #ffffff;
   font-size: 14px;
   font-weight: normal;
   user-select: none;
@@ -40,14 +61,6 @@ html,
 body {
   height: 100%;
   margin: 0;
-}
-
-.bgBlur {
-  backdrop-filter: blur(10px) !important;
-}
-
-.bgBlur:hover {
-  backdrop-filter: blur(5px) !important;
 }
 
 .tooltip {
@@ -84,7 +97,7 @@ img {
 }
 ::-webkit-scrollbar-track {
   margin: 10px;
-  background: #00000000;
+  background-color: #00000000;
 }
 
 .standardButton {
@@ -93,7 +106,6 @@ img {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin: 12px 0px 0px 0px;
   gap: 5px;
   transition: 0.2s;
 }
@@ -104,18 +116,14 @@ input,
   transition: 0.2s;
 }
 
-.standardButton:hover,
-#searchInput:hover,
-button:hover {
-  background: #2b2b2b;
-}
-
 @keyframes dialogFadeIn {
   from {
     opacity: 0;
+    transform: scale(0.99);
   }
   to {
     opacity: 1;
+    transform: scale(1);
   }
 }
 

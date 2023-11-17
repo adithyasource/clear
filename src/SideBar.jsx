@@ -442,7 +442,7 @@ export function SideBar() {
                           {folder.name}
                         </span>
                         <button
-                          className={`hover:bg-[#232323] duration-150 p-2 w-[25.25px] rounded-[${
+                          className={` hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[25.25px] rounded-[${
                             roundedBorders() ? "6px" : "0px"
                           }]`}
                           onClick={() => {
@@ -678,7 +678,7 @@ export function SideBar() {
           class="absolute bottom-[20px] w-[100%] pr-[20px]">
           <div className="">
             <button
-              className=" standardButton dark:bg-[#232323] text-black  dark:text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b]"
+              className="standardButton mt-[12px]"
               onClick={() => {
                 document.querySelector("[data-newGameModal]").show();
               }}>
@@ -698,7 +698,7 @@ export function SideBar() {
               </svg>
             </button>
             <button
-              className="standardButton dark:bg-[#232323] text-black  dark:text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b]"
+              className="standardButton mt-[12px] "
               onClick={() => {
                 document.querySelector("[data-newFolderModal]").show();
               }}>
@@ -727,7 +727,7 @@ export function SideBar() {
 
           <div className="flex gap-3">
             <button
-              className="standardButton dark:bg-[#232323] text-black  dark:text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b]"
+              className="standardButton mt-[12px] "
               onClick={() => {
                 document.querySelector("[data-notepadModal]").show();
               }}>
@@ -753,7 +753,7 @@ export function SideBar() {
               </svg>
             </button>
             <button
-              className=" standardButton dark:bg-[#232323] text-black  dark:text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] "
+              className=" standardButton mt-[12px]"
               onClick={() => {
                 document.querySelector("[data-settingsModal]").show();
               }}>

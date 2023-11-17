@@ -21,12 +21,9 @@ import {
   gameTitle,
   libraryData,
   maximizeIconToggle,
-  primaryColor,
   quitAfterOpen,
   roundedBorders,
   searchValue,
-  secondaryColor,
-  secondaryColorForBlur,
   setAppDataDirPath,
   setCurrentFolders,
   setCurrentGames,
@@ -36,14 +33,10 @@ import {
   setGameTitle,
   setGamesDivLeftPadding,
   setLibraryData,
-  setLocatingLogoBackground,
   setMaximizeIconToggle,
-  setPrimaryColor,
   setQuitAfterOpen,
   setRoundedBorders,
   setSearchValue,
-  setSecondaryColor,
-  setSecondaryColorForBlur,
   setSelectedGame,
   setShowFPS,
   setShowSideBar,
@@ -131,17 +124,9 @@ export function getSettingsData() {
 
   if (currentTheme() == "light") {
     document.documentElement.classList.remove("dark");
-    setSecondaryColor("#F3F3F2");
-    setSecondaryColorForBlur("#272727cc");
-    setPrimaryColor("#FFFFFC");
-    setLocatingLogoBackground("#272727");
     setGamesDivLeftPadding("10px");
   } else {
     document.documentElement.classList.add("dark");
-    setSecondaryColor("#1c1c1c");
-    setSecondaryColorForBlur("#272727cc");
-    setPrimaryColor("#121212");
-    setLocatingLogoBackground("#272727");
     setGamesDivLeftPadding("10px");
   }
 
@@ -456,11 +441,9 @@ function App() {
         button,
         input,
         .panelButton {
-          background-color: ${secondaryColor()};
           border-radius: ${roundedBorders() ? "6px" : "0px"};
         }
         .sideBarFolder {
-          background: ${secondaryColor()};
           border-radius: ${roundedBorders() ? "6px" : "0px"};
         }
         .titleBarText {
@@ -476,20 +459,13 @@ function App() {
             : fontName() == "Serif"
             ? "Times New Roman"
             : "IBM Plex Mono, Consolas"};
+          color: ${currentTheme() == "light" ? "#000000" : "#ffffff"};
         }
         ::-webkit-scrollbar-thumb {
-          background: ${secondaryColor()};
           border-radius: ${roundedBorders() ? "10px" : "0px"};
         }
-        #sideBarFolders:hover::-webkit-scrollbar-thumb {
-          background: ${secondaryColorForBlur()};
-        }
-        html,
-        body {
-          background-color: ${primaryColor()};
-        }
-        .bgBlur {
-          background-color: ${secondaryColorForBlur()} !important;
+
+        .gameInput {
           border-radius: ${roundedBorders() ? "6px" : "0px"};
         }
         .tooltip {
@@ -879,7 +855,7 @@ function App() {
                   </div>
                   <div className="items-center">
                     <Show when={searchResults == ""}>
-                      <div className="w-[100%] h-[90vh] flex items-center gap-3 justify-center align-middle">
+                      <div className="flex items-center  justify-center w-full h-[calc(100vh-100px)] gap-3 align-middle">
                         <svg
                           width="20"
                           height="20"
@@ -903,6 +879,7 @@ function App() {
           </Show>
         </div>
       </div>
+
       <div id="abovePage">
         <NewGame />
         <EditGame />
