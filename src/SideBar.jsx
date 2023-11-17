@@ -10,7 +10,11 @@ import {
   setEditedHideFolder,
   roundedBorders,
   windowsVersion,
+  setSelectedGame,
+  appDataDirPath,
 } from "./Signals";
+
+import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
 
 import { For, Show, onMount } from "solid-js";
 import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
@@ -129,7 +133,7 @@ export function SideBar() {
   return (
     <>
       <div
-        className={`flex sideBar flex-col ${
+        className={`flex  sideBar flex-col ${
           windowsVersion() == "10+11" ? "h-[calc(100vh-32px)]" : "h-[100vh]"
         } text-black z-10 py-[20px] pl-[20px] relative overflow-hidden w-[20%] min-[1500px]:w-[15%]`}>
         <div id="sideBarTop">
@@ -472,10 +476,10 @@ export function SideBar() {
                       </div>
                       <For each={folder.games}>
                         {(gameName, i) => (
-                          <p
-                            className={`bg-transparent ${
+                          <span
+                            className={`!flex gap-2 bg-transparent ${
                               i() == 0 ? "mt-4" : "mt-5"
-                            }  sideBarGame cursor-grab text-[#00000080] dark:text-[#ffffff80] active:dark:text-[#ffffff3a] active:text-[#0000003a]`}
+                            }  sideBarGame cursor-grab `}
                             aria-label="play"
                             draggable={true}
                             onDragStart={(e) => {
@@ -492,15 +496,33 @@ export function SideBar() {
                             onDragEnd={(e) => {
                               e.srcElement.classList.remove("dragging");
                             }}
-                            onClick={(e) => {
+                            onClick={async (e) => {
+                              await setSelectedGame(
+                                libraryData().games[gameName],
+                              );
+                              document.querySelector("[data-gamePopup]").show();
+
                               if (e.ctrlKey) {
                                 openGame(
                                   libraryData().games[gameName].location,
                                 );
                               }
                             }}>
-                            {gameName}
-                          </p>
+                            <Show when={libraryData().games[gameName].icon}>
+                              <img
+                                src={convertFileSrc(
+                                  appDataDirPath() +
+                                    "icons\\" +
+                                    libraryData().games[gameName].icon,
+                                )}
+                                alt=""
+                                className="h-[16px]"
+                              />
+                            </Show>
+                            <span className="text-[#00000080] dark:text-[#ffffff80] active:dark:text-[#ffffff3a] active:text-[#0000003a]">
+                              {gameName}
+                            </span>
+                          </span>
                         )}
                       </For>
                       <p className="mt-[10px] w-full h-[3px] sideBarGame cursor-grab">

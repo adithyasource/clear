@@ -19,9 +19,6 @@ export const [selectedFolder, setSelectedFolder] = createSignal([]);
 export const [currentGames, setCurrentGames] = createSignal([]);
 export const [currentFolders, setCurrentFolders] = createSignal([]);
 export const [searchValue, setSearchValue] = createSignal();
-export const [foundGridImage, setFoundGridImage] = createSignal();
-export const [foundHeroImage, setFoundHeroImage] = createSignal();
-export const [foundLogoImage, setFoundLogoImage] = createSignal();
 export const [maximizeIconToggle, setMaximizeIconToggle] = createSignal(false);
 export const [windowsVersion, setWindowsVersion] = createSignal();
 
@@ -39,11 +36,12 @@ export const [fontName, setFontName] = createSignal("Sans Serif");
 export const [showFPS, setShowFPS] = createSignal(false);
 
 // !? Create Signals
-export const [gameName, setGameName] = createSignal();
+export const [gameName, setGameName] = createSignal("");
 export const [favouriteGame, setFavouriteGame] = createSignal(false);
 export const [locatedHeroImage, setLocatedHeroImage] = createSignal();
 export const [locatedGridImage, setLocatedGridImage] = createSignal();
 export const [locatedLogo, setLocatedLogo] = createSignal();
+export const [locatedIcon, setLocatedIcon] = createSignal();
 export const [locatedGame, setlocatedGame] = createSignal();
 export const [folderName, setFolderName] = createSignal();
 export const [hideFolder, setHideFolder] = createSignal(false);
@@ -56,6 +54,7 @@ export const [editedLocatedHeroImage, setEditedLocatedHeroImage] =
 export const [editedLocatedGridImage, setEditedLocatedGridImage] =
   createSignal();
 export const [editedLocatedLogo, setEditedLocatedLogo] = createSignal();
+export const [editedLocatedIcon, setEditedLocatedIcon] = createSignal();
 export const [editedLocatedGame, setEditedlocatedGame] = createSignal();
 
 export const [editedFolderName, setEditedFolderName] = createSignal("");

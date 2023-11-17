@@ -15,6 +15,11 @@ import {
   setEditedLocatedLogo,
   editedLocatedGame,
   setEditedlocatedGame,
+  setSelectedGame,
+  locatedHeroImage,
+  editedLocatedIcon,
+  setEditedLocatedIcon,
+  roundedBorders,
 } from "../Signals";
 
 import { Show } from "solid-js";
@@ -47,7 +52,7 @@ export function EditGame() {
         filters: [
           {
             name: "Image",
-            extensions: ["png", "jpg", "jpeg"],
+            extensions: ["png", "jpg", "jpeg", "webp"],
           },
         ],
       }),
@@ -61,7 +66,7 @@ export function EditGame() {
         filters: [
           {
             name: "Image",
-            extensions: ["png", "jpg", "jpeg"],
+            extensions: ["png", "jpg", "jpeg", "webp"],
           },
         ],
       }),
@@ -75,7 +80,21 @@ export function EditGame() {
         filters: [
           {
             name: "Image",
-            extensions: ["png", "jpg", "jpeg"],
+            extensions: ["png", "jpg", "jpeg", "webp"],
+          },
+        ],
+      }),
+    );
+  }
+
+  async function locateEditedIcon() {
+    setEditedLocatedIcon(
+      await open({
+        multiple: false,
+        filters: [
+          {
+            name: "Image",
+            extensions: ["png", "jpg", "jpeg", "ico"],
           },
         ],
       }),
@@ -83,6 +102,23 @@ export function EditGame() {
   }
 
   async function updateGame() {
+    let previousIndex;
+
+    for (let i = 0; i < Object.values(libraryData().folders).length; i++) {
+      for (
+        let j = 0;
+        j < Object.values(libraryData().folders)[i].games.length;
+        j++
+      ) {
+        if (
+          Object.values(libraryData().folders)[i].games[j] ==
+          selectedGame().name
+        ) {
+          previousIndex = j;
+        }
+      }
+    }
+
     delete libraryData().games[selectedGame().name];
 
     setLibraryData(libraryData());
@@ -146,12 +182,30 @@ export function EditGame() {
       });
     }
 
+    if (!editedLocatedIcon()) {
+      setEditedLocatedIcon(selectedGame().icon);
+    } else {
+      let iconFileName =
+        editedGameName() +
+        "." +
+        editedLocatedIcon().split(".")[
+          editedLocatedIcon().split(".").length - 1
+        ];
+
+      await copyFile(editedLocatedIcon(), "icons\\" + iconFileName, {
+        dir: BaseDirectory.AppData,
+      }).then(() => {
+        setEditedLocatedIcon(iconFileName);
+      });
+    }
+
     libraryData().games[editedGameName()] = {
       location: editedLocatedGame(),
       name: editedGameName(),
       heroImage: editedLocatedHeroImage(),
       gridImage: editedLocatedGridImage(),
       logo: editedLocatedLogo(),
+      icon: editedLocatedIcon(),
       favourite: editedFavouriteGame(),
     };
 
@@ -167,10 +221,16 @@ export function EditGame() {
         ) {
           Object.values(libraryData().folders)[i].games.splice(j, 1);
 
-          Object.values(libraryData().folders)[i].games.push(editedGameName());
+          Object.values(libraryData().folders)[i].games.splice(
+            previousIndex,
+            0,
+            editedGameName(),
+          );
         }
       }
     }
+
+    console.log(previousIndex);
 
     await writeTextFile(
       {
@@ -181,9 +241,9 @@ export function EditGame() {
         dir: BaseDirectory.AppData,
       },
     ).then(() => {
+      setSelectedGame({});
       getData();
       document.querySelector("[data-editGameModal]").close();
-      location.reload();
     });
   }
 
@@ -223,6 +283,14 @@ export function EditGame() {
       data-editGameModal
       onDragStart={(e) => {
         e.preventDefault();
+      }}
+      onClose={() => {
+        setEditedFavouriteGame();
+        setEditedGameName("");
+        setEditedLocatedGridImage("");
+        setEditedLocatedHeroImage("");
+        setEditedLocatedLogo("");
+        setEditedLocatedIcon("");
       }}
       className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#121212cc] bg-[#ffffffcc]">
       <div className="flex flex-col items-center justify-center w-screen h-screen gap-3">
@@ -460,7 +528,41 @@ export function EditGame() {
               </div>
             </div>
 
-            <div className="flex gap-3 ">
+            <div className="flex gap-3 items-center cursor-pointer">
+              <div
+                onClick={locateEditedIcon}
+                className="relative !bg-[#27272700] group "
+                aria-label="logo">
+                <Show when={!editedLocatedIcon()}>
+                  <Show when={selectedGame().icon}>
+                    <img
+                      src={convertFileSrc(
+                        appDataDirPath() + "icons\\" + selectedGame().icon,
+                      )}
+                      alt=""
+                      className="w-[40px] h-[40px] "
+                    />
+                  </Show>
+                  <Show when={!selectedGame().icon}>
+                    <div
+                      className={`w-[40px] h-[40px] bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
+                        roundedBorders() ? "6px" : "0px"
+                      }]`}
+                    />
+                  </Show>
+                </Show>
+                <Show when={editedLocatedIcon()}>
+                  <img
+                    src={convertFileSrc(editedLocatedIcon())}
+                    alt=""
+                    className="w-[40px] h-[40px] "
+                  />
+                </Show>
+                <span class="absolute tooltip group-hover:opacity-100 left-[-20%] top-[120%] opacity-0">
+                  icon
+                </span>
+              </div>
+
               <input
                 type="text"
                 style="flex-grow: 1"

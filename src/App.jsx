@@ -188,11 +188,15 @@ export async function getData() {
       dir: BaseDirectory.AppData,
       recursive: true,
     });
-    await createDir("grids\\", {
+    await createDir("grids", {
       dir: BaseDirectory.AppData,
       recursive: true,
     });
     await createDir("logos", {
+      dir: BaseDirectory.AppData,
+      recursive: true,
+    });
+    await createDir("icons", {
       dir: BaseDirectory.AppData,
       recursive: true,
     });
@@ -241,21 +245,13 @@ function App() {
         i < document.querySelectorAll(".sideBarGame").length;
         i++
       ) {
-        document.querySelectorAll(".sideBarGame")[i].classList.add(
-          "hint--right",
-          "hint--no-animate",
-
-          "hint--no-arrow",
-        );
+        document
+          .querySelectorAll(".sideBarGame")
+          [i].classList.add("hint--right");
       }
 
       for (let i = 0; i < document.querySelectorAll(".gameCard").length; i++) {
-        document.querySelectorAll(".gameCard")[i].classList.add(
-          "hint--center",
-          "hint--no-animate",
-
-          "hint--no-arrow",
-        );
+        document.querySelectorAll(".gameCard")[i].classList.add("hint--center");
       }
     }
 

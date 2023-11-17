@@ -13,15 +13,11 @@ import {
   setLocatedLogo,
   locatedGame,
   setlocatedGame,
-  foundGridImage,
-  foundHeroImage,
-  foundLogoImage,
-  setFoundGridImage,
-  setFoundHeroImage,
-  setFoundLogoImage,
   roundedBorders,
   setShowToast,
   setToastError,
+  setLocatedIcon,
+  locatedIcon,
 } from "../Signals";
 
 import { Show } from "solid-js";
@@ -82,6 +78,14 @@ export function NewGame() {
       }, 1500);
       return;
     }
+    if (locatedIcon() == "" || locatedIcon() == undefined) {
+      setShowToast(true);
+      setToastError("no icon");
+      setTimeout(() => {
+        setShowToast(false);
+      }, 1500);
+      return;
+    }
 
     let heroImageFileName =
       gameName() +
@@ -97,6 +101,11 @@ export function NewGame() {
       "." +
       locatedLogo().split(".")[locatedLogo().split(".").length - 1];
 
+    let iconFileName =
+      gameName() +
+      "." +
+      locatedIcon().split(".")[locatedIcon().split(".").length - 1];
+
     await copyFile(locatedHeroImage(), "heroes\\" + heroImageFileName, {
       dir: BaseDirectory.AppData,
     });
@@ -109,12 +118,17 @@ export function NewGame() {
       dir: BaseDirectory.AppData,
     });
 
+    await copyFile(locatedIcon(), "icons\\" + iconFileName, {
+      dir: BaseDirectory.AppData,
+    });
+
     libraryData().games[gameName()] = {
       location: locatedGame(),
       name: gameName(),
       heroImage: heroImageFileName,
       gridImage: gridImageFileName,
       logo: logoFileName,
+      icon: iconFileName,
       favourite: favouriteGame(),
     };
     setLibraryData(libraryData());
@@ -153,7 +167,7 @@ export function NewGame() {
         filters: [
           {
             name: "Image",
-            extensions: ["png", "jpg", "jpeg"],
+            extensions: ["png", "jpg", "jpeg", "webp"],
           },
         ],
       }),
@@ -166,7 +180,7 @@ export function NewGame() {
         filters: [
           {
             name: "Image",
-            extensions: ["png", "jpg", "jpeg"],
+            extensions: ["png", "jpg", "jpeg", "webp"],
           },
         ],
       }),
@@ -179,100 +193,124 @@ export function NewGame() {
         filters: [
           {
             name: "Image",
-            extensions: ["png", "jpg", "jpeg"],
+            extensions: ["png", "jpg", "jpeg", "webp"],
           },
         ],
       }),
     );
   }
 
-  async function getGameAssets() {
-    let steamAppId;
-    let gridsUrls = [];
-    let heroesUrls = [];
-    let logosUrls = [];
-    let allGames = [];
-
-    const response = await fetch(
-      "https://api.steampowered.com/ISteamApps/GetAppList/v2/",
-      {
-        method: "GET",
-        timeout: 30,
-        contentType: "application/json",
-      },
+  async function locateIcon() {
+    setLocatedIcon(
+      await open({
+        multiple: false,
+        filters: [
+          {
+            name: "Image",
+            extensions: ["png", "jpg", "jpeg", "ico"],
+          },
+        ],
+      }),
     );
-
-    for (let x = 0; x < response.data.applist["apps"].length; x++) {
-      allGames.push(response.data.applist["apps"][x].name);
-    }
-
-    let fuse = new Fuse(allGames, {
-      threshold: 0.3,
-    });
-
-    async function iterateGames(iteration) {
-      let closestMatchingName = fuse.search(gameName())[iteration].item;
-
-      for (let x = 0; x < response.data.applist["apps"].length; x++) {
-        if (response.data.applist["apps"][x].name == closestMatchingName) {
-          steamAppId = response.data.applist["apps"][x].appid;
-        }
-      }
-
-      const client = await getClient();
-
-      const grids = await client.get(
-        `https://www.steamgriddb.com/api/v2/grids/steam/${steamAppId}`,
-        {
-          timeout: 30,
-          responseType: ResponseType.JSON,
-          headers: {
-            Authorization: "Bearer 4e602b67332f3b8afff8d994b40dc1b7",
-          },
-        },
-      );
-
-      const heroes = await client.get(
-        `https://www.steamgriddb.com/api/v2/heroes/steam/${steamAppId}`,
-        {
-          timeout: 30,
-          responseType: ResponseType.JSON,
-          headers: {
-            Authorization: "Bearer 4e602b67332f3b8afff8d994b40dc1b7",
-          },
-        },
-      );
-
-      const logos = await client.get(
-        `https://www.steamgriddb.com/api/v2/logos/steam/${steamAppId}`,
-        {
-          timeout: 30,
-          responseType: ResponseType.JSON,
-          headers: {
-            Authorization: "Bearer 4e602b67332f3b8afff8d994b40dc1b7",
-          },
-        },
-      );
-
-      setFoundGridImage(grids.data["data"][0].thumb);
-
-      setFoundHeroImage(heroes.data["data"][0].thumb);
-
-      setFoundLogoImage(logos.data["data"][0].thumb);
-    }
-
-    try {
-      iterateGames(0);
-    } catch (error) {
-      iterateGames(1);
-    }
   }
+
+  // ! Scrapped code for auto fetching game assets
+  // ! Will revisit this feature in a future update
+
+  // async function getGameAssets() {
+  //   let steamAppId;
+  //   let gridsUrls = [];
+  //   let heroesUrls = [];
+  //   let logosUrls = [];
+  //   let allGames = [];
+
+  //   const response = await fetch(
+  //     "https://api.steampowered.com/ISteamApps/GetAppList/v2/",
+  //     {
+  //       method: "GET",
+  //       timeout: 30,
+  //       contentType: "application/json",
+  //     },
+  //   );
+
+  //   for (let x = 0; x < response.data.applist["apps"].length; x++) {
+  //     allGames.push(response.data.applist["apps"][x].name);
+  //   }
+
+  //   let fuse = new Fuse(allGames, {
+  //     threshold: 0.3,
+  //   });
+
+  //   async function iterateGames(iteration) {
+  //     let closestMatchingName = fuse.search(gameName())[iteration].item;
+
+  //     for (let x = 0; x < response.data.applist["apps"].length; x++) {
+  //       if (response.data.applist["apps"][x].name == closestMatchingName) {
+  //         steamAppId = response.data.applist["apps"][x].appid;
+  //       }
+  //     }
+
+  //     const client = await getClient();
+
+  //     const grids = await client.get(
+  //       `https://www.steamgriddb.com/api/v2/grids/steam/${steamAppId}`,
+  //       {
+  //         timeout: 30,
+  //         responseType: ResponseType.JSON,
+  //         headers: {
+  //           Authorization: "Bearer 4e602b67332f3b8afff8d994b40dc1b7",
+  //         },
+  //       },
+  //     );
+
+  //     const heroes = await client.get(
+  //       `https://www.steamgriddb.com/api/v2/heroes/steam/${steamAppId}`,
+  //       {
+  //         timeout: 30,
+  //         responseType: ResponseType.JSON,
+  //         headers: {
+  //           Authorization: "Bearer 4e602b67332f3b8afff8d994b40dc1b7",
+  //         },
+  //       },
+  //     );
+
+  //     const logos = await client.get(
+  //       `https://www.steamgriddb.com/api/v2/logos/steam/${steamAppId}`,
+  //       {
+  //         timeout: 30,
+  //         responseType: ResponseType.JSON,
+  //         headers: {
+  //           Authorization: "Bearer 4e602b67332f3b8afff8d994b40dc1b7",
+  //         },
+  //       },
+  //     );
+
+  //     setFoundGridImage(grids.data["data"][0].thumb);
+
+  //     setFoundHeroImage(heroes.data["data"][0].thumb);
+
+  //     setFoundLogoImage(logos.data["data"][0].thumb);
+  //   }
+
+  //   try {
+  //     iterateGames(0);
+  //   } catch (error) {
+  //     iterateGames(1);
+  //   }
+  // }
 
   return (
     <dialog
       data-newGameModal
       onDragStart={(e) => {
         e.preventDefault();
+      }}
+      onClose={() => {
+        setFavouriteGame();
+        setGameName("");
+        setLocatedGridImage("");
+        setLocatedHeroImage("");
+        setLocatedLogo("");
       }}
       className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#121212cc] bg-[#ffffffcc]">
       <div className="flex flex-col items-center justify-center w-screen h-screen gap-3">
@@ -361,7 +399,7 @@ export function NewGame() {
               onClick={locateGridImage}
               className="panelButton locatingGridImg h-[100%] aspect-[2/3] group relative overflow-hidden"
               aria-label="grid/cover">
-              <Show when={foundGridImage()}>
+              {/* <Show when={foundGridImage()}>
                 <img
                   className="absolute inset-0"
                   src={foundGridImage()}
@@ -370,25 +408,24 @@ export function NewGame() {
                 <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
                   grid/cover
                 </span>
+              </Show> */}
+              {/* <Show when={!foundGridImage()}> */}{" "}
+              <Show when={locatedGridImage()}>
+                <img
+                  className="absolute inset-0"
+                  src={convertFileSrc(locatedGridImage())}
+                  alt=""
+                />
+                <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
+                  grid/cover
+                </span>
               </Show>
-              <Show when={!foundGridImage()}>
-                {" "}
-                <Show when={locatedGridImage()}>
-                  <img
-                    className="absolute inset-0"
-                    src={convertFileSrc(locatedGridImage())}
-                    alt=""
-                  />
-                  <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
-                    grid/cover
-                  </span>
-                </Show>
-                <Show when={!locatedGridImage()}>
-                  <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
-                    grid/cover
-                  </span>
-                </Show>
+              <Show when={!locatedGridImage()}>
+                <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
+                  grid/cover
+                </span>
               </Show>
+              {/* </Show> */}
             </div>
           </div>
 
@@ -399,7 +436,7 @@ export function NewGame() {
                   onClick={locateHeroImage}
                   className="h-[250px] aspect-[67/26] group relative p-0 m-0 panelButton"
                   aria-label="hero">
-                  <Show
+                  {/* <Show
                     when={foundHeroImage()}
                     className="absolute inset-0 overflow-hidden">
                     <img
@@ -415,35 +452,35 @@ export function NewGame() {
                     <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
                       hero image
                     </span>
+                  </Show> */}
+                  {/* <Show when={!foundHeroImage()}> */}
+                  <Show
+                    when={locatedHeroImage()}
+                    className="absolute inset-0 overflow-hidden">
+                    <img
+                      src={convertFileSrc(locatedHeroImage())}
+                      alt=""
+                      className="absolute inset-0 h-[100%] rounded-[6px]"
+                    />
+                    <img
+                      src={convertFileSrc(locatedHeroImage())}
+                      alt=""
+                      className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px] opacity-[0.4]"
+                    />
+                    <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
+                      hero image
+                    </span>
                   </Show>
-                  <Show when={!foundHeroImage()}>
-                    <Show
-                      when={locatedHeroImage()}
-                      className="absolute inset-0 overflow-hidden">
-                      <img
-                        src={convertFileSrc(locatedHeroImage())}
-                        alt=""
-                        className="absolute inset-0 h-[100%] rounded-[6px]"
-                      />
-                      <img
-                        src={convertFileSrc(locatedHeroImage())}
-                        alt=""
-                        className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px] opacity-[0.4]"
-                      />
-                      <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
-                        hero image
-                      </span>
-                    </Show>
-                    <Show when={!locatedHeroImage()}>
-                      <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
-                        hero image
-                      </span>
-                    </Show>
+                  <Show when={!locatedHeroImage()}>
+                    <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
+                      hero image
+                    </span>
                   </Show>
+                  {/* </Show> */}
                 </div>
               </div>
 
-              <Show when={foundLogoImage()}>
+              {/* <Show when={foundLogoImage()}>
                 <div
                   onClick={locateLogo}
                   className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[20px] left-[20px] panelButton"
@@ -453,39 +490,61 @@ export function NewGame() {
                     logo
                   </span>
                 </div>
+              </Show> */}
+
+              {/* <Show when={!foundLogoImage()}> */}
+              <Show when={locatedLogo()}>
+                <div
+                  onClick={locateLogo}
+                  className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[20px] left-[20px] panelButton"
+                  aria-label="logo">
+                  <img
+                    src={convertFileSrc(locatedLogo())}
+                    alt=""
+                    className="h-[60px] "
+                  />
+                  <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
+                    logo
+                  </span>
+                </div>
               </Show>
 
-              <Show when={!foundLogoImage()}>
-                <Show when={locatedLogo()}>
-                  <div
-                    onClick={locateLogo}
-                    className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[20px] left-[20px] panelButton"
-                    aria-label="logo">
-                    <img
-                      src={convertFileSrc(locatedLogo())}
-                      alt=""
-                      className="h-[60px] "
-                    />
-                    <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
-                      logo
-                    </span>
-                  </div>
-                </Show>
-
-                <Show when={!locatedLogo()}>
-                  <div
-                    onClick={locateLogo}
-                    className="panelButton bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[20px] left-[20px] w-[170px] h-[70px] z-[100] "
-                    aria-label="logo">
-                    <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
-                      logo
-                    </span>
-                  </div>
-                </Show>
+              <Show when={!locatedLogo()}>
+                <div
+                  onClick={locateLogo}
+                  className="panelButton bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[20px] left-[20px] w-[170px] h-[70px] z-[100] "
+                  aria-label="logo">
+                  <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
+                    logo
+                  </span>
+                </div>
               </Show>
+              {/* </Show> */}
             </div>
 
-            <div className="flex gap-3 ">
+            <div className="flex gap-3 items-center cursor-pointer ">
+              <div
+                onClick={locateIcon}
+                className="relative !bg-[#27272700] group "
+                aria-label="logo">
+                <Show when={!locatedIcon()}>
+                  <div
+                    className={`w-[40px] h-[40px] bg-[#E8E8E8] dark:!bg-[#1C1C1C] rounded-[${
+                      roundedBorders() ? "6px" : "0px"
+                    }]`}
+                  />
+                </Show>
+                <Show when={locatedIcon()}>
+                  <img
+                    src={convertFileSrc(locatedIcon())}
+                    alt=""
+                    className="w-[40px] h-[40px]"
+                  />
+                </Show>
+                <span class="absolute tooltip group-hover:opacity-100 left-[-10%] top-[120%] opacity-0 ">
+                  icon
+                </span>
+              </div>
               <div
                 className="flex items-center gameInput dark:bg-[#272727cc] bg-[#E8E8E8cc] backdrop-blur-[10px]"
                 style="flex-grow: 1">
@@ -497,6 +556,7 @@ export function NewGame() {
                   onInput={(e) => {
                     setGameName(e.currentTarget.value);
                   }}
+                  value={gameName()}
                   className="!bg-transparent"
                   placeholder="name of game"
                 />
@@ -515,14 +575,6 @@ export function NewGame() {
                         );
                   }}>
                   find assets
-                </button>
-                <button
-                  aria-label="not that accurate"
-                  className={`!w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer standardButton  text-[#ffffff80] hint--bottom hint--no-animate hint--no-arrow rounded-[${
-                    roundedBorders() ? "6px" : "0px"
-                  }] `}
-                  onClick={getGameAssets}>
-                  auto find assets
                 </button>
               </div>
 
