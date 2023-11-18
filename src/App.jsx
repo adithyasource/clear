@@ -369,6 +369,10 @@ function App() {
   });
 
   onMount(async () => {
+    fetch("https://api.npoint.io/98d7ebecdd5a8bc23d4c").then((res) =>
+      res.json().then((jsonres) => console.log(jsonres.clearVersion)),
+    );
+
     const osVersion = await version();
 
     if (osVersion.split(".")[0] == 10) {
@@ -483,10 +487,11 @@ function App() {
       }
 
       <Show when={windowsVersion() == "10+11"}>
+        <div class="fixed w-screen h-[32px] bg-[#fff] dark:bg-[#000] z-[9999]"></div>
         <div
           data-tauri-drag-region
-          class="flex w-screen h-[32px] bg-[#fff] dark:bg-[#000] items-center z-[10000] fixed">
-          <div data-tauri-drag-region className="pl-[8px] ">
+          class="absolute top-[3px] left-[3px] right-[3px] flex w-screen h-[32px] bg-transparent items-center z-[10000]">
+          <div data-tauri-drag-region className="pl-[8px] translate-y-[-3px]">
             <Show when={currentTheme() == "dark"}>
               <img
                 data-tauri-drag-region
@@ -509,7 +514,7 @@ function App() {
 
           <div
             data-tauri-drag-region
-            class="flex-grow-[2] max-h-[32px] indent-[7px] text-[#000] dark:text-[#fff] flex gap-[30px]">
+            class="flex-grow-[2] max-h-[32px] indent-[7px] text-[#000] dark:text-[#fff] flex gap-[30px] translate-y-[-3px]">
             <span
               data-tauri-drag-region
               className="text-[#000] dark:text-[#fff] titleBarText text-[12px]">
@@ -531,9 +536,7 @@ function App() {
             </Show>
           </div>
 
-          <div
-            data-tauri-drag-region
-            class="max-w-[144px] max-h-[32px] flex-grow-[1]">
+          <div class="max-w-[144px] max-h-[32px] flex-grow-[1] translate-y-[-3px]">
             <button
               class="titleButton dark:hover:bg-[#ffffff1A] hover:bg-[#0000001A] minimize cursor-default  !rounded-none"
               onClick={() => {
@@ -684,19 +687,53 @@ function App() {
                                   when={
                                     !libraryData().games[gameName].favourite
                                   }>
-                                  <div className="w-[100%]">
-                                    <img
-                                      className={`relative z-10 mb-[7px] rounded-[${
-                                        roundedBorders() ? "6px" : "0px"
-                                      }] group-hover:outline-[#0000001f] dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
-                                      src={convertFileSrc(
-                                        appDataDirPath() +
-                                          "grids\\" +
-                                          libraryData().games[gameName]
-                                            .gridImage,
-                                      )}
-                                      alt=""
-                                    />
+                                  <div className="relative w-[100%]">
+                                    <Show
+                                      when={
+                                        libraryData().games[gameName].gridImage
+                                      }>
+                                      <img
+                                        className={`z-10 mb-[7px] rounded-[${
+                                          roundedBorders() ? "6px" : "0px"
+                                        }] group-hover:outline-[#0000001f] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
+                                        src={convertFileSrc(
+                                          appDataDirPath() +
+                                            "grids\\" +
+                                            libraryData().games[gameName]
+                                              .gridImage,
+                                        )}
+                                        alt=""
+                                      />{" "}
+                                    </Show>
+                                    <Show
+                                      when={
+                                        !libraryData().games[gameName].gridImage
+                                      }>
+                                      <div className="relative flex items-center justify-center">
+                                        <Show when={!gameTitle()}>
+                                          <span className="absolute z-[100]">
+                                            {gameName}
+                                          </span>
+
+                                          <Show
+                                            when={
+                                              !libraryData().games[gameName]
+                                                .location
+                                            }>
+                                            <span class="absolute tooltip z-[100] bottom-[30px]">
+                                              no game file
+                                            </span>
+                                          </Show>
+                                        </Show>
+
+                                        <div
+                                          className={`z-10 mb-[7px] rounded-[${
+                                            roundedBorders() ? "6px" : "0px"
+                                          }] group-hover:outline-[#0000001f] bg-[#1C1C1C] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
+                                          alt=""
+                                        />
+                                      </div>
+                                    </Show>
                                   </div>
                                 </Show>
                                 <Show
@@ -733,9 +770,20 @@ function App() {
                                   </div>
                                 </Show>
                                 <Show when={gameTitle()}>
-                                  <span className="text-[#000000] dark:text-white">
-                                    {gameName}
-                                  </span>
+                                  <div className="flex justify-between items-start">
+                                    <span className="text-[#000000] dark:text-white">
+                                      {gameName}
+                                    </span>
+
+                                    <Show
+                                      when={
+                                        !libraryData().games[gameName].location
+                                      }>
+                                      <span class=" tooltip z-[100]">
+                                        no game file
+                                      </span>
+                                    </Show>
+                                  </div>
                                 </Show>
                               </div>
                             );

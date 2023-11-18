@@ -477,7 +477,7 @@ export function SideBar() {
                       <For each={folder.games}>
                         {(gameName, i) => (
                           <span
-                            className={`!flex gap-2 bg-transparent ${
+                            className={`!flex gap-[5px] bg-transparent ${
                               i() == 0 ? "mt-4" : "mt-5"
                             }  sideBarGame cursor-grab `}
                             aria-label="play"
@@ -516,7 +516,7 @@ export function SideBar() {
                                     libraryData().games[gameName].icon,
                                 )}
                                 alt=""
-                                className="h-[16px]"
+                                className="h-[16px] aspect-square"
                               />
                             </Show>
                             <span className="text-[#00000080] dark:text-[#ffffff80] active:dark:text-[#ffffff3a] active:text-[#0000003a]">

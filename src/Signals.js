@@ -4,9 +4,6 @@ import { createSignal } from "solid-js";
 
 export const [appVersion, setAppVersion] = createSignal("0.0.16");
 export const [appDataDirPath, setAppDataDirPath] = createSignal({});
-/**
- * libray date somtehing amn what
- */
 export const [libraryData, setLibraryData] = createSignal({});
 export const [notepadValue, setNotepadValue] = createSignal("");
 export const [toastError, setToastError] = createSignal("");
@@ -21,6 +18,7 @@ export const [currentFolders, setCurrentFolders] = createSignal([]);
 export const [searchValue, setSearchValue] = createSignal();
 export const [maximizeIconToggle, setMaximizeIconToggle] = createSignal(false);
 export const [windowsVersion, setWindowsVersion] = createSignal();
+export const [showDeleteConfirm, setShowDeleteConfirm] = createSignal(false);
 
 // !? Styles Signals
 export const [currentTheme, setCurrentTheme] = createSignal("");

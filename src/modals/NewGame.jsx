@@ -32,36 +32,8 @@ import { open } from "@tauri-apps/api/dialog";
 
 import { open as shellOpen } from "@tauri-apps/api/shell";
 
-import { fetch, getClient, ResponseType } from "@tauri-apps/api/http";
-
-import Fuse from "fuse.js";
-
 export function NewGame() {
   async function addGame() {
-    if (locatedHeroImage() == "" || locatedHeroImage() == undefined) {
-      setShowToast(true);
-      setToastError("no hero");
-      setTimeout(() => {
-        setShowToast(false);
-      }, 1500);
-      return;
-    }
-    if (locatedGridImage() == "" || locatedGridImage() == undefined) {
-      setShowToast(true);
-      setToastError("no grid");
-      setTimeout(() => {
-        setShowToast(false);
-      }, 1500);
-      return;
-    }
-    if (locatedLogo() == "" || locatedLogo() == undefined) {
-      setShowToast(true);
-      setToastError("no logo");
-      setTimeout(() => {
-        setShowToast(false);
-      }, 1500);
-      return;
-    }
     if (gameName() == "" || gameName() == undefined) {
       setShowToast(true);
       setToastError("no game name");
@@ -70,57 +42,64 @@ export function NewGame() {
       }, 1500);
       return;
     }
-    if (locatedGame() == "" || locatedGame() == undefined) {
-      setShowToast(true);
-      setToastError("no game startup file");
-      setTimeout(() => {
-        setShowToast(false);
-      }, 1500);
-      return;
-    }
-    if (locatedIcon() == "" || locatedIcon() == undefined) {
-      setShowToast(true);
-      setToastError("no icon");
-      setTimeout(() => {
-        setShowToast(false);
-      }, 1500);
-      return;
+
+    for (let x = 0; x < Object.keys(libraryData().games).length; x++) {
+      if (gameName() == Object.keys(libraryData().games)[x]) {
+        setShowToast(true);
+        setToastError(`${gameName()} is already in your library`);
+        setTimeout(() => {
+          setShowToast(false);
+        }, 1500);
+        return;
+      }
     }
 
-    let heroImageFileName =
-      gameName() +
-      "." +
-      locatedHeroImage().split(".")[locatedHeroImage().split(".").length - 1];
-    let gridImageFileName =
-      gameName() +
-      "." +
-      locatedGridImage().split(".")[locatedGridImage().split(".").length - 1];
+    let heroImageFileName;
+    let gridImageFileName;
+    let logoFileName;
+    let iconFileName;
 
-    let logoFileName =
-      gameName() +
-      "." +
-      locatedLogo().split(".")[locatedLogo().split(".").length - 1];
+    if (locatedHeroImage()) {
+      heroImageFileName =
+        gameName() +
+        "." +
+        locatedHeroImage().split(".")[locatedHeroImage().split(".").length - 1];
 
-    let iconFileName =
-      gameName() +
-      "." +
-      locatedIcon().split(".")[locatedIcon().split(".").length - 1];
+      await copyFile(locatedHeroImage(), "heroes\\" + heroImageFileName, {
+        dir: BaseDirectory.AppData,
+      });
+    }
 
-    await copyFile(locatedHeroImage(), "heroes\\" + heroImageFileName, {
-      dir: BaseDirectory.AppData,
-    });
+    if (locatedGridImage()) {
+      gridImageFileName =
+        gameName() +
+        "." +
+        locatedGridImage().split(".")[locatedGridImage().split(".").length - 1];
 
-    await copyFile(locatedGridImage(), "grids\\" + gridImageFileName, {
-      dir: BaseDirectory.AppData,
-    });
+      await copyFile(locatedGridImage(), "grids\\" + gridImageFileName, {
+        dir: BaseDirectory.AppData,
+      });
+    }
+    if (locatedLogo()) {
+      logoFileName =
+        gameName() +
+        "." +
+        locatedLogo().split(".")[locatedLogo().split(".").length - 1];
 
-    await copyFile(locatedLogo(), "logos\\" + logoFileName, {
-      dir: BaseDirectory.AppData,
-    });
+      await copyFile(locatedLogo(), "logos\\" + logoFileName, {
+        dir: BaseDirectory.AppData,
+      });
+    }
+    if (locatedIcon()) {
+      iconFileName =
+        gameName() +
+        "." +
+        locatedIcon().split(".")[locatedIcon().split(".").length - 1];
 
-    await copyFile(locatedIcon(), "icons\\" + iconFileName, {
-      dir: BaseDirectory.AppData,
-    });
+      await copyFile(locatedIcon(), "icons\\" + iconFileName, {
+        dir: BaseDirectory.AppData,
+      });
+    }
 
     libraryData().games[gameName()] = {
       location: locatedGame(),

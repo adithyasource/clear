@@ -20,6 +20,10 @@ import {
   editedLocatedIcon,
   setEditedLocatedIcon,
   roundedBorders,
+  setShowToast,
+  setToastError,
+  setShowDeleteConfirm,
+  showDeleteConfirm,
 } from "../Signals";
 
 import { Show } from "solid-js";
@@ -103,6 +107,32 @@ export function EditGame() {
 
   async function updateGame() {
     let previousIndex;
+
+    if (editedGameName() == "") {
+      setShowToast(true);
+      setToastError("no game name");
+      setTimeout(() => {
+        setShowToast(false);
+      }, 1500);
+      return;
+    }
+
+    let gameOccurances = 0;
+
+    for (let x = 0; x < Object.keys(libraryData().games).length; x++) {
+      if (editedGameName() == Object.keys(libraryData().games)[x]) {
+        gameOccurances += 1;
+      }
+    }
+
+    if (gameOccurances == 1) {
+      setShowToast(true);
+      setToastError(`${editedGameName()} is already in your library`);
+      setTimeout(() => {
+        setShowToast(false);
+      }, 1500);
+      return;
+    }
 
     for (let i = 0; i < Object.values(libraryData().folders).length; i++) {
       for (
@@ -291,6 +321,7 @@ export function EditGame() {
         setEditedLocatedHeroImage("");
         setEditedLocatedLogo("");
         setEditedLocatedIcon("");
+        setShowDeleteConfirm(false);
       }}
       className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#121212cc] bg-[#ffffffcc]">
       <div className="flex flex-col items-center justify-center w-screen h-screen gap-3">
@@ -368,9 +399,17 @@ export function EditGame() {
               </svg>
             </button>
             <button
-              onClick={deleteGame}
+              onClick={() => {
+                showDeleteConfirm() ? deleteGame() : setShowDeleteConfirm(true);
+
+                setTimeout(() => {
+                  setShowDeleteConfirm(false);
+                }, 1500);
+              }}
               className="flex items-center standardButton ">
-              <span className="text-[#FF3636]">delete</span>
+              <span className="text-[#FF3636]">
+                {showDeleteConfirm() ? "confim?" : "delete"}
+              </span>
               <svg
                 width="18"
                 height="18"
@@ -504,16 +543,27 @@ export function EditGame() {
 
               <div
                 onClick={locateEditedLogo}
-                className="panelButton !bg-[#27272700] group  absolute bottom-[20px] left-[20px] "
+                className={`panelButton !bg-[#27272700] group  absolute bottom-[20px] left-[20px] ${
+                  selectedGame().logo ? "" : "w-[200px] h-[65px]"
+                } `}
                 aria-label="logo">
                 <Show when={!editedLocatedLogo()}>
-                  <img
-                    src={convertFileSrc(
-                      appDataDirPath() + "logos\\" + selectedGame().logo,
-                    )}
-                    alt=""
-                    className="h-[60px] "
-                  />
+                  <Show when={selectedGame().logo}>
+                    <img
+                      src={convertFileSrc(
+                        appDataDirPath() + "logos\\" + selectedGame().logo,
+                      )}
+                      alt=""
+                      className="h-[60px] "
+                    />
+                  </Show>
+                  <Show when={!selectedGame().logo}>
+                    <div
+                      className={`w-[170px] h-[70px] absolute bottom-[-5px] bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
+                        roundedBorders() ? "6px" : "0px"
+                      }]`}
+                    />
+                  </Show>
                 </Show>
                 <Show when={editedLocatedLogo()}>
                   <img

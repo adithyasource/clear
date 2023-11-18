@@ -94,15 +94,25 @@ export function GamePopUp() {
                 </svg>
               </button>
             </div>
-            <img
-              src={convertFileSrc(
-                appDataDirPath() + "heroes\\" + selectedGame().heroImage,
-              )}
-              alt=""
-              className={`h-[254px] rounded-[${
-                roundedBorders() ? "6px" : "0px"
-              }]`}
-            />
+            <Show when={selectedGame().heroImage}>
+              <img
+                src={convertFileSrc(
+                  appDataDirPath() + "heroes\\" + selectedGame().heroImage,
+                )}
+                alt=""
+                className={`h-[254px] aspect-[96/31]  rounded-[${
+                  roundedBorders() ? "6px" : "0px"
+                }]`}
+              />
+            </Show>
+            <Show when={!selectedGame().heroImage}>
+              <div
+                className={`h-[254px] aspect-[96/31] bg-[#1C1C1C]  rounded-[${
+                  roundedBorders() ? "6px" : "0px"
+                }]`}
+              />
+            </Show>
+
             <div className="absolute bottom-[15px] left-[25px] h-[70px] w-[300px] items-center flex align-middle">
               <img
                 src={convertFileSrc(

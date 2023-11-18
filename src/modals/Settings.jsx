@@ -18,6 +18,7 @@ import {
   setCurrentTheme,
   showFPS,
   setShowFPS,
+  appVersion,
 } from "../Signals";
 
 import { getData, getSettingsData } from "../App";
@@ -415,7 +416,7 @@ export function Settings() {
               <div>
                 clear{" "}
                 <span className="dark:text-[#ffffff80] text-[#12121280]">
-                  v0.0.16
+                  v{appVersion()}
                 </span>
               </div>
               <p
