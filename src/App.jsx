@@ -46,6 +46,8 @@ import {
   showSideBar,
   windowWidth,
   windowsVersion,
+  setToastMessage,
+  setShowToast,
 } from "./Signals";
 
 import logo from "./assets/128x128.png";
@@ -143,6 +145,43 @@ export function getSettingsData() {
     : setShowSideBar(libraryData().userSettings.showSideBar);
 }
 
+async function createEmptyLibrary() {
+  await createDir("heroes", {
+    dir: BaseDirectory.AppData,
+    recursive: true,
+  });
+  await createDir("grids", {
+    dir: BaseDirectory.AppData,
+    recursive: true,
+  });
+  await createDir("logos", {
+    dir: BaseDirectory.AppData,
+    recursive: true,
+  });
+  await createDir("icons", {
+    dir: BaseDirectory.AppData,
+    recursive: true,
+  });
+
+  let emptyLibrary = {
+    games: {},
+    folders: {},
+    notepad: "",
+    userSettings: {},
+  };
+  await writeTextFile(
+    {
+      path: "data.yaml",
+      contents: YAML.stringify(emptyLibrary, 4),
+    },
+    {
+      dir: BaseDirectory.AppData,
+    },
+  );
+
+  getData();
+}
+
 export async function getData() {
   setAppDataDirPath(await appDataDir());
 
@@ -151,10 +190,7 @@ export async function getData() {
       dir: BaseDirectory.AppData,
     });
 
-    if (
-      getLibraryData != "" &&
-      YAML.parse(getLibraryData).folders != undefined
-    ) {
+    if (getLibraryData != "" && YAML.parse(getLibraryData).folders != "") {
       setCurrentGames("");
       setCurrentFolders("");
 
@@ -182,42 +218,9 @@ export async function getData() {
       document.querySelector("[data-gamePopup]").close();
       document.querySelector("[data-editGameModal]").close();
       document.querySelector("[data-editFolderModal]").close();
-    } else return;
+    } else createEmptyLibrary();
   } else {
-    await createDir("heroes", {
-      dir: BaseDirectory.AppData,
-      recursive: true,
-    });
-    await createDir("grids", {
-      dir: BaseDirectory.AppData,
-      recursive: true,
-    });
-    await createDir("logos", {
-      dir: BaseDirectory.AppData,
-      recursive: true,
-    });
-    await createDir("icons", {
-      dir: BaseDirectory.AppData,
-      recursive: true,
-    });
-
-    let emptyLibrary = {
-      games: {},
-      folders: {},
-      notepad: "",
-      userSettings: {},
-    };
-    await writeTextFile(
-      {
-        path: "data.yaml",
-        contents: YAML.stringify(emptyLibrary, 4),
-      },
-      {
-        dir: BaseDirectory.AppData,
-      },
-    );
-
-    getData();
+    createEmptyLibrary();
   }
 }
 
@@ -230,6 +233,12 @@ export async function openGame(gameLocation) {
     setTimeout(async () => {
       appWindow.close();
     }, 500);
+  } else {
+    setShowToast(true);
+    setToastMessage("game launched! enjoy your session!");
+    setTimeout(() => {
+      setShowToast(false);
+    }, 1500);
   }
 }
 
@@ -369,10 +378,6 @@ function App() {
   });
 
   onMount(async () => {
-    fetch("https://api.npoint.io/98d7ebecdd5a8bc23d4c").then((res) =>
-      res.json().then((jsonres) => console.log(jsonres.clearVersion)),
-    );
-
     const osVersion = await version();
 
     if (osVersion.split(".")[0] == 10) {
@@ -464,7 +469,6 @@ function App() {
         ::-webkit-scrollbar-thumb {
           border-radius: ${roundedBorders() ? "10px" : "0px"};
         }
-
         .gameInput {
           border-radius: ${roundedBorders() ? "6px" : "0px"};
         }
@@ -631,6 +635,121 @@ function App() {
         </Show>
         <Show when={showSideBar() && windowWidth() >= 1000}>
           <SideBar />
+        </Show>
+
+        <Show
+          when={
+            JSON.stringify(libraryData().folders) == "{}" &&
+            (searchValue() == "" || searchValue() == undefined)
+          }>
+          <div
+            className={`flex items-center justify-center flex-col  w-[100%] absolute ${
+              windowsVersion() == "10+11" ? "h-[calc(100vh-32px)]" : "h-[100vh]"
+            } overflow-y-scroll py-[20px] pr-[30px]  ${
+              showSideBar() && windowWidth() >= 1000
+                ? "pl-[23%] large:pl-[17%]"
+                : "pl-[30px] large:pl-[30px]"
+            }`}>
+            <div>
+              <p className="dark:text-[#ffffff80] text-[#000000] ">
+                hey there! thank you so much for using clear <br />
+                <br />
+                - add some new games using the sidebar buttons <br />
+                <br />- create new folders and drag and drop your games into
+                them <br />
+                <br />- dont forget to check out the settings!
+              </p>
+              <div className="grid grid-cols-2 mt-[35px] gap-y-4">
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
+                      roundedBorders() ? "6px" : "0px"
+                    }] `}>
+                    ctrl + n
+                  </div>
+                  new game
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
+                      roundedBorders() ? "6px" : "0px"
+                    }] `}>
+                    ctrl + .
+                  </div>
+                  open settings
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
+                      roundedBorders() ? "6px" : "0px"
+                    }] `}>
+                    ctrl + m
+                  </div>
+                  new folder
+                </div>
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
+                      roundedBorders() ? "6px" : "0px"
+                    }] `}>
+                    ctrl + l
+                  </div>
+                  open notepad
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
+                      roundedBorders() ? "6px" : "0px"
+                    }] `}>
+                    ctrl + w
+                  </div>
+                  close app
+                </div>
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
+                      roundedBorders() ? "6px" : "0px"
+                    }] `}>
+                    escape
+                  </div>
+                  close dialogs
+                </div>
+              </div>
+
+              <div className="grid mt-[35px] gap-y-4">
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
+                      roundedBorders() ? "6px" : "0px"
+                    }] `}>
+                    ctrl + f
+                  </div>
+                  search bar
+                </div>
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
+                      roundedBorders() ? "6px" : "0px"
+                    }] `}>
+                    ctrl + \\
+                  </div>
+                  hide sidebar
+                </div>
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
+                      roundedBorders() ? "6px" : "0px"
+                    }] `}>
+                    ctrl + click
+                  </div>
+                  quick open game
+                </div>
+              </div>
+            </div>
+          </div>
         </Show>
         <div
           className={`w-[100%] absolute ${

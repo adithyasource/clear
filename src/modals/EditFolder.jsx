@@ -149,6 +149,7 @@ export function EditFolder() {
 
           <div className="flex items-end gap-6 mt-6">
             <input
+              aria-autocomplete="none"
               type="text"
               name=""
               id=""

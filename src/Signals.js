@@ -2,11 +2,15 @@ import { createSignal } from "solid-js";
 
 // !? Misc / Globals
 
-export const [appVersion, setAppVersion] = createSignal("0.0.16");
+export const [appVersion, setAppVersion] = createSignal("0.0.17");
+export const [latestVersion, setLatestVersion] = createSignal("");
+export const [newVersionAvailable, setNewVersionAvailable] =
+  createSignal(false);
+
 export const [appDataDirPath, setAppDataDirPath] = createSignal({});
 export const [libraryData, setLibraryData] = createSignal({});
 export const [notepadValue, setNotepadValue] = createSignal("");
-export const [toastError, setToastError] = createSignal("");
+export const [toastError, setToastMessage] = createSignal("");
 export const [showToast, setShowToast] = createSignal(false);
 export const [windowWidth, setWindowWidth] = createSignal(window.innerWidth);
 

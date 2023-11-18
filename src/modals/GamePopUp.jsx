@@ -9,7 +9,7 @@ export function GamePopUp() {
   return (
     <dialog
       data-gamePopup
-      className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#ffffff66]"
+      className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266]  bg-[#d1d1d166]"
       onDragStart={(e) => {
         e.preventDefault();
       }}>
@@ -20,7 +20,7 @@ export function GamePopUp() {
               appDataDirPath() + "heroes\\" + selectedGame().heroImage,
             )}
             alt=""
-            className={`h-[254px] rounded-[${
+            className={`max-large:h-[270px] h-[350px] rounded-[${
               roundedBorders() ? "6px" : "0px"
             }] absolute blur-[80px] opacity-[0.4] -z-10`}
           />
@@ -100,26 +100,26 @@ export function GamePopUp() {
                   appDataDirPath() + "heroes\\" + selectedGame().heroImage,
                 )}
                 alt=""
-                className={`h-[254px] aspect-[96/31]  rounded-[${
+                className={`max-large:h-[270px] h-[350px] aspect-[96/31]  rounded-[${
                   roundedBorders() ? "6px" : "0px"
                 }]`}
               />
             </Show>
             <Show when={!selectedGame().heroImage}>
               <div
-                className={`h-[254px] aspect-[96/31] bg-[#1C1C1C]  rounded-[${
+                className={`max-large:h-[270px] h-[350px] aspect-[96/31] bg-[#1C1C1C]  rounded-[${
                   roundedBorders() ? "6px" : "0px"
                 }]`}
               />
             </Show>
 
-            <div className="absolute bottom-[15px] left-[25px] h-[70px] w-[300px] items-center flex align-middle">
+            <div className="absolute max-large:bottom-[15px] bottom-[30px] left-[25px] h-[70px] w-[300px] items-center flex align-middle">
               <img
                 src={convertFileSrc(
                   appDataDirPath() + "logos\\" + selectedGame().logo,
                 )}
                 alt=""
-                className="relative aspect-auto max-h-[70px] max-w-[300px]"
+                className="relative aspect-auto max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
               />
             </div>
           </div>

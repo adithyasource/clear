@@ -8,7 +8,7 @@ import {
   currentFolders,
   roundedBorders,
   setShowToast,
-  setToastError,
+  setToastMessage,
 } from "../Signals";
 
 import { Show } from "solid-js";
@@ -22,7 +22,7 @@ export function NewFolder() {
   async function addFolder() {
     if (folderName() == "" || folderName() == undefined) {
       setShowToast(true);
-      setToastError("no folder name");
+      setToastMessage("no folder name");
       setTimeout(() => {
         setShowToast(false);
       }, 1500);
@@ -54,7 +54,7 @@ export function NewFolder() {
     <dialog
       data-newFolderModal
       onClose={() => {}}
-      className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#ffffff66]">
+      className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#d1d1d166]">
       <div className="flex items-center justify-center w-screen h-screen align-middle ">
         <div
           className={`border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
@@ -140,6 +140,7 @@ export function NewFolder() {
           </div>
           <div className="flex items-end gap-6 mt-6">
             <input
+              aria-autocomplete="none"
               type="text"
               name=""
               id=""

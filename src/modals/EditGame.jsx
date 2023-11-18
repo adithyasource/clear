@@ -21,7 +21,7 @@ import {
   setEditedLocatedIcon,
   roundedBorders,
   setShowToast,
-  setToastError,
+  setToastMessage,
   setShowDeleteConfirm,
   showDeleteConfirm,
 } from "../Signals";
@@ -108,9 +108,9 @@ export function EditGame() {
   async function updateGame() {
     let previousIndex;
 
-    if (editedGameName() == "") {
+    if (editedGameName() != undefined || editedGameName() == "") {
       setShowToast(true);
-      setToastError("no game name");
+      setToastMessage("no game name");
       setTimeout(() => {
         setShowToast(false);
       }, 1500);
@@ -127,7 +127,7 @@ export function EditGame() {
 
     if (gameOccurances == 1) {
       setShowToast(true);
-      setToastError(`${editedGameName()} is already in your library`);
+      setToastMessage(`${editedGameName()} is already in your library`);
       setTimeout(() => {
         setShowToast(false);
       }, 1500);
@@ -166,17 +166,25 @@ export function EditGame() {
     if (!editedLocatedGridImage()) {
       setEditedLocatedGridImage(selectedGame().gridImage);
     } else {
-      let gridImageFileName =
-        editedGameName() +
-        "." +
-        editedLocatedGridImage().split(".")[
-          editedLocatedGridImage().split(".").length - 1
-        ];
-      await copyFile(editedLocatedGridImage(), "grids\\" + gridImageFileName, {
-        dir: BaseDirectory.AppData,
-      }).then(() => {
-        setEditedLocatedGridImage(gridImageFileName);
-      });
+      if (editedLocatedGridImage() == true) {
+        setEditedLocatedGridImage(undefined);
+      } else {
+        let gridImageFileName =
+          editedGameName() +
+          "." +
+          editedLocatedGridImage().split(".")[
+            editedLocatedGridImage().split(".").length - 1
+          ];
+        await copyFile(
+          editedLocatedGridImage(),
+          "grids\\" + gridImageFileName,
+          {
+            dir: BaseDirectory.AppData,
+          },
+        ).then(() => {
+          setEditedLocatedGridImage(gridImageFileName);
+        });
+      }
     }
 
     if (!editedLocatedHeroImage()) {
@@ -323,9 +331,9 @@ export function EditGame() {
         setEditedLocatedIcon("");
         setShowDeleteConfirm(false);
       }}
-      className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#121212cc] bg-[#ffffffcc]">
+      className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#121212cc] bg-[#d1d1d1cc]">
       <div className="flex flex-col items-center justify-center w-screen h-screen gap-3">
-        <div className="flex justify-between w-[61rem]">
+        <div className="flex justify-between max-large:w-[61rem] w-[84rem]">
           <div>
             <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
               edit {selectedGame().name}
@@ -460,10 +468,13 @@ export function EditGame() {
             </button>
           </div>
         </div>
-        <div className="flex gap-[13.5rem]">
+        <div className="flex max-large:gap-[13.5rem] gap-[18.5rem]">
           <div>
             <div
               onClick={locateEditedGridImage}
+              onContextMenu={() => {
+                setEditedLocatedGridImage(true);
+              }}
               className="panelButton locatingGridImg h-[100%] aspect-[2/3] group relative overflow-hidden"
               aria-label="grid/cover">
               <Show when={!editedLocatedGridImage()}>
@@ -474,7 +485,7 @@ export function EditGame() {
                   )}
                   alt=""
                 />
-                <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
+                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
                   grid/cover
                 </span>
               </Show>
@@ -484,7 +495,7 @@ export function EditGame() {
                   src={convertFileSrc(editedLocatedGridImage())}
                   alt=""
                 />
-                <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
+                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
                   grid/cover
                 </span>
               </Show>
@@ -496,7 +507,10 @@ export function EditGame() {
               <div>
                 <div
                   onClick={locateEditedHeroImage}
-                  className="h-[250px] aspect-[67/26] group relative p-0 m-0 panelButton"
+                  onContextMenu={() => {
+                    setEditedLocatedHeroImage(null);
+                  }}
+                  className="max-large:h-[250px] h-[350px] aspect-[67/26] group relative p-0 m-0 panelButton"
                   aria-label="hero">
                   <Show
                     when={!editedLocatedHeroImage()}
@@ -508,7 +522,29 @@ export function EditGame() {
                           selectedGame().heroImage,
                       )}
                       alt=""
-                      className="absolute inset-0 h-[254px] rounded-[6px]"
+                      className="absolute inset-0  aspect-[67/26] rounded-[6px]"
+                    />
+                    <img
+                      src={convertFileSrc(
+                        appDataDirPath() +
+                          "heroes\\" +
+                          selectedGame().heroImage,
+                      )}
+                      alt=""
+                      className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px] opacity-[0.6]"
+                    />
+                  </Show>
+                  <Show
+                    when={editedLocatedHeroImage()}
+                    className="absolute inset-0 overflow-hidden">
+                    <img
+                      src={convertFileSrc(
+                        appDataDirPath() +
+                          "heroes\\" +
+                          selectedGame().heroImage,
+                      )}
+                      alt=""
+                      className="absolute inset-0  aspect-[67/26] rounded-[6px]"
                     />
                     <img
                       src={convertFileSrc(
@@ -526,7 +562,7 @@ export function EditGame() {
                     <img
                       src={convertFileSrc(editedLocatedHeroImage())}
                       alt=""
-                      className="absolute inset-0 h-[254px] rounded-[6px]"
+                      className="absolute inset-0  aspect-[67/26] rounded-[6px]"
                     />
                     <img
                       src={convertFileSrc(editedLocatedHeroImage())}
@@ -535,7 +571,7 @@ export function EditGame() {
                     />
                   </Show>
 
-                  <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
+                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
                     hero image
                   </span>
                 </div>
@@ -543,6 +579,9 @@ export function EditGame() {
 
               <div
                 onClick={locateEditedLogo}
+                onContextMenu={() => {
+                  setEditedLocatedLogo(true);
+                }}
                 className={`panelButton !bg-[#27272700] group  absolute bottom-[20px] left-[20px] ${
                   selectedGame().logo ? "" : "w-[200px] h-[65px]"
                 } `}
@@ -554,12 +593,12 @@ export function EditGame() {
                         appDataDirPath() + "logos\\" + selectedGame().logo,
                       )}
                       alt=""
-                      className="h-[60px] "
+                      className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
                     />
                   </Show>
                   <Show when={!selectedGame().logo}>
                     <div
-                      className={`w-[170px] h-[70px] absolute bottom-[-5px] bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
+                      className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] absolute bottom-[-5px] bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
                         roundedBorders() ? "6px" : "0px"
                       }]`}
                     />
@@ -569,10 +608,10 @@ export function EditGame() {
                   <img
                     src={convertFileSrc(editedLocatedLogo())}
                     alt=""
-                    className="h-[60px] "
+                    className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
                   />
                 </Show>
-                <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
+                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
                   logo
                 </span>
               </div>
@@ -581,6 +620,9 @@ export function EditGame() {
             <div className="flex gap-3 items-center cursor-pointer">
               <div
                 onClick={locateEditedIcon}
+                onContextMenu={() => {
+                  setEditedLocatedIcon(undefined);
+                }}
                 className="relative !bg-[#27272700] group "
                 aria-label="logo">
                 <Show when={!editedLocatedIcon()}>
@@ -608,12 +650,13 @@ export function EditGame() {
                     className="w-[40px] h-[40px] "
                   />
                 </Show>
-                <span class="absolute tooltip group-hover:opacity-100 left-[-20%] top-[120%] opacity-0">
+                <span class="absolute tooltip group-hover:opacity-100 left-[-10%] top-[120%] opacity-0">
                   icon
                 </span>
               </div>
 
               <input
+                aria-autocomplete="none"
                 type="text"
                 style="flex-grow: 1"
                 name=""
@@ -627,11 +670,23 @@ export function EditGame() {
               />
               <button
                 onClick={locateEditedGame}
-                className="standardButton !w-max">
-                locate game
+                onContextMenu={() => {
+                  setEditedlocatedGame(undefined);
+                }}
+                className="standardButton !w-max !mt-0">
+                {editedLocatedGame() == undefined
+                  ? selectedGame().location == undefined
+                    ? "locate game"
+                    : "..." + selectedGame()["location"].slice(-25)
+                  : "..." + editedLocatedGame().slice(-25)}
               </button>
             </div>
           </div>
+        </div>
+        <div className="flex justify-start max-large:w-[61rem] w-[84rem]">
+          <span className="text-[12px] opacity-50">
+            right click to empty image selection
+          </span>
         </div>
       </div>
     </dialog>

@@ -15,7 +15,7 @@ import {
   setlocatedGame,
   roundedBorders,
   setShowToast,
-  setToastError,
+  setToastMessage,
   setLocatedIcon,
   locatedIcon,
 } from "../Signals";
@@ -36,7 +36,7 @@ export function NewGame() {
   async function addGame() {
     if (gameName() == "" || gameName() == undefined) {
       setShowToast(true);
-      setToastError("no game name");
+      setToastMessage("no game name");
       setTimeout(() => {
         setShowToast(false);
       }, 1500);
@@ -46,7 +46,7 @@ export function NewGame() {
     for (let x = 0; x < Object.keys(libraryData().games).length; x++) {
       if (gameName() == Object.keys(libraryData().games)[x]) {
         setShowToast(true);
-        setToastError(`${gameName()} is already in your library`);
+        setToastMessage(`${gameName()} is already in your library`);
         setTimeout(() => {
           setShowToast(false);
         }, 1500);
@@ -290,10 +290,11 @@ export function NewGame() {
         setLocatedGridImage("");
         setLocatedHeroImage("");
         setLocatedLogo("");
+        setlocatedGame(undefined);
       }}
-      className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#121212cc] bg-[#ffffffcc]">
-      <div className="flex flex-col items-center justify-center w-screen h-screen gap-3">
-        <div className="flex justify-between w-[61rem]">
+      className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#121212cc] bg-[#d1d1d1cc]">
+      <div className="flex flex-col  justify-center items-center  w-screen h-screen gap-3">
+        <div className="flex justify-between max-large:w-[61rem] w-[84rem]">
           <div>
             <p className="dark:text-[#ffffff80] text-[#00000080] text-[25px]">
               add new game
@@ -372,12 +373,14 @@ export function NewGame() {
             </button>
           </div>
         </div>
-        <div className="flex gap-[13.5rem]">
+        <div className="flex max-large:gap-[13.5rem] gap-[18.5rem]">
           <div>
             <div
               onClick={locateGridImage}
-              className="panelButton locatingGridImg h-[100%] aspect-[2/3] group relative overflow-hidden"
-              aria-label="grid/cover">
+              onContextMenu={() => {
+                setLocatedGridImage(undefined);
+              }}
+              className="panelButton locatingGridImg h-[100%] aspect-[2/3] group relative overflow-hidden">
               {/* <Show when={foundGridImage()}>
                 <img
                   className="absolute inset-0"
@@ -395,13 +398,13 @@ export function NewGame() {
                   src={convertFileSrc(locatedGridImage())}
                   alt=""
                 />
-                <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
-                  grid/cover
+                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
+                  grid/cover <br />
                 </span>
               </Show>
               <Show when={!locatedGridImage()}>
-                <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
-                  grid/cover
+                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
+                  grid/cover <br />
                 </span>
               </Show>
               {/* </Show> */}
@@ -413,7 +416,10 @@ export function NewGame() {
               <div>
                 <div
                   onClick={locateHeroImage}
-                  className="h-[250px] aspect-[67/26] group relative p-0 m-0 panelButton"
+                  onContextMenu={() => {
+                    setLocatedHeroImage(undefined);
+                  }}
+                  className="max-large:h-[250px] h-[350px] aspect-[67/26] group relative p-0 m-0 panelButton"
                   aria-label="hero">
                   {/* <Show
                     when={foundHeroImage()}
@@ -446,12 +452,12 @@ export function NewGame() {
                       alt=""
                       className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px] opacity-[0.4]"
                     />
-                    <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
+                    <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
                       hero image
                     </span>
                   </Show>
                   <Show when={!locatedHeroImage()}>
-                    <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
+                    <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
                       hero image
                     </span>
                   </Show>
@@ -475,12 +481,15 @@ export function NewGame() {
               <Show when={locatedLogo()}>
                 <div
                   onClick={locateLogo}
+                  onContextMenu={() => {
+                    setLocatedLogo(undefined);
+                  }}
                   className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[20px] left-[20px] panelButton"
                   aria-label="logo">
                   <img
                     src={convertFileSrc(locatedLogo())}
                     alt=""
-                    className="h-[60px] "
+                    className="relative aspect-auto max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
                   />
                   <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
                     logo
@@ -491,9 +500,12 @@ export function NewGame() {
               <Show when={!locatedLogo()}>
                 <div
                   onClick={locateLogo}
-                  className="panelButton bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[20px] left-[20px] w-[170px] h-[70px] z-[100] "
+                  onContextMenu={() => {
+                    setLocatedLogo(undefined);
+                  }}
+                  className="panelButton bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[20px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] "
                   aria-label="logo">
-                  <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
+                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
                     logo
                   </span>
                 </div>
@@ -504,6 +516,9 @@ export function NewGame() {
             <div className="flex gap-3 items-center cursor-pointer ">
               <div
                 onClick={locateIcon}
+                onContextMenu={() => {
+                  setLocatedIcon(undefined);
+                }}
                 className="relative !bg-[#27272700] group "
                 aria-label="logo">
                 <Show when={!locatedIcon()}>
@@ -528,6 +543,7 @@ export function NewGame() {
                 className="flex items-center gameInput dark:bg-[#272727cc] bg-[#E8E8E8cc] backdrop-blur-[10px]"
                 style="flex-grow: 1">
                 <input
+                  aria-autocomplete="none"
                   type="text"
                   name=""
                   style="flex-grow: 1;"
@@ -559,11 +575,22 @@ export function NewGame() {
 
               <button
                 onClick={locateGame}
+                onContextMenu={() => {
+                  setlocatedGame(undefined);
+                }}
                 className="standardButton !w-max !mt-0">
-                locate game
+                {locatedGame() == undefined
+                  ? "locate game"
+                  : "..." + locatedGame().slice(-25)}
               </button>
             </div>
           </div>
+        </div>
+
+        <div className="flex justify-start max-large:w-[61rem] w-[84rem]">
+          <span className="text-[12px] opacity-50">
+            right click to empty image selection
+          </span>
         </div>
       </div>
     </dialog>

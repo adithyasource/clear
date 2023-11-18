@@ -265,7 +265,7 @@ dependencies = [
 
 [[package]]
 name = "clear"
-version = "0.0.16"
+version = "0.0.17"
 dependencies = [
  "open 4.2.0",
  "serde",

@@ -1,4 +1,4 @@
-import { Show } from "solid-js";
+import { Show, onMount, createSignal } from "solid-js";
 import { invoke } from "@tauri-apps/api/tauri";
 import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
@@ -19,6 +19,10 @@ import {
   showFPS,
   setShowFPS,
   appVersion,
+  latestVersion,
+  setLatestVersion,
+  newVersionAvailable,
+  setNewVersionAvailable,
 } from "../Signals";
 
 import { getData, getSettingsData } from "../App";
@@ -26,7 +30,6 @@ import { getData, getSettingsData } from "../App";
 import { appDataDir } from "@tauri-apps/api/path";
 
 import YAML from "yamljs";
-import { version } from "@tauri-apps/api/os";
 
 import { open } from "@tauri-apps/api/shell";
 
@@ -35,12 +38,23 @@ export function Settings() {
     getSettingsData();
   }, 50);
 
+  onMount(() => {
+    fetch("https://api.npoint.io/98d7ebecdd5a8bc23d4c").then((res) =>
+      res.json().then((jsonres) => {
+        setLatestVersion(jsonres.clearVersion);
+        latestVersion().replaceAll(".", "") > appVersion().replaceAll(".", "")
+          ? setNewVersionAvailable(true)
+          : setNewVersionAvailable(false);
+      }),
+    );
+  });
+
   return (
     <>
       <dialog
         data-settingsModal
         onClose={() => {}}
-        className="outline-none absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#ffffff66]">
+        className="outline-none absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#d1d1d166]">
         <div className="flex items-center justify-center w-screen h-screen align-middle ">
           <div
             className={`border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
@@ -76,6 +90,21 @@ export function Settings() {
                 </svg>
               </button>
             </div>
+
+            <Show when={newVersionAvailable()}>
+              <div className="flex gap-3 items-start mt-[35px]">
+                <button
+                  className="flex items-center standardButton !w-max !m-0"
+                  onClick={() => {
+                    open("https://clear.adithya.zip/update");
+                  }}>
+                  new update available!
+                  <span className="dark:text-[#ffffff80] text-[#12121280]">
+                    v{latestVersion()}
+                  </span>
+                </button>
+              </div>
+            </Show>
 
             <div className="grid grid-cols-3 mt-[25px] gap-y-4">
               <div

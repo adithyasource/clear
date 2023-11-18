@@ -1,9 +1,9 @@
 ; Setting metadata
 VIAddVersionKey "ProductName" "clear"
 VIAddVersionKey "FileDescription" "clear - video game library"
-VIProductVersion "0.0.16.0"
-VIAddVersionKey "FileVersion" "0.0.16"
-VIAddVersionKey "ProductVersion" "0.0.16"
+VIProductVersion "0.0.17.0"
+VIAddVersionKey "FileVersion" "0.0.17"
+VIAddVersionKey "ProductVersion" "0.0.17"
 VIAddVersionKey "LegalCopyright" "Unlicense"
 
 
