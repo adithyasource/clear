@@ -107,7 +107,7 @@ export function EditGame() {
   async function updateGame() {
     let previousIndex;
 
-    if (editedGameName() != undefined || editedGameName() == "") {
+    if (editedGameName() == "") {
       setShowToast(true);
       setToastMessage("no game name");
       setTimeout(() => {
@@ -116,21 +116,23 @@ export function EditGame() {
       return;
     }
 
-    let gameOccurances = 0;
+    if (selectedGame().name != editedGameName()) {
+      let gameOccurances = 0;
 
-    for (let x = 0; x < Object.keys(libraryData().games).length; x++) {
-      if (editedGameName() == Object.keys(libraryData().games)[x]) {
-        gameOccurances += 1;
+      for (let x = 0; x < Object.keys(libraryData().games).length; x++) {
+        if (editedGameName() == Object.keys(libraryData().games)[x]) {
+          gameOccurances += 1;
+        }
       }
-    }
 
-    if (gameOccurances == 1) {
-      setShowToast(true);
-      setToastMessage(`${editedGameName()} is already in your library`);
-      setTimeout(() => {
-        setShowToast(false);
-      }, 1500);
-      return;
+      if (gameOccurances == 1) {
+        setShowToast(true);
+        setToastMessage(`${editedGameName()} is already in your library`);
+        setTimeout(() => {
+          setShowToast(false);
+        }, 1500);
+        return;
+      }
     }
 
     for (let i = 0; i < Object.values(libraryData().folders).length; i++) {
@@ -155,11 +157,17 @@ export function EditGame() {
     if (!editedGameName()) {
       setEditedGameName(selectedGame().name);
     }
-    if (!editedLocatedGame()) {
-      setEditedlocatedGame(selectedGame().location);
-    }
+
     if (editedFavouriteGame() == undefined) {
       setEditedFavouriteGame(selectedGame().favourite);
+    }
+
+    if (editedLocatedGame() === undefined) {
+      setEditedlocatedGame(selectedGame().location);
+    } else {
+      if (editedLocatedGame() === null) {
+        setEditedlocatedGame(undefined);
+      }
     }
 
     if (editedLocatedGridImage() === undefined) {
@@ -345,6 +353,7 @@ export function EditGame() {
         setEditedLocatedLogo(undefined);
         setEditedLocatedIcon(undefined);
         setShowDeleteConfirm(false);
+        setEditedlocatedGame(undefined);
         getData();
       }}
       className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#121212cc] bg-[#d1d1d1cc]">
@@ -697,14 +706,20 @@ export function EditGame() {
               <button
                 onClick={locateEditedGame}
                 onContextMenu={() => {
-                  setEditedlocatedGame(undefined);
+                  setEditedlocatedGame(null);
+                  console.log(editedLocatedGame());
                 }}
                 className="standardButton !w-max !mt-0">
-                {editedLocatedGame() == undefined
-                  ? selectedGame().location == undefined
-                    ? "locate game"
-                    : "..." + selectedGame()["location"].slice(-25)
-                  : "..." + editedLocatedGame().slice(-25)}
+                <Show when={editedLocatedGame() === undefined}>
+                  <Show when={selectedGame().location}>
+                    {"..." + selectedGame()["location"].slice(-25)}
+                  </Show>
+                  <Show when={!selectedGame().location}>locate game</Show>
+                </Show>
+                <Show when={editedLocatedGame() === null}>locate game</Show>
+                <Show when={editedLocatedGame()}>
+                  {"..." + editedLocatedGame().slice(-25)}
+                </Show>
               </button>
             </div>
           </div>

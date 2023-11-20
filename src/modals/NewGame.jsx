@@ -122,7 +122,7 @@ export function NewGame() {
       },
     ).then(() => {
       getData();
-      location.reload();
+      document.querySelector("[data-newGameModal]").show();
     });
   }
 

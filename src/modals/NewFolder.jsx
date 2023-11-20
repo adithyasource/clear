@@ -29,6 +29,17 @@ export function NewFolder() {
       return;
     }
 
+    for (let x = 0; x < Object.keys(libraryData().folders).length; x++) {
+      if (folderName() == Object.keys(libraryData().folders)[x]) {
+        setShowToast(true);
+        setToastMessage(`${folderName()} is already in your library`);
+        setTimeout(() => {
+          setShowToast(false);
+        }, 1500);
+        return;
+      }
+    }
+
     libraryData().folders[folderName()] = {
       name: folderName(),
       hide: hideFolder(),
@@ -46,7 +57,7 @@ export function NewFolder() {
       },
     ).then(() => {
       getData();
-      location.reload();
+      document.querySelector("[data-newFolderModal]").close();
     });
   }
 

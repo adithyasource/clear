@@ -342,7 +342,7 @@ export function Settings() {
                 onClick={async () => {
                   const appDataDirPath = await appDataDir();
 
-                  invoke("openExplorer", {
+                  invoke("open_explorer", {
                     location: appDataDirPath,
                   });
                 }}>
@@ -450,10 +450,10 @@ export function Settings() {
               </div>
               <p
                 onClick={() => {
-                  open("https://github.com/adithyasource/clear");
+                  open("https://github.com/adithyasource/clear/issues");
                 }}
                 className="underline cursor-pointer">
-                code repository
+                feedback & suggestions
               </p>
               <p
                 onClick={() => {

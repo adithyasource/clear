@@ -58,6 +58,5 @@ export const [editedLocatedGridImage, setEditedLocatedGridImage] =
 export const [editedLocatedLogo, setEditedLocatedLogo] = createSignal();
 export const [editedLocatedIcon, setEditedLocatedIcon] = createSignal();
 export const [editedLocatedGame, setEditedlocatedGame] = createSignal();
-
-export const [editedFolderName, setEditedFolderName] = createSignal("");
+export const [editedFolderName, setEditedFolderName] = createSignal();
 export const [editedHideFolder, setEditedHideFolder] = createSignal();

@@ -6,8 +6,8 @@ use tauri::Manager;
 use window_shadows::set_shadow;
 
 #[tauri::command]
-fn openExplorer(location: &str) {
-    open::that(location);
+fn open_explorer(location: &str) {
+    let _ =  open::that(location);
 }
 
 fn main() {
@@ -20,7 +20,7 @@ fn main() {
             }
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![openExplorer])
+        .invoke_handler(tauri::generate_handler![open_explorer])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

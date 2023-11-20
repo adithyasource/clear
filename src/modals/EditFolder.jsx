@@ -8,16 +8,45 @@ import {
   roundedBorders,
   showDeleteConfirm,
   setShowDeleteConfirm,
+  setShowToast,
+  setToastMessage,
 } from "../Signals";
 import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
 import { getData } from "../App";
-import { onMount } from "solid-js";
 
 import YAML from "yamljs";
 
 export function EditFolder() {
   async function editFolder() {
+    if (editedFolderName() == "") {
+      setShowToast(true);
+      setToastMessage("no folder name");
+      setTimeout(() => {
+        setShowToast(false);
+      }, 1500);
+      return;
+    }
+
+    if (selectedFolder().name != editedFolderName()) {
+      let folderOccurances = 0;
+
+      for (let x = 0; x < Object.keys(libraryData().folders).length; x++) {
+        if (editedFolderName() == Object.keys(libraryData().folders)[x]) {
+          folderOccurances += 1;
+        }
+      }
+
+      if (folderOccurances == 1) {
+        setShowToast(true);
+        setToastMessage(`${editedFolderName()} is already in your library`);
+        setTimeout(() => {
+          setShowToast(false);
+        }, 1500);
+        return;
+      }
+    }
+
     delete libraryData().folders[selectedFolder().name];
 
     libraryData().folders[editedFolderName()] = {
@@ -36,7 +65,7 @@ export function EditFolder() {
       },
     ).then(() => {
       getData();
-      location.reload();
+      document.querySelector("[data-editFolderModal]").close();
     });
   }
 
@@ -59,7 +88,9 @@ export function EditFolder() {
   return (
     <dialog
       data-editFolderModal
-      onClose={() => {}}
+      onClose={() => {
+        getData();
+      }}
       className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#ffffff66]">
       <div className="flex items-center justify-center w-screen h-screen align-middle ">
         <div

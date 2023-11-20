@@ -225,7 +225,7 @@ export async function getData() {
 }
 
 export async function openGame(gameLocation) {
-  invoke("openExplorer", {
+  invoke("open_explorer", {
     location: gameLocation,
   });
 
@@ -843,7 +843,7 @@ function App() {
                                       }>
                                       <div className="relative flex items-center justify-center">
                                         <Show when={!gameTitle()}>
-                                          <span className="absolute z-[100]">
+                                          <span className="!w-[50%] absolute z-[100]">
                                             {gameName}
                                           </span>
 
@@ -872,38 +872,75 @@ function App() {
                                   when={
                                     libraryData().games[gameName].favourite
                                   }>
-                                  <img
-                                    className={`relative z-10 mb-[7px] rounded-[${
-                                      roundedBorders() ? "6px" : "0px"
-                                    }] outline-[#0000001c] hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
-                                    src={convertFileSrc(
-                                      appDataDirPath() +
-                                        "grids\\" +
-                                        libraryData().games[gameName].gridImage,
-                                    )}
-                                    alt=""
-                                    width="100%"
-                                  />
-                                  <div className="absolute inset-0 dark:blur-[30px]  dark:group-hover:blur-[50px] duration-500 dark:bg-blend-screen ">
-                                    <img
-                                      className="absolute inset-0 duration-500 opacity-0 dark:opacity-[40%] dark:group-hover:opacity-60"
-                                      src={convertFileSrc(
-                                        appDataDirPath() +
-                                          "grids\\" +
-                                          libraryData().games[gameName]
-                                            .gridImage,
-                                      )}
-                                      alt=""
-                                    />
-                                    <div
-                                      className="dark:bg-[#fff] bg-[#000]  opacity-[0%] dark:opacity-[10%] w-[100%] aspect-[2/3]"
-                                      alt=""
-                                    />
+                                  <div className="relative w-[100%]">
+                                    <Show
+                                      when={
+                                        libraryData().games[gameName].gridImage
+                                      }>
+                                      <img
+                                        className={`relative z-10 mb-[7px] rounded-[${
+                                          roundedBorders() ? "6px" : "0px"
+                                        }] outline-[#0000001c] hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
+                                        src={convertFileSrc(
+                                          appDataDirPath() +
+                                            "grids\\" +
+                                            libraryData().games[gameName]
+                                              .gridImage,
+                                        )}
+                                        alt=""
+                                        width="100%"
+                                      />
+                                      <div className="absolute inset-0 dark:blur-[30px]  dark:group-hover:blur-[50px] duration-500 dark:bg-blend-screen ">
+                                        <img
+                                          className="absolute inset-0 duration-500 opacity-0 dark:opacity-[40%] dark:group-hover:opacity-60"
+                                          src={convertFileSrc(
+                                            appDataDirPath() +
+                                              "grids\\" +
+                                              libraryData().games[gameName]
+                                                .gridImage,
+                                          )}
+                                          alt=""
+                                        />
+                                        <div
+                                          className="dark:bg-[#fff] bg-[#000]  opacity-[0%] dark:opacity-[10%] w-[100%] aspect-[2/3]"
+                                          alt=""
+                                        />
+                                      </div>
+                                    </Show>
+                                    <Show
+                                      when={
+                                        !libraryData().games[gameName].gridImage
+                                      }>
+                                      <div className=" relative flex items-center justify-center">
+                                        <Show when={!gameTitle()}>
+                                          <span className="!w-[50%] absolute z-[100]">
+                                            {gameName}
+                                          </span>
+
+                                          <Show
+                                            when={
+                                              !libraryData().games[gameName]
+                                                .location
+                                            }>
+                                            <span class="absolute tooltip z-[100] bottom-[30px]">
+                                              no game file
+                                            </span>
+                                          </Show>
+                                        </Show>
+
+                                        <div
+                                          className={`z-10 mb-[7px] rounded-[${
+                                            roundedBorders() ? "6px" : "0px"
+                                          }] group-hover:outline-[#0000001f] bg-[#1C1C1C] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
+                                          alt=""
+                                        />
+                                      </div>
+                                    </Show>
                                   </div>
                                 </Show>
                                 <Show when={gameTitle()}>
                                   <div className="flex justify-between items-start">
-                                    <span className="text-[#000000] dark:text-white">
+                                    <span className="text-[#000000] dark:text-white !w-[50%]">
                                       {gameName}
                                     </span>
 
@@ -979,37 +1016,99 @@ function App() {
                             }}>
                             <Show
                               when={!libraryData().games[gameName].favourite}>
-                              <div className="w-[100%]">
+                              <div className="relative w-[100%]">
+                                <Show
+                                  when={
+                                    libraryData().games[gameName].gridImage
+                                  }>
+                                  <img
+                                    className={`z-10 mb-[7px] rounded-[${
+                                      roundedBorders() ? "6px" : "0px"
+                                    }] group-hover:outline-[#0000001f] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
+                                    src={convertFileSrc(
+                                      appDataDirPath() +
+                                        "grids\\" +
+                                        libraryData().games[gameName].gridImage,
+                                    )}
+                                    alt=""
+                                  />{" "}
+                                </Show>
+                                <Show
+                                  when={
+                                    !libraryData().games[gameName].gridImage
+                                  }>
+                                  <div className="relative flex items-center justify-center">
+                                    <Show when={!gameTitle()}>
+                                      <span className="absolute z-[100] !w-[50%]">
+                                        {gameName}
+                                      </span>
+
+                                      <Show
+                                        when={
+                                          !libraryData().games[gameName]
+                                            .location
+                                        }>
+                                        <span class="absolute tooltip z-[100] bottom-[30px]">
+                                          no game file
+                                        </span>
+                                      </Show>
+                                    </Show>
+
+                                    <div
+                                      className={`z-10 mb-[7px] rounded-[${
+                                        roundedBorders() ? "6px" : "0px"
+                                      }] group-hover:outline-[#0000001f] bg-[#1C1C1C] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
+                                      alt=""
+                                    />
+                                  </div>
+                                </Show>
+                              </div>
+                            </Show>
+                            <Show
+                              when={libraryData().games[gameName].favourite}>
+                              <Show
+                                when={libraryData().games[gameName].gridImage}>
                                 <img
                                   className={`relative z-10 mb-[7px] rounded-[${
                                     roundedBorders() ? "6px" : "0px"
-                                  }]  object-fill group-hover:outline-[#0000001f] dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
+                                  }] outline-[#0000001c] w-full aspect-[2/3] hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
                                   src={convertFileSrc(
                                     appDataDirPath() +
                                       "grids\\" +
                                       libraryData().games[gameName].gridImage,
                                   )}
                                   alt=""
+                                  width="100%"
                                 />
-                              </div>
-                            </Show>
-                            <Show
-                              when={libraryData().games[gameName].favourite}>
-                              <img
-                                className={`relative z-10 mb-[7px] rounded-[${
-                                  roundedBorders() ? "6px" : "0px"
-                                }] outline-[#0000001a] hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] outline-[2px] outline-none duration-200`}
-                                src={convertFileSrc(
-                                  appDataDirPath() +
-                                    "grids\\" +
-                                    libraryData().games[gameName].gridImage,
-                                )}
-                                alt=""
-                                width="100%"
-                              />
-                              <div className="absolute inset-0 blur-[20px] dark:blur-[30px]  group-hover:blur-[50px] duration-500 bg-blend-screen ">
+                              </Show>
+
+                              <Show
+                                when={!libraryData().games[gameName].gridImage}>
+                                <div className="relative flex items-center justify-center">
+                                  <Show when={!gameTitle()}>
+                                    <span className="absolute z-[100] !w-[50%]">
+                                      {gameName}
+                                    </span>
+
+                                    <Show
+                                      when={
+                                        !libraryData().games[gameName].location
+                                      }>
+                                      <span class="absolute tooltip z-[100] bottom-[30px]">
+                                        no game file
+                                      </span>
+                                    </Show>
+                                  </Show>
+                                  <div
+                                    className={`relative z-10 mb-[7px] rounded-[${
+                                      roundedBorders() ? "6px" : "0px"
+                                    }] outline-[#0000001c] w-full aspect-[2/3] bg-[#1C1C1C] hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
+                                  />
+                                </div>
+                              </Show>
+                              <div className="absolute inset-0 dark:blur-[30px]  dark:group-hover:blur-[50px] duration-500 dark:bg-blend-screen ">
                                 <img
-                                  className="absolute inset-0 duration-500 opacity-[100%] dark:opacity-[40%] group-hover:opacity-60"
+                                  className="absolute inset-0 duration-500 opacity-0 dark:opacity-[40%] dark:group-hover:opacity-60"
                                   src={convertFileSrc(
                                     appDataDirPath() +
                                       "grids\\" +
@@ -1023,7 +1122,23 @@ function App() {
                                 />
                               </div>
                             </Show>
-                            <Show when={gameTitle()}>{gameName}</Show>
+
+                            <Show when={gameTitle()}>
+                              <div className="flex justify-between items-start">
+                                <span className="text-[#000000] dark:text-white !w-[50%]">
+                                  {gameName}
+                                </span>
+
+                                <Show
+                                  when={
+                                    !libraryData().games[gameName].location
+                                  }>
+                                  <span class=" tooltip z-[100]">
+                                    no game file
+                                  </span>
+                                </Show>
+                              </div>
+                            </Show>
                           </div>
                         );
                       }}
