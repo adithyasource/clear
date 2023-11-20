@@ -28,7 +28,6 @@ import {
 import { Show } from "solid-js";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { writeTextFile, BaseDirectory, copyFile } from "@tauri-apps/api/fs";
-import YAML from "yamljs";
 
 import { getData, generateRandomString } from "../App";
 
@@ -295,8 +294,8 @@ export function EditGame() {
 
     await writeTextFile(
       {
-        path: "data.yaml",
-        contents: YAML.stringify(libraryData(), 4),
+        path: "data.json",
+        contents: JSON.stringify(libraryData(), null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -328,8 +327,8 @@ export function EditGame() {
 
     await writeTextFile(
       {
-        path: "data.yaml",
-        contents: YAML.stringify(libraryData(), 4),
+        path: "data.json",
+        contents: JSON.stringify(libraryData(), null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -504,7 +503,7 @@ export function EditGame() {
               aria-label="grid/cover">
               <Show when={editedLocatedGridImage() === undefined}>
                 <img
-                  className="absolute inset-0"
+                  className="absolute inset-0 aspect-[2/3]"
                   src={convertFileSrc(
                     appDataDirPath() + "grids\\" + selectedGame().gridImage,
                   )}
@@ -516,7 +515,7 @@ export function EditGame() {
               </Show>
               <Show when={editedLocatedGridImage()}>
                 <img
-                  className="absolute inset-0"
+                  className="absolute inset-0 aspect-[2/3]"
                   src={convertFileSrc(editedLocatedGridImage())}
                   alt=""
                 />
@@ -568,7 +567,7 @@ export function EditGame() {
                           selectedGame().heroImage,
                       )}
                       alt=""
-                      className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px] opacity-[0.6]"
+                      className="absolute inset-0 aspect-[67/26] -z-10 h-[100%] rounded-[6px] blur-[80px] opacity-[0.6]"
                     />
                   </Show>
                   <Show
@@ -582,7 +581,7 @@ export function EditGame() {
                     <img
                       src={convertFileSrc(editedLocatedHeroImage())}
                       alt=""
-                      className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px] opacity-[0.6]"
+                      className="absolute inset-0 -z-10 aspect-[67/26] h-[100%] rounded-[6px] blur-[80px] opacity-[0.6]"
                     />
                   </Show>
 
@@ -592,17 +591,17 @@ export function EditGame() {
                 </div>
               </div>
 
-              <div
-                onClick={locateEditedLogo}
-                onContextMenu={() => {
-                  setEditedLocatedLogo(null);
-                }}
-                className={`panelButton !bg-[#27272700] group  absolute bottom-[20px] left-[20px] ${
-                  selectedGame().logo ? "" : "w-[200px] h-[65px]"
-                } `}
-                aria-label="logo">
-                <Show when={editedLocatedLogo() === undefined}>
-                  <Show when={selectedGame().logo}>
+              <Show when={selectedGame().logo}>
+                <div
+                  onClick={locateEditedLogo}
+                  onContextMenu={() => {
+                    setEditedLocatedLogo(null);
+                  }}
+                  className={`panelButton !bg-[#27272700] group  absolute bottom-[20px] left-[20px] ${
+                    selectedGame().logo ? "" : "!w-[200px] !h-[65px]"
+                  } `}
+                  aria-label="logo">
+                  <Show when={editedLocatedLogo() === undefined}>
                     <img
                       src={convertFileSrc(
                         appDataDirPath() + "logos\\" + selectedGame().logo,
@@ -611,40 +610,57 @@ export function EditGame() {
                       className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
                     />
                   </Show>
-                  <Show when={!selectedGame().logo}>
+                  <Show when={editedLocatedLogo()}>
+                    <img
+                      src={convertFileSrc(editedLocatedLogo())}
+                      alt=""
+                      className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
+                    />
+                  </Show>
+                  <Show when={editedLocatedLogo() === null}>
                     <div
-                      className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] absolute bottom-[-5px] bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
+                      className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] relative bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
                         roundedBorders() ? "6px" : "0px"
                       }]`}
                     />
                   </Show>
-                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
-                    logo
-                  </span>
-                </Show>
-                <Show when={editedLocatedLogo()}>
-                  <img
-                    src={convertFileSrc(editedLocatedLogo())}
-                    alt=""
-                    className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
-                  />
-                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
-                    logo
-                  </span>
-                </Show>
-                <Show when={editedLocatedLogo() === null}>
-                  <div
-                    className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] relative bottom-[-5px] bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                      roundedBorders() ? "6px" : "0px"
-                    }]`}
-                  />
-                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[40%] left-[40%] top-[40%] opacity-0">
-                    logo
-                  </span>
-                </Show>
-              </div>
-            </div>
 
+                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
+                    logo
+                  </span>
+                </div>
+              </Show>
+              <Show when={!selectedGame().logo}>
+                <div
+                  onClick={locateEditedLogo}
+                  onContextMenu={() => {
+                    setEditedLocatedLogo(null);
+                  }}
+                  className={`panelButton !bg-[#27272700] group  absolute bottom-[60px] left-[20px] max-large:bottom-[40px] ${
+                    selectedGame().logo ? "" : "!w-[200px] !h-[65px]"
+                  } `}
+                  aria-label="logo">
+                  <Show when={editedLocatedLogo()}>
+                    <img
+                      src={convertFileSrc(editedLocatedLogo())}
+                      alt=""
+                      className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
+                    />
+                  </Show>
+                  <Show when={!editedLocatedLogo()}>
+                    <div
+                      className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] relative bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
+                        roundedBorders() ? "6px" : "0px"
+                      }]`}
+                    />
+                  </Show>
+
+                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[45%] left-[55%] top-[65%] opacity-0">
+                    logo
+                  </span>
+                </div>
+              </Show>
+            </div>
             <div className="flex gap-3 items-center cursor-pointer">
               <div
                 onClick={locateEditedIcon}

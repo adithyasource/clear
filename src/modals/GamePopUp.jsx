@@ -107,20 +107,29 @@ export function GamePopUp() {
             </Show>
             <Show when={!selectedGame().heroImage}>
               <div
-                className={`max-large:h-[270px] h-[350px] aspect-[96/31] bg-[#1C1C1C]  rounded-[${
+                className={`max-large:h-[270px] h-[350px] aspect-[96/31] bg-[#f1f1f1] dark:bg-[#1c1c1c]  rounded-[${
                   roundedBorders() ? "6px" : "0px"
                 }]`}
               />
             </Show>
 
             <div className="absolute max-large:bottom-[15px] bottom-[30px] left-[25px] h-[70px] w-[300px] items-center flex align-middle">
-              <img
-                src={convertFileSrc(
-                  appDataDirPath() + "logos\\" + selectedGame().logo,
-                )}
-                alt=""
-                className="relative aspect-auto max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
-              />
+              <Show when={selectedGame().logo}>
+                <img
+                  src={convertFileSrc(
+                    appDataDirPath() + "logos\\" + selectedGame().logo,
+                  )}
+                  alt=""
+                  className=" relative aspect-auto max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
+                />
+              </Show>
+              <Show when={!selectedGame().logo}>
+                <div
+                  className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] absolute bottom-[5px] bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
+                    roundedBorders() ? "6px" : "0px"
+                  }]`}
+                />
+              </Show>
             </div>
           </div>
         </div>

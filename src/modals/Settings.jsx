@@ -1,4 +1,4 @@
-import { Show, onMount, createSignal } from "solid-js";
+import { Show, onMount } from "solid-js";
 import { invoke } from "@tauri-apps/api/tauri";
 import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
@@ -16,8 +16,6 @@ import {
   fontName,
   currentTheme,
   setCurrentTheme,
-  showFPS,
-  setShowFPS,
   appVersion,
   latestVersion,
   setLatestVersion,
@@ -28,8 +26,6 @@ import {
 import { getData, getSettingsData } from "../App";
 
 import { appDataDir } from "@tauri-apps/api/path";
-
-import YAML from "yamljs";
 
 import { open } from "@tauri-apps/api/shell";
 
@@ -115,8 +111,8 @@ export function Settings() {
 
                   await writeTextFile(
                     {
-                      path: "data.yaml",
-                      contents: YAML.stringify(libraryData(), 4),
+                      path: "data.json",
+                      contents: JSON.stringify(libraryData(), null, 4),
                     },
                     {
                       dir: BaseDirectory.AppData,
@@ -144,8 +140,8 @@ export function Settings() {
 
                   await writeTextFile(
                     {
-                      path: "data.yaml",
-                      contents: YAML.stringify(libraryData(), 4),
+                      path: "data.json",
+                      contents: JSON.stringify(libraryData(), null, 4),
                     },
                     {
                       dir: BaseDirectory.AppData,
@@ -173,8 +169,8 @@ export function Settings() {
 
                   await writeTextFile(
                     {
-                      path: "data.yaml",
-                      contents: YAML.stringify(libraryData(), 4),
+                      path: "data.json",
+                      contents: JSON.stringify(libraryData(), null, 4),
                     },
                     {
                       dir: BaseDirectory.AppData,
@@ -202,8 +198,8 @@ export function Settings() {
 
                   await writeTextFile(
                     {
-                      path: "data.yaml",
-                      contents: YAML.stringify(libraryData(), 4),
+                      path: "data.json",
+                      contents: JSON.stringify(libraryData(), null, 4),
                     },
                     {
                       dir: BaseDirectory.AppData,
@@ -223,59 +219,7 @@ export function Settings() {
                   <div className="">quit after opening game</div>
                 </Show>
               </div>
-              <div
-                onClick={async () => {
-                  setShowFPS((x) => !x);
 
-                  libraryData().userSettings.showFPS = showFPS();
-
-                  await writeTextFile(
-                    {
-                      path: "data.yaml",
-                      contents: YAML.stringify(libraryData(), 4),
-                    },
-                    {
-                      dir: BaseDirectory.AppData,
-                    },
-                  ).then(getData());
-
-                  // * FPS Counter by https://codepen.io/lnfnunes/pen/Qjeeyg
-
-                  if (showFPS() == true) {
-                    function tick() {
-                      var time = Date.now();
-                      frame++;
-                      if (time - startTime > 1000) {
-                        fps.innerHTML = (
-                          frame /
-                          ((time - startTime) / 1000)
-                        ).toFixed(1);
-                        startTime = time;
-                        frame = 0;
-                      }
-                      window.requestAnimationFrame(tick);
-                    }
-
-                    var fps = document.getElementById("fps");
-                    var startTime = Date.now();
-                    var frame = 0;
-
-                    tick();
-                  }
-                }}
-                className="relative cursor-pointer">
-                <Show when={showFPS()}>
-                  <div className="relative">
-                    <div className="">show fps</div>
-                    <div className="absolute blur-[5px] opacity-70 inset-0  ">
-                      show fps
-                    </div>
-                  </div>
-                </Show>
-                <Show when={!showFPS()}>
-                  <div className="">show fps</div>
-                </Show>
-              </div>
               <div
                 onClick={async () => {
                   if (fontName() == "Sans Serif") {
@@ -294,8 +238,8 @@ export function Settings() {
 
                   await writeTextFile(
                     {
-                      path: "data.yaml",
-                      contents: YAML.stringify(libraryData(), 4),
+                      path: "data.json",
+                      contents: JSON.stringify(libraryData(), null, 4),
                     },
                     {
                       dir: BaseDirectory.AppData,
@@ -320,8 +264,8 @@ export function Settings() {
 
                   await writeTextFile(
                     {
-                      path: "data.yaml",
-                      contents: YAML.stringify(libraryData(), 4),
+                      path: "data.json",
+                      contents: JSON.stringify(libraryData(), null, 4),
                     },
                     {
                       dir: BaseDirectory.AppData,

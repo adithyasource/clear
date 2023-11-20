@@ -15,8 +15,6 @@ import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
 import { getData } from "../App";
 
-import YAML from "yamljs";
-
 export function EditFolder() {
   async function editFolder() {
     if (editedFolderName() == "") {
@@ -57,8 +55,8 @@ export function EditFolder() {
 
     await writeTextFile(
       {
-        path: "data.yaml",
-        contents: YAML.stringify(libraryData(), 4),
+        path: "data.json",
+        contents: JSON.stringify(libraryData(), null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -74,8 +72,8 @@ export function EditFolder() {
 
     await writeTextFile(
       {
-        path: "data.yaml",
-        contents: YAML.stringify(libraryData(), 4),
+        path: "data.json",
+        contents: JSON.stringify(libraryData(), null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -91,10 +89,10 @@ export function EditFolder() {
       onClose={() => {
         getData();
       }}
-      className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#ffffff66]">
+      className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#d1d1d166]">
       <div className="flex items-center justify-center w-screen h-screen align-middle ">
         <div
-          className={`border-2 border-solid border-[#ffffff1f] bg-[#121212]  rounded-[${
+          className={`border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
             roundedBorders() ? "6px" : "0px"
           }] w-[50%] p-6 `}>
           <div className="flex justify-between">
@@ -154,19 +152,19 @@ export function EditFolder() {
                   xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M5 21H19C20.1046 21 21 20.1046 21 19V8.82843C21 8.29799 20.7893 7.78929 20.4142 7.41421L16.5858 3.58579C16.2107 3.21071 15.702 3 15.1716 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21Z"
-                    stroke="white"
+                    className="stroke-black dark:stroke-white"
                     stroke-width="1.5"
                     stroke-linecap="round"
                     stroke-linejoin="round"></path>
                   <path
                     d="M7 3V8H15V3"
-                    stroke="white"
+                    className="stroke-black dark:stroke-white"
                     stroke-width="1.5"
                     stroke-linecap="round"
                     stroke-linejoin="round"></path>
                   <path
                     d="M7 21V15H17V21"
-                    stroke="white"
+                    className="stroke-black dark:stroke-white"
                     stroke-width="1.5"
                     stroke-linecap="round"
                     stroke-linejoin="round"></path>

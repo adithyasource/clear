@@ -38,11 +38,9 @@ import {
   setRoundedBorders,
   setSearchValue,
   setSelectedGame,
-  setShowFPS,
   setShowSideBar,
   setWindowWidth,
   setWindowsVersion,
-  showFPS,
   showSideBar,
   windowWidth,
   windowsVersion,
@@ -67,7 +65,6 @@ import { Toast } from "./components/Toast";
 
 import "./App.css";
 
-import YAML from "yamljs";
 import Fuse from "fuse.js";
 
 export function getSettingsData() {
@@ -103,14 +100,7 @@ export function getSettingsData() {
   } else {
     setQuitAfterOpen(false);
   }
-  if (
-    libraryData().userSettings.showFPS == undefined ||
-    libraryData().userSettings.showFPS == false
-  ) {
-    setShowFPS(false);
-  } else {
-    setShowFPS(true);
-  }
+
   if (
     libraryData().userSettings.theme == undefined ||
     libraryData().userSettings.theme == "dark"
@@ -171,8 +161,8 @@ async function createEmptyLibrary() {
   };
   await writeTextFile(
     {
-      path: "data.yaml",
-      contents: YAML.stringify(emptyLibrary, 4),
+      path: "data.json",
+      contents: JSON.stringify(emptyLibrary, null, 4),
     },
     {
       dir: BaseDirectory.AppData,
@@ -185,16 +175,16 @@ async function createEmptyLibrary() {
 export async function getData() {
   setAppDataDirPath(await appDataDir());
 
-  if (await exists("data.yaml", { dir: BaseDirectory.AppData })) {
-    let getLibraryData = await readTextFile("data.yaml", {
+  if (await exists("data.json", { dir: BaseDirectory.AppData })) {
+    let getLibraryData = await readTextFile("data.json", {
       dir: BaseDirectory.AppData,
     });
 
-    if (getLibraryData != "" && YAML.parse(getLibraryData).folders != "") {
+    if (getLibraryData != "" && JSON.parse(getLibraryData).folders != "") {
       setCurrentGames("");
       setCurrentFolders("");
 
-      setLibraryData(YAML.parse(getLibraryData));
+      setLibraryData(JSON.parse(getLibraryData));
 
       for (let x = 0; x < Object.keys(libraryData()["folders"]).length; x++) {
         for (let y = 0; y < Object.keys(libraryData()["folders"]).length; y++) {
@@ -355,8 +345,8 @@ function App() {
 
     await writeTextFile(
       {
-        path: "data.yaml",
-        contents: YAML.stringify(libraryData(), 4),
+        path: "data.json",
+        contents: JSON.stringify(libraryData(), null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -413,35 +403,10 @@ function App() {
     });
 
     await getData();
-
-    // * FPS Counter by https://codepen.io/lnfnunes/pen/Qjeeyg
-
-    if (showFPS() == true) {
-      function tick() {
-        var time = Date.now();
-        frame++;
-        if (time - startTime > 1000) {
-          fps.innerHTML = (frame / ((time - startTime) / 1000)).toFixed(1);
-          startTime = time;
-          frame = 0;
-        }
-        window.requestAnimationFrame(tick);
-      }
-
-      var fps = document.getElementById("fps");
-      var startTime = Date.now();
-      var frame = 0;
-
-      tick();
-    }
   });
 
   return (
     <>
-      <head>
-        <link rel="stylesheet" href="hint.css" />
-      </head>
-
       {
         // * fading out bg color to make the app loading look a
         // * bit more smoother
@@ -537,20 +502,6 @@ function App() {
               className="text-[#000] dark:text-[#fff] titleBarText text-[12px]">
               clear
             </span>
-            <Show when={showFPS()}>
-              <span data-tauri-drag-region>
-                <span
-                  id="fps"
-                  data-tauri-drag-region
-                  className="text-[#00000080] dark:text-[#ffffff80] titleBarText text-[12px]">
-                  --
-                </span>
-                &nbsp;
-                <span className="text-[#00000080] dark:text-[#ffffff80] titleBarText text-[12px]">
-                  FPS
-                </span>
-              </span>
-            </Show>
           </div>
 
           <div class="max-w-[144px] max-h-[32px] flex-grow-[1] translate-y-[-3px]">
@@ -843,7 +794,7 @@ function App() {
                                       }>
                                       <div className="relative flex items-center justify-center">
                                         <Show when={!gameTitle()}>
-                                          <span className="!w-[50%] absolute z-[100]">
+                                          <span className="!max-w-[50%] absolute z-[100]">
                                             {gameName}
                                           </span>
 
@@ -861,7 +812,7 @@ function App() {
                                         <div
                                           className={`z-10 mb-[7px] rounded-[${
                                             roundedBorders() ? "6px" : "0px"
-                                          }] group-hover:outline-[#0000001f] bg-[#1C1C1C] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
+                                          }] group-hover:outline-[#0000001f] dark:bg-[#1C1C1C] bg-[#F1F1F1]  w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
                                           alt=""
                                         />
                                       </div>
@@ -890,30 +841,14 @@ function App() {
                                         alt=""
                                         width="100%"
                                       />
-                                      <div className="absolute inset-0 dark:blur-[30px]  dark:group-hover:blur-[50px] duration-500 dark:bg-blend-screen ">
-                                        <img
-                                          className="absolute inset-0 duration-500 opacity-0 dark:opacity-[40%] dark:group-hover:opacity-60"
-                                          src={convertFileSrc(
-                                            appDataDirPath() +
-                                              "grids\\" +
-                                              libraryData().games[gameName]
-                                                .gridImage,
-                                          )}
-                                          alt=""
-                                        />
-                                        <div
-                                          className="dark:bg-[#fff] bg-[#000]  opacity-[0%] dark:opacity-[10%] w-[100%] aspect-[2/3]"
-                                          alt=""
-                                        />
-                                      </div>
                                     </Show>
                                     <Show
                                       when={
                                         !libraryData().games[gameName].gridImage
                                       }>
-                                      <div className=" relative flex items-center justify-center">
+                                      <div className="relative flex items-center justify-center">
                                         <Show when={!gameTitle()}>
-                                          <span className="!w-[50%] absolute z-[100]">
+                                          <span className="absolute z-[100] !max-w-[50%]">
                                             {gameName}
                                           </span>
 
@@ -927,20 +862,34 @@ function App() {
                                             </span>
                                           </Show>
                                         </Show>
-
                                         <div
-                                          className={`z-10 mb-[7px] rounded-[${
+                                          className={`relative z-10 mb-[7px] rounded-[${
                                             roundedBorders() ? "6px" : "0px"
-                                          }] group-hover:outline-[#0000001f] bg-[#1C1C1C] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
-                                          alt=""
+                                          }] outline-[#0000001c] w-full aspect-[2/3] dark:bg-[#1C1C1C] bg-[#F1F1F1]  hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
                                         />
                                       </div>
                                     </Show>
+                                    <div className="absolute inset-0 dark:blur-[30px]  dark:group-hover:blur-[50px] duration-500 dark:bg-blend-screen ">
+                                      <img
+                                        className="absolute inset-0 duration-500 opacity-0 dark:opacity-[40%] dark:group-hover:opacity-60"
+                                        src={convertFileSrc(
+                                          appDataDirPath() +
+                                            "grids\\" +
+                                            libraryData().games[gameName]
+                                              .gridImage,
+                                        )}
+                                        alt=""
+                                      />
+                                      <div
+                                        className="dark:bg-[#fff] bg-[#000]  opacity-[0%] dark:opacity-[10%] w-[100%] aspect-[2/3]"
+                                        alt=""
+                                      />
+                                    </div>
                                   </div>
                                 </Show>
                                 <Show when={gameTitle()}>
                                   <div className="flex justify-between items-start">
-                                    <span className="text-[#000000] dark:text-white !w-[50%]">
+                                    <span className="text-[#000000] dark:text-white !max-w-[50%]">
                                       {gameName}
                                     </span>
 
@@ -1039,7 +988,7 @@ function App() {
                                   }>
                                   <div className="relative flex items-center justify-center">
                                     <Show when={!gameTitle()}>
-                                      <span className="absolute z-[100] !w-[50%]">
+                                      <span className="absolute z-[100] !max-w-[50%]">
                                         {gameName}
                                       </span>
 
@@ -1057,7 +1006,7 @@ function App() {
                                     <div
                                       className={`z-10 mb-[7px] rounded-[${
                                         roundedBorders() ? "6px" : "0px"
-                                      }] group-hover:outline-[#0000001f] bg-[#1C1C1C] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
+                                      }] group-hover:outline-[#0000001f] dark:bg-[#1C1C1C] bg-[#F1F1F1]  w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
                                       alt=""
                                     />
                                   </div>
@@ -1086,7 +1035,7 @@ function App() {
                                 when={!libraryData().games[gameName].gridImage}>
                                 <div className="relative flex items-center justify-center">
                                   <Show when={!gameTitle()}>
-                                    <span className="absolute z-[100] !w-[50%]">
+                                    <span className="absolute z-[100] !max-w-[50%]">
                                       {gameName}
                                     </span>
 
@@ -1102,7 +1051,7 @@ function App() {
                                   <div
                                     className={`relative z-10 mb-[7px] rounded-[${
                                       roundedBorders() ? "6px" : "0px"
-                                    }] outline-[#0000001c] w-full aspect-[2/3] bg-[#1C1C1C] hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
+                                    }] outline-[#0000001c] w-full aspect-[2/3] dark:bg-[#1C1C1C] bg-[#F1F1F1]  hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
                                   />
                                 </div>
                               </Show>
@@ -1125,7 +1074,7 @@ function App() {
 
                             <Show when={gameTitle()}>
                               <div className="flex justify-between items-start">
-                                <span className="text-[#000000] dark:text-white !w-[50%]">
+                                <span className="text-[#000000] dark:text-white !max-w-[50%]">
                                   {gameName}
                                 </span>
 

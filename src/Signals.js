@@ -35,7 +35,6 @@ export const [gameTitle, setGameTitle] = createSignal(true);
 export const [folderTitle, setFolderTitle] = createSignal(true);
 export const [quitAfterOpen, setQuitAfterOpen] = createSignal(true);
 export const [fontName, setFontName] = createSignal("Sans Serif");
-export const [showFPS, setShowFPS] = createSignal(false);
 
 // !? Create Signals
 export const [gameName, setGameName] = createSignal("");

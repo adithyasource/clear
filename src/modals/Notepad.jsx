@@ -9,16 +9,14 @@ import {
 
 import { getData } from "../App";
 
-import YAML from "yamljs";
-
 export function Notepad() {
   async function saveNotepad() {
     libraryData().notepad = notepadValue();
 
     await writeTextFile(
       {
-        path: "data.yaml",
-        contents: YAML.stringify(libraryData(), 4),
+        path: "data.json",
+        contents: JSON.stringify(libraryData(), null, 4),
       },
       {
         dir: BaseDirectory.AppData,

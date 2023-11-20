@@ -18,13 +18,12 @@ import {
   setToastMessage,
   setLocatedIcon,
   locatedIcon,
+  setEditedLocatedIcon,
 } from "../Signals";
 
 import { Show } from "solid-js";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { writeTextFile, BaseDirectory, copyFile } from "@tauri-apps/api/fs";
-
-import YAML from "yamljs";
 
 import { getData, generateRandomString } from "../App";
 
@@ -114,8 +113,8 @@ export function NewGame() {
 
     await writeTextFile(
       {
-        path: "data.yaml",
-        contents: YAML.stringify(libraryData(), 4),
+        path: "data.json",
+        contents: JSON.stringify(libraryData(), null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -291,6 +290,7 @@ export function NewGame() {
         setLocatedHeroImage("");
         setLocatedLogo("");
         setlocatedGame(undefined);
+        setLocatedIcon("");
       }}
       className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#121212cc] bg-[#d1d1d1cc]">
       <div className="flex flex-col  justify-center items-center  w-screen h-screen gap-3">

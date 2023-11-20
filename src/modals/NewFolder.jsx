@@ -16,8 +16,6 @@ import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
 import { getData } from "../App";
 
-import YAML from "yamljs";
-
 export function NewFolder() {
   async function addFolder() {
     if (folderName() == "" || folderName() == undefined) {
@@ -49,8 +47,8 @@ export function NewFolder() {
     setLibraryData(libraryData());
     await writeTextFile(
       {
-        path: "data.yaml",
-        contents: YAML.stringify(libraryData(), 4),
+        path: "data.json",
+        contents: JSON.stringify(libraryData(), null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -64,7 +62,11 @@ export function NewFolder() {
   return (
     <dialog
       data-newFolderModal
-      onClose={() => {}}
+      onClose={() => {
+        setFolderName(undefined);
+        setHideFolder(undefined);
+        getData();
+      }}
       className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#d1d1d166]">
       <div className="flex items-center justify-center w-screen h-screen align-middle ">
         <div
@@ -159,6 +161,7 @@ export function NewFolder() {
               onInput={(e) => {
                 setFolderName(e.currentTarget.value);
               }}
+              value={folderName() || ""}
               placeholder="name of folder"
             />
           </div>
