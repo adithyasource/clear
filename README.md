@@ -88,3 +88,17 @@ This step is even more optional but if you also want to create an installer for 
    You should now have an installer for the .exe file (compressed or not) that you have generated in the "clear\src-tauri\target\release" folder by building the application.
 
    
+## License
+
+This project is licensed under the Unlicense License - see the UNLICENSE file for details.
+
+
+## Acknowledgments
+
+Libraries, code snippets, etc.
+* [Tauri](https://tauri.app)
+* [Solid.js](https://www.solidjs.com)
+* [Fuse.js](https://www.fusejs.io)
+* [Hint.css](https://kushagra.dev/lab/hint/)
+* [Basicons](https://basicons.xyz)
+* [Windows 10 + 11 Titlebar in CSS](https://codepen.io/agrimsrud/pen/WGgRPP)
