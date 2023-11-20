@@ -16,7 +16,6 @@ import {
   editedLocatedGame,
   setEditedlocatedGame,
   setSelectedGame,
-  locatedHeroImage,
   editedLocatedIcon,
   setEditedLocatedIcon,
   roundedBorders,
@@ -31,7 +30,7 @@ import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { writeTextFile, BaseDirectory, copyFile } from "@tauri-apps/api/fs";
 import YAML from "yamljs";
 
-import { getData } from "../App";
+import { getData, generateRandomString } from "../App";
 
 import { open } from "@tauri-apps/api/dialog";
 export function EditGame() {
@@ -163,14 +162,14 @@ export function EditGame() {
       setEditedFavouriteGame(selectedGame().favourite);
     }
 
-    if (!editedLocatedGridImage()) {
+    if (editedLocatedGridImage() === undefined) {
       setEditedLocatedGridImage(selectedGame().gridImage);
     } else {
-      if (editedLocatedGridImage() == true) {
+      if (editedLocatedGridImage() === null) {
         setEditedLocatedGridImage(undefined);
       } else {
         let gridImageFileName =
-          editedGameName() +
+          generateRandomString() +
           "." +
           editedLocatedGridImage().split(".")[
             editedLocatedGridImage().split(".").length - 1
@@ -187,54 +186,70 @@ export function EditGame() {
       }
     }
 
-    if (!editedLocatedHeroImage()) {
+    if (editedLocatedHeroImage() === undefined) {
       setEditedLocatedHeroImage(selectedGame().heroImage);
     } else {
-      let heroImageFileName =
-        editedGameName() +
-        "." +
-        editedLocatedHeroImage().split(".")[
-          editedLocatedHeroImage().split(".").length - 1
-        ];
-      await copyFile(editedLocatedHeroImage(), "heroes\\" + heroImageFileName, {
-        dir: BaseDirectory.AppData,
-      }).then(() => {
-        setEditedLocatedHeroImage(heroImageFileName);
-      });
+      if (editedLocatedHeroImage() === null) {
+        setEditedLocatedHeroImage(undefined);
+      } else {
+        let heroImageFileName =
+          generateRandomString() +
+          "." +
+          editedLocatedHeroImage().split(".")[
+            editedLocatedHeroImage().split(".").length - 1
+          ];
+        await copyFile(
+          editedLocatedHeroImage(),
+          "heroes\\" + heroImageFileName,
+          {
+            dir: BaseDirectory.AppData,
+          },
+        ).then(() => {
+          setEditedLocatedHeroImage(heroImageFileName);
+        });
+      }
     }
 
-    if (!editedLocatedLogo()) {
+    if (editedLocatedLogo() === undefined) {
       setEditedLocatedLogo(selectedGame().logo);
     } else {
-      let logoFileName =
-        editedGameName() +
-        "." +
-        editedLocatedLogo().split(".")[
-          editedLocatedLogo().split(".").length - 1
-        ];
+      if (editedLocatedLogo() === null) {
+        setEditedLocatedLogo(undefined);
+      } else {
+        let logoFileName =
+          generateRandomString() +
+          "." +
+          editedLocatedLogo().split(".")[
+            editedLocatedLogo().split(".").length - 1
+          ];
 
-      await copyFile(editedLocatedLogo(), "logos\\" + logoFileName, {
-        dir: BaseDirectory.AppData,
-      }).then(() => {
-        setEditedLocatedLogo(logoFileName);
-      });
+        await copyFile(editedLocatedLogo(), "logos\\" + logoFileName, {
+          dir: BaseDirectory.AppData,
+        }).then(() => {
+          setEditedLocatedLogo(logoFileName);
+        });
+      }
     }
 
-    if (!editedLocatedIcon()) {
+    if (editedLocatedIcon() === undefined) {
       setEditedLocatedIcon(selectedGame().icon);
     } else {
-      let iconFileName =
-        editedGameName() +
-        "." +
-        editedLocatedIcon().split(".")[
-          editedLocatedIcon().split(".").length - 1
-        ];
+      if (editedLocatedIcon() === null) {
+        setEditedLocatedIcon(undefined);
+      } else {
+        let iconFileName =
+          generateRandomString() +
+          "." +
+          editedLocatedIcon().split(".")[
+            editedLocatedIcon().split(".").length - 1
+          ];
 
-      await copyFile(editedLocatedIcon(), "icons\\" + iconFileName, {
-        dir: BaseDirectory.AppData,
-      }).then(() => {
-        setEditedLocatedIcon(iconFileName);
-      });
+        await copyFile(editedLocatedIcon(), "icons\\" + iconFileName, {
+          dir: BaseDirectory.AppData,
+        }).then(() => {
+          setEditedLocatedIcon(iconFileName);
+        });
+      }
     }
 
     libraryData().games[editedGameName()] = {
@@ -324,12 +339,13 @@ export function EditGame() {
       }}
       onClose={() => {
         setEditedFavouriteGame();
-        setEditedGameName("");
-        setEditedLocatedGridImage("");
-        setEditedLocatedHeroImage("");
-        setEditedLocatedLogo("");
-        setEditedLocatedIcon("");
+        setEditedGameName(undefined);
+        setEditedLocatedGridImage(undefined);
+        setEditedLocatedHeroImage(undefined);
+        setEditedLocatedLogo(undefined);
+        setEditedLocatedIcon(undefined);
         setShowDeleteConfirm(false);
+        getData();
       }}
       className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#121212cc] bg-[#d1d1d1cc]">
       <div className="flex flex-col items-center justify-center w-screen h-screen gap-3">
@@ -473,11 +489,11 @@ export function EditGame() {
             <div
               onClick={locateEditedGridImage}
               onContextMenu={() => {
-                setEditedLocatedGridImage(true);
+                setEditedLocatedGridImage(null);
               }}
               className="panelButton locatingGridImg h-[100%] aspect-[2/3] group relative overflow-hidden"
               aria-label="grid/cover">
-              <Show when={!editedLocatedGridImage()}>
+              <Show when={editedLocatedGridImage() === undefined}>
                 <img
                   className="absolute inset-0"
                   src={convertFileSrc(
@@ -499,6 +515,11 @@ export function EditGame() {
                   grid/cover
                 </span>
               </Show>
+              <Show when={editedLocatedGridImage() === null}>
+                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
+                  grid/cover
+                </span>
+              </Show>
             </div>
           </div>
 
@@ -513,29 +534,14 @@ export function EditGame() {
                   className="max-large:h-[250px] h-[350px] aspect-[67/26] group relative p-0 m-0 panelButton"
                   aria-label="hero">
                   <Show
-                    when={!editedLocatedHeroImage()}
+                    when={editedLocatedHeroImage() === null}
                     className="absolute inset-0 overflow-hidden">
-                    <img
-                      src={convertFileSrc(
-                        appDataDirPath() +
-                          "heroes\\" +
-                          selectedGame().heroImage,
-                      )}
-                      alt=""
-                      className="absolute inset-0  aspect-[67/26] rounded-[6px]"
-                    />
-                    <img
-                      src={convertFileSrc(
-                        appDataDirPath() +
-                          "heroes\\" +
-                          selectedGame().heroImage,
-                      )}
-                      alt=""
-                      className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px] opacity-[0.6]"
-                    />
+                    <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
+                      hero image
+                    </span>
                   </Show>
                   <Show
-                    when={editedLocatedHeroImage()}
+                    when={editedLocatedHeroImage() === undefined}
                     className="absolute inset-0 overflow-hidden">
                     <img
                       src={convertFileSrc(
@@ -580,13 +586,13 @@ export function EditGame() {
               <div
                 onClick={locateEditedLogo}
                 onContextMenu={() => {
-                  setEditedLocatedLogo(true);
+                  setEditedLocatedLogo(null);
                 }}
                 className={`panelButton !bg-[#27272700] group  absolute bottom-[20px] left-[20px] ${
                   selectedGame().logo ? "" : "w-[200px] h-[65px]"
                 } `}
                 aria-label="logo">
-                <Show when={!editedLocatedLogo()}>
+                <Show when={editedLocatedLogo() === undefined}>
                   <Show when={selectedGame().logo}>
                     <img
                       src={convertFileSrc(
@@ -603,6 +609,9 @@ export function EditGame() {
                       }]`}
                     />
                   </Show>
+                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
+                    logo
+                  </span>
                 </Show>
                 <Show when={editedLocatedLogo()}>
                   <img
@@ -610,10 +619,20 @@ export function EditGame() {
                     alt=""
                     className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
                   />
+                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
+                    logo
+                  </span>
                 </Show>
-                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
-                  logo
-                </span>
+                <Show when={editedLocatedLogo() === null}>
+                  <div
+                    className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] relative bottom-[-5px] bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
+                      roundedBorders() ? "6px" : "0px"
+                    }]`}
+                  />
+                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[40%] left-[40%] top-[40%] opacity-0">
+                    logo
+                  </span>
+                </Show>
               </div>
             </div>
 
@@ -621,11 +640,11 @@ export function EditGame() {
               <div
                 onClick={locateEditedIcon}
                 onContextMenu={() => {
-                  setEditedLocatedIcon(undefined);
+                  setEditedLocatedIcon(null);
                 }}
                 className="relative !bg-[#27272700] group "
                 aria-label="logo">
-                <Show when={!editedLocatedIcon()}>
+                <Show when={editedLocatedIcon() === undefined}>
                   <Show when={selectedGame().icon}>
                     <img
                       src={convertFileSrc(
@@ -648,6 +667,13 @@ export function EditGame() {
                     src={convertFileSrc(editedLocatedIcon())}
                     alt=""
                     className="w-[40px] h-[40px] "
+                  />
+                </Show>
+                <Show when={editedLocatedIcon() === null}>
+                  <div
+                    className={`w-[40px] h-[40px] bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
+                      roundedBorders() ? "6px" : "0px"
+                    }]`}
                   />
                 </Show>
                 <span class="absolute tooltip group-hover:opacity-100 left-[-10%] top-[120%] opacity-0">

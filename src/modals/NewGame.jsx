@@ -26,7 +26,7 @@ import { writeTextFile, BaseDirectory, copyFile } from "@tauri-apps/api/fs";
 
 import YAML from "yamljs";
 
-import { getData } from "../App";
+import { getData, generateRandomString } from "../App";
 
 import { open } from "@tauri-apps/api/dialog";
 
@@ -61,7 +61,7 @@ export function NewGame() {
 
     if (locatedHeroImage()) {
       heroImageFileName =
-        gameName() +
+        generateRandomString() +
         "." +
         locatedHeroImage().split(".")[locatedHeroImage().split(".").length - 1];
 
@@ -72,7 +72,7 @@ export function NewGame() {
 
     if (locatedGridImage()) {
       gridImageFileName =
-        gameName() +
+        generateRandomString() +
         "." +
         locatedGridImage().split(".")[locatedGridImage().split(".").length - 1];
 
@@ -82,7 +82,7 @@ export function NewGame() {
     }
     if (locatedLogo()) {
       logoFileName =
-        gameName() +
+        generateRandomString() +
         "." +
         locatedLogo().split(".")[locatedLogo().split(".").length - 1];
 
@@ -92,7 +92,7 @@ export function NewGame() {
     }
     if (locatedIcon()) {
       iconFileName =
-        gameName() +
+        generateRandomString() +
         "." +
         locatedIcon().split(".")[locatedIcon().split(".").length - 1];
 

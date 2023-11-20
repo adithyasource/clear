@@ -6,6 +6,8 @@ import {
   editedHideFolder,
   setEditedHideFolder,
   roundedBorders,
+  showDeleteConfirm,
+  setShowDeleteConfirm,
 } from "../Signals";
 import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
@@ -35,6 +37,22 @@ export function EditFolder() {
     ).then(() => {
       getData();
       location.reload();
+    });
+  }
+
+  async function deleteFolder() {
+    delete libraryData().folders[selectedFolder().name];
+
+    await writeTextFile(
+      {
+        path: "data.yaml",
+        contents: YAML.stringify(libraryData(), 4),
+      },
+      {
+        dir: BaseDirectory.AppData,
+      },
+    ).then(() => {
+      getData();
     });
   }
 
@@ -93,7 +111,9 @@ export function EditFolder() {
                 </Show>
               </div>
 
-              <button onClick={editFolder} className="flex items-center gap-1 ">
+              <button
+                onClick={editFolder}
+                className="flex items-center standardButton !w-max">
                 save
                 <svg
                   width="18"
@@ -123,7 +143,48 @@ export function EditFolder() {
               </button>
 
               <button
-                className="flex items-center"
+                onClick={() => {
+                  showDeleteConfirm()
+                    ? deleteFolder()
+                    : setShowDeleteConfirm(true);
+
+                  setTimeout(() => {
+                    setShowDeleteConfirm(false);
+                  }, 1500);
+                }}
+                className="flex items-center standardButton !w-max">
+                <span className="text-[#FF3636]">
+                  {showDeleteConfirm() ? "confim?" : "delete"}
+                </span>
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M3 6H21M5 6V20C5 21.1046 5.89543 22 7 22H17C18.1046 22 19 21.1046 19 20V6M8 6V4C8 2.89543 8.89543 2 10 2H14C15.1046 2 16 2.89543 16 4V6"
+                    stroke="#FF3636"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+                  <path
+                    d="M14 11V17"
+                    stroke="#FF3636"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+                  <path
+                    d="M10 11V17"
+                    stroke="#FF3636"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+                </svg>
+              </button>
+
+              <button
+                className="flex items-center standardButton !w-max !gap-0"
                 onClick={() => {
                   document.querySelector("[data-editFolderModal]").close();
                   getData();
@@ -153,7 +214,7 @@ export function EditFolder() {
               type="text"
               name=""
               id=""
-              className="w-full"
+              className="w-full dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b]"
               onInput={(e) => {
                 setEditedFolderName(e.currentTarget.value);
               }}
