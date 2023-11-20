@@ -2,7 +2,7 @@ import { createSignal } from "solid-js";
 
 // !? Misc / Globals
 
-export const [appVersion, setAppVersion] = createSignal("0.0.17");
+export const [appVersion, setAppVersion] = createSignal("0.0.18");
 export const [latestVersion, setLatestVersion] = createSignal("");
 export const [newVersionAvailable, setNewVersionAvailable] =
   createSignal(false);
