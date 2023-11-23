@@ -1,6 +1,6 @@
 {
   "name": "clear",
-  "version": "0.0.18",
+  "version": "0.18.0",
   "description": "",
   "scripts": {
     "start": "vite",

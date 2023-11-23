@@ -1,9 +1,9 @@
 ; Setting metadata
 VIAddVersionKey "ProductName" "clear"
 VIAddVersionKey "FileDescription" "clear - video game library"
-VIProductVersion "0.0.18.0"
-VIAddVersionKey "FileVersion" "0.0.18"
-VIAddVersionKey "ProductVersion" "0.0.18"
+VIProductVersion "0.18.0.0"
+VIAddVersionKey "FileVersion" "0.18.0"
+VIAddVersionKey "ProductVersion" "0.18.0"
 VIAddVersionKey "LegalCopyright" "Unlicense"
 
 
@@ -17,7 +17,10 @@ Name "clear"
 OutFile "clear_setup.exe"
 
 ; The setup icon
-Icon "${NSISDIR}\Contrib\Graphics\Icons\classic-install.ico"
+Icon "${NSISDIR}\Contrib\Graphics\Icons\nsis1-install.ico"
+
+; The uninstaller icon
+UninstallIcon "${NSISDIR}\Contrib\Graphics\Icons\nsis1-uninstall.ico"
 
 ; The default installation directory
 InstallDir $PROGRAMFILES\clear
@@ -31,12 +34,9 @@ InstallDirRegKey HKLM "Software\clear" "Install_Dir"
 
 ; Pages
 
+Page directory
 Page components
 Page instfiles
-
-; Displays logs while installing by default
-ShowInstDetails show
-
 
 UninstPage uninstConfirm
 UninstPage instfiles
@@ -65,8 +65,6 @@ Section "clear - video game library"
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\clear" "NoModify" 1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\clear" "NoRepair" 1
   WriteUninstaller "$INSTDIR\uninstall.exe"
-
-  SetAutoClose true
   
 SectionEnd
 
@@ -93,21 +91,20 @@ Section "start menu shortcut"
 
 SectionEnd
 
-Section "open after install"
 
-    ; Opens after install
+;--------------------------------
+
+
+; Displays a dialogbox after installation
+
+Function .onInstSuccess
+   MessageBox MB_YESNO "launch clear now?" IDYES OpenApp IDNO NoOpen
+  OpenApp:
     ExecShell "" '"$INSTDIR\clear.exe"'
-
-SectionEnd
-
-; Unchecked by default
-
-Section /o "show installer logs"
-
-  ; Doesn't close the installer by default so that user can look at the logs
-  SetAutoClose false
-
-SectionEnd
+    Goto EndDialog
+  NoOpen:
+  EndDialog:
+FunctionEnd
 
 
 ;--------------------------------
