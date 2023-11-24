@@ -9,7 +9,7 @@
     "serve": "vite preview",
     "tauri": "tauri"
   },
-  "license": "MIT",
+  "license": "UNLICENSE",
   "dependencies": {
     "@tauri-apps/api": "^1.5.1",
     "fuse.js": "^7.0.0",
