@@ -95,10 +95,24 @@ This project is licensed under the Unlicense License - see the UNLICENSE file fo
 
 ## Acknowledgments
 
-Libraries, code snippets, etc.
+For the full list of the open-source libraries / tools used and their licenses, please refer to the ACKNOWLEDGEMENTS file.
+
+Libraries
 * [Tauri](https://tauri.app)
 * [Solid.js](https://www.solidjs.com)
+* [Tailwind CSS](https://tailwindcss.com)
 * [Fuse.js](https://www.fusejs.io)
 * [Hint.css](https://kushagra.dev/lab/hint/)
+
+Rust Libraries
+* [open](https://crates.io/crates/open)
+* [window-shadows](https://crates.io/crates/window-shadows)
+
+Icons
 * [Basicons](https://basicons.xyz)
+
+Code Snippets
 * [Windows 10 + 11 Titlebar in CSS](https://codepen.io/agrimsrud/pen/WGgRPP)
+
+Misc
+* [Vite](https://vitejs.dev/)
