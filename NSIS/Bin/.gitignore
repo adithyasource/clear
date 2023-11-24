@@ -6,3 +6,4 @@ makensis.exe
 RegTool-x86.bin
 zip2exe.exe
 zlib1.dll
+*.exe

@@ -13,17 +13,11 @@
 
   "tauri": {
     "allowlist": {
-      "notification": {
-        "all": false
-      },
       "os": {
         "all": true
       },
       "path": {
         "all": true
-      },
-      "shell": {
-        "open": true
       },
       "window": {
         "close": true,

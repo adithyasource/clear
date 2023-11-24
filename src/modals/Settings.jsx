@@ -27,8 +27,6 @@ import { getData, getSettingsData } from "../App";
 
 import { appDataDir } from "@tauri-apps/api/path";
 
-import { open } from "@tauri-apps/api/shell";
-
 export function Settings() {
   setTimeout(() => {
     getSettingsData();
@@ -92,7 +90,9 @@ export function Settings() {
                 <button
                   className="flex items-center standardButton !w-max !m-0"
                   onClick={() => {
-                    open("https://clear.adithya.zip/update");
+                    invoke("open_explorer", {
+                      location: "https://clear.adithya.zip/update",
+                    });
                   }}>
                   new update available!
                   <span className="dark:text-[#ffffff80] text-[#12121280]">
@@ -394,14 +394,18 @@ export function Settings() {
               </div>
               <p
                 onClick={() => {
-                  open("https://github.com/adithyasource/clear/issues");
+                  invoke("open_explorer", {
+                    location: "https://github.com/adithyasource/clear/issues",
+                  });
                 }}
                 className="underline cursor-pointer">
                 feedback & suggestions
               </p>
               <p
                 onClick={() => {
-                  open("https://clear.adithya.zip/");
+                  invoke("open_explorer", {
+                    location: "https://clear.adithya.zip/",
+                  });
                 }}
                 className="underline cursor-pointer">
                 visit website
@@ -409,7 +413,9 @@ export function Settings() {
               <div>
                 <a
                   onClick={() => {
-                    open("https://adithya.zip/");
+                    invoke("open_explorer", {
+                      location: "https://adithya.zip/",
+                    });
                   }}
                   className="underline cursor-pointer">
                   made by adithya
@@ -417,7 +423,9 @@ export function Settings() {
               </div>
               <a
                 onClick={() => {
-                  open("https://ko-fi.com/adithyasource/");
+                  invoke("open_explorer", {
+                    location: "https://ko-fi.com/adithyasource",
+                  });
                 }}
                 className="underline cursor-pointer">
                 buy me a coffee

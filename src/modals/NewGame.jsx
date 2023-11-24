@@ -22,14 +22,12 @@ import {
 } from "../Signals";
 
 import { Show } from "solid-js";
-import { convertFileSrc } from "@tauri-apps/api/tauri";
+import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
 import { writeTextFile, BaseDirectory, copyFile } from "@tauri-apps/api/fs";
 
 import { getData, generateRandomString } from "../App";
 
 import { open } from "@tauri-apps/api/dialog";
-
-import { open as shellOpen } from "@tauri-apps/api/shell";
 
 export function NewGame() {
   async function addGame() {
@@ -561,13 +559,18 @@ export function NewGame() {
                   }] `}
                   onClick={async () => {
                     gameName() == undefined
-                      ? await shellOpen("https://www.steamgriddb.com/")
+                      ? invoke("open_explorer", {
+                          location: "https://www.steamgriddb.com/",
+                        })
                       : gameName() == ""
-                      ? await shellOpen("https://www.steamgriddb.com/")
-                      : await shellOpen(
-                          "https://www.steamgriddb.com/search/grids?term=" +
+                      ? invoke("open_explorer", {
+                          location: "https://www.steamgriddb.com/",
+                        })
+                      : invoke("open_explorer", {
+                          location:
+                            "https://www.steamgriddb.com/search/grids?term=" +
                             gameName(),
-                        );
+                        });
                   }}>
                   find assets
                 </button>
