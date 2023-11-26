@@ -54,7 +54,7 @@ Section "clear - video game library"
   SetOutPath $INSTDIR
   
   ; Put file there (you can add more File lines too)
-  File "..\..\src-tauri\target\release\clear.exe"
+  File "..\..\src-tauri\target\x86_64-pc-windows-msvc\release\clear.exe"
   
   ; Write the installation path into the registry
   WriteRegStr HKLM SOFTWARE\clear "Install_Dir" "$INSTDIR"

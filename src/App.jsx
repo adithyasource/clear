@@ -417,51 +417,24 @@ function App() {
       </div>
 
       {
-        // prettier - ignore
+        // Ignoring the following few lines for build since it doesnt get minified for some reason
+        // While working on it remove the "prettier-ignore" comment
+        // prettier-ignore 
       }
 
       <style jsx>{`
-        button,
-        input,
-        .panelButton {
-          border-radius: ${roundedBorders() ? "6px" : "0px"};
-        }
-        .sideBarFolder {
-          border-radius: ${roundedBorders() ? "6px" : "0px"};
-        }
-        .titleBarText {
-          font-family: ${fontName() == "Sans Serif"
-            ? "Segoe UI"
-            : fontName() == "Serif"
-            ? "Times New Roman"
-            : "IBM Plex Mono, Consolas"};
-        }
-        * {
-          font-family: ${fontName() == "Sans Serif"
-            ? "Helvetica, Arial, sans-serif"
-            : fontName() == "Serif"
-            ? "Times New Roman"
-            : "IBM Plex Mono, Consolas"};
-          color: ${currentTheme() == "light" ? "#000000" : "#ffffff"};
-        }
-        ::-webkit-scrollbar-thumb {
-          border-radius: ${roundedBorders() ? "10px" : "0px"};
-        }
-        .gameInput {
-          border-radius: ${roundedBorders() ? "6px" : "0px"};
-        }
-        .tooltip {
-          border-radius: ${roundedBorders() ? "6px" : "0px"};
-        }
-        .currentlyDragging {
-          box-shadow: 0 -3px 0 0 #646464;
-          border-top-left-radius: 0;
-          border-top-right-radius: 0;
-        }
-      `}</style>
+  button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
+  .sideBarFolder { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
+  .titleBarText { font-family: ${fontName() == "Sans Serif" ? "Segoe UI" : fontName() == "Serif" ? "Times New Roman" : "IBM Plex Mono, Consolas"}; }
+  * { font-family: ${fontName() == "Sans Serif" ? "Helvetica, Arial, sans-serif" : fontName() == "Serif" ? "Times New Roman" : "IBM Plex Mono, Consolas"}; color: ${currentTheme() == "light" ? "#000000" : "#ffffff"}; }
+  ::-webkit-scrollbar-thumb { border-radius: ${roundedBorders() ? "10px" : "0px"}; }
+  .gameInput { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
+  .tooltip { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
+  .currentlyDragging { box-shadow: 0 -3px 0 0 #646464; border-top-left-radius: 0; border-top-right-radius: 0; }
+`}</style>
 
       {
-        //prettier - ignore
+        // prettier-ignore
       }
 
       {
