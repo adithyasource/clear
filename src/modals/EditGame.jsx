@@ -499,7 +499,7 @@ export function EditGame() {
               onContextMenu={() => {
                 setEditedLocatedGridImage(null);
               }}
-              className="panelButton locatingGridImg h-[100%] aspect-[2/3] group relative overflow-hidden"
+              className="panelButton locatingGridImg h-full aspect-[2/3] group relative overflow-hidden"
               aria-label="grid/cover">
               <Show when={editedLocatedGridImage() === undefined}>
                 <img
@@ -567,7 +567,7 @@ export function EditGame() {
                           selectedGame().heroImage,
                       )}
                       alt=""
-                      className="absolute inset-0 aspect-[67/26] -z-10 h-[100%] rounded-[6px] blur-[80px] opacity-[0.6]"
+                      className="absolute inset-0 aspect-[67/26] -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.6]"
                     />
                   </Show>
                   <Show
@@ -581,7 +581,7 @@ export function EditGame() {
                     <img
                       src={convertFileSrc(editedLocatedHeroImage())}
                       alt=""
-                      className="absolute inset-0 -z-10 aspect-[67/26] h-[100%] rounded-[6px] blur-[80px] opacity-[0.6]"
+                      className="absolute inset-0 -z-10 aspect-[67/26] h-full rounded-[6px] blur-[80px] opacity-[0.6]"
                     />
                   </Show>
 

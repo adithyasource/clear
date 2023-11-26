@@ -695,9 +695,7 @@ export function SideBar() {
             </div>
           </div>
         </div>
-        <div
-          id="sideBarBottom"
-          class="absolute bottom-[20px] w-[100%] pr-[20px]">
+        <div id="sideBarBottom" class="absolute bottom-[20px] w-full pr-[20px]">
           <div className="">
             <button
               className="standardButton mt-[12px]"

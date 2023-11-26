@@ -378,7 +378,7 @@ export function NewGame() {
               onContextMenu={() => {
                 setLocatedGridImage(undefined);
               }}
-              className="panelButton locatingGridImg h-[100%] aspect-[2/3] group relative overflow-hidden">
+              className="panelButton locatingGridImg h-full aspect-[2/3] group relative overflow-hidden">
               {/* <Show when={foundGridImage()}>
                 <img
                   className="absolute inset-0"
@@ -425,12 +425,12 @@ export function NewGame() {
                     <img
                       src={foundHeroImage()}
                       alt=""
-                      className="absolute inset-0 h-[100%] rounded-[6px]"
+                      className="absolute inset-0 h-full rounded-[6px]"
                     />
                     <img
                       src={foundHeroImage()}
                       alt=""
-                      className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px] opacity-[0.4]"
+                      className="absolute inset-0 -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.4]"
                     />
                     <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
                       hero image
@@ -443,12 +443,12 @@ export function NewGame() {
                     <img
                       src={convertFileSrc(locatedHeroImage())}
                       alt=""
-                      className="absolute inset-0 h-[100%] rounded-[6px]"
+                      className="absolute inset-0 h-full rounded-[6px]"
                     />
                     <img
                       src={convertFileSrc(locatedHeroImage())}
                       alt=""
-                      className="absolute inset-0 -z-10 h-[100%] rounded-[6px] blur-[80px] opacity-[0.4]"
+                      className="absolute inset-0 -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.4]"
                     />
                     <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
                       hero image

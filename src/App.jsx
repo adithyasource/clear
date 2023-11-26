@@ -580,7 +580,7 @@ function App() {
             (searchValue() == "" || searchValue() == undefined)
           }>
           <div
-            className={`flex items-center justify-center flex-col  w-[100%] absolute ${
+            className={`flex items-center justify-center flex-col  w-full absolute ${
               windowsVersion() == "10+11" ? "h-[calc(100vh-32px)]" : "h-[100vh]"
             } overflow-y-scroll py-[20px] pr-[30px]  ${
               showSideBar() && windowWidth() >= 1000
@@ -689,7 +689,7 @@ function App() {
           </div>
         </Show>
         <div
-          className={`w-[100%] absolute ${
+          className={`w-full absolute ${
             windowsVersion() == "10+11" ? "h-[calc(100vh-32px)]" : "h-[100vh]"
           } overflow-y-scroll py-[20px] pr-[30px]  ${
             showSideBar() && windowWidth() >= 1000
@@ -743,7 +743,7 @@ function App() {
                                   when={
                                     !libraryData().games[gameName].favourite
                                   }>
-                                  <div className="relative w-[100%]">
+                                  <div className="relative w-full">
                                     <Show
                                       when={
                                         libraryData().games[gameName].gridImage
@@ -796,7 +796,7 @@ function App() {
                                   when={
                                     libraryData().games[gameName].favourite
                                   }>
-                                  <div className="relative w-[100%]">
+                                  <div className="relative w-full">
                                     <Show
                                       when={
                                         libraryData().games[gameName].gridImage
@@ -854,7 +854,7 @@ function App() {
                                         alt=""
                                       />
                                       <div
-                                        className="dark:bg-[#fff] bg-[#000]  opacity-[0%] dark:opacity-[10%] w-[100%] aspect-[2/3]"
+                                        className="dark:bg-[#fff] bg-[#000]  opacity-[0%] dark:opacity-[10%] w-full aspect-[2/3]"
                                         alt=""
                                       />
                                     </div>
@@ -938,7 +938,7 @@ function App() {
                             }}>
                             <Show
                               when={!libraryData().games[gameName].favourite}>
-                              <div className="relative w-[100%]">
+                              <div className="relative w-full">
                                 <Show
                                   when={
                                     libraryData().games[gameName].gridImage
@@ -1039,7 +1039,7 @@ function App() {
                                   alt=""
                                 />
                                 <div
-                                  className="dark:bg-[#fff] bg-[#000]  opacity-[0%] dark:opacity-[10%] w-[100%] aspect-[2/3]"
+                                  className="dark:bg-[#fff] bg-[#000]  opacity-[0%] dark:opacity-[10%] w-full aspect-[2/3]"
                                   alt=""
                                 />
                               </div>
