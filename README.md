@@ -1,9 +1,10 @@
 # clear
  
-hey there! this project is still in the works, any pr's are welcome!
-"watch" the repo to be notified of updates, 1.0 will be out soon!
+hey there! this project is still in the works, 1.0 will be out soon!
 
-![image](https://github.com/adithyasource/clear/assets/140549783/33e951c0-61dd-4ecd-9c0e-d1c413e6f888)
+[roadmap](https://adithyaa.notion.site/1557ca8ac05e4aee8ed35e270c58ee48?v=64af609e060c4a39ba527d8f2a1ee8e2)
+
+![image](https://github.com/adithyasource/clear/assets/140549783/41310e7e-8f7e-4846-a6d9-8c8ea7d78735)
 
 
 ## Feedback
