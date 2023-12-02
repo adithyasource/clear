@@ -51,6 +51,12 @@ export const [foundHeroImage, setFoundHeroImage] = createSignal(false);
 export const [foundLogoImage, setFoundLogoImage] = createSignal(false);
 export const [foundIconImage, setFoundIconImage] = createSignal(false);
 export const [SGDBGames, setSGDBGames] = createSignal();
+export const [selectedGameId, setSelectedGameId] = createSignal();
+
+export const [foundGridImageIndex, setFoundGridImageIndex] = createSignal(0);
+export const [foundHeroImageIndex, setFoundHeroImageIndex] = createSignal(0);
+export const [foundLogoImageIndex, setFoundLogoImageIndex] = createSignal(0);
+export const [foundIconImageIndex, setFoundIconImageIndex] = createSignal(0);
 
 // !? Update Signals
 export const [editedGameName, setEditedGameName] = createSignal();

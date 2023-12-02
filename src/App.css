@@ -96,6 +96,10 @@ img {
   display: none;
 }
 
+.SGDBGamesContainer::-webkit-scrollbar {
+  display: none;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }

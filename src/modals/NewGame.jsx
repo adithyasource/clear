@@ -29,6 +29,16 @@ import {
   setFoundIconImage,
   setSGDBGames,
   SGDBGames,
+  selectedGameId,
+  setSelectedGameId,
+  foundGridImageIndex,
+  setFoundGridImageIndex,
+  foundHeroImageIndex,
+  setFoundHeroImageIndex,
+  foundLogoImageIndex,
+  setFoundLogoImageIndex,
+  foundIconImageIndex,
+  setFoundIconImageIndex,
 } from "../Signals";
 
 import { Show } from "solid-js";
@@ -204,12 +214,7 @@ export function NewGame() {
     );
   }
 
-  // ! Scrapped code for auto fetching game assets
-  // ! Will revisit this feature in a future update
-
-  async function getGameAssets() {
-    // ! lets try search in sgdb
-
+  async function selectGameName() {
     const client = await getClient();
 
     const gameData = await client.get(
@@ -226,54 +231,62 @@ export function NewGame() {
     setSGDBGames(gameData.data.data);
 
     console.log(SGDBGames());
-    // const grids = await client.get(
-    //   `https://www.steamgriddb.com/api/v2/grids/game/${sgdbGameId}`,
-    //   {
-    //     timeout: 30,
-    //     responseType: ResponseType.JSON,
-    //     headers: {
-    //       Authorization: "Bearer 4e602b67332f3b8afff8d994b40dc1b7",
-    //     },
-    //   },
-    // );
+  }
 
-    // const heroes = await client.get(
-    //   `https://www.steamgriddb.com/api/v2/heroes/game/${sgdbGameId}`,
-    //   {
-    //     timeout: 30,
-    //     responseType: ResponseType.JSON,
-    //     headers: {
-    //       Authorization: "Bearer 4e602b67332f3b8afff8d994b40dc1b7",
-    //     },
-    //   },
-    // );
+  async function getGameAssets() {
+    const client = await getClient();
 
-    // const logos = await client.get(
-    //   `https://www.steamgriddb.com/api/v2/logos/game/${sgdbGameId}`,
-    //   {
-    //     timeout: 30,
-    //     responseType: ResponseType.JSON,
-    //     headers: {
-    //       Authorization: "Bearer 4e602b67332f3b8afff8d994b40dc1b7",
-    //     },
-    //   },
-    // );
+    setFoundGridImage(
+      await client.get(
+        `https://www.steamgriddb.com/api/v2/grids/game/${selectedGameId()}`,
+        {
+          timeout: 30,
+          responseType: ResponseType.JSON,
+          headers: {
+            Authorization: "Bearer 4e602b67332f3b8afff8d994b40dc1b7",
+          },
+        },
+      ),
+    );
 
-    // const icons = await client.get(
-    //   `https://www.steamgriddb.com/api/v2/icons/game/${sgdbGameId}`,
-    //   {
-    //     timeout: 30,
-    //     responseType: ResponseType.JSON,
-    //     headers: {
-    //       Authorization: "Bearer 4e602b67332f3b8afff8d994b40dc1b7",
-    //     },
-    //   },
-    // );
+    setFoundHeroImage(
+      await client.get(
+        `https://www.steamgriddb.com/api/v2/heroes/game/${selectedGameId()}`,
+        {
+          timeout: 30,
+          responseType: ResponseType.JSON,
+          headers: {
+            Authorization: "Bearer 4e602b67332f3b8afff8d994b40dc1b7",
+          },
+        },
+      ),
+    );
 
-    // setFoundGridImage(grids.data["data"][0].thumb);
-    // setFoundHeroImage(heroes.data["data"][0].thumb);
-    // setFoundLogoImage(logos.data["data"][0].thumb);
-    // setFoundIconImage(icons.data["data"][0].thumb);
+    setFoundLogoImage(
+      await client.get(
+        `https://www.steamgriddb.com/api/v2/logos/game/${selectedGameId()}`,
+        {
+          timeout: 30,
+          responseType: ResponseType.JSON,
+          headers: {
+            Authorization: "Bearer 4e602b67332f3b8afff8d994b40dc1b7",
+          },
+        },
+      ),
+    );
+
+    setFoundIconImage(
+      await client.get(
+        `https://www.steamgriddb.com/api/v2/icons/game/${selectedGameId()}`,
+        {
+          timeout: 30,
+          responseType: ResponseType.JSON,
+          headers: {
+            Authorization: "Bearer 4e602b67332f3b8afff8d994b40dc1b7",
+          },
+        },
+      ),
+    );
   }
 
   return (
@@ -376,6 +389,18 @@ export function NewGame() {
           <div>
             <div
               onClick={locateGridImage}
+              onWheel={(e) => {
+                if (SGDBGames()) {
+                  if (e.deltaY == -100) {
+                    setFoundGridImageIndex((i) => i + 1);
+                  }
+                  if (e.deltaY == 100) {
+                    setFoundGridImageIndex((i) => (i == 0 ? 0 : i - 1));
+                  }
+
+                  console.log(foundGridImageIndex());
+                }
+              }}
               onContextMenu={() => {
                 setLocatedGridImage(undefined);
               }}
@@ -383,7 +408,9 @@ export function NewGame() {
               <Show when={foundGridImage()}>
                 <img
                   className="absolute inset-0"
-                  src={foundGridImage()}
+                  src={
+                    foundGridImage().data["data"][foundGridImageIndex()].thumb
+                  }
                   alt=""
                 />
                 <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
@@ -416,6 +443,18 @@ export function NewGame() {
               <div>
                 <div
                   onClick={locateHeroImage}
+                  onWheel={(e) => {
+                    if (SGDBGames()) {
+                      if (e.deltaY == -100) {
+                        setFoundHeroImageIndex((i) => i + 1);
+                      }
+                      if (e.deltaY == 100) {
+                        setFoundHeroImageIndex((i) => (i == 0 ? 0 : i - 1));
+                      }
+
+                      console.log(foundGridImageIndex());
+                    }
+                  }}
                   onContextMenu={() => {
                     setLocatedHeroImage(undefined);
                   }}
@@ -425,12 +464,18 @@ export function NewGame() {
                     when={foundHeroImage()}
                     className="absolute inset-0 overflow-hidden">
                     <img
-                      src={foundHeroImage()}
+                      src={
+                        foundHeroImage().data["data"][foundHeroImageIndex()]
+                          .thumb
+                      }
                       alt=""
                       className="absolute inset-0 h-full rounded-[6px]"
                     />
                     <img
-                      src={foundHeroImage()}
+                      src={
+                        foundHeroImage().data["data"][foundHeroImageIndex()]
+                          .thumb
+                      }
                       alt=""
                       className="absolute inset-0 -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.4]"
                     />
@@ -468,9 +513,27 @@ export function NewGame() {
               <Show when={foundLogoImage()}>
                 <div
                   onClick={locateLogo}
+                  onWheel={(e) => {
+                    if (SGDBGames()) {
+                      if (e.deltaY == -100) {
+                        setFoundLogoImageIndex((i) => i + 1);
+                      }
+                      if (e.deltaY == 100) {
+                        setFoundLogoImageIndex((i) => (i == 0 ? 0 : i - 1));
+                      }
+
+                      console.log(foundGridImageIndex());
+                    }
+                  }}
                   className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[20px] left-[20px] panelButton"
                   aria-label="logo">
-                  <img src={foundLogoImage()} alt="" className="h-[60px] " />
+                  <img
+                    src={
+                      foundLogoImage().data["data"][foundLogoImageIndex()].thumb
+                    }
+                    alt=""
+                    className="h-[60px] "
+                  />
                   <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
                     logo
                   </span>
@@ -517,13 +580,27 @@ export function NewGame() {
               <Show when={foundIconImage()}>
                 <div
                   onClick={locateIcon}
+                  onWheel={(e) => {
+                    if (SGDBGames()) {
+                      if (e.deltaY == -100) {
+                        setFoundIconImageIndex((i) => i + 1);
+                      }
+                      if (e.deltaY == 100) {
+                        setFoundIconImageIndex((i) => (i == 0 ? 0 : i - 1));
+                      }
+
+                      console.log(foundGridImageIndex());
+                    }
+                  }}
                   onContextMenu={() => {
                     setLocatedIcon(undefined);
                   }}
                   className="relative !bg-[#27272700] group "
                   aria-label="logo">
                   <img
-                    src={foundIconImage()}
+                    src={
+                      foundIconImage().data["data"][foundIconImageIndex()].thumb
+                    }
                     alt=""
                     className="w-[40px] h-[40px]"
                   />
@@ -601,7 +678,7 @@ export function NewGame() {
                   className={`!w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer standardButton  text-[#ffffff80] rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }] `}
-                  onClick={getGameAssets}>
+                  onClick={selectGameName}>
                   auto find assets
                 </button>
               </div>
@@ -632,12 +709,61 @@ export function NewGame() {
         </div>
 
         <Show when={SGDBGames()}>
-          <div className="dark:bg-[#272727cc] bg-[#E8E8E8cc] gameInput flex items-center backdrop-blur-[10px]">
-            <For each={SGDBGames()}>
-              {(folderName) => {
-                return <button>{folderName.name}</button>;
-              }}
-            </For>
+          <div className="dark:bg-[#272727cc] bg-[#E8E8E8cc] gameInput flex backdrop-blur-[10px] max-large:w-[61rem] w-[84rem]">
+            <button
+              onClick={() => {
+                document.getElementById("SGDBGamesContainer").scrollLeft -= 40;
+              }}>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M14 8L10 12L14 16"
+                  stroke="rgba(255,255,255,0.5)"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path>
+              </svg>
+            </button>
+            <div
+              id="SGDBGamesContainer"
+              className="flex gap-[5px] overflow-x-auto SGDBGamesContainer scroll-smooth">
+              <For each={SGDBGames()}>
+                {(foundGame) => {
+                  return (
+                    <button
+                      className="flex-shrink-0"
+                      onClick={() => {
+                        setSelectedGameId(foundGame.id);
+                        getGameAssets();
+                      }}>
+                      {foundGame.name}
+                    </button>
+                  );
+                }}
+              </For>
+            </div>
+            <button
+              onClick={() => {
+                document.getElementById("SGDBGamesContainer").scrollLeft += 40;
+              }}>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M10 8L14 12L10 16"
+                  stroke="rgba(255,255,255,0.5)"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path>
+              </svg>
+            </button>
           </div>
         </Show>
       </div>
