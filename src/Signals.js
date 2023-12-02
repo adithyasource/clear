@@ -46,6 +46,11 @@ export const [locatedIcon, setLocatedIcon] = createSignal();
 export const [locatedGame, setlocatedGame] = createSignal();
 export const [folderName, setFolderName] = createSignal();
 export const [hideFolder, setHideFolder] = createSignal(false);
+export const [foundGridImage, setFoundGridImage] = createSignal(false);
+export const [foundHeroImage, setFoundHeroImage] = createSignal(false);
+export const [foundLogoImage, setFoundLogoImage] = createSignal(false);
+export const [foundIconImage, setFoundIconImage] = createSignal(false);
+export const [SGDBGames, setSGDBGames] = createSignal();
 
 // !? Update Signals
 export const [editedGameName, setEditedGameName] = createSignal();
