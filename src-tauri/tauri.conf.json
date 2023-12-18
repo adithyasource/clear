@@ -14,10 +14,6 @@
 
   "tauri": {
     "allowlist": {
-      "http": {
-        "all": true,
-        "scope": ["https://www.steamgriddb.com/api/v2*"]
-      },
       "os": {
         "all": true
       },
@@ -25,12 +21,7 @@
         "all": true
       },
       "window": {
-        "close": true,
-        "minimize": true,
-        "maximize": true,
-        "startDragging": true,
-        "unmaximize": true,
-        "setDecorations": true
+        "close": true
       },
       "fs": {
         "readFile": true,
@@ -60,10 +51,10 @@
         "title": "clear",
         "width": 1220,
         "height": 760,
-        "decorations": false,
         "fileDropEnabled": false,
         "minHeight": 390,
-        "minWidth": 640
+        "minWidth": 640,
+        "theme": "Dark"
       }
     ]
   }

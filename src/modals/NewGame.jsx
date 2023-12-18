@@ -49,10 +49,6 @@ import { getData, generateRandomString } from "../App";
 
 import { open } from "@tauri-apps/api/dialog";
 
-import Fuse from "fuse.js";
-
-import { fetch, getClient, ResponseType } from "@tauri-apps/api/http";
-
 export function NewGame() {
   async function addGame() {
     if (gameName() == "" || gameName() == undefined) {
@@ -211,81 +207,6 @@ export function NewGame() {
           },
         ],
       }),
-    );
-  }
-
-  async function selectGameName() {
-    const client = await getClient();
-
-    const gameData = await client.get(
-      `https://www.steamgriddb.com/api/v2/search/autocomplete/${gameName()}`,
-      {
-        timeout: 30,
-        responseType: ResponseType.JSON,
-        headers: {
-          Authorization: "Bearer 4e602b67332f3b8afff8d994b40dc1b7",
-        },
-      },
-    );
-
-    setSGDBGames(gameData.data.data);
-
-    console.log(SGDBGames());
-  }
-
-  async function getGameAssets() {
-    const client = await getClient();
-
-    setFoundGridImage(
-      await client.get(
-        `https://www.steamgriddb.com/api/v2/grids/game/${selectedGameId()}`,
-        {
-          timeout: 30,
-          responseType: ResponseType.JSON,
-          headers: {
-            Authorization: "Bearer 4e602b67332f3b8afff8d994b40dc1b7",
-          },
-        },
-      ),
-    );
-
-    setFoundHeroImage(
-      await client.get(
-        `https://www.steamgriddb.com/api/v2/heroes/game/${selectedGameId()}`,
-        {
-          timeout: 30,
-          responseType: ResponseType.JSON,
-          headers: {
-            Authorization: "Bearer 4e602b67332f3b8afff8d994b40dc1b7",
-          },
-        },
-      ),
-    );
-
-    setFoundLogoImage(
-      await client.get(
-        `https://www.steamgriddb.com/api/v2/logos/game/${selectedGameId()}`,
-        {
-          timeout: 30,
-          responseType: ResponseType.JSON,
-          headers: {
-            Authorization: "Bearer 4e602b67332f3b8afff8d994b40dc1b7",
-          },
-        },
-      ),
-    );
-
-    setFoundIconImage(
-      await client.get(
-        `https://www.steamgriddb.com/api/v2/icons/game/${selectedGameId()}`,
-        {
-          timeout: 30,
-          responseType: ResponseType.JSON,
-          headers: {
-            Authorization: "Bearer 4e602b67332f3b8afff8d994b40dc1b7",
-          },
-        },
-      ),
     );
   }
 
@@ -673,13 +594,6 @@ export function NewGame() {
                         });
                   }}>
                   find assets
-                </button>
-                <button
-                  className={`!w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer standardButton  text-[#ffffff80] rounded-[${
-                    roundedBorders() ? "6px" : "0px"
-                  }] `}
-                  onClick={selectGameName}>
-                  auto find assets
                 </button>
               </div>
 

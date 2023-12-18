@@ -20,8 +20,6 @@ export const [selectedFolder, setSelectedFolder] = createSignal([]);
 export const [currentGames, setCurrentGames] = createSignal([]);
 export const [currentFolders, setCurrentFolders] = createSignal([]);
 export const [searchValue, setSearchValue] = createSignal();
-export const [maximizeIconToggle, setMaximizeIconToggle] = createSignal(false);
-export const [windowsVersion, setWindowsVersion] = createSignal();
 export const [showDeleteConfirm, setShowDeleteConfirm] = createSignal(false);
 
 // !? Styles Signals
