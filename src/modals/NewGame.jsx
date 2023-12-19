@@ -580,14 +580,14 @@ export function NewGame() {
                   }] `}
                   onClick={async () => {
                     gameName() == undefined
-                      ? invoke("open_explorer", {
+                      ? invoke("open_location", {
                           location: "https://www.steamgriddb.com/",
                         })
                       : gameName() == ""
-                      ? invoke("open_explorer", {
+                      ? invoke("open_location", {
                           location: "https://www.steamgriddb.com/",
                         })
-                      : invoke("open_explorer", {
+                      : invoke("open_location", {
                           location:
                             "https://www.steamgriddb.com/search/grids?term=" +
                             gameName(),

@@ -207,7 +207,7 @@ export async function getData() {
 }
 
 export async function openGame(gameLocation) {
-  invoke("open_explorer", {
+  invoke("open_location", {
     location: gameLocation,
   });
 

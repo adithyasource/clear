@@ -90,7 +90,7 @@ export function Settings() {
                 <button
                   className="flex items-center standardButton !w-max !m-0"
                   onClick={() => {
-                    invoke("open_explorer", {
+                    invoke("open_location", {
                       location: "https://clear.adithya.zip/update",
                     });
                   }}>
@@ -286,7 +286,7 @@ export function Settings() {
                 onClick={async () => {
                   const appDataDirPath = await appDataDir();
 
-                  invoke("open_explorer", {
+                  invoke("open_location", {
                     location: appDataDirPath,
                   });
                 }}>
@@ -394,7 +394,7 @@ export function Settings() {
               </div>
               <p
                 onClick={() => {
-                  invoke("open_explorer", {
+                  invoke("open_location", {
                     location: "https://github.com/adithyasource/clear/issues",
                   });
                 }}
@@ -403,7 +403,7 @@ export function Settings() {
               </p>
               <p
                 onClick={() => {
-                  invoke("open_explorer", {
+                  invoke("open_location", {
                     location: "https://clear.adithya.zip/",
                   });
                 }}
@@ -413,7 +413,7 @@ export function Settings() {
               <div>
                 <a
                   onClick={() => {
-                    invoke("open_explorer", {
+                    invoke("open_location", {
                       location: "https://adithya.zip/",
                     });
                   }}
@@ -423,7 +423,7 @@ export function Settings() {
               </div>
               <a
                 onClick={() => {
-                  invoke("open_explorer", {
+                  invoke("open_location", {
                     location: "https://ko-fi.com/adithyasource",
                   });
                 }}
