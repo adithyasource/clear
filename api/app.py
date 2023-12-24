@@ -13,7 +13,9 @@ def handleRequest():
         return "hey there, how'd you end up here? this is the main website: https://clear.adithya.zip"
 
     if request.args.get("version"):
-        return jsonify({"clearVersion": "0.18.0"})
+        response = jsonify({"clearVersion": "0.18.0"})
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
 
     if request.args.get("gameName"):
         gameName = str(request.args.get("gameName"))
@@ -24,7 +26,9 @@ def handleRequest():
             timeout=30,
         ).content
 
-        return jsonify(json.loads(gameData))
+        response = jsonify(json.loads(gameData))
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
 
     return "hey there, how'd you end up here? this is the main website: https://clear.adithya.zip"
 
