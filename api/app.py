@@ -30,6 +30,19 @@ def handleRequest():
         response.headers.add("Access-Control-Allow-Origin", "*")
         return response
 
+    if request.args.get("steamID"):
+        steamID = str(request.args.get("steamID"))
+
+        gameData = requests.get(
+            f"https://www.steamgriddb.com/api/v2/games/steam/{steamID}",
+            headers={"Authorization": "Bearer 02469044c89b4c09df44b6a79579018d"},
+            timeout=30,
+        ).content
+
+        response = jsonify(json.loads(gameData))
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
+
     return "hey there, how'd you end up here? this is the main website: https://clear.adithya.zip"
 
 
