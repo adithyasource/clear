@@ -20,9 +20,6 @@
       "path": {
         "all": true
       },
-      "window": {
-        "close": true
-      },
       "fs": {
         "readFile": true,
         "writeFile": true,

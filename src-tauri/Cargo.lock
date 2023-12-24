@@ -48,6 +48,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a4668cab20f66d8d020e1fbc0ebe47217433c1b6c8f2040faf858554e394ace6"
 
 [[package]]
+name = "ascii"
+version = "0.9.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "eab1c04a571841102f5345a8fc0f6bb3d31c315dec879b5c6e42e40ce7ffa34e"
+
+[[package]]
 name = "atk"
 version = "0.15.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -90,6 +96,15 @@ dependencies = [
  "miniz_oxide",
  "object",
  "rustc-demangle",
+]
+
+[[package]]
+name = "base64"
+version = "0.10.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0b25d992356d2eb0ed82172f5248873db5560c4721f564b13cb5193bda5e668e"
+dependencies = [
+ "byteorder",
 ]
 
 [[package]]
@@ -264,6 +279,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "chunked_transfer"
+version = "1.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6e4de3bc4ea267985becf712dc6d9eed8b04c953b3fcfb339ebc87acd9804901"
+
+[[package]]
 name = "clear"
 version = "0.18.0"
 dependencies = [
@@ -271,6 +292,7 @@ dependencies = [
  "serde_json",
  "tauri",
  "tauri-build",
+ "ureq",
 ]
 
 [[package]]
@@ -325,6 +347,16 @@ name = "convert_case"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6245d59a3e82a7fc217c5828a6692dbc6dfb63a0c8c90495621f7b9d79704a0e"
+
+[[package]]
+name = "cookie"
+version = "0.11.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "be2018768ed1d848cc4d347d551546474025ba820e5db70e4c9aaa349f678bd7"
+dependencies = [
+ "percent-encoding 2.3.0",
+ "time 0.1.45",
+]
 
 [[package]]
 name = "core-foundation"
@@ -694,7 +726,7 @@ version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a62bc1cf6f830c2ec14a513a9fb124d0a213a629668a4186f329db21fe045652"
 dependencies = [
- "percent-encoding",
+ "percent-encoding 2.3.0",
 ]
 
 [[package]]
@@ -1198,6 +1230,17 @@ name = "ident_case"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b9e0384b61958566e926dc50660321d12159025e767c18e043daf26b70104c39"
+
+[[package]]
+name = "idna"
+version = "0.1.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "38f09e0f0b1fb55fdee1f17470ad800da77af5186a1a76c026b679358b7e844e"
+dependencies = [
+ "matches",
+ "unicode-bidi",
+ "unicode-normalization",
+]
 
 [[package]]
 name = "idna"
@@ -1753,6 +1796,12 @@ dependencies = [
 
 [[package]]
 name = "percent-encoding"
+version = "1.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "31010dd2e1ac33d5b46a5b413495239882813e0369f8ed8a5e266f173602f831"
+
+[[package]]
+name = "percent-encoding"
 version = "2.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9b2a4787296e9989611394c33f193f676704af1686e70b8f8033ab5ba9a35a94"
@@ -1894,7 +1943,7 @@ dependencies = [
  "line-wrap",
  "quick-xml",
  "serde",
- "time",
+ "time 0.3.28",
 ]
 
 [[package]]
@@ -1969,6 +2018,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3d433d9f1a3e8c1263d9456598b16fec66f4acc9a74dacffd35c7bb09b3a1328"
 dependencies = [
  "unicode-ident",
+]
+
+[[package]]
+name = "qstring"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "545ec057a36a93e25fb5883baed912e4984af4e2543bbf0e3463d962e0408469"
+dependencies = [
+ "percent-encoding 1.0.1",
 ]
 
 [[package]]
@@ -2174,6 +2232,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "ring"
+version = "0.14.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "426bc186e3e95cac1e4a4be125a4aca7e84c2d616ffc02244eef36e2a60a093c"
+dependencies = [
+ "cc",
+ "lazy_static",
+ "libc",
+ "spin",
+ "untrusted",
+ "winapi",
+]
+
+[[package]]
 name = "rustc-demangle"
 version = "0.1.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2199,6 +2271,20 @@ dependencies = [
  "libc",
  "linux-raw-sys",
  "windows-sys 0.48.0",
+]
+
+[[package]]
+name = "rustls"
+version = "0.15.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f271e3552cd835fa28c541c34a7e8fdd8cdff09d77fe4eb8f6c42e87a11b096e"
+dependencies = [
+ "base64 0.10.1",
+ "log",
+ "ring",
+ "sct",
+ "untrusted",
+ "webpki",
 ]
 
 [[package]]
@@ -2239,6 +2325,16 @@ name = "scopeguard"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
+
+[[package]]
+name = "sct"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2f5adf8fbd58e1b1b52699dc8bed2630faecb6d8c7bee77d009d6bbe4af569b9"
+dependencies = [
+ "ring",
+ "untrusted",
+]
 
 [[package]]
 name = "selectors"
@@ -2334,7 +2430,7 @@ dependencies = [
  "serde",
  "serde_json",
  "serde_with_macros",
- "time",
+ "time 0.3.28",
 ]
 
 [[package]]
@@ -2455,6 +2551,12 @@ dependencies = [
  "libc",
  "system-deps 5.0.0",
 ]
+
+[[package]]
+name = "spin"
+version = "0.5.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6e63cff320ae2c57904679ba7cb63280a3dc4613885beafb148ee7bf9aa9042d"
 
 [[package]]
 name = "stable_deref_trait"
@@ -2661,7 +2763,7 @@ dependencies = [
  "objc",
  "once_cell",
  "os_info",
- "percent-encoding",
+ "percent-encoding 2.3.0",
  "rand 0.8.5",
  "raw-window-handle",
  "rfd",
@@ -2680,7 +2782,7 @@ dependencies = [
  "tempfile",
  "thiserror",
  "tokio",
- "url",
+ "url 2.4.1",
  "uuid",
  "webkit2gtk",
  "webview2-com",
@@ -2725,7 +2827,7 @@ dependencies = [
  "sha2",
  "tauri-utils",
  "thiserror",
- "time",
+ "time 0.3.28",
  "uuid",
  "walkdir",
 ]
@@ -2759,7 +2861,7 @@ dependencies = [
  "serde_json",
  "tauri-utils",
  "thiserror",
- "url",
+ "url 2.4.1",
  "uuid",
  "webview2-com",
  "windows 0.39.0",
@@ -2773,7 +2875,7 @@ checksum = "8141d72b6b65f2008911e9ef5b98a68d1e3413b7a1464e8f85eb3673bb19a895"
 dependencies = [
  "cocoa",
  "gtk",
- "percent-encoding",
+ "percent-encoding 2.3.0",
  "rand 0.8.5",
  "raw-window-handle",
  "tauri-runtime",
@@ -2809,7 +2911,7 @@ dependencies = [
  "serde_json",
  "serde_with",
  "thiserror",
- "url",
+ "url 2.4.1",
  "walkdir",
  "windows 0.39.0",
 ]
@@ -2882,6 +2984,17 @@ checksum = "3fdd6f064ccff2d6567adcb3873ca630700f00b5ad3f060c25b5dcfd9a4ce152"
 dependencies = [
  "cfg-if",
  "once_cell",
+]
+
+[[package]]
+name = "time"
+version = "0.1.45"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1b797afad3f312d1c66a56d11d0316f916356d11bd158fbc6ca6389ff6bf805a"
+dependencies = [
+ "libc",
+ "wasi 0.10.0+wasi-snapshot-preview1",
+ "winapi",
 ]
 
 [[package]]
@@ -3087,14 +3200,49 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1dd624098567895118886609431a7c3b8f516e41d30e0643f03d94592a147e36"
 
 [[package]]
+name = "untrusted"
+version = "0.6.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "55cd1f4b4e96b46aeb8d4855db4a7a9bd96eeeb5c6a1ab54593328761642ce2f"
+
+[[package]]
+name = "ureq"
+version = "0.9.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6e046b116c4f6d0c1f8bb1ec113bad6d0b0fdd28041a83c51c92a5feb7182c8c"
+dependencies = [
+ "ascii",
+ "base64 0.10.1",
+ "chunked_transfer",
+ "cookie",
+ "lazy_static",
+ "qstring",
+ "rustls",
+ "url 1.7.2",
+ "webpki",
+ "webpki-roots",
+]
+
+[[package]]
+name = "url"
+version = "1.7.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dd4e7c0d531266369519a4aa4f399d748bd37043b00bde1e4ff1f60a120b355a"
+dependencies = [
+ "idna 0.1.5",
+ "matches",
+ "percent-encoding 1.0.1",
+]
+
+[[package]]
 name = "url"
 version = "2.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "143b538f18257fac9cad154828a57c6bf5157e1aa604d4816b5995bf6de87ae5"
 dependencies = [
  "form_urlencoded",
- "idna",
- "percent-encoding",
+ "idna 0.4.0",
+ "percent-encoding 2.3.0",
  "serde",
 ]
 
@@ -3172,6 +3320,12 @@ name = "wasi"
 version = "0.9.0+wasi-snapshot-preview1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cccddf32554fecc6acb585f82a32a72e28b48f8c4c1883ddfeeeaa96f7d8e519"
+
+[[package]]
+name = "wasi"
+version = "0.10.0+wasi-snapshot-preview1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1a143597ca7c7793eff794def352d41792a93c481eb1042423ff7ff72ba2c31f"
 
 [[package]]
 name = "wasi"
@@ -3300,6 +3454,26 @@ dependencies = [
  "pkg-config",
  "soup2-sys",
  "system-deps 6.1.1",
+]
+
+[[package]]
+name = "webpki"
+version = "0.19.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4f7e1cd7900a3a6b65a3e8780c51a3e6b59c0e2c55c6dc69578c288d69f7d082"
+dependencies = [
+ "ring",
+ "untrusted",
+]
+
+[[package]]
+name = "webpki-roots"
+version = "0.16.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c10fa4212003ba19a564f25cd8ab572c6791f99a03cc219c13ed35ccab00de0e"
+dependencies = [
+ "untrusted",
+ "webpki",
 ]
 
 [[package]]
@@ -3680,7 +3854,7 @@ dependencies = [
  "soup2",
  "tao",
  "thiserror",
- "url",
+ "url 2.4.1",
  "webkit2gtk",
  "webkit2gtk-sys",
  "webview2-com",

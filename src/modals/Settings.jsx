@@ -33,7 +33,7 @@ export function Settings() {
   }, 50);
 
   onMount(() => {
-    fetch("https://api.npoint.io/98d7ebecdd5a8bc23d4c").then((res) =>
+    fetch("https://clear-api.vercel.app/?version=a").then((res) =>
       res.json().then((jsonres) => {
         setLatestVersion(jsonres.clearVersion);
         latestVersion().replaceAll(".", "") > appVersion().replaceAll(".", "")

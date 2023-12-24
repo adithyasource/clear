@@ -213,7 +213,7 @@ export async function openGame(gameLocation) {
 
   if (quitAfterOpen() == true || quitAfterOpen() == undefined) {
     setTimeout(async () => {
-      appWindow.close();
+      invoke("close_app");
     }, 500);
   } else {
     setShowToast(true);
@@ -324,7 +324,7 @@ function App() {
   });
 
   async function closeApp() {
-    appWindow.close();
+    invoke("close_app");
   }
 
   async function toggleSideBar() {
@@ -374,13 +374,7 @@ function App() {
 
   onMount(async () => {
     await getData();
-
-    appWindow.onResized(() => {
-      appWindow.isMaximized().then((x) => {
-        setMaximizeIconToggle(x);
-        console.log(x);
-      });
-
+    window.addEventListener("resize", () => {
       setWindowWidth(window.innerWidth);
     });
   });
