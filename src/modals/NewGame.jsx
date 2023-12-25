@@ -432,13 +432,10 @@ export function NewGame() {
                     setFoundGridImageIndex((i) =>
                       i == foundGridImage().length - 1 ? 0 : i + 1,
                     );
-
                     setShowGridImageLoading(true);
                   }
 
                   if (e.deltaY == 100) {
-                    console.log("down");
-
                     if (foundGridImageIndex() != 0) {
                       setFoundGridImageIndex((i) => i - 1);
                       setShowGridImageLoading(true);
@@ -446,10 +443,6 @@ export function NewGame() {
                       setShowGridImageLoading(false);
                     }
                   }
-
-                  console.log(foundGridImage().length);
-
-                  console.log(foundGridImageIndex());
                 }
               }}
               onContextMenu={() => {
@@ -525,13 +518,20 @@ export function NewGame() {
                   onWheel={(e) => {
                     if (SGDBGames()) {
                       if (e.deltaY == -100) {
-                        setFoundHeroImageIndex((i) => i + 1);
-                      }
-                      if (e.deltaY == 100) {
-                        setFoundHeroImageIndex((i) => (i == 0 ? 0 : i - 1));
+                        setFoundHeroImageIndex((i) =>
+                          i == foundHeroImage().length - 1 ? 0 : i + 1,
+                        );
+                        setShowHeroImageLoading(true);
                       }
 
-                      setShowHeroImageLoading(true);
+                      if (e.deltaY == 100) {
+                        if (foundHeroImageIndex() != 0) {
+                          setFoundHeroImageIndex((i) => i - 1);
+                          setShowHeroImageLoading(true);
+                        } else {
+                          setShowHeroImageLoading(false);
+                        }
+                      }
                     }
                   }}
                   onContextMenu={() => {
@@ -614,13 +614,20 @@ export function NewGame() {
                   onWheel={(e) => {
                     if (SGDBGames()) {
                       if (e.deltaY == -100) {
-                        setFoundLogoImageIndex((i) => i + 1);
-                      }
-                      if (e.deltaY == 100) {
-                        setFoundLogoImageIndex((i) => (i == 0 ? 0 : i - 1));
+                        setFoundLogoImageIndex((i) =>
+                          i == foundLogoImage().length - 1 ? 0 : i + 1,
+                        );
+                        setShowLogoImageLoading(true);
                       }
 
-                      setShowLogoImageLoading(true);
+                      if (e.deltaY == 100) {
+                        if (foundLogoImageIndex() != 0) {
+                          setFoundLogoImageIndex((i) => i - 1);
+                          setShowLogoImageLoading(true);
+                        } else {
+                          setShowLogoImageLoading(false);
+                        }
+                      }
                     }
                   }}
                   onContextMenu={() => {
@@ -716,13 +723,20 @@ export function NewGame() {
                   onWheel={(e) => {
                     if (SGDBGames()) {
                       if (e.deltaY == -100) {
-                        setFoundIconImageIndex((i) => i + 1);
-                      }
-                      if (e.deltaY == 100) {
-                        setFoundIconImageIndex((i) => (i == 0 ? 0 : i - 1));
+                        setFoundIconImageIndex((i) =>
+                          i == foundIconImage().length - 1 ? 0 : i + 1,
+                        );
+                        setShowIconImageLoading(true);
                       }
 
-                      setShowIconImageLoading(true);
+                      if (e.deltaY == 100) {
+                        if (foundIconImageIndex() != 0) {
+                          setFoundIconImageIndex((i) => i - 1);
+                          setShowIconImageLoading(true);
+                        } else {
+                          setShowIconImageLoading(false);
+                        }
+                      }
                     }
                   }}
                   onContextMenu={() => {

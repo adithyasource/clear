@@ -21,11 +21,13 @@ import {
   setLatestVersion,
   newVersionAvailable,
   setNewVersionAvailable,
+  language,
 } from "../Signals";
 
 import { getData, getSettingsData, importSteamGames } from "../App";
 
 import { appDataDir } from "@tauri-apps/api/path";
+import { Text } from "../components/Text";
 
 export function Settings() {
   setTimeout(() => {
@@ -57,7 +59,7 @@ export function Settings() {
             <div className="flex justify-between">
               <div>
                 <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
-                  settings
+                  <Text t="settings" />
                 </p>
               </div>
 
@@ -94,7 +96,7 @@ export function Settings() {
                       location: "https://clear.adithya.zip/update",
                     });
                   }}>
-                  new update available!
+                  <Text t="new update available!" />
                   <span className="dark:text-[#ffffff80] text-[#12121280]">
                     v{latestVersion()}
                   </span>
@@ -122,14 +124,18 @@ export function Settings() {
                 className="relative cursor-pointer">
                 <Show when={roundedBorders()}>
                   <div className="relative ">
-                    <div className="">rounded borders</div>
+                    <div className="">
+                      <Text t="rounded borders" />
+                    </div>
                     <div className="absolute blur-[5px] opacity-70 inset-0  ">
-                      rounded borders
+                      <Text t="rounded borders" />
                     </div>
                   </div>
                 </Show>
                 <Show when={!roundedBorders()}>
-                  <div className="">rounded borders</div>
+                  <div className="">
+                    <Text t="rounded borders" />
+                  </div>
                 </Show>
               </div>
               <div
@@ -151,14 +157,18 @@ export function Settings() {
                 className="relative cursor-pointer">
                 <Show when={gameTitle()}>
                   <div className="relative">
-                    <div className="">game title</div>
+                    <div className="">
+                      <Text t="game title" />
+                    </div>
                     <div className="absolute blur-[5px] opacity-70 inset-0  ">
-                      game title
+                      <Text t="game title" />
                     </div>
                   </div>
                 </Show>
                 <Show when={!gameTitle()}>
-                  <div className="">game title</div>
+                  <div className="">
+                    <Text t="game title" />
+                  </div>
                 </Show>
               </div>
               <div
@@ -180,14 +190,18 @@ export function Settings() {
                 className="relative cursor-pointer">
                 <Show when={folderTitle()}>
                   <div className="relative">
-                    <div className="">folder title</div>
+                    <div className="">
+                      <Text t="folder title" />
+                    </div>
                     <div className="absolute blur-[5px] opacity-70 inset-0  ">
-                      folder title
+                      <Text t="folder title" />
                     </div>
                   </div>
                 </Show>
                 <Show when={!folderTitle()}>
-                  <div className="">folder title</div>
+                  <div className="">
+                    <Text t="folder title" />
+                  </div>
                 </Show>
               </div>
               <div
@@ -209,14 +223,18 @@ export function Settings() {
                 className="relative cursor-pointer">
                 <Show when={quitAfterOpen()}>
                   <div className="relative">
-                    <div className="">quit after opening game</div>
+                    <div className="">
+                      <Text t="quit after opening game" />
+                    </div>
                     <div className="absolute blur-[5px] opacity-70 inset-0  ">
-                      quit after opening game
+                      <Text t="quit after opening game" />
                     </div>
                   </div>
                 </Show>
                 <Show when={!quitAfterOpen()}>
-                  <div className="">quit after opening game</div>
+                  <div className="">
+                    <Text t="quit after opening game" />
+                  </div>
                 </Show>
               </div>
 
@@ -248,7 +266,7 @@ export function Settings() {
                 }}
                 className="flex gap-2 cursor-pointer ">
                 <span className="dark:text-[#ffffff80] text-[#12121280]">
-                  [font]
+                  [<Text t="font" />]
                 </span>
                 <div className="">
                   {fontName().toLowerCase() || "sans serif"}
@@ -274,7 +292,7 @@ export function Settings() {
                 }}
                 className="flex gap-2 cursor-pointer ">
                 <span className="dark:text-[#ffffff80] text-[#12121280]">
-                  [theme]
+                  [<Text t="theme" />]
                 </span>
                 <div className="">{currentTheme().toLowerCase() || "dark"}</div>
               </div>
@@ -289,7 +307,7 @@ export function Settings() {
 
                   importSteamGames();
                 }}>
-                import steam games
+                <Text t="import steam games" />
                 <svg
                   width="23"
                   height="14"
@@ -325,12 +343,10 @@ export function Settings() {
                     location: appDataDirPath,
                   });
                 }}>
-                open library location
+                <Text t="open library location" />
               </button>
               <span className="dark:text-[#ffffff80] text-[#12121280] w-[50%]">
-                these are all the files that the app stores on your pc. you can
-                copy these files to the same location on another pc to get your
-                library there
+                <Text t="these are all the files that the app stores on your pc. you can copy these files to the same location on another pc to get your library there" />
               </span>
             </div>
 
@@ -342,7 +358,8 @@ export function Settings() {
                   }] `}>
                   ctrl + n
                 </div>
-                new game
+
+                <Text t="new game" />
               </div>
 
               <div className="flex items-center gap-3">

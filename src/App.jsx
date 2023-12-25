@@ -56,6 +56,7 @@ import { Settings } from "./modals/Settings";
 import { Loading } from "./modals/Loading";
 
 import { Toast } from "./components/Toast";
+import { Text } from "./components/Text";
 
 import "./App.css";
 
@@ -680,12 +681,14 @@ function App() {
             }`}>
             <div className="!z-50">
               <p className="dark:text-[#ffffff80] text-[#000000] ">
-                hey there! thank you so much for using clear <br />
+                <Text t="hey there! thank you so much for using clear" /> <br />
                 <br />
-                - add some new games using the sidebar buttons <br />
-                <br />- create new folders and drag and drop your games into
-                them <br />
-                <br />- dont forget to check out the settings!
+                - <Text t="add some new games using the sidebar buttons" />{" "}
+                <br />
+                <br />-{" "}
+                <Text t="create new folders and drag and drop your games into them" />{" "}
+                <br />
+                <br />- <Text t="dont forget to check out the settings!" />
               </p>
 
               <div>
@@ -697,7 +700,7 @@ function App() {
 
                     importSteamGames();
                   }}>
-                  import steam games
+                  <Text t="import steam games" />
                   <svg
                     width="23"
                     height="14"
@@ -731,7 +734,8 @@ function App() {
                     }] `}>
                     ctrl + n
                   </div>
-                  new game
+
+                  <Text t="new game" />
                 </div>
 
                 <div className="flex items-center gap-3">
@@ -741,7 +745,7 @@ function App() {
                     }] `}>
                     ctrl + .
                   </div>
-                  open settings
+                  <Text t="open settings" />
                 </div>
 
                 <div className="flex items-center gap-3">
@@ -751,7 +755,8 @@ function App() {
                     }] `}>
                     ctrl + m
                   </div>
-                  new folder
+
+                  <Text t="new folder" />
                 </div>
                 <div className="flex items-center gap-3">
                   <div
@@ -760,7 +765,8 @@ function App() {
                     }] `}>
                     ctrl + l
                   </div>
-                  open notepad
+
+                  <Text t="open notepad" />
                 </div>
 
                 <div className="flex items-center gap-3">
@@ -770,7 +776,8 @@ function App() {
                     }] `}>
                     ctrl + w
                   </div>
-                  close app
+
+                  <Text t="close app" />
                 </div>
                 <div className="flex items-center gap-3">
                   <div
@@ -779,7 +786,8 @@ function App() {
                     }] `}>
                     escape
                   </div>
-                  close dialogs
+
+                  <Text t="close dialogs" />
                 </div>
               </div>
 
@@ -791,7 +799,8 @@ function App() {
                     }] `}>
                     ctrl + f
                   </div>
-                  search bar
+
+                  <Text t="search bar" />
                 </div>
                 <div className="flex items-center gap-3">
                   <div
@@ -800,7 +809,8 @@ function App() {
                     }] `}>
                     ctrl + \\
                   </div>
-                  hide sidebar
+
+                  <Text t="hide sidebar" />
                 </div>
                 <div className="flex items-center gap-3">
                   <div
@@ -809,7 +819,8 @@ function App() {
                     }] `}>
                     ctrl + click
                   </div>
-                  quick open game
+
+                  <Text t="quick open game" />
                 </div>
               </div>
             </div>
@@ -881,7 +892,7 @@ function App() {
                                                 .location
                                             }>
                                             <span class="absolute tooltip z-[100] bottom-[30px]">
-                                              no game file
+                                              <Text t="no game file" />
                                             </span>
                                           </Show>
                                         </Show>
@@ -916,7 +927,7 @@ function App() {
                                                 .location
                                             }>
                                             <span class="absolute tooltip z-[100] bottom-[30px]">
-                                              no game file
+                                              <Text t="no game file" />
                                             </span>
                                           </Show>
                                         </Show>
@@ -970,7 +981,7 @@ function App() {
                                                 .location
                                             }>
                                             <span class="absolute tooltip z-[100] bottom-[30px]">
-                                              no game file
+                                              <Text t="no game file" />
                                             </span>
                                           </Show>
                                         </Show>
@@ -1019,7 +1030,7 @@ function App() {
                                       </span>
 
                                       <span class=" tooltip z-[100]">
-                                        no game file
+                                        <Text t="no game file" />
                                       </span>
                                     </Show>
                                   </div>
@@ -1119,7 +1130,7 @@ function App() {
                                             .location
                                         }>
                                         <span class="absolute tooltip z-[100] bottom-[30px]">
-                                          no game file
+                                          <Text t="no game file" />
                                         </span>
                                       </Show>
                                     </Show>
@@ -1165,7 +1176,7 @@ function App() {
                                         !libraryData().games[gameName].location
                                       }>
                                       <span class="absolute tooltip z-[100] bottom-[30px]">
-                                        no game file
+                                        <Text t="no game file" />
                                       </span>
                                     </Show>
                                   </Show>
@@ -1204,7 +1215,7 @@ function App() {
                                     !libraryData().games[gameName].location
                                   }>
                                   <span class=" tooltip z-[100]">
-                                    no game file
+                                    <Text t="no game file" />
                                   </span>
                                 </Show>
                               </div>
@@ -1230,7 +1241,8 @@ function App() {
                             stroke-linecap="round"
                             stroke-linejoin="round"></path>
                         </svg>
-                        no games found
+
+                        <Text t="no games found" />
                       </div>
                     </Show>
                   </div>

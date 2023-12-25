@@ -12,6 +12,7 @@ import {
   setSelectedGame,
   appDataDirPath,
   newVersionAvailable,
+  language,
 } from "./Signals";
 
 import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
@@ -20,6 +21,7 @@ import { For, Show, onMount } from "solid-js";
 import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
 import { getData, openGame } from "./App";
+import { Text } from "./components/Text";
 
 export function SideBar() {
   let scrollY = " ";
@@ -140,7 +142,13 @@ export function SideBar() {
               id="searchInput"
               name=""
               className="dark:bg-[#232323] bg-[#E8E8E8] dark:text-white text-black w-full hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b]"
-              placeholder="search"
+              placeholder={`${
+                language() == "english"
+                  ? "search"
+                  : language() == "jp"
+                  ? "検索"
+                  : ""
+              }`}
               onInput={(e) => {
                 setSearchValue(e.currentTarget.value);
               }}
@@ -660,7 +668,7 @@ export function SideBar() {
               }}>
               <div className=" flex gap-[10px] items-center cursor-default">
                 <p className="pd-3 text-[#00000080] dark:text-[#ffffff80] ">
-                  uncategorized
+                  <Text t="uncategorized" />
                 </p>
               </div>
               <For each={currentGames()}>
@@ -722,7 +730,7 @@ export function SideBar() {
               onClick={() => {
                 document.querySelector("[data-newGameModal]").show();
               }}>
-              add game
+              <Text t="add game" />
               <svg
                 width="18"
                 height="18"
@@ -742,7 +750,7 @@ export function SideBar() {
               onClick={() => {
                 document.querySelector("[data-newFolderModal]").show();
               }}>
-              add folder
+              <Text t="add folder" />
               <svg
                 width="18"
                 height="18"
@@ -773,7 +781,7 @@ export function SideBar() {
               onClick={() => {
                 document.querySelector("[data-notepadModal]").show();
               }}>
-              notepad
+              <Text t="notepad" />
               <svg
                 width="18"
                 height="18"
@@ -799,7 +807,7 @@ export function SideBar() {
               onClick={() => {
                 document.querySelector("[data-settingsModal]").show();
               }}>
-              settings
+              <Text t="settings" />
               <Show when={newVersionAvailable()}>
                 <svg
                   width="18"
