@@ -3,7 +3,6 @@ from flask import Flask, jsonify
 from flask import request
 import json
 
-
 app = Flask(__name__)
 
 
@@ -158,11 +157,35 @@ def handleRequest():
         for x in iconImageData["data"]:
             iconImageLinks.append(x["thumb"])
 
+        gridImageFile = requests.get(
+            gridImageLinks[0],
+            timeout=30,
+        )
+
+        gridImageFileBytes = list(gridImageFile.content)
+        heroImageFile = requests.get(
+            heroImageLinks[0],
+            timeout=30,
+        )
+        heroImageFileBytes = list(heroImageFile.content)
+        logoImageFile = requests.get(
+            logoImageLinks[0],
+            timeout=30,
+        )
+        logoImageFileBytes = list(logoImageFile.content)
+
+        iconImageFile = requests.get(
+            iconImageLinks[0],
+            timeout=30,
+        )
+
+        iconImageFileBytes = list(iconImageFile.content)
+
         allImages = {
-            "grid": gridImageLinks[0],
-            "hero": heroImageLinks[0],
-            "logo": logoImageLinks[0],
-            "icon": iconImageLinks[0],
+            "grid": gridImageFileBytes,
+            "hero": heroImageFileBytes,
+            "logo": logoImageFileBytes,
+            "icon": iconImageFileBytes,
         }
 
         response = jsonify(allImages)
