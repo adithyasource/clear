@@ -42,6 +42,20 @@ def handleRequest():
         response.headers.add("Access-Control-Allow-Origin", "*")
         return response
 
+    if request.args.get("image"):
+        link = str(request.args.get("image"))
+
+        imageFile = requests.get(
+            link,
+            timeout=30,
+        )
+
+        imageFileBytes = list(imageFile.content)
+
+        response = jsonify({"image": imageFileBytes})
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
+
     # if request.args.get("assets"):
     #     gameID = str(request.args.get("assets"))
     #     imageType = str(request.args.get("imageType"))
