@@ -8,6 +8,7 @@ import {
 } from "../Signals";
 
 import { getData } from "../App";
+import { onCleanup, onMount } from "solid-js";
 
 export function Notepad() {
   async function saveNotepad() {

@@ -68,6 +68,12 @@ export function EditFolder() {
   }
 
   async function deleteFolder() {
+    for (let x = 0; x < Object.keys(libraryData().folders).length; x++) {
+      if (x > libraryData().folders[selectedFolder().name].index) {
+        Object.values(libraryData().folders)[x].index -= 1;
+      }
+    }
+
     delete libraryData().folders[selectedFolder().name];
 
     await writeTextFile(

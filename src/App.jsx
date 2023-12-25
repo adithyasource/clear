@@ -6,10 +6,13 @@ import {
   createDir,
   exists,
   readTextFile,
+  writeBinaryFile,
   writeTextFile,
 } from "@tauri-apps/api/fs";
 import { appDataDir } from "@tauri-apps/api/path";
 import { appWindow } from "@tauri-apps/api/window";
+import * as fs from "@tauri-apps/api/fs";
+import { getClient, ResponseType } from "@tauri-apps/api/http";
 
 import {
   appDataDirPath,
@@ -52,6 +55,7 @@ import { NewFolder } from "./modals/NewFolder";
 import { NewGame } from "./modals/NewGame";
 import { Notepad } from "./modals/Notepad";
 import { Settings } from "./modals/Settings";
+import { Loading } from "./modals/Loading";
 
 import { Toast } from "./components/Toast";
 
@@ -207,6 +211,16 @@ export async function getData() {
 }
 
 export async function openGame(gameLocation) {
+  if (gameLocation == undefined) {
+    setShowToast(true);
+    setToastMessage("no game file provided!");
+    setTimeout(() => {
+      setShowToast(false);
+    }, 1500);
+
+    return;
+  }
+
   invoke("open_location", {
     location: gameLocation,
   });
@@ -321,6 +335,24 @@ function App() {
       toggleSideBar();
       document.querySelector("#searchInput").blur();
     }
+
+    // ? Disabling Misc WebView Shortcuts
+
+    if (e.ctrlKey && e.code == "KeyG") {
+      e.preventDefault();
+    }
+
+    if (e.ctrlKey && e.code == "KeyP") {
+      e.preventDefault();
+    }
+
+    if (e.ctrlKey && e.code == "KeyU") {
+      e.preventDefault();
+    }
+
+    if (e.ctrlKey && e.code == "KeyU") {
+      e.preventDefault();
+    }
   });
 
   async function closeApp() {
@@ -372,12 +404,186 @@ function App() {
     }
   });
 
+  async function downloadImage(name, integerBytesList) {
+    await fs.writeBinaryFile(name, integerBytesList, {
+      dir: BaseDirectory.AppData,
+    });
+  }
+
   onMount(async () => {
     await getData();
     window.addEventListener("resize", () => {
       setWindowWidth(window.innerWidth);
     });
   });
+
+  // ? VDF Parser From https://github.com/node-steam/vdf
+
+  function parseVDF(text) {
+    if (typeof text !== "string") {
+      throw new TypeError("VDF | Parse: Expecting parameter to be a string");
+    }
+
+    const lines = text.split("\n");
+    const object = {};
+    const stack = [object];
+    let expect = false;
+
+    const regex = new RegExp(
+      '^("((?:\\\\.|[^\\\\"])+)"|([a-z0-9\\-\\_]+))' +
+        "([ \t]*(" +
+        '"((?:\\\\.|[^\\\\"])*)(")?' +
+        "|([a-z0-9\\-\\_]+)" +
+        "))?",
+    );
+
+    let i = 0;
+    const j = lines.length;
+
+    let comment = false;
+
+    for (; i < j; i++) {
+      let line = lines[i].trim();
+
+      if (line.startsWith("/*") && line.endsWith("*/")) {
+        continue;
+      }
+
+      if (line.startsWith("/*")) {
+        comment = true;
+        continue;
+      }
+
+      if (line.endsWith("*/")) {
+        comment = false;
+        continue;
+      }
+
+      if (comment) {
+        continue;
+      }
+
+      if (line === "" || line[0] === "/") {
+        continue;
+      }
+      if (line[0] === "{") {
+        expect = false;
+        continue;
+      }
+      if (expect) {
+        throw new SyntaxError(`VDF | Parse: Invalid syntax on line ${i + 1}`);
+      }
+      if (line[0] === "}") {
+        stack.pop();
+        continue;
+      }
+      while (true) {
+        const m = regex.exec(line);
+        if (m === null) {
+          throw new SyntaxError(`VDF | Parse: Invalid syntax on line ${i + 1}`);
+        }
+        const key = m[2] !== undefined ? m[2] : m[3];
+        let val = m[6] !== undefined ? m[6] : m[8];
+
+        if (val === undefined) {
+          if (stack[stack.length - 1][key] === undefined)
+            stack[stack.length - 1][key] = {};
+          stack.push(stack[stack.length - 1][key]);
+          expect = true;
+        } else {
+          if (m[7] === undefined && m[8] === undefined) {
+            line += "\n" + lines[++i];
+            continue;
+          }
+
+          if (val !== "" && !isNaN(val)) val = +val;
+          if (val === "true") val = true;
+          if (val === "false") val = false;
+          if (val === "null") val = null;
+          if (val === "undefined") val = undefined;
+
+          stack[stack.length - 1][key] = val;
+        }
+        break;
+      }
+    }
+
+    if (stack.length !== 1)
+      throw new SyntaxError("VDF | Parse: Open parentheses somewhere");
+
+    return object;
+  }
+
+  async function importSteamGames() {
+    invoke("read_steam_vdf").then(async (data) => {
+      let steamData = parseVDF(data);
+
+      console.log(Object.keys(steamData.libraryfolders[1].apps));
+
+      let steamGameIds = Object.keys(steamData.libraryfolders[1].apps);
+
+      let allGameNames = [];
+
+      steamGameIds.forEach(async (steamId) => {
+        await fetch(`https://clear-api.vercel.app/?steamID=${steamId}`).then(
+          (res) =>
+            res.json().then(async (jsonres) => {
+              let gameId = jsonres.data.id;
+              let name = jsonres.data.name;
+
+              allGameNames.push(name);
+
+              let gridImageFileName = generateRandomString() + ".png";
+              let heroImageFileName = generateRandomString() + ".png";
+              let logoImageFileName = generateRandomString() + ".png";
+
+              await fetch(
+                `https://clear-api.vercel.app/?limitedAssets=${gameId}`,
+              ).then((res) =>
+                res.json().then(async (jsonres) => {
+                  downloadImage("grids\\" + gridImageFileName, jsonres.grid);
+                  downloadImage("heroes\\" + heroImageFileName, jsonres.hero);
+                  downloadImage("logos\\" + logoImageFileName, jsonres.logo);
+
+                  libraryData().games[name] = {
+                    location: `steam://rungameid/${steamId}`,
+                    name: name,
+                    heroImage: heroImageFileName,
+                    gridImage: gridImageFileName,
+                    logo: logoImageFileName,
+                    favourite: false,
+                  };
+
+                  libraryData().folders["Steam"] = {
+                    name: "Steam",
+                    hide: false,
+                    games: allGameNames,
+                    index: currentFolders().length,
+                  };
+
+                  setLibraryData(libraryData());
+
+                  await writeTextFile(
+                    {
+                      path: "data.json",
+                      contents: JSON.stringify(libraryData(), null, 4),
+                    },
+                    {
+                      dir: BaseDirectory.AppData,
+                    },
+                  ).then(() => {
+                    setTimeout(() => {
+                      getData();
+                      document.querySelector("[data-loadingModal]").close();
+                    }, 3000);
+                  });
+                }),
+              );
+            }),
+        );
+      });
+    });
+  }
 
   return (
     <>
@@ -416,7 +622,7 @@ function App() {
       <div className={`h-full flex gap-[30px] overflow-y-hidden`}>
         <Show when={showSideBar() == false && windowWidth() >= 1000}>
           <svg
-            className={`absolute right-[30px] top-[32px] z-10 rotate-180 cursor-pointer hover:bg-[#232323] duration-150 p-2 w-[25.25px] rounded-[${
+            className={`absolute right-[31px] top-[32px] z-20 rotate-180 cursor-pointer hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[25.25px] rounded-[${
               roundedBorders() ? "6px" : "0px"
             }]`}
             onClick={toggleSideBar}
@@ -425,7 +631,7 @@ function App() {
             xmlns="http://www.w3.org/2000/svg">
             <path
               d="M6 11L1 6L6 1"
-              stroke="white"
+              className="stroke-[#000000] dark:stroke-[#ffffff] "
               stroke-opacity="0.5"
               stroke-width="1.3"
               stroke-linecap="round"
@@ -433,7 +639,7 @@ function App() {
             />
             <path
               d="M11 11L6 6L11 1"
-              stroke="white"
+              className="stroke-[#000000] dark:stroke-[#ffffff] "
               stroke-opacity="0.5"
               stroke-width="1.3"
               stroke-linecap="round"
@@ -451,14 +657,13 @@ function App() {
             (searchValue() == "" || searchValue() == undefined)
           }>
           <div
-            className={`flex items-center justify-center flex-col  w-full absolute 
-          h-[100vh]
-           overflow-y-scroll py-[20px] pr-[30px]  ${
-             showSideBar() && windowWidth() >= 1000
-               ? "pl-[23%] large:pl-[17%]"
-               : "pl-[30px] large:pl-[30px]"
-           }`}>
-            <div>
+            className={` flex items-center justify-center flex-col w-full absolute h-[100vh]
+            overflow-y-scroll py-[20px] pr-[30px]  ${
+              showSideBar() && windowWidth() >= 1000
+                ? "pl-[23%] large:pl-[17%]"
+                : "pl-[30px] large:pl-[30px]"
+            }`}>
+            <div className="!z-50">
               <p className="dark:text-[#ffffff80] text-[#000000] ">
                 hey there! thank you so much for using clear <br />
                 <br />
@@ -467,6 +672,41 @@ function App() {
                 them <br />
                 <br />- dont forget to check out the settings!
               </p>
+
+              <div>
+                <button
+                  className="standardButton mt-[35px]"
+                  onClick={() => {
+                    document.querySelector("[data-loadingModal]").show();
+
+                    importSteamGames();
+                  }}>
+                  import steam library
+                  <svg
+                    width="23"
+                    height="14"
+                    viewBox="0 0 23 14"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M18.3494 2.47291C19.5218 2.47291 20.4722 3.42332 20.4722 4.59569C20.4722 5.76806 19.5218 6.71847 18.3494 6.71847C17.177 6.71847 16.2266 5.76806
+                      16.2266 4.59569C16.2266 3.42332 17.177 2.47291 18.3494 2.47291ZM2.97193 2.47286C4.61328 2.47286 5.94386 3.80344 5.94386 5.44479L5.92767 5.75653L10.6125
+                      8.16922C11.1109 7.79163 11.7321 7.56762 12.4055 7.56762L14.5284 4.59569C14.5284 2.48541 16.239 0.774658 18.3494 0.774658C20.4597 0.774658 22.1704 2.48541
+                      22.1704 4.59569C22.1704 6.70597 20.4597 8.41672 18.3494 8.41672L15.3775 10.5395C15.3775 12.1809 14.0469 13.5114 12.4055 13.5114C10.7642 13.5114 9.43366
+                      12.1809 9.43366 10.5395C9.43366 10.5023 9.4343 10.4653 9.43569 10.4284L4.59494 7.93481C4.12832 8.23959 3.5708 8.41672 2.97193 8.41672C1.33058 8.41672
+                      0 7.08614 0 5.44479C0 3.80344 1.33058 2.47286 2.97193 2.47286ZM13.2874 9.55643C13.9141 9.87579 14.1634 10.6428 13.844 11.2695C13.5247 11.8963 12.7577
+                      12.1455 12.131 11.8261L10.3102 10.8819C10.4739 11.8915 11.3497 12.6623 12.4055 12.6623C13.578 12.6623 14.5284 11.7119 14.5284 10.5395C14.5284 9.36712
+                      13.5779 8.41672 12.4055 8.41672C12.0775 8.41672 11.7668 8.49116 11.4895 8.62405L13.2874 9.55643ZM2.97193 3.32201C1.79956 3.32201 0.849154 4.27242 0.849154
+                      5.44479C0.849154 6.61716 1.79956 7.56757 2.97193 7.56757C3.21433 7.56757 3.44724 7.52697 3.66422 7.45216L2.25486 6.72126C1.62811 6.4019 1.3789 5.63496
+                      1.69825 5.0082C2.01761 4.38144 2.78455 4.13223 3.41136 4.45159L5.09128 5.32278C5.02805 4.20715 4.10333 3.32201 2.97193 3.32201ZM18.3494 1.62376C16.708
+                      1.62376 15.3775 2.95433 15.3775 4.59569C15.3775 6.23704 16.708 7.56762 18.3494 7.56762C19.9907 7.56762 21.3213 6.23704 21.3213 4.59569C21.3213 2.95433
+                      19.9907 1.62376 18.3494 1.62376Z"
+                      className="fill-[#00000080] dark:fill-[#ffffff80] "
+                    />
+                  </svg>
+                </button>
+              </div>
+
               <div className="grid grid-cols-2 mt-[35px] gap-y-4">
                 <div className="flex items-center gap-3">
                   <div
@@ -617,18 +857,32 @@ function App() {
                                       when={
                                         libraryData().games[gameName].gridImage
                                       }>
-                                      <img
-                                        className={`z-10 mb-[7px] rounded-[${
-                                          roundedBorders() ? "6px" : "0px"
-                                        }] group-hover:outline-[#0000001f] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
-                                        src={convertFileSrc(
-                                          appDataDirPath() +
-                                            "grids\\" +
-                                            libraryData().games[gameName]
-                                              .gridImage,
-                                        )}
-                                        alt=""
-                                      />{" "}
+                                      <div className="relative flex items-center justify-center">
+                                        <Show when={!gameTitle()}>
+                                          <Show
+                                            when={
+                                              !libraryData().games[gameName]
+                                                .location
+                                            }>
+                                            <span class="absolute tooltip z-[100] bottom-[30px]">
+                                              no game file
+                                            </span>
+                                          </Show>
+                                        </Show>
+
+                                        <img
+                                          className={`z-10 mb-[7px] rounded-[${
+                                            roundedBorders() ? "6px" : "0px"
+                                          }] group-hover:outline-[#0000001f] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
+                                          src={convertFileSrc(
+                                            appDataDirPath() +
+                                              "grids\\" +
+                                              libraryData().games[gameName]
+                                                .gridImage,
+                                          )}
+                                          alt=""
+                                        />
+                                      </div>
                                     </Show>
                                     <Show
                                       when={
@@ -731,14 +985,23 @@ function App() {
                                 </Show>
                                 <Show when={gameTitle()}>
                                   <div className="flex justify-between items-start">
-                                    <span className="text-[#000000] dark:text-white !max-w-[50%]">
-                                      {gameName}
-                                    </span>
+                                    <Show
+                                      when={
+                                        libraryData().games[gameName].location
+                                      }>
+                                      <span className="text-[#000000] dark:text-white">
+                                        {gameName}
+                                      </span>
+                                    </Show>
 
                                     <Show
                                       when={
                                         !libraryData().games[gameName].location
                                       }>
+                                      <span className="text-[#000000] dark:text-white !max-w-[50%]">
+                                        {gameName}
+                                      </span>
+
                                       <span class=" tooltip z-[100]">
                                         no game file
                                       </span>
@@ -970,6 +1233,7 @@ function App() {
         <GamePopUp />
         <Notepad />
         <Settings />
+        <Loading />
       </div>
     </>
   );

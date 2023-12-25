@@ -342,7 +342,7 @@ export function NewGame() {
                 {" "}
                 <Show when={locatedGridImage()}>
                   <img
-                    className="absolute inset-0"
+                    className="absolute inset-0 aspect-[2/3]"
                     src={convertFileSrc(locatedGridImage())}
                     alt=""
                   />
@@ -516,7 +516,7 @@ export function NewGame() {
                   onContextMenu={() => {
                     setLocatedIcon(undefined);
                   }}
-                  className="relative !bg-[#27272700] group "
+                  className="relative !bg-[#E8E8E8] dark:!bg-[#272727] group "
                   aria-label="logo">
                   <img
                     src={
@@ -540,7 +540,7 @@ export function NewGame() {
                   aria-label="logo">
                   <Show when={!locatedIcon()}>
                     <div
-                      className={`w-[40px] h-[40px] bg-[#E8E8E8] dark:!bg-[#1C1C1C] rounded-[${
+                      className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
                         roundedBorders() ? "6px" : "0px"
                       }]`}
                     />

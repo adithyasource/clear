@@ -147,7 +147,7 @@ export function SideBar() {
             />
             <svg
               onClick={toggleSideBar}
-              className={`cursor-pointer hover:bg-[#232323] duration-150 p-2 w-[28px] rounded-[${
+              className={`cursor-pointer hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[28px] rounded-[${
                 roundedBorders() ? "6px" : "0px"
               }]`}
               viewBox="0 0 12 12"
@@ -403,9 +403,36 @@ export function SideBar() {
                         }
                       }}>
                       <div className="flex gap-[10px] items-center cursor-move  ">
-                        <span className="text-black dark:text-white">
+                        <span className="text-black dark:text-white break-all">
                           {folder.name}
                         </span>
+                        <Show when={folder.hide == true}>
+                          <svg
+                            width="15"
+                            height="15"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              d="M2 2L22 22"
+                              className="stroke-[#00000080] dark:stroke-[#ffffff80] "
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                            <path
+                              d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 5.05822C11.3254 5.02013 11.6588 5 12 5C18.3636 5 22 12 22 12C22 12 21.3082 13.3317 20 14.8335"
+                              className="stroke-[#00000080] dark:stroke-[#ffffff80] "
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                            <path
+                              d="M14 14.2362C13.4692 14.7112 12.7684 15.0001 12 15.0001C10.3431 15.0001 9 13.657 9 12.0001C9 11.1764 9.33193 10.4303 9.86932 9.88818"
+                              className="stroke-[#00000080] dark:stroke-[#ffffff80] "
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                          </svg>
+                        </Show>
                         <button
                           className={` hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[25.25px] rounded-[${
                             roundedBorders() ? "6px" : "0px"
@@ -538,11 +565,38 @@ export function SideBar() {
                         });
                       }}>
                       <div className="flex gap-[10px] items-center cursor-move my-[-4px]">
-                        <s className="text-black cursor-move dark:text-white">
+                        <s className="text-black cursor-move dark:text-white break-all">
                           {folder.name}
                         </s>
+                        <Show when={folder.hide == true}>
+                          <svg
+                            width="15"
+                            height="15"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              d="M2 2L22 22"
+                              className="stroke-[#00000080] dark:stroke-[#ffffff80] "
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                            <path
+                              d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 5.05822C11.3254 5.02013 11.6588 5 12 5C18.3636 5 22 12 22 12C22 12 21.3082 13.3317 20 14.8335"
+                              className="stroke-[#00000080] dark:stroke-[#ffffff80] "
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                            <path
+                              d="M14 14.2362C13.4692 14.7112 12.7684 15.0001 12 15.0001C10.3431 15.0001 9 13.657 9 12.0001C9 11.1764 9.33193 10.4303 9.86932 9.88818"
+                              className="stroke-[#00000080] dark:stroke-[#ffffff80] "
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                          </svg>
+                        </Show>
                         <button
-                          className={`hover:bg-[#232323] duration-150 p-2 w-[25.25px] rounded-[${
+                          className={` hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[25.25px] rounded-[${
                             roundedBorders() ? "6px" : "0px"
                           }]`}
                           onClick={() => {
@@ -642,7 +696,12 @@ export function SideBar() {
                         }}
                         className="mt-5 sideBarGame cursor-grab text-[#00000080] dark:text-[#ffffff80]  active:dark:text-[#ffffff3a] active:text-[#0000003a]"
                         aria-label="play"
-                        onClick={(e) => {
+                        onClick={async (e) => {
+                          await setSelectedGame(
+                            libraryData().games[currentGame],
+                          );
+                          document.querySelector("[data-gamePopup]").show();
+
                           if (e.ctrlKey) {
                             openGame(libraryData().games[currentGame].location);
                           }

@@ -220,6 +220,11 @@ body {
   display: inline-block;
 }
 
+[class*="hint--"]:hover:after {
+  visibility: visible;
+  opacity: 1;
+}
+
 [class*="hint--"]:after {
   position: absolute;
   transform: translate3d(0, 0, 0);
@@ -227,14 +232,6 @@ body {
   opacity: 0;
   z-index: 1000000;
   pointer-events: none;
-}
-
-[class*="hint--"]:hover:after {
-  visibility: visible;
-  opacity: 1;
-}
-
-[class*="hint--"]:after {
   backdrop-filter: blur(10px);
   border-radius: 6px;
   padding: 8px 10px;

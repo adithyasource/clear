@@ -29,9 +29,10 @@ import { Show } from "solid-js";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { writeTextFile, BaseDirectory, copyFile } from "@tauri-apps/api/fs";
 
-import { getData, generateRandomString } from "../App";
+import { getData, generateRandomString, openGame } from "../App";
 
 import { open } from "@tauri-apps/api/dialog";
+import { invoke } from "@tauri-apps/api";
 export function EditGame() {
   async function locateEditedGame() {
     setEditedlocatedGame(
@@ -681,7 +682,7 @@ export function EditGame() {
                   </Show>
                   <Show when={!selectedGame().icon}>
                     <div
-                      className={`w-[40px] h-[40px] bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
+                      className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
                         roundedBorders() ? "6px" : "0px"
                       }]`}
                     />
@@ -696,7 +697,7 @@ export function EditGame() {
                 </Show>
                 <Show when={editedLocatedIcon() === null}>
                   <div
-                    className={`w-[40px] h-[40px] bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
+                    className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
                       roundedBorders() ? "6px" : "0px"
                     }]`}
                   />
@@ -737,10 +738,43 @@ export function EditGame() {
                   {"..." + editedLocatedGame().slice(-25)}
                 </Show>
               </button>
+
+              <Show when={selectedGame().location}>
+                <button
+                  onClick={() => {
+                    invoke("open_location", {
+                      location: openGame(
+                        selectedGame()
+                          .location.split("\\")
+                          .slice(0, -1)
+                          .join("\\"),
+                      ),
+                    });
+                  }}
+                  className="relative group standardButton !w-max"
+                  aria-label="logo">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M5.63605 18.364L18.364 5.63603M18.364 5.63603L8.46446 5.63604M18.364 5.63603V15.5355"
+                      className="dark:stroke-white stroke-black"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                  </svg>
+                  <span class="absolute tooltip group-hover:opacity-100 left-[-150%] top-[120%] opacity-0">
+                    open containing folder
+                  </span>
+                </button>
+              </Show>
             </div>
           </div>
         </div>
-        <div className="flex justify-start max-large:w-[61rem] w-[84rem]">
+        <div className="flex justify-between max-large:w-[61rem] w-[84rem]">
           <span className="text-[12px] opacity-50">
             right click to empty image selection
           </span>
