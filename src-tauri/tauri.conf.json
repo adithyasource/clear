@@ -14,11 +14,6 @@
 
   "tauri": {
     "allowlist": {
-      "http": {
-        "all": true,
-        "request": true,
-        "scope": ["https://cdn2.steamgriddb.com/*"]
-      },
       "os": {
         "all": true
       },

@@ -256,10 +256,26 @@ body {
   transform: translateX(-50%) translateY(8px);
 }
 
+.hint--bottom:before {
+  margin-top: -5.5px;
+  transform: rotate(var(--rotation));
+}
+.hint--bottom:before,
 .hint--bottom:after {
-  right: 2%;
-  bottom: -130%;
-  transform: translateX(8px);
+  top: 100%;
+  left: 50%;
+}
+.hint--bottom:before {
+  left: calc(50% - 6px);
+}
+.hint--bottom:after {
+  transform: translateX(-50%);
+}
+.hint--bottom:hover:before {
+  transform: translateY(8px) rotate(var(--rotation));
+}
+.hint--bottom:hover:after {
+  transform: translateX(-50%) translateY(8px);
 }
 
 /*

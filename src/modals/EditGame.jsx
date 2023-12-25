@@ -702,7 +702,7 @@ export function EditGame() {
                     }]`}
                   />
                 </Show>
-                <span class="absolute tooltip group-hover:opacity-100 left-[-10%] top-[120%] opacity-0">
+                <span class="absolute tooltip z-[10000] group-hover:opacity-100 left-[-10%] top-[120%] opacity-0">
                   icon
                 </span>
               </div>
@@ -775,7 +775,7 @@ export function EditGame() {
           </div>
         </div>
         <div className="flex justify-between max-large:w-[61rem] w-[84rem]">
-          <span className="text-[12px] opacity-50">
+          <span className=" opacity-50">
             right click to empty image selection
           </span>
         </div>

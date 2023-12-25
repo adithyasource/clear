@@ -41,16 +41,24 @@ import {
   setFoundIconImageIndex,
 } from "../Signals";
 
-import { Show } from "solid-js";
+import { Show, Suspense, createSignal } from "solid-js";
 import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
 import { writeTextFile, BaseDirectory, copyFile } from "@tauri-apps/api/fs";
+import * as fs from "@tauri-apps/api/fs";
 
-import { getData, generateRandomString } from "../App";
+import { getData, generateRandomString, downloadImage } from "../App";
 
 import { open } from "@tauri-apps/api/dialog";
 
 export function NewGame() {
+  const [showGridImageLoading, setShowGridImageLoading] = createSignal(false);
+  const [showHeroImageLoading, setShowHeroImageLoading] = createSignal(false);
+  const [showLogoImageLoading, setShowLogoImageLoading] = createSignal(false);
+  const [showIconImageLeading, setShowIconImageLoading] = createSignal(false);
+
   async function addGame() {
+    document.querySelector("[data-loadingModal]").show();
+
     if (gameName() == "" || gameName() == undefined) {
       setShowToast(true);
       setToastMessage("no game name");
@@ -76,46 +84,108 @@ export function NewGame() {
     let logoFileName;
     let iconFileName;
 
-    if (locatedHeroImage()) {
-      heroImageFileName =
-        generateRandomString() +
-        "." +
-        locatedHeroImage().split(".")[locatedHeroImage().split(".").length - 1];
+    if (foundGridImage() != undefined) {
+      gridImageFileName = generateRandomString() + ".png";
 
-      await copyFile(locatedHeroImage(), "heroes\\" + heroImageFileName, {
-        dir: BaseDirectory.AppData,
-      });
+      await fetch(
+        `https://clear-api.vercel.app/?image=${
+          foundGridImage()[foundGridImageIndex()]
+        }`,
+      ).then((res) =>
+        res.json().then(async (jsonres) => {
+          downloadImage("grids\\" + gridImageFileName, jsonres.image);
+        }),
+      );
+    } else {
+      if (locatedGridImage()) {
+        gridImageFileName =
+          generateRandomString() +
+          "." +
+          locatedGridImage().split(".")[
+            locatedGridImage().split(".").length - 1
+          ];
+
+        await copyFile(locatedGridImage(), "grids\\" + gridImageFileName, {
+          dir: BaseDirectory.AppData,
+        });
+      }
     }
 
-    if (locatedGridImage()) {
-      gridImageFileName =
-        generateRandomString() +
-        "." +
-        locatedGridImage().split(".")[locatedGridImage().split(".").length - 1];
+    if (foundHeroImage() != undefined) {
+      heroImageFileName = generateRandomString() + ".png";
 
-      await copyFile(locatedGridImage(), "grids\\" + gridImageFileName, {
-        dir: BaseDirectory.AppData,
-      });
+      await fetch(
+        `https://clear-api.vercel.app/?image=${
+          foundHeroImage()[foundHeroImageIndex()]
+        }`,
+      ).then((res) =>
+        res.json().then(async (jsonres) => {
+          downloadImage("heroes\\" + heroImageFileName, jsonres.image);
+        }),
+      );
+    } else {
+      if (locatedHeroImage()) {
+        heroImageFileName =
+          generateRandomString() +
+          "." +
+          locatedHeroImage().split(".")[
+            locatedHeroImage().split(".").length - 1
+          ];
+
+        await copyFile(locatedHeroImage(), "heroes\\" + heroImageFileName, {
+          dir: BaseDirectory.AppData,
+        });
+      }
     }
-    if (locatedLogo()) {
-      logoFileName =
-        generateRandomString() +
-        "." +
-        locatedLogo().split(".")[locatedLogo().split(".").length - 1];
 
-      await copyFile(locatedLogo(), "logos\\" + logoFileName, {
-        dir: BaseDirectory.AppData,
-      });
+    if (foundLogoImage() != undefined) {
+      logoFileName = generateRandomString() + ".png";
+
+      await fetch(
+        `https://clear-api.vercel.app/?image=${
+          foundLogoImage()[foundLogoImageIndex()]
+        }`,
+      ).then((res) =>
+        res.json().then(async (jsonres) => {
+          downloadImage("logos\\" + logoFileName, jsonres.image);
+        }),
+      );
+    } else {
+      if (locatedLogo()) {
+        logoFileName =
+          generateRandomString() +
+          "." +
+          locatedLogo().split(".")[locatedLogo().split(".").length - 1];
+
+        await copyFile(locatedLogo(), "logos\\" + logoFileName, {
+          dir: BaseDirectory.AppData,
+        });
+      }
     }
-    if (locatedIcon()) {
-      iconFileName =
-        generateRandomString() +
-        "." +
-        locatedIcon().split(".")[locatedIcon().split(".").length - 1];
 
-      await copyFile(locatedIcon(), "icons\\" + iconFileName, {
-        dir: BaseDirectory.AppData,
-      });
+    if (foundIconImage() != undefined) {
+      iconFileName = generateRandomString() + ".png";
+
+      await fetch(
+        `https://clear-api.vercel.app/?image=${
+          foundIconImage()[foundIconImageIndex()]
+        }`,
+      ).then((res) =>
+        res.json().then(async (jsonres) => {
+          downloadImage("icons\\" + iconFileName, jsonres.image);
+        }),
+      );
+    } else {
+      if (locatedIcon()) {
+        iconFileName =
+          generateRandomString() +
+          "." +
+          locatedIcon().split(".")[locatedIcon().split(".").length - 1];
+
+        await copyFile(locatedIcon(), "icons\\" + iconFileName, {
+          dir: BaseDirectory.AppData,
+        });
+      }
     }
 
     libraryData().games[gameName()] = {
@@ -140,6 +210,7 @@ export function NewGame() {
     ).then(() => {
       getData();
       document.querySelector("[data-newGameModal]").show();
+      document.querySelector("[data-loadingModal]").close();
     });
   }
 
@@ -156,20 +227,8 @@ export function NewGame() {
       }),
     );
   }
-  async function locateHeroImage() {
-    setLocatedHeroImage(
-      await open({
-        multiple: false,
-        filters: [
-          {
-            name: "Image",
-            extensions: ["png", "jpg", "jpeg", "webp"],
-          },
-        ],
-      }),
-    );
-  }
   async function locateGridImage() {
+    setFoundGridImage(undefined);
     setLocatedGridImage(
       await open({
         multiple: false,
@@ -182,7 +241,22 @@ export function NewGame() {
       }),
     );
   }
+  async function locateHeroImage() {
+    setFoundHeroImage(undefined);
+    setLocatedHeroImage(
+      await open({
+        multiple: false,
+        filters: [
+          {
+            name: "Image",
+            extensions: ["png", "jpg", "jpeg", "webp"],
+          },
+        ],
+      }),
+    );
+  }
   async function locateLogo() {
+    setFoundLogoImage(undefined);
     setLocatedLogo(
       await open({
         multiple: false,
@@ -197,6 +271,7 @@ export function NewGame() {
   }
 
   async function locateIcon() {
+    setFoundIconImage(undefined);
     setLocatedIcon(
       await open({
         multiple: false,
@@ -206,6 +281,47 @@ export function NewGame() {
             extensions: ["png", "jpg", "jpeg", "ico"],
           },
         ],
+      }),
+    );
+  }
+
+  async function searchGameName() {
+    setSGDBGames(undefined);
+    await fetch(`https://clear-api.vercel.app/?gameName=${gameName()}`).then(
+      (res) =>
+        res.json().then(async (jsonres) => {
+          setSGDBGames(jsonres.data);
+        }),
+    );
+  }
+
+  async function getGameAssets() {
+    setShowGridImageLoading(true);
+    setFoundGridImage(undefined);
+    setFoundHeroImage(undefined);
+    setFoundLogoImage(undefined);
+    setFoundIconImage(undefined);
+
+    await fetch(
+      `https://clear-api.vercel.app/?assets=${selectedGameId()}`,
+    ).then((res) =>
+      res.json().then(async (jsonres) => {
+        console.log(jsonres);
+
+        jsonres.grids
+          ? setFoundGridImage(jsonres.grids)
+          : setFoundGridImage(undefined);
+        jsonres.heroes
+          ? setFoundHeroImage(jsonres.heroes)
+          : setFoundHeroImage(undefined);
+        jsonres.logos
+          ? setFoundLogoImage(jsonres.logos)
+          : setFoundLogoImage(undefined);
+        jsonres.icons
+          ? setFoundIconImage(jsonres.icons)
+          : setFoundIconImage(undefined);
+
+        setShowGridImageLoading(false);
       }),
     );
   }
@@ -313,27 +429,69 @@ export function NewGame() {
               onWheel={(e) => {
                 if (SGDBGames()) {
                   if (e.deltaY == -100) {
-                    setFoundGridImageIndex((i) => i + 1);
+                    setFoundGridImageIndex((i) =>
+                      i == foundGridImage().length - 1 ? 0 : i + 1,
+                    );
+
+                    setShowGridImageLoading(true);
                   }
+
                   if (e.deltaY == 100) {
-                    setFoundGridImageIndex((i) => (i == 0 ? 0 : i - 1));
+                    console.log("down");
+
+                    if (foundGridImageIndex() != 0) {
+                      setFoundGridImageIndex((i) => i - 1);
+                      setShowGridImageLoading(true);
+                    } else {
+                      setShowGridImageLoading(false);
+                    }
                   }
+
+                  console.log(foundGridImage().length);
 
                   console.log(foundGridImageIndex());
                 }
               }}
               onContextMenu={() => {
                 setLocatedGridImage(undefined);
+                setFoundGridImage(undefined);
               }}
               className="panelButton locatingGridImg h-full aspect-[2/3] group relative overflow-hidden">
               <Show when={foundGridImage()}>
-                <img
-                  className="absolute inset-0"
-                  src={
-                    foundGridImage().data["data"][foundGridImageIndex()].thumb
-                  }
-                  alt=""
-                />
+                <Show when={showGridImageLoading() == false}>
+                  <img
+                    className="absolute inset-0"
+                    src={foundGridImage()[foundGridImageIndex()]}
+                    alt=""
+                    onLoad={() => {
+                      setShowGridImageLoading(false);
+                    }}
+                  />
+                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
+                    grid/cover <br />
+                  </span>
+                </Show>
+                <Show when={showGridImageLoading() == true}>
+                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
+                    grid/cover <br />
+                  </span>
+
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    className="animate-spin-slow absolute"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M16 16L19 19M18 12H22M8 8L5 5M16 8L19 5M8 16L5 19M2 12H6M12 2V6M12 18V22"
+                      className="stroke-[#000000] dark:stroke-[#ffffff] "
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                  </svg>
+                </Show>
+
                 <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
                   grid/cover
                 </span>
@@ -373,33 +531,52 @@ export function NewGame() {
                         setFoundHeroImageIndex((i) => (i == 0 ? 0 : i - 1));
                       }
 
-                      console.log(foundGridImageIndex());
+                      setShowHeroImageLoading(true);
                     }
                   }}
                   onContextMenu={() => {
                     setLocatedHeroImage(undefined);
+                    setFoundHeroImage(undefined);
                   }}
                   className="max-large:h-[250px] h-[350px] aspect-[67/26] group relative p-0 m-0 panelButton"
                   aria-label="hero">
                   <Show
                     when={foundHeroImage()}
                     className="absolute inset-0 overflow-hidden">
-                    <img
-                      src={
-                        foundHeroImage().data["data"][foundHeroImageIndex()]
-                          .thumb
-                      }
-                      alt=""
-                      className="absolute inset-0 h-full rounded-[6px]"
-                    />
-                    <img
-                      src={
-                        foundHeroImage().data["data"][foundHeroImageIndex()]
-                          .thumb
-                      }
-                      alt=""
-                      className="absolute inset-0 -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.4]"
-                    />
+                    <Show when={showHeroImageLoading() == false}>
+                      <img
+                        src={foundHeroImage()[foundHeroImageIndex()]}
+                        onLoad={() => {
+                          setShowHeroImageLoading(false);
+                        }}
+                        alt=""
+                        className="absolute inset-0 h-full rounded-[6px]"
+                      />
+                      <img
+                        src={foundHeroImage()[foundHeroImageIndex()]}
+                        onLoad={() => {
+                          setShowHeroImageLoading(false);
+                        }}
+                        alt=""
+                        className="absolute inset-0 -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.4]"
+                      />
+                    </Show>
+                    <Show when={showHeroImageLoading()}>
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        className="animate-spin-slow"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M16 16L19 19M18 12H22M8 8L5 5M16 8L19 5M8 16L5 19M2 12H6M12 2V6M12 18V22"
+                          className="stroke-[#000000] dark:stroke-[#ffffff] "
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"></path>
+                      </svg>
+                    </Show>
                     <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
                       hero image
                     </span>
@@ -443,21 +620,54 @@ export function NewGame() {
                         setFoundLogoImageIndex((i) => (i == 0 ? 0 : i - 1));
                       }
 
-                      console.log(foundGridImageIndex());
+                      setShowLogoImageLoading(true);
                     }
+                  }}
+                  onContextMenu={() => {
+                    setLocatedLogo(undefined);
+                    setFoundLogoImage(undefined);
                   }}
                   className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[20px] left-[20px] panelButton"
                   aria-label="logo">
-                  <img
-                    src={
-                      foundLogoImage().data["data"][foundLogoImageIndex()].thumb
-                    }
-                    alt=""
-                    className="h-[60px] "
-                  />
-                  <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
-                    logo
-                  </span>
+                  <Show when={showLogoImageLoading() == false}>
+                    <img
+                      src={foundLogoImage()[foundLogoImageIndex()]}
+                      alt=""
+                      className="h-[60px] "
+                      onLoad={() => {
+                        setShowLogoImageLoading(false);
+                      }}
+                    />
+                  </Show>
+                  <Show when={showLogoImageLoading()}>
+                    <div
+                      onClick={locateLogo}
+                      onContextMenu={() => {
+                        setLocatedLogo(undefined);
+                        setFoundLogoImage(undefined);
+                      }}
+                      className="panelButton bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[20px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] ">
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        className="animate-spin-slow"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M16 16L19 19M18 12H22M8 8L5 5M16 8L19 5M8 16L5 19M2 12H6M12 2V6M12 18V22"
+                          className="stroke-[#000000] dark:stroke-[#ffffff] "
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"></path>
+                      </svg>
+                    </div>
+                  </Show>
+                  <Show when={showLogoImageLoading() == false}>
+                    <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
+                      logo
+                    </span>
+                  </Show>
                 </div>
               </Show>
 
@@ -467,6 +677,7 @@ export function NewGame() {
                     onClick={locateLogo}
                     onContextMenu={() => {
                       setLocatedLogo(undefined);
+                      setFoundLogoImage(undefined);
                     }}
                     className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[20px] left-[20px] panelButton"
                     aria-label="logo">
@@ -486,6 +697,7 @@ export function NewGame() {
                     onClick={locateLogo}
                     onContextMenu={() => {
                       setLocatedLogo(undefined);
+                      setFoundLogoImage(undefined);
                     }}
                     className="panelButton bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[20px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] "
                     aria-label="logo">
@@ -510,22 +722,47 @@ export function NewGame() {
                         setFoundIconImageIndex((i) => (i == 0 ? 0 : i - 1));
                       }
 
-                      console.log(foundGridImageIndex());
+                      setShowIconImageLoading(true);
                     }
                   }}
                   onContextMenu={() => {
                     setLocatedIcon(undefined);
+                    setFoundIconImage(undefined);
                   }}
-                  className="relative !bg-[#E8E8E8] dark:!bg-[#272727] group "
+                  className="relative group "
                   aria-label="logo">
-                  <img
-                    src={
-                      foundIconImage().data["data"][foundIconImageIndex()].thumb
-                    }
-                    alt=""
-                    className="w-[40px] h-[40px]"
-                  />
-                  <span class="absolute tooltip group-hover:opacity-100 left-[-10%] top-[120%] opacity-0 ">
+                  <Show when={showIconImageLeading() == false}>
+                    <img
+                      src={foundIconImage()[foundIconImageIndex()]}
+                      alt=""
+                      onLoad={() => {
+                        setShowIconImageLoading(false);
+                      }}
+                      className="w-[40px] h-[40px]"
+                    />
+                  </Show>
+                  <Show when={showIconImageLeading()}>
+                    <div
+                      className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]  rounded-[${
+                        roundedBorders() ? "6px" : "0px"
+                      }]`}>
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        className="animate-spin-slow absolute top-[24%] left-[27%]"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M16 16L19 19M18 12H22M8 8L5 5M16 8L19 5M8 16L5 19M2 12H6M12 2V6M12 18V22"
+                          className="stroke-[#000000] dark:stroke-[#ffffff] "
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"></path>
+                      </svg>
+                    </div>
+                  </Show>
+                  <span class="absolute tooltip z-[10000] group-hover:opacity-100 left-[-10%] top-[120%] opacity-0 ">
                     icon
                   </span>
                 </div>
@@ -535,6 +772,7 @@ export function NewGame() {
                   onClick={locateIcon}
                   onContextMenu={() => {
                     setLocatedIcon(undefined);
+                    setFoundIconImage(undefined);
                   }}
                   className="relative !bg-[#27272700] group "
                   aria-label="logo">
@@ -552,7 +790,7 @@ export function NewGame() {
                       className="w-[40px] h-[40px]"
                     />
                   </Show>
-                  <span class="absolute tooltip group-hover:opacity-100 left-[-10%] top-[120%] opacity-0 ">
+                  <span class="absolute tooltip z-[10000] group-hover:opacity-100 left-[-10%] top-[120%] opacity-0 ">
                     icon
                   </span>
                 </div>
@@ -574,6 +812,21 @@ export function NewGame() {
                   className="!bg-transparent"
                   placeholder="name of game"
                 />
+                <button
+                  className={`standardButton !w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80] rounded-[${
+                    roundedBorders() ? "6px" : "0px"
+                  }] `}
+                  onClick={async () => {
+                    searchGameName();
+                    setSelectedGameId(undefined);
+                    setSGDBGames(undefined);
+                    setFoundGridImage(undefined);
+                    setFoundHeroImage(undefined);
+                    setFoundLogoImage(undefined);
+                    setFoundIconImage(undefined);
+                  }}>
+                  auto find assets
+                </button>
                 <button
                   className={`standardButton !w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80] rounded-[${
                     roundedBorders() ? "6px" : "0px"
@@ -612,73 +865,87 @@ export function NewGame() {
         </div>
 
         <div className="flex  justify-between max-large:w-[61rem] w-[84rem]">
-          <span className="text-[12px] opacity-50">
+          <span className="opacity-50">
             right click to empty image selection
           </span>
           <Show when={SGDBGames()}>
-            <span className="text-[12px] opacity-50">
-              select the official name of your game
-            </span>
+            <Show when={selectedGameId() == undefined}>
+              <span className="opacity-80">
+                select the official name of your game
+              </span>
+            </Show>
+            <Show when={selectedGameId()}>
+              <span className="opacity-80">
+                scroll on the image to select a different asset
+              </span>
+            </Show>
           </Show>
         </div>
 
         <Show when={SGDBGames()}>
-          <div className="dark:bg-[#272727cc] bg-[#E8E8E8cc] gameInput flex backdrop-blur-[10px] max-large:w-[61rem] w-[84rem]">
-            <button
-              onClick={() => {
-                document.getElementById("SGDBGamesContainer").scrollLeft -= 40;
-              }}>
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M14 8L10 12L14 16"
-                  stroke="rgba(255,255,255,0.5)"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"></path>
-              </svg>
-            </button>
-            <div
-              id="SGDBGamesContainer"
-              className="flex gap-[5px] overflow-x-auto SGDBGamesContainer scroll-smooth">
-              <For each={SGDBGames()}>
-                {(foundGame) => {
-                  return (
-                    <button
-                      className="flex-shrink-0"
-                      onClick={() => {
-                        setSelectedGameId(foundGame.id);
-                        getGameAssets();
-                      }}>
-                      {foundGame.name}
-                    </button>
-                  );
-                }}
-              </For>
+          <Show when={selectedGameId() == undefined}>
+            <div className="dark:bg-[#272727cc] bg-[#E8E8E8cc] gameInput flex backdrop-blur-[10px] max-large:w-[61rem] w-[84rem]">
+              <button
+                onClick={() => {
+                  document.getElementById(
+                    "SGDBGamesContainer",
+                  ).scrollLeft -= 40;
+                }}>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M14 8L10 12L14 16"
+                    stroke="rgba(255,255,255,0.5)"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+                </svg>
+              </button>
+              <div
+                id="SGDBGamesContainer"
+                className="flex gap-[5px] overflow-x-auto SGDBGamesContainer scroll-smooth">
+                <For each={SGDBGames()}>
+                  {(foundGame) => {
+                    return (
+                      <button
+                        className="flex-shrink-0"
+                        onClick={() => {
+                          setSelectedGameId(undefined);
+                          setSelectedGameId(foundGame.id);
+                          getGameAssets();
+                        }}>
+                        {foundGame.name}
+                      </button>
+                    );
+                  }}
+                </For>
+              </div>
+              <button
+                onClick={() => {
+                  document.getElementById(
+                    "SGDBGamesContainer",
+                  ).scrollLeft += 40;
+                }}>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M10 8L14 12L10 16"
+                    stroke="rgba(255,255,255,0.5)"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+                </svg>
+              </button>
             </div>
-            <button
-              onClick={() => {
-                document.getElementById("SGDBGamesContainer").scrollLeft += 40;
-              }}>
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M10 8L14 12L10 16"
-                  stroke="rgba(255,255,255,0.5)"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"></path>
-              </svg>
-            </button>
-          </div>
+          </Show>
         </Show>
       </div>
     </dialog>

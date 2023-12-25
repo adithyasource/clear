@@ -10,9 +10,7 @@ import {
   writeTextFile,
 } from "@tauri-apps/api/fs";
 import { appDataDir } from "@tauri-apps/api/path";
-import { appWindow } from "@tauri-apps/api/window";
 import * as fs from "@tauri-apps/api/fs";
-import { getClient, ResponseType } from "@tauri-apps/api/http";
 
 import {
   appDataDirPath,
@@ -251,6 +249,196 @@ export function generateRandomString() {
   return result;
 }
 
+// ? VDF Parser From https://github.com/node-steam/vdf
+
+function parseVDF(text) {
+  if (typeof text !== "string") {
+    throw new TypeError("VDF | Parse: Expecting parameter to be a string");
+  }
+
+  const lines = text.split("\n");
+  const object = {};
+  const stack = [object];
+  let expect = false;
+
+  const regex = new RegExp(
+    '^("((?:\\\\.|[^\\\\"])+)"|([a-z0-9\\-\\_]+))' +
+      "([ \t]*(" +
+      '"((?:\\\\.|[^\\\\"])*)(")?' +
+      "|([a-z0-9\\-\\_]+)" +
+      "))?",
+  );
+
+  let i = 0;
+  const j = lines.length;
+
+  let comment = false;
+
+  for (; i < j; i++) {
+    let line = lines[i].trim();
+
+    if (line.startsWith("/*") && line.endsWith("*/")) {
+      continue;
+    }
+
+    if (line.startsWith("/*")) {
+      comment = true;
+      continue;
+    }
+
+    if (line.endsWith("*/")) {
+      comment = false;
+      continue;
+    }
+
+    if (comment) {
+      continue;
+    }
+
+    if (line === "" || line[0] === "/") {
+      continue;
+    }
+    if (line[0] === "{") {
+      expect = false;
+      continue;
+    }
+    if (expect) {
+      throw new SyntaxError(`VDF | Parse: Invalid syntax on line ${i + 1}`);
+    }
+    if (line[0] === "}") {
+      stack.pop();
+      continue;
+    }
+    while (true) {
+      const m = regex.exec(line);
+      if (m === null) {
+        throw new SyntaxError(`VDF | Parse: Invalid syntax on line ${i + 1}`);
+      }
+      const key = m[2] !== undefined ? m[2] : m[3];
+      let val = m[6] !== undefined ? m[6] : m[8];
+
+      if (val === undefined) {
+        if (stack[stack.length - 1][key] === undefined)
+          stack[stack.length - 1][key] = {};
+        stack.push(stack[stack.length - 1][key]);
+        expect = true;
+      } else {
+        if (m[7] === undefined && m[8] === undefined) {
+          line += "\n" + lines[++i];
+          continue;
+        }
+
+        if (val !== "" && !isNaN(val)) val = +val;
+        if (val === "true") val = true;
+        if (val === "false") val = false;
+        if (val === "null") val = null;
+        if (val === "undefined") val = undefined;
+
+        stack[stack.length - 1][key] = val;
+      }
+      break;
+    }
+  }
+
+  if (stack.length !== 1)
+    throw new SyntaxError("VDF | Parse: Open parentheses somewhere");
+
+  return object;
+}
+
+export async function downloadImage(name, integerBytesList) {
+  await fs.writeBinaryFile(name, integerBytesList, {
+    dir: BaseDirectory.AppData,
+  });
+}
+
+export async function importSteamGames() {
+  invoke("read_steam_vdf").then(async (data) => {
+    let steamData = parseVDF(data);
+
+    console.log(Object.keys(steamData.libraryfolders[1].apps));
+
+    let steamGameIds = Object.keys(steamData.libraryfolders[1].apps);
+
+    let allGameNames = [];
+
+    delete libraryData().folders["steam"];
+
+    setLibraryData(libraryData());
+
+    await writeTextFile(
+      {
+        path: "data.json",
+        contents: JSON.stringify(libraryData(), null, 4),
+      },
+      {
+        dir: BaseDirectory.AppData,
+      },
+    ).then(() => {
+      getData();
+    });
+
+    steamGameIds.forEach(async (steamId) => {
+      await fetch(`https://clear-api.vercel.app/?steamID=${steamId}`).then(
+        (res) =>
+          res.json().then(async (jsonres) => {
+            let gameId = jsonres.data.id;
+            let name = jsonres.data.name;
+
+            allGameNames.push(name);
+
+            let gridImageFileName = generateRandomString() + ".png";
+            let heroImageFileName = generateRandomString() + ".png";
+            let logoImageFileName = generateRandomString() + ".png";
+
+            await fetch(
+              `https://clear-api.vercel.app/?limitedAssets=${gameId}`,
+            ).then((res) =>
+              res.json().then(async (jsonres) => {
+                downloadImage("grids\\" + gridImageFileName, jsonres.grid);
+                downloadImage("heroes\\" + heroImageFileName, jsonres.hero);
+                downloadImage("logos\\" + logoImageFileName, jsonres.logo);
+
+                libraryData().games[name] = {
+                  location: `steam://rungameid/${steamId}`,
+                  name: name,
+                  heroImage: heroImageFileName,
+                  gridImage: gridImageFileName,
+                  logo: logoImageFileName,
+                  favourite: false,
+                };
+
+                libraryData().folders["steam"] = {
+                  name: "steam",
+                  hide: false,
+                  games: allGameNames,
+                  index: currentFolders().length,
+                };
+
+                setLibraryData(libraryData());
+
+                await writeTextFile(
+                  {
+                    path: "data.json",
+                    contents: JSON.stringify(libraryData(), null, 4),
+                  },
+                  {
+                    dir: BaseDirectory.AppData,
+                  },
+                ).then(() => {
+                  setTimeout(() => {
+                    getData();
+                    document.querySelector("[data-loadingModal]").close();
+                  }, 3000);
+                });
+              }),
+            );
+          }),
+      );
+    });
+  });
+}
+
 function App() {
   document.addEventListener("keydown", (e) => {
     for (let i = 0; i < document.querySelectorAll(".sideBarGame").length; i++) {
@@ -404,186 +592,13 @@ function App() {
     }
   });
 
-  async function downloadImage(name, integerBytesList) {
-    await fs.writeBinaryFile(name, integerBytesList, {
-      dir: BaseDirectory.AppData,
-    });
-  }
-
   onMount(async () => {
     await getData();
     window.addEventListener("resize", () => {
       setWindowWidth(window.innerWidth);
     });
+    console.log(currentFolders().length);
   });
-
-  // ? VDF Parser From https://github.com/node-steam/vdf
-
-  function parseVDF(text) {
-    if (typeof text !== "string") {
-      throw new TypeError("VDF | Parse: Expecting parameter to be a string");
-    }
-
-    const lines = text.split("\n");
-    const object = {};
-    const stack = [object];
-    let expect = false;
-
-    const regex = new RegExp(
-      '^("((?:\\\\.|[^\\\\"])+)"|([a-z0-9\\-\\_]+))' +
-        "([ \t]*(" +
-        '"((?:\\\\.|[^\\\\"])*)(")?' +
-        "|([a-z0-9\\-\\_]+)" +
-        "))?",
-    );
-
-    let i = 0;
-    const j = lines.length;
-
-    let comment = false;
-
-    for (; i < j; i++) {
-      let line = lines[i].trim();
-
-      if (line.startsWith("/*") && line.endsWith("*/")) {
-        continue;
-      }
-
-      if (line.startsWith("/*")) {
-        comment = true;
-        continue;
-      }
-
-      if (line.endsWith("*/")) {
-        comment = false;
-        continue;
-      }
-
-      if (comment) {
-        continue;
-      }
-
-      if (line === "" || line[0] === "/") {
-        continue;
-      }
-      if (line[0] === "{") {
-        expect = false;
-        continue;
-      }
-      if (expect) {
-        throw new SyntaxError(`VDF | Parse: Invalid syntax on line ${i + 1}`);
-      }
-      if (line[0] === "}") {
-        stack.pop();
-        continue;
-      }
-      while (true) {
-        const m = regex.exec(line);
-        if (m === null) {
-          throw new SyntaxError(`VDF | Parse: Invalid syntax on line ${i + 1}`);
-        }
-        const key = m[2] !== undefined ? m[2] : m[3];
-        let val = m[6] !== undefined ? m[6] : m[8];
-
-        if (val === undefined) {
-          if (stack[stack.length - 1][key] === undefined)
-            stack[stack.length - 1][key] = {};
-          stack.push(stack[stack.length - 1][key]);
-          expect = true;
-        } else {
-          if (m[7] === undefined && m[8] === undefined) {
-            line += "\n" + lines[++i];
-            continue;
-          }
-
-          if (val !== "" && !isNaN(val)) val = +val;
-          if (val === "true") val = true;
-          if (val === "false") val = false;
-          if (val === "null") val = null;
-          if (val === "undefined") val = undefined;
-
-          stack[stack.length - 1][key] = val;
-        }
-        break;
-      }
-    }
-
-    if (stack.length !== 1)
-      throw new SyntaxError("VDF | Parse: Open parentheses somewhere");
-
-    return object;
-  }
-
-  async function importSteamGames() {
-    invoke("read_steam_vdf").then(async (data) => {
-      let steamData = parseVDF(data);
-
-      console.log(Object.keys(steamData.libraryfolders[1].apps));
-
-      let steamGameIds = Object.keys(steamData.libraryfolders[1].apps);
-
-      let allGameNames = [];
-
-      steamGameIds.forEach(async (steamId) => {
-        await fetch(`https://clear-api.vercel.app/?steamID=${steamId}`).then(
-          (res) =>
-            res.json().then(async (jsonres) => {
-              let gameId = jsonres.data.id;
-              let name = jsonres.data.name;
-
-              allGameNames.push(name);
-
-              let gridImageFileName = generateRandomString() + ".png";
-              let heroImageFileName = generateRandomString() + ".png";
-              let logoImageFileName = generateRandomString() + ".png";
-
-              await fetch(
-                `https://clear-api.vercel.app/?limitedAssets=${gameId}`,
-              ).then((res) =>
-                res.json().then(async (jsonres) => {
-                  downloadImage("grids\\" + gridImageFileName, jsonres.grid);
-                  downloadImage("heroes\\" + heroImageFileName, jsonres.hero);
-                  downloadImage("logos\\" + logoImageFileName, jsonres.logo);
-
-                  libraryData().games[name] = {
-                    location: `steam://rungameid/${steamId}`,
-                    name: name,
-                    heroImage: heroImageFileName,
-                    gridImage: gridImageFileName,
-                    logo: logoImageFileName,
-                    favourite: false,
-                  };
-
-                  libraryData().folders["Steam"] = {
-                    name: "Steam",
-                    hide: false,
-                    games: allGameNames,
-                    index: currentFolders().length,
-                  };
-
-                  setLibraryData(libraryData());
-
-                  await writeTextFile(
-                    {
-                      path: "data.json",
-                      contents: JSON.stringify(libraryData(), null, 4),
-                    },
-                    {
-                      dir: BaseDirectory.AppData,
-                    },
-                  ).then(() => {
-                    setTimeout(() => {
-                      getData();
-                      document.querySelector("[data-loadingModal]").close();
-                    }, 3000);
-                  });
-                }),
-              );
-            }),
-        );
-      });
-    });
-  }
 
   return (
     <>
@@ -675,13 +690,14 @@ function App() {
 
               <div>
                 <button
-                  className="standardButton mt-[35px]"
+                  className="standardButton mt-[35px] hint--bottom !flex !w-max !gap-3"
+                  aria-label="might not work perfectly!"
                   onClick={() => {
                     document.querySelector("[data-loadingModal]").show();
 
                     importSteamGames();
                   }}>
-                  import steam library
+                  import steam games
                   <svg
                     width="23"
                     height="14"
