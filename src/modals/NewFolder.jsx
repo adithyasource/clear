@@ -15,14 +15,13 @@ import {
 import { Show } from "solid-js";
 import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
-import { getData } from "../App";
-import { Text } from "../components/Text";
+import { getData, translateText } from "../App";
 
 export function NewFolder() {
   async function addFolder() {
     if (folderName() == "" || folderName() == undefined) {
       setShowToast(true);
-      setToastMessage("no folder name");
+      setToastMessage(translateText("no folder name"));
       setTimeout(() => {
         setShowToast(false);
       }, 1500);
@@ -32,7 +31,9 @@ export function NewFolder() {
     for (let x = 0; x < Object.keys(libraryData().folders).length; x++) {
       if (folderName() == Object.keys(libraryData().folders)[x]) {
         setShowToast(true);
-        setToastMessage(`${folderName()} is already in your library`);
+        setToastMessage(
+          folderName() + " " + translateText("is already in your library"),
+        );
         setTimeout(() => {
           setShowToast(false);
         }, 1500);
@@ -78,7 +79,7 @@ export function NewFolder() {
           <div className="flex justify-between">
             <div>
               <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
-                <Text t="add new folder" />
+                {translateText("add new folder")}
               </p>
             </div>
             <div className="flex items-center gap-5">
@@ -90,23 +91,23 @@ export function NewFolder() {
                 <Show when={hideFolder()}>
                   <div className="relative">
                     <div className="">
-                      <Text t="hide in expanded view" />
+                      {translateText("hide in expanded view")}
                     </div>
                     <div className="absolute blur-[5px] opacity-70 inset-0">
-                      <Text t="hide in expanded view" />
+                      {translateText("hide in expanded view")}
                     </div>
                   </div>
                 </Show>
                 <Show when={!hideFolder()}>
                   <div className="">
-                    <Text t="hide in expanded view" />
+                    {translateText("hide in expanded view")}
                   </div>
                 </Show>
               </div>
               <button
                 onClick={addFolder}
                 className="flex items-center standardButton !w-max">
-                <Text t="save" />
+                {translateText("save")}
                 <svg
                   width="18"
                   height="18"
@@ -168,13 +169,7 @@ export function NewFolder() {
                 setFolderName(e.currentTarget.value);
               }}
               value={folderName() || ""}
-              placeholder={`${
-                language() == "en"
-                  ? "name of folder"
-                  : language() == "jp"
-                  ? "フォルダの名前"
-                  : ""
-              }`}
+              placeholder={translateText("name of folder")}
             />
           </div>
         </div>

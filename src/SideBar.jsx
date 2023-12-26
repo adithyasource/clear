@@ -20,8 +20,7 @@ import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
 import { For, Show, onMount } from "solid-js";
 import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
-import { getData, openGame } from "./App";
-import { Text } from "./components/Text";
+import { getData, openGame, translateText } from "./App";
 
 export function SideBar() {
   let scrollY = " ";
@@ -142,9 +141,7 @@ export function SideBar() {
               id="searchInput"
               name=""
               className="dark:bg-[#232323] bg-[#E8E8E8] dark:text-white text-black w-full hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b]"
-              placeholder={`${
-                language() == "en" ? "search" : language() == "jp" ? "検索" : ""
-              }`}
+              placeholder={translateText("search")}
               onInput={(e) => {
                 setSearchValue(e.currentTarget.value);
               }}
@@ -472,7 +469,7 @@ export function SideBar() {
                             className={`!flex gap-[5px] bg-transparent ${
                               i() == 0 ? "mt-4" : "mt-5"
                             }  sideBarGame cursor-grab `}
-                            aria-label="play"
+                            aria-label={translateText("play")}
                             draggable={true}
                             onDragStart={(e) => {
                               setTimeout(() => {
@@ -664,7 +661,7 @@ export function SideBar() {
               }}>
               <div className=" flex gap-[10px] items-center cursor-default">
                 <p className="pd-3 text-[#00000080] dark:text-[#ffffff80] ">
-                  <Text t="uncategorized" />
+                  {translateText("uncategorized")}
                 </p>
               </div>
               <For each={currentGames()}>
@@ -701,7 +698,7 @@ export function SideBar() {
                         className={`!flex gap-[5px] bg-transparent ${
                           i() == 0 ? "mt-4" : "mt-5"
                         }  sideBarGame cursor-grab `}
-                        aria-label="play"
+                        aria-label={translateText("play")}
                         onClick={async (e) => {
                           await setSelectedGame(
                             libraryData().games[currentGame],
@@ -742,7 +739,7 @@ export function SideBar() {
               onClick={() => {
                 document.querySelector("[data-newGameModal]").show();
               }}>
-              <Text t="add game" />
+              {translateText("add game")}
               <svg
                 width="18"
                 height="18"
@@ -762,7 +759,7 @@ export function SideBar() {
               onClick={() => {
                 document.querySelector("[data-newFolderModal]").show();
               }}>
-              <Text t="add folder" />
+              {translateText("add folder")}
               <svg
                 width="18"
                 height="18"
@@ -793,7 +790,7 @@ export function SideBar() {
               onClick={() => {
                 document.querySelector("[data-notepadModal]").show();
               }}>
-              <Text t="notepad" />
+              {translateText("notepad")}
               <svg
                 width="18"
                 height="18"
@@ -819,7 +816,7 @@ export function SideBar() {
               onClick={() => {
                 document.querySelector("[data-settingsModal]").show();
               }}>
-              <Text t="settings" />
+              {translateText("settings")}
               <Show when={newVersionAvailable()}>
                 <svg
                   width="18"

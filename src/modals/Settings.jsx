@@ -22,12 +22,22 @@ import {
   newVersionAvailable,
   setNewVersionAvailable,
   language,
+  steamFolderExists,
+  showImportAndOverwriteConfirm,
+  setShowImportAndOverwriteConfirm,
+  setShowLanguageSelector,
+  showLanguageSelector,
+  setLanguage,
 } from "../Signals";
 
-import { getData, getSettingsData, importSteamGames } from "../App";
+import {
+  getData,
+  getSettingsData,
+  importSteamGames,
+  translateText,
+} from "../App";
 
 import { appDataDir } from "@tauri-apps/api/path";
-import { Text } from "../components/Text";
 
 export function Settings() {
   setTimeout(() => {
@@ -45,6 +55,24 @@ export function Settings() {
     );
   });
 
+  async function changeLanguage(lang) {
+    libraryData().userSettings.language = lang;
+
+    setLanguage("lang");
+
+    await writeTextFile(
+      {
+        path: "data.json",
+        contents: JSON.stringify(libraryData(), null, 4),
+      },
+      {
+        dir: BaseDirectory.AppData,
+      },
+    ).then(getData());
+
+    setShowLanguageSelector(false);
+  }
+
   return (
     <>
       <dialog
@@ -59,7 +87,7 @@ export function Settings() {
             <div className="flex justify-between">
               <div>
                 <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
-                  <Text t="settings" />
+                  {translateText("settings")}
                 </p>
               </div>
 
@@ -96,7 +124,7 @@ export function Settings() {
                       location: "https://clear.adithya.zip/update",
                     });
                   }}>
-                  <Text t="new update available!" />
+                  {translateText("new update available!")}
                   <span className="dark:text-[#ffffff80] text-[#12121280]">
                     v{latestVersion()}
                   </span>
@@ -124,18 +152,14 @@ export function Settings() {
                 className="relative cursor-pointer">
                 <Show when={roundedBorders()}>
                   <div className="relative ">
-                    <div className="">
-                      <Text t="rounded borders" />
-                    </div>
+                    <div className="">{translateText("rounded borders")}</div>
                     <div className="absolute blur-[5px] opacity-70 inset-0  ">
-                      <Text t="rounded borders" />
+                      {translateText("rounded borders")}
                     </div>
                   </div>
                 </Show>
                 <Show when={!roundedBorders()}>
-                  <div className="">
-                    <Text t="rounded borders" />
-                  </div>
+                  <div className="">{translateText("rounded borders")}</div>
                 </Show>
               </div>
               <div
@@ -157,18 +181,14 @@ export function Settings() {
                 className="relative cursor-pointer">
                 <Show when={gameTitle()}>
                   <div className="relative">
-                    <div className="">
-                      <Text t="game title" />
-                    </div>
+                    <div className="">{translateText("game title")}</div>
                     <div className="absolute blur-[5px] opacity-70 inset-0  ">
-                      <Text t="game title" />
+                      {translateText("game title")}
                     </div>
                   </div>
                 </Show>
                 <Show when={!gameTitle()}>
-                  <div className="">
-                    <Text t="game title" />
-                  </div>
+                  <div className="">{translateText("game title")}</div>
                 </Show>
               </div>
               <div
@@ -190,18 +210,14 @@ export function Settings() {
                 className="relative cursor-pointer">
                 <Show when={folderTitle()}>
                   <div className="relative">
-                    <div className="">
-                      <Text t="folder title" />
-                    </div>
+                    <div className="">{translateText("folder title")}</div>
                     <div className="absolute blur-[5px] opacity-70 inset-0  ">
-                      <Text t="folder title" />
+                      {translateText("folder title")}
                     </div>
                   </div>
                 </Show>
                 <Show when={!folderTitle()}>
-                  <div className="">
-                    <Text t="folder title" />
-                  </div>
+                  <div className="">{translateText("folder title")}</div>
                 </Show>
               </div>
               <div
@@ -224,16 +240,16 @@ export function Settings() {
                 <Show when={quitAfterOpen()}>
                   <div className="relative">
                     <div className="">
-                      <Text t="quit after opening game" />
+                      {translateText("quit after opening game")}
                     </div>
                     <div className="absolute blur-[5px] opacity-70 inset-0  ">
-                      <Text t="quit after opening game" />
+                      {translateText("quit after opening game")}
                     </div>
                   </div>
                 </Show>
                 <Show when={!quitAfterOpen()}>
                   <div className="">
-                    <Text t="quit after opening game" />
+                    {translateText("quit after opening game")}
                   </div>
                 </Show>
               </div>
@@ -266,7 +282,7 @@ export function Settings() {
                 }}
                 className="flex gap-2 cursor-pointer ">
                 <span className="dark:text-[#ffffff80] text-[#12121280]">
-                  [<Text t="font" />]
+                  [{translateText("font")}]
                 </span>
                 <div className="">
                   {fontName().toLowerCase() || "sans serif"}
@@ -292,9 +308,101 @@ export function Settings() {
                 }}
                 className="flex gap-2 cursor-pointer ">
                 <span className="dark:text-[#ffffff80] text-[#12121280]">
-                  [<Text t="theme" />]
+                  [{translateText("theme")}]
                 </span>
                 <div className="">{currentTheme().toLowerCase() || "dark"}</div>
+              </div>
+              <div className="flex gap-2 cursor-pointer relative">
+                <div
+                  onClick={() => {
+                    setShowLanguageSelector((x) => !x);
+                  }}>
+                  <span className="dark:text-[#ffffff80] text-[#12121280]">
+                    [{translateText("language")}]
+                  </span>
+                  &nbsp;{" "}
+                  {language() == "en"
+                    ? "english"
+                    : language() == "jp"
+                    ? "日本語"
+                    : language() == "es"
+                    ? "español"
+                    : language() == "hi"
+                    ? "हिंदी"
+                    : language() == "ru"
+                    ? "русский"
+                    : language() == "ko"
+                    ? "한국인"
+                    : language() == "fr"
+                    ? "français"
+                    : language() == "ch"
+                    ? "中国人"
+                    : "english"}
+                </div>
+
+                <Show when={showLanguageSelector()}>
+                  <div
+                    className={`flex flex-col gap-4 absolute border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
+                      roundedBorders() ? "6px" : "0px"
+                    }] p-3 z-[100000] top-[150%]`}>
+                    <div
+                      className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
+                      onClick={() => {
+                        changeLanguage("en");
+                      }}>
+                      english
+                    </div>
+                    <div
+                      className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
+                      onClick={() => {
+                        changeLanguage("jp");
+                      }}>
+                      日本語 [japanese]
+                    </div>
+                    <div
+                      className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
+                      onClick={() => {
+                        changeLanguage("es");
+                      }}>
+                      español [spanish]
+                    </div>
+                    <div
+                      className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
+                      onClick={() => {
+                        changeLanguage("hi");
+                      }}>
+                      हिंदी [hindi]
+                    </div>
+                    <div
+                      className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75"
+                      onClick={() => {
+                        changeLanguage("ru");
+                      }}>
+                      русский [russian]
+                    </div>
+                    <div
+                      className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75"
+                      onClick={() => {
+                        changeLanguage("ko");
+                      }}>
+                      한국인 [korean]
+                    </div>
+                    <div
+                      className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75"
+                      onClick={() => {
+                        changeLanguage("fr");
+                      }}>
+                      français [french]
+                    </div>
+                    <div
+                      className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75"
+                      onClick={() => {
+                        changeLanguage("ch");
+                      }}>
+                      中国人 [chinese]
+                    </div>
+                  </div>
+                </Show>
               </div>
             </div>
 
@@ -303,9 +411,33 @@ export function Settings() {
                 className="standardButton mt-[35px] hint--bottom !flex !w-max !gap-3"
                 aria-label="might not work perfectly!"
                 onClick={() => {
-                  importSteamGames();
+                  if (steamFolderExists()) {
+                    console.log("wh");
+                    showImportAndOverwriteConfirm()
+                      ? importSteamGames()
+                      : setShowImportAndOverwriteConfirm(true);
+
+                    setTimeout(() => {
+                      setShowImportAndOverwriteConfirm(false);
+                    }, 2500);
+                  } else {
+                    importSteamGames();
+                  }
                 }}>
-                <Text t="import steam games" />
+                <Show when={steamFolderExists() == true}>
+                  <Show when={showImportAndOverwriteConfirm() == true}>
+                    {translateText(
+                      "current 'steam' folder will be overwritten. confirm?",
+                    )}
+                  </Show>
+                  <Show when={showImportAndOverwriteConfirm() == false}>
+                    {translateText("import steam games")}
+                  </Show>
+                </Show>
+                <Show when={steamFolderExists() == false}>
+                  {translateText("import steam games")}
+                </Show>
+
                 <svg
                   width="23"
                   height="14"
@@ -341,10 +473,12 @@ export function Settings() {
                     location: appDataDirPath,
                   });
                 }}>
-                <Text t="open library location" />
+                {translateText("open library location")}
               </button>
               <span className="dark:text-[#ffffff80] text-[#12121280] w-[50%]">
-                <Text t="these are all the files that the app stores on your pc. you can copy these files to the same location on another pc to get your library there" />
+                {translateText(
+                  "these are all the files that the app stores on your pc. you can copy these files to the same location on another pc to get your library there",
+                )}
               </span>
             </div>
 
@@ -357,7 +491,7 @@ export function Settings() {
                   ctrl + n
                 </div>
 
-                <Text t="new game" />
+                {translateText("new game")}
               </div>
 
               <div className="flex items-center gap-3">
@@ -368,7 +502,7 @@ export function Settings() {
                   ctrl + .
                 </div>
 
-                <Text t="open settings" />
+                {translateText("open settings")}
               </div>
               <div className="flex items-center gap-3">
                 <div
@@ -378,7 +512,7 @@ export function Settings() {
                   ctrl + f
                 </div>
 
-                <Text t="search bar" />
+                {translateText("search bar")}
               </div>
               <div className="flex items-center gap-3">
                 <div
@@ -388,7 +522,7 @@ export function Settings() {
                   ctrl + m
                 </div>
 
-                <Text t="new folder" />
+                {translateText("new folder")}
               </div>
               <div className="flex items-center gap-3">
                 <div
@@ -398,7 +532,7 @@ export function Settings() {
                   ctrl + l
                 </div>
 
-                <Text t="open notepad" />
+                {translateText("open notepad")}
               </div>
               <div className="flex items-center gap-3">
                 <div
@@ -408,7 +542,7 @@ export function Settings() {
                   ctrl + \\
                 </div>
 
-                <Text t="hide sidebar" />
+                {translateText("hide sidebar")}
               </div>
               <div className="flex items-center gap-3">
                 <div
@@ -418,7 +552,7 @@ export function Settings() {
                   ctrl + w
                 </div>
 
-                <Text t="close app" />
+                {translateText("close app")}
               </div>
               <div className="flex items-center gap-3">
                 <div
@@ -428,7 +562,7 @@ export function Settings() {
                   escape
                 </div>
 
-                <Text t="close dialogs" />
+                {translateText("close dialogs")}
               </div>
 
               <div className="flex items-center gap-3">
@@ -439,7 +573,7 @@ export function Settings() {
                   ctrl + click
                 </div>
 
-                <Text t="quick open game" />
+                {translateText("quick open game")}
               </div>
             </div>
 
@@ -457,7 +591,7 @@ export function Settings() {
                   });
                 }}
                 className="underline cursor-pointer">
-                <Text t="feedback" />
+                {translateText("feedback")}
               </p>
               <p
                 onClick={() => {
@@ -466,10 +600,10 @@ export function Settings() {
                   });
                 }}
                 className="underline cursor-pointer">
-                <Text t="visit website" />
+                {translateText("visit website")}
               </p>
               <div>
-                <Text t="made by" />{" "}
+                {translateText("made by")}{" "}
                 <a
                   onClick={() => {
                     invoke("open_location", {
@@ -488,7 +622,7 @@ export function Settings() {
                   });
                 }}
                 className="underline cursor-pointer">
-                <Text t="buy me a coffee" />
+                {translateText("buy me a coffee")}
               </a>
             </div>
           </div>

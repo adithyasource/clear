@@ -13,7 +13,6 @@ export const [notepadValue, setNotepadValue] = createSignal("");
 export const [toastError, setToastMessage] = createSignal("");
 export const [showToast, setShowToast] = createSignal(false);
 export const [windowWidth, setWindowWidth] = createSignal(window.innerWidth);
-export const [language, setLanguage] = createSignal("en");
 
 // !? References
 export const [selectedGame, setSelectedGame] = createSignal({});
@@ -22,6 +21,12 @@ export const [currentGames, setCurrentGames] = createSignal([]);
 export const [currentFolders, setCurrentFolders] = createSignal([]);
 export const [searchValue, setSearchValue] = createSignal();
 export const [showDeleteConfirm, setShowDeleteConfirm] = createSignal(false);
+export const [showImportAndOverwriteConfirm, setShowImportAndOverwriteConfirm] =
+  createSignal(false);
+export const [steamFolderExists, setSteamFolderExists] = createSignal(false);
+export const [language, setLanguage] = createSignal("en");
+export const [showLanguageSelector, setShowLanguageSelector] =
+  createSignal(false);
 
 // !? Styles Signals
 export const [currentTheme, setCurrentTheme] = createSignal("");

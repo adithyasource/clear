@@ -39,6 +39,7 @@ import {
   setFoundLogoImageIndex,
   foundIconImageIndex,
   setFoundIconImageIndex,
+  language,
 } from "../Signals";
 
 import { Show, Suspense, createSignal } from "solid-js";
@@ -46,10 +47,14 @@ import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
 import { writeTextFile, BaseDirectory, copyFile } from "@tauri-apps/api/fs";
 import * as fs from "@tauri-apps/api/fs";
 
-import { getData, generateRandomString, downloadImage } from "../App";
+import {
+  getData,
+  generateRandomString,
+  downloadImage,
+  translateText,
+} from "../App";
 
 import { open } from "@tauri-apps/api/dialog";
-import { Text } from "../components/Text";
 
 export function NewGame() {
   const [showGridImageLoading, setShowGridImageLoading] = createSignal(false);
@@ -58,11 +63,9 @@ export function NewGame() {
   const [showIconImageLeading, setShowIconImageLoading] = createSignal(false);
 
   async function addGame() {
-    document.querySelector("[data-loadingModal]").show();
-
     if (gameName() == "" || gameName() == undefined) {
       setShowToast(true);
-      setToastMessage("no game name");
+      setToastMessage(translateText("no game name"));
       setTimeout(() => {
         setShowToast(false);
       }, 1500);
@@ -72,7 +75,9 @@ export function NewGame() {
     for (let x = 0; x < Object.keys(libraryData().games).length; x++) {
       if (gameName() == Object.keys(libraryData().games)[x]) {
         setShowToast(true);
-        setToastMessage(`${gameName()} is already in your library`);
+        setToastMessage(
+          gameName() + " " + translateText("is already in your library"),
+        );
         setTimeout(() => {
           setShowToast(false);
         }, 1500);
@@ -85,7 +90,11 @@ export function NewGame() {
     let logoFileName;
     let iconFileName;
 
-    if (foundGridImage() != undefined) {
+    document.querySelector("[data-loadingModal]").show();
+
+    console.log(foundGridImage());
+
+    if (foundGridImage()) {
       gridImageFileName = generateRandomString() + ".png";
 
       await fetch(
@@ -112,7 +121,7 @@ export function NewGame() {
       }
     }
 
-    if (foundHeroImage() != undefined) {
+    if (foundHeroImage()) {
       heroImageFileName = generateRandomString() + ".png";
 
       await fetch(
@@ -139,7 +148,7 @@ export function NewGame() {
       }
     }
 
-    if (foundLogoImage() != undefined) {
+    if (foundLogoImage()) {
       logoFileName = generateRandomString() + ".png";
 
       await fetch(
@@ -164,7 +173,7 @@ export function NewGame() {
       }
     }
 
-    if (foundIconImage() != undefined) {
+    if (foundIconImage()) {
       iconFileName = generateRandomString() + ".png";
 
       await fetch(
@@ -200,6 +209,8 @@ export function NewGame() {
     };
     setLibraryData(libraryData());
 
+    document.querySelector("[data-loadingModal]").close();
+
     await writeTextFile(
       {
         path: "data.json",
@@ -210,8 +221,6 @@ export function NewGame() {
       },
     ).then(() => {
       getData();
-      document.querySelector("[data-newGameModal]").show();
-      document.querySelector("[data-loadingModal]").close();
     });
   }
 
@@ -293,7 +302,7 @@ export function NewGame() {
         res.json().then(async (jsonres) => {
           if (jsonres.data.length == 0) {
             setShowToast(true);
-            setToastMessage("couldn't find that game :(");
+            setToastMessage(translateText("couldn't find that game :("));
             setTimeout(() => {
               setShowToast(false);
             }, 2500);
@@ -304,7 +313,9 @@ export function NewGame() {
       )
       .catch((err) => {
         setShowToast(true);
-        setToastMessage("you're not connected to the internet :(");
+        setToastMessage(
+          translateText("you're not connected to the internet :("),
+        );
         setTimeout(() => {
           setShowToast(false);
         }, 2500);
@@ -341,7 +352,7 @@ export function NewGame() {
         if (missingAssets.length != 0) {
           if (missingAssets.length == 4) {
             setShowToast(true);
-            setToastMessage("couldn't find any assets :(");
+            setToastMessage(translateText("couldn't find any assets :("));
             setTimeout(() => {
               setShowToast(false);
             }, 2500);
@@ -352,7 +363,9 @@ export function NewGame() {
             let lastAssetType = missingAssets.splice(-1);
             setShowToast(true);
             setToastMessage(
-              `couldn't find ${missingAssets.join(", ")} & ${lastAssetType} :(`,
+              `${translateText("couldn't find")} ${missingAssets.join(
+                ", ",
+              )} & ${lastAssetType} :(`,
             );
             setTimeout(() => {
               setShowToast(false);
@@ -361,7 +374,9 @@ export function NewGame() {
           }
 
           setShowToast(true);
-          setToastMessage(`couldn't find ${missingAssets[0]} :(`);
+          setToastMessage(
+            `${translateText("couldn't find")} ${missingAssets[0]} :(`,
+          );
           setTimeout(() => {
             setShowToast(false);
           }, 2500);
@@ -395,7 +410,7 @@ export function NewGame() {
         <div className="flex justify-between max-large:w-[61rem] w-[84rem]">
           <div>
             <p className="dark:text-[#ffffff80] text-[#00000080] text-[25px]">
-              <Text t="add new game" />
+              {translateText("add new game")}
             </p>
           </div>
           <div className="flex items-center gap-4">
@@ -406,27 +421,21 @@ export function NewGame() {
               }}>
               <Show when={favouriteGame()}>
                 <div className="relative">
-                  <div className="!w-max">
-                    <Text t="favourite" />
-                  </div>
+                  <div className="!w-max">{translateText("favourite")}</div>
                   <div className="absolute blur-[5px] opacity-70 -z-10 inset-0 !w-max">
-                    <Text t="favourite" />
+                    {translateText("favourite")}
                   </div>
                 </div>
               </Show>
 
               <Show when={!favouriteGame()}>
-                <div className="!w-max">
-                  <Text t="favourite" />
-                </div>
+                <div className="!w-max">{translateText("favourite")}</div>
               </Show>
             </div>
             <button
               onClick={addGame}
               className="flex items-center gap-1 standardButton ">
-              <p className="!w-max">
-                <Text t="save" />
-              </p>
+              <p className="!w-max">{translateText("save")}</p>
 
               <svg
                 width="18"
@@ -517,12 +526,12 @@ export function NewGame() {
                     }}
                   />
                   <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
-                    <Text t="grid/cover" /> <br />
+                    {translateText("grid/cover")} <br />
                   </span>
                 </Show>
                 <Show when={showGridImageLoading() == true}>
                   <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
-                    <Text t="grid/cover" /> <br />
+                    {translateText("grid/cover")} <br />
                   </span>
 
                   <svg
@@ -542,7 +551,7 @@ export function NewGame() {
                 </Show>
 
                 <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
-                  <Text t="grid/cover" />
+                  {translateText("grid/cover")}
                 </span>
               </Show>
               <Show when={!foundGridImage()}>
@@ -554,12 +563,12 @@ export function NewGame() {
                     alt=""
                   />
                   <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
-                    <Text t="grid/cover" /> <br />
+                    {translateText("grid/cover")} <br />
                   </span>
                 </Show>
                 <Show when={!locatedGridImage()}>
                   <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
-                    <Text t="grid/cover" /> <br />
+                    {translateText("grid/cover")} <br />
                   </span>
                 </Show>
               </Show>
@@ -634,7 +643,7 @@ export function NewGame() {
                       </svg>
                     </Show>
                     <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
-                      <Text t="hero" />
+                      {translateText("hero")}
                     </span>
                   </Show>
                   <Show when={!foundHeroImage()}>
@@ -652,12 +661,12 @@ export function NewGame() {
                         className="absolute inset-0 -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.4]"
                       />
                       <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
-                        <Text t="hero" />
+                        {translateText("hero")}
                       </span>
                     </Show>
                     <Show when={!locatedHeroImage()}>
                       <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
-                        <Text t="hero" />
+                        {translateText("hero")}
                       </span>
                     </Show>
                   </Show>
@@ -728,7 +737,7 @@ export function NewGame() {
                   </Show>
                   <Show when={showLogoImageLoading() == false}>
                     <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
-                      <Text t="logo" />
+                      {translateText("logo")}
                     </span>
                   </Show>
                 </div>
@@ -750,7 +759,7 @@ export function NewGame() {
                       className="relative aspect-auto max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
                     />
                     <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
-                      <Text t="logo" />
+                      {translateText("logo")}
                     </span>
                   </div>
                 </Show>
@@ -765,7 +774,7 @@ export function NewGame() {
                     className="panelButton bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[20px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] "
                     aria-label="logo">
                     <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
-                      <Text t="logo" />
+                      {translateText("logo")}
                     </span>
                   </div>
                 </Show>
@@ -833,7 +842,7 @@ export function NewGame() {
                     </div>
                   </Show>
                   <span class="absolute tooltip z-[10000] group-hover:opacity-100 left-[-10%] top-[120%] opacity-0 ">
-                    <Text t="icon" />
+                    {translateText("icon")}
                   </span>
                 </div>
               </Show>
@@ -861,7 +870,7 @@ export function NewGame() {
                     />
                   </Show>
                   <span class="absolute tooltip z-[10000] group-hover:opacity-100 left-[-10%] top-[120%] opacity-0 ">
-                    <Text t="icon" />
+                    {translateText("icon")}
                   </span>
                 </div>
               </Show>
@@ -880,7 +889,7 @@ export function NewGame() {
                   }}
                   value={gameName()}
                   className="!bg-transparent"
-                  placeholder="name of game"
+                  placeholder={translateText("name of game")}
                 />
                 <button
                   className={`standardButton !w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80] rounded-[${
@@ -889,7 +898,7 @@ export function NewGame() {
                   onClick={async () => {
                     if (gameName() == "" || gameName() == undefined) {
                       setShowToast(true);
-                      setToastMessage("no game name");
+                      setToastMessage(translateText("no game name"));
                       setTimeout(() => {
                         setShowToast(false);
                       }, 1500);
@@ -904,7 +913,7 @@ export function NewGame() {
                     setFoundLogoImage(undefined);
                     setFoundIconImage(undefined);
                   }}>
-                  <Text t="auto find assets" />
+                  {translateText("auto find assets")}
                 </button>
                 <button
                   className={`standardButton !w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80] rounded-[${
@@ -925,7 +934,7 @@ export function NewGame() {
                             gameName(),
                         });
                   }}>
-                  <Text t="find assets" />
+                  {translateText("find assets")}
                 </button>
               </div>
 
@@ -936,7 +945,7 @@ export function NewGame() {
                 }}
                 className="standardButton !w-max !mt-0">
                 {locatedGame() == undefined
-                  ? "locate game"
+                  ? translateText("locate game")
                   : "..." + locatedGame().slice(-25)}
               </button>
             </div>
@@ -945,17 +954,19 @@ export function NewGame() {
 
         <div className="flex  justify-between max-large:w-[61rem] w-[84rem]">
           <span className="opacity-50">
-            <Text t="right click to empty image selection" />
+            {translateText("right click to empty image selection")}
           </span>
           <Show when={SGDBGames()}>
             <Show when={selectedGameId() == undefined}>
               <span className="opacity-80">
-                <Text t="select the official name of your game" />
+                {translateText("select the official name of your game")}
               </span>
             </Show>
             <Show when={selectedGameId()}>
               <span className="opacity-80">
-                <Text t="scroll on the image to select a different asset" />
+                {translateText(
+                  "scroll on the image to select a different asset",
+                )}
               </span>
             </Show>
           </Show>

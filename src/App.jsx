@@ -42,6 +42,12 @@ import {
   windowWidth,
   setToastMessage,
   setShowToast,
+  setShowImportAndOverwriteConfirm,
+  showImportAndOverwriteConfirm,
+  setSteamFolderExists,
+  steamFolderExists,
+  language,
+  setLanguage,
 } from "./Signals";
 
 import { SideBar } from "./SideBar";
@@ -56,7 +62,7 @@ import { Settings } from "./modals/Settings";
 import { Loading } from "./modals/Loading";
 
 import { Toast } from "./components/Toast";
-import { Text } from "./components/Text";
+import { textLanguages } from "./Text";
 
 import "./App.css";
 
@@ -105,6 +111,15 @@ export function getSettingsData() {
     setCurrentTheme("light");
   }
 
+  if (
+    libraryData().userSettings.language == undefined ||
+    libraryData().userSettings.language == "en"
+  ) {
+    setLanguage("en");
+  } else {
+    setLanguage(libraryData().userSettings.language);
+  }
+
   setFontName(libraryData().userSettings.fontName || "Sans Serif");
 
   document.documentElement.classList.add("dark");
@@ -128,6 +143,10 @@ export function getSettingsData() {
   libraryData().userSettings.showSideBar == undefined
     ? setShowSideBar(true)
     : setShowSideBar(libraryData().userSettings.showSideBar);
+
+  libraryData().folders.steam != undefined
+    ? setSteamFolderExists(true)
+    : setSteamFolderExists(false);
 }
 
 async function createEmptyLibrary() {
@@ -212,7 +231,7 @@ export async function getData() {
 export async function openGame(gameLocation) {
   if (gameLocation == undefined) {
     setShowToast(true);
-    setToastMessage("no game file provided!");
+    setToastMessage(translateText("no game file provided!"));
     setTimeout(() => {
       setShowToast(false);
     }, 1500);
@@ -230,7 +249,7 @@ export async function openGame(gameLocation) {
     }, 500);
   } else {
     setShowToast(true);
-    setToastMessage("game launched! enjoy your session!");
+    setToastMessage(translateText("game launched! enjoy your session!"));
     setTimeout(() => {
       setShowToast(false);
     }, 1500);
@@ -364,7 +383,9 @@ export async function importSteamGames() {
 
           setShowToast(true);
           setToastMessage(
-            "sorry but there was an error \n reading your steam library :(",
+            translateText(
+              "sorry but there was an error \n reading your steam library :(",
+            ),
           );
           setTimeout(() => {
             setShowToast(false);
@@ -475,6 +496,9 @@ export async function importSteamGames() {
                         setTimeout(() => {
                           getData();
                           document.querySelector("[data-loadingModal]").close();
+                          document
+                            .querySelector("[data-settingsModal]")
+                            .close();
                         }, 3000);
                       });
                     }),
@@ -492,12 +516,18 @@ export async function importSteamGames() {
       document.querySelector("[data-loadingModal]").close();
 
       setShowToast(true);
-      setToastMessage("you're not connected to the internet :(");
+      setToastMessage(translateText("you're not connected to the internet :("));
       setTimeout(() => {
         setShowToast(false);
       }, 2500);
       return;
     });
+}
+
+export function translateText(text) {
+  return language() == undefined || language() == "en"
+    ? text
+    : textLanguages[text][language()];
 }
 
 function App() {
@@ -658,7 +688,6 @@ function App() {
     window.addEventListener("resize", () => {
       setWindowWidth(window.innerWidth);
     });
-    console.log(currentFolders().length);
   });
 
   return (
@@ -741,24 +770,51 @@ function App() {
             }`}>
             <div className="!z-50">
               <p className="dark:text-[#ffffff80] text-[#000000] ">
-                <Text t="hey there! thank you so much for using clear" /> <br />
+                {translateText("hey there! thank you so much for using clear")}
                 <br />
-                - <Text t="add some new games using the sidebar buttons" />{" "}
+                <br />-
+                {translateText("add some new games using the sidebar buttons")}
                 <br />
-                <br />-{" "}
-                <Text t="create new folders and drag and drop your games into them" />{" "}
+                <br />-
+                {translateText(
+                  "create new folders and drag and drop your games into them",
+                )}
                 <br />
-                <br />- <Text t="dont forget to check out the settings!" />
+                <br />-{translateText("dont forget to check out the settings!")}
               </p>
 
               <div>
                 <button
                   className="standardButton mt-[35px] hint--bottom !flex !w-max !gap-3"
-                  aria-label="might not work perfectly!"
+                  aria-label={"might not work perfectly!"}
                   onClick={() => {
-                    importSteamGames();
+                    if (steamFolderExists()) {
+                      console.log("wh");
+                      showImportAndOverwriteConfirm()
+                        ? importSteamGames()
+                        : setShowImportAndOverwriteConfirm(true);
+
+                      setTimeout(() => {
+                        setShowImportAndOverwriteConfirm(false);
+                      }, 2500);
+                    } else {
+                      importSteamGames();
+                    }
                   }}>
-                  <Text t="import steam games" />
+                  <Show when={steamFolderExists() == true}>
+                    <Show when={showImportAndOverwriteConfirm() == true}>
+                      {translateText(
+                        "current 'steam' folder will be overwritten. confirm?",
+                      )}
+                    </Show>
+                    <Show when={showImportAndOverwriteConfirm() == false}>
+                      {translateText("import steam games")}
+                    </Show>
+                  </Show>
+                  <Show when={steamFolderExists() == false}>
+                    {translateText("import steam games")}
+                  </Show>
+
                   <svg
                     width="23"
                     height="14"
@@ -793,7 +849,7 @@ function App() {
                     ctrl + n
                   </div>
 
-                  <Text t="new game" />
+                  {translateText("new game")}
                 </div>
 
                 <div className="flex items-center gap-3">
@@ -803,7 +859,7 @@ function App() {
                     }] `}>
                     ctrl + .
                   </div>
-                  <Text t="open settings" />
+                  {translateText("open settings")}
                 </div>
 
                 <div className="flex items-center gap-3">
@@ -814,7 +870,7 @@ function App() {
                     ctrl + m
                   </div>
 
-                  <Text t="new folder" />
+                  {translateText("new folder")}
                 </div>
                 <div className="flex items-center gap-3">
                   <div
@@ -824,7 +880,7 @@ function App() {
                     ctrl + l
                   </div>
 
-                  <Text t="open notepad" />
+                  {translateText("open notepad")}
                 </div>
 
                 <div className="flex items-center gap-3">
@@ -835,7 +891,7 @@ function App() {
                     ctrl + w
                   </div>
 
-                  <Text t="close app" />
+                  {translateText("close app")}
                 </div>
                 <div className="flex items-center gap-3">
                   <div
@@ -845,7 +901,7 @@ function App() {
                     escape
                   </div>
 
-                  <Text t="close dialogs" />
+                  {translateText("close dialogs")}
                 </div>
               </div>
 
@@ -858,7 +914,7 @@ function App() {
                     ctrl + f
                   </div>
 
-                  <Text t="search bar" />
+                  {translateText("search bar")}
                 </div>
                 <div className="flex items-center gap-3">
                   <div
@@ -868,7 +924,7 @@ function App() {
                     ctrl + \\
                   </div>
 
-                  <Text t="hide sidebar" />
+                  {translateText("hide sidebar")}
                 </div>
                 <div className="flex items-center gap-3">
                   <div
@@ -878,7 +934,7 @@ function App() {
                     ctrl + click
                   </div>
 
-                  <Text t="quick open game" />
+                  {translateText("quick open game")}
                 </div>
               </div>
             </div>
@@ -915,7 +971,7 @@ function App() {
                             return (
                               <div
                                 className="relative w-full bg-transparent cursor-pointer gameCard group"
-                                aria-label="play"
+                                aria-label={translateText("play")}
                                 onDragStart={(e) => {
                                   e.preventDefault();
                                 }}
@@ -950,7 +1006,7 @@ function App() {
                                                 .location
                                             }>
                                             <span class="absolute tooltip z-[100] bottom-[30px]">
-                                              <Text t="no game file" />
+                                              {translateText("no game file")}
                                             </span>
                                           </Show>
                                         </Show>
@@ -985,7 +1041,7 @@ function App() {
                                                 .location
                                             }>
                                             <span class="absolute tooltip z-[100] bottom-[30px]">
-                                              <Text t="no game file" />
+                                              {translateText("no game file")}
                                             </span>
                                           </Show>
                                         </Show>
@@ -1039,7 +1095,7 @@ function App() {
                                                 .location
                                             }>
                                             <span class="absolute tooltip z-[100] bottom-[30px]">
-                                              <Text t="no game file" />
+                                              {translateText("no game file")}
                                             </span>
                                           </Show>
                                         </Show>
@@ -1088,7 +1144,7 @@ function App() {
                                       </span>
 
                                       <span class=" tooltip z-[100]">
-                                        <Text t="no game file" />
+                                        {translateText("no game file")}
                                       </span>
                                     </Show>
                                   </div>
@@ -1137,7 +1193,7 @@ function App() {
                         return (
                           <div
                             className="relative w-full bg-transparent cursor-pointer gameCard group"
-                            aria-label="play"
+                            aria-label={translateText("play")}
                             onDragStart={(e) => {
                               e.preventDefault();
                             }}
@@ -1188,7 +1244,7 @@ function App() {
                                             .location
                                         }>
                                         <span class="absolute tooltip z-[100] bottom-[30px]">
-                                          <Text t="no game file" />
+                                          {translateText("no game file")}
                                         </span>
                                       </Show>
                                     </Show>
@@ -1234,7 +1290,7 @@ function App() {
                                         !libraryData().games[gameName].location
                                       }>
                                       <span class="absolute tooltip z-[100] bottom-[30px]">
-                                        <Text t="no game file" />
+                                        {translateText("no game file")}
                                       </span>
                                     </Show>
                                   </Show>
@@ -1273,7 +1329,7 @@ function App() {
                                     !libraryData().games[gameName].location
                                   }>
                                   <span class=" tooltip z-[100]">
-                                    <Text t="no game file" />
+                                    {translateText("no game file")}
                                   </span>
                                 </Show>
                               </div>
@@ -1300,7 +1356,7 @@ function App() {
                             stroke-linejoin="round"></path>
                         </svg>
 
-                        <Text t="no games found" />
+                        {translateText("no games found")}
                       </div>
                     </Show>
                   </div>

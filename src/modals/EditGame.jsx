@@ -23,17 +23,18 @@ import {
   setToastMessage,
   setShowDeleteConfirm,
   showDeleteConfirm,
+  language,
 } from "../Signals";
 
 import { Show } from "solid-js";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { writeTextFile, BaseDirectory, copyFile } from "@tauri-apps/api/fs";
 
-import { getData, generateRandomString, openGame } from "../App";
+import { getData, generateRandomString, openGame, translateText } from "../App";
 
 import { open } from "@tauri-apps/api/dialog";
 import { invoke } from "@tauri-apps/api";
-import { Text } from "../components/Text";
+
 export function EditGame() {
   async function locateEditedGame() {
     setEditedlocatedGame(
@@ -110,7 +111,7 @@ export function EditGame() {
 
     if (editedGameName() == "") {
       setShowToast(true);
-      setToastMessage("no game name");
+      setToastMessage(translateText("no game name"));
       setTimeout(() => {
         setShowToast(false);
       }, 1500);
@@ -128,7 +129,9 @@ export function EditGame() {
 
       if (gameOccurances == 1) {
         setShowToast(true);
-        setToastMessage(`${editedGameName()} is already in your library`);
+        setToastMessage(
+          editedGameName() + " " + translateText("is already in your library"),
+        );
         setTimeout(() => {
           setShowToast(false);
         }, 1500);
@@ -362,7 +365,8 @@ export function EditGame() {
         <div className="flex justify-between max-large:w-[61rem] w-[84rem]">
           <div>
             <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
-              <Text t="edit" /> {selectedGame().name}
+              {translateText("edit")}
+              {selectedGame().name}
             </p>
           </div>
           <div className="flex items-center gap-4">
@@ -378,31 +382,22 @@ export function EditGame() {
               <Show when={editedFavouriteGame() == undefined}>
                 <Show when={selectedGame().favourite}>
                   <div className="relative">
-                    <div className="!w-max">
-                      {" "}
-                      <Text t="favourite" />
-                    </div>
+                    <div className="!w-max"> {translateText("favourite")}</div>
                     <div className="absolute blur-[5px] opacity-70 -z-10 inset-0 !w-max">
-                      <Text t="favourite" />
+                      {translateText("favourite")}
                     </div>
                   </div>
                 </Show>
                 <Show when={!selectedGame().favourite}>
-                  <div className="!w-max">
-                    {" "}
-                    <Text t="favourite" />
-                  </div>
+                  <div className="!w-max"> {translateText("favourite")}</div>
                 </Show>
               </Show>
 
               <Show when={editedFavouriteGame() == true}>
                 <div className="relative">
-                  <div className="!w-max">
-                    {" "}
-                    <Text t="favourite" />
-                  </div>
+                  <div className="!w-max"> {translateText("favourite")}</div>
                   <div className="absolute blur-[5px] opacity-70 -z-10 inset-0 !w-max">
-                    <Text t="favourite" />
+                    {translateText("favourite")}
                   </div>
                 </div>
               </Show>
@@ -414,10 +409,7 @@ export function EditGame() {
             <button
               onClick={updateGame}
               className="flex items-center standardButton ">
-              <div className="!w-max">
-                {" "}
-                <Text t="save" />
-              </div>
+              <div className="!w-max"> {translateText("save")}</div>
               <svg
                 width="18"
                 height="18"
@@ -524,7 +516,7 @@ export function EditGame() {
                   alt=""
                 />
                 <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
-                  <Text t="grid/cover" />
+                  {translateText("grid/cover")}
                 </span>
               </Show>
               <Show when={editedLocatedGridImage()}>
@@ -534,12 +526,12 @@ export function EditGame() {
                   alt=""
                 />
                 <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
-                  <Text t="grid/cover" />
+                  {translateText("grid/cover")}
                 </span>
               </Show>
               <Show when={editedLocatedGridImage() === null}>
                 <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
-                  <Text t="grid/cover" />
+                  {translateText("grid/cover")}
                 </span>
               </Show>
             </div>
@@ -559,7 +551,7 @@ export function EditGame() {
                     when={editedLocatedHeroImage() === null}
                     className="absolute inset-0 overflow-hidden">
                     <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
-                      <Text t="hero" />
+                      {translateText("hero")}
                     </span>
                   </Show>
                   <Show
@@ -600,7 +592,7 @@ export function EditGame() {
                   </Show>
 
                   <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
-                    <Text t="hero" />
+                    {translateText("hero")}
                   </span>
                 </div>
               </div>
@@ -640,7 +632,7 @@ export function EditGame() {
                   </Show>
 
                   <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
-                    <Text t="logo" />
+                    {translateText("logo")}
                   </span>
                 </div>
               </Show>
@@ -670,7 +662,7 @@ export function EditGame() {
                   </Show>
 
                   <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[45%] left-[55%] top-[65%] opacity-0">
-                    <Text t="logo" />
+                    {translateText("logo")}
                   </span>
                 </div>
               </Show>
@@ -716,7 +708,7 @@ export function EditGame() {
                   />
                 </Show>
                 <span class="absolute tooltip z-[10000] group-hover:opacity-100 left-[-10%] top-[120%] opacity-0">
-                  <Text t="icon" />
+                  {translateText("icon")}
                 </span>
               </div>
 
@@ -730,7 +722,7 @@ export function EditGame() {
                   setEditedGameName(e.currentTarget.value);
                 }}
                 className="dark:bg-[#272727cc] bg-[#E8E8E8cc] backdrop-blur-[10px]"
-                placeholder="name of game"
+                placeholder={translateText("name of game")}
                 value={selectedGame().name}
               />
               <button
@@ -744,9 +736,14 @@ export function EditGame() {
                   <Show when={selectedGame().location}>
                     {"..." + selectedGame()["location"].slice(-25)}
                   </Show>
-                  <Show when={!selectedGame().location}>locate game</Show>
+                  <Show when={!selectedGame().location}>
+                    {" "}
+                    {translateText("locate game")}
+                  </Show>
                 </Show>
-                <Show when={editedLocatedGame() === null}>locate game</Show>
+                <Show when={editedLocatedGame() === null}>
+                  {translateText("locate game")}
+                </Show>
                 <Show when={editedLocatedGame()}>
                   {"..." + editedLocatedGame().slice(-25)}
                 </Show>
@@ -780,7 +777,7 @@ export function EditGame() {
                     </svg>
 
                     <span class="absolute tooltip group-hover:opacity-100 left-[-150%] top-[120%] opacity-0">
-                      <Text t="open containing folder" />
+                      {translateText("open containing folder")}
                     </span>
                   </button>
                 </Show>
@@ -790,7 +787,7 @@ export function EditGame() {
         </div>
         <div className="flex justify-between max-large:w-[61rem] w-[84rem]">
           <span className=" opacity-50">
-            <Text t="right click to empty image selection" />
+            {translateText("right click to empty image selection")}
           </span>
         </div>
       </div>

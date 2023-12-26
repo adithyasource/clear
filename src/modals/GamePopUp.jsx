@@ -3,8 +3,7 @@ import { appDataDirPath, selectedGame, roundedBorders } from "../Signals";
 import { Show } from "solid-js";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 
-import { openGame } from "../App";
-import { Text } from "../components/Text";
+import { openGame, translateText } from "../App";
 
 export function GamePopUp() {
   return (
@@ -32,9 +31,7 @@ export function GamePopUp() {
                 onClick={() => {
                   openGame(selectedGame().location);
                 }}>
-                <div className="!w-max">
-                  <Text t="play" />
-                </div>
+                <div className="!w-max">{translateText("play")}</div>
                 <svg
                   width="13"
                   height="16"

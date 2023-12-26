@@ -31,7 +31,8 @@
 }
 
 button:focus,
-input:focus {
+input:focus,
+select:focus {
   outline: 0;
 }
 
@@ -61,6 +62,7 @@ input,
   font-size: 14px;
   font-weight: normal;
   user-select: none;
+  color-scheme: dark;
 }
 
 html,
@@ -122,6 +124,10 @@ button,
 input,
 #searchInput {
   transition: 0.2s;
+}
+
+select {
+  appearance: none;
 }
 
 @keyframes dialogFadeIn {
