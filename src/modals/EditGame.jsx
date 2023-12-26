@@ -33,6 +33,7 @@ import { getData, generateRandomString, openGame } from "../App";
 
 import { open } from "@tauri-apps/api/dialog";
 import { invoke } from "@tauri-apps/api";
+import { Text } from "../components/Text";
 export function EditGame() {
   async function locateEditedGame() {
     setEditedlocatedGame(
@@ -361,7 +362,7 @@ export function EditGame() {
         <div className="flex justify-between max-large:w-[61rem] w-[84rem]">
           <div>
             <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
-              edit {selectedGame().name}
+              <Text t="edit" /> {selectedGame().name}
             </p>
           </div>
           <div className="flex items-center gap-4">
@@ -377,34 +378,46 @@ export function EditGame() {
               <Show when={editedFavouriteGame() == undefined}>
                 <Show when={selectedGame().favourite}>
                   <div className="relative">
-                    <div className="">favourite</div>
-                    <div className="absolute blur-[5px] opacity-70 -z-10 inset-0">
-                      favourite
+                    <div className="!w-max">
+                      {" "}
+                      <Text t="favourite" />
+                    </div>
+                    <div className="absolute blur-[5px] opacity-70 -z-10 inset-0 !w-max">
+                      <Text t="favourite" />
                     </div>
                   </div>
                 </Show>
                 <Show when={!selectedGame().favourite}>
-                  <div className="">favourite</div>
+                  <div className="!w-max">
+                    {" "}
+                    <Text t="favourite" />
+                  </div>
                 </Show>
               </Show>
 
               <Show when={editedFavouriteGame() == true}>
                 <div className="relative">
-                  <div className="">favourite</div>
-                  <div className="absolute blur-[5px] opacity-70 -z-10 inset-0">
-                    favourite
+                  <div className="!w-max">
+                    {" "}
+                    <Text t="favourite" />
+                  </div>
+                  <div className="absolute blur-[5px] opacity-70 -z-10 inset-0 !w-max">
+                    <Text t="favourite" />
                   </div>
                 </div>
               </Show>
 
               <Show when={editedFavouriteGame() == false}>
-                <div className="">favourite</div>
+                <div className="!w-max">favourite</div>
               </Show>
             </div>
             <button
               onClick={updateGame}
               className="flex items-center standardButton ">
-              save
+              <div className="!w-max">
+                {" "}
+                <Text t="save" />
+              </div>
               <svg
                 width="18"
                 height="18"
@@ -511,7 +524,7 @@ export function EditGame() {
                   alt=""
                 />
                 <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
-                  grid/cover
+                  <Text t="grid/cover" />
                 </span>
               </Show>
               <Show when={editedLocatedGridImage()}>
@@ -521,12 +534,12 @@ export function EditGame() {
                   alt=""
                 />
                 <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
-                  grid/cover
+                  <Text t="grid/cover" />
                 </span>
               </Show>
               <Show when={editedLocatedGridImage() === null}>
                 <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
-                  grid/cover
+                  <Text t="grid/cover" />
                 </span>
               </Show>
             </div>
@@ -546,7 +559,7 @@ export function EditGame() {
                     when={editedLocatedHeroImage() === null}
                     className="absolute inset-0 overflow-hidden">
                     <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
-                      hero image
+                      <Text t="hero" />
                     </span>
                   </Show>
                   <Show
@@ -587,7 +600,7 @@ export function EditGame() {
                   </Show>
 
                   <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
-                    hero image
+                    <Text t="hero" />
                   </span>
                 </div>
               </div>
@@ -627,7 +640,7 @@ export function EditGame() {
                   </Show>
 
                   <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
-                    logo
+                    <Text t="logo" />
                   </span>
                 </div>
               </Show>
@@ -657,7 +670,7 @@ export function EditGame() {
                   </Show>
 
                   <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[45%] left-[55%] top-[65%] opacity-0">
-                    logo
+                    <Text t="logo" />
                   </span>
                 </div>
               </Show>
@@ -703,7 +716,7 @@ export function EditGame() {
                   />
                 </Show>
                 <span class="absolute tooltip z-[10000] group-hover:opacity-100 left-[-10%] top-[120%] opacity-0">
-                  icon
+                  <Text t="icon" />
                 </span>
               </div>
 
@@ -744,12 +757,10 @@ export function EditGame() {
                   <button
                     onClick={() => {
                       invoke("open_location", {
-                        location: openGame(
-                          selectedGame()
-                            .location.split("\\")
-                            .slice(0, -1)
-                            .join("\\"),
-                        ),
+                        location: selectedGame()
+                          .location.split("\\")
+                          .slice(0, -1)
+                          .join("\\"),
                       });
                     }}
                     className="relative group standardButton !w-max"
@@ -769,7 +780,7 @@ export function EditGame() {
                     </svg>
 
                     <span class="absolute tooltip group-hover:opacity-100 left-[-150%] top-[120%] opacity-0">
-                      open containing folder
+                      <Text t="open containing folder" />
                     </span>
                   </button>
                 </Show>
@@ -779,7 +790,7 @@ export function EditGame() {
         </div>
         <div className="flex justify-between max-large:w-[61rem] w-[84rem]">
           <span className=" opacity-50">
-            right click to empty image selection
+            <Text t="right click to empty image selection" />
           </span>
         </div>
       </div>

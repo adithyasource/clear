@@ -14,6 +14,7 @@ import {
 import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
 import { getData } from "../App";
+import { Text } from "../components/Text";
 
 export function EditFolder() {
   async function editFolder() {
@@ -104,7 +105,7 @@ export function EditFolder() {
           <div className="flex justify-between">
             <div>
               <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
-                edit {selectedFolder().name}
+                <Text t="edit" /> {selectedFolder().name}
               </p>
             </div>
 
@@ -121,35 +122,43 @@ export function EditFolder() {
                 <Show when={editedHideFolder() == undefined}>
                   <Show when={selectedFolder().hide}>
                     <div className="relative">
-                      <div className="">hide in expanded view</div>
+                      <div className="">
+                        <Text t="hide in expanded view" />
+                      </div>
                       <div className="absolute blur-[5px] opacity-70 inset-0">
-                        hide in expanded view
+                        <Text t="hide in expanded view" />
                       </div>
                     </div>
                   </Show>
                   <Show when={!selectedFolder().hide}>
-                    <div className="">hide in expanded view</div>
+                    <div className="">
+                      <Text t="hide in expanded view" />
+                    </div>
                   </Show>
                 </Show>
 
                 <Show when={editedHideFolder() == true}>
                   <div className="relative">
-                    <div className="">hide in expanded view</div>
+                    <div className="">
+                      <Text t="hide in expanded view" />
+                    </div>
                     <div className="absolute blur-[5px] opacity-70 inset-0">
-                      hide in expanded view
+                      <Text t="hide in expanded view" />
                     </div>
                   </div>
                 </Show>
 
                 <Show when={editedHideFolder() == false}>
-                  <div className="">hide in expanded view</div>
+                  <div className="">
+                    <Text t="hide in expanded view" />
+                  </div>
                 </Show>
               </div>
 
               <button
                 onClick={editFolder}
                 className="flex items-center standardButton !w-max">
-                save
+                <Text t="save" />
                 <svg
                   width="18"
                   height="18"

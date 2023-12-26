@@ -303,8 +303,6 @@ export function Settings() {
                 className="standardButton mt-[35px] hint--bottom !flex !w-max !gap-3"
                 aria-label="might not work perfectly!"
                 onClick={() => {
-                  document.querySelector("[data-loadingModal]").show();
-
                   importSteamGames();
                 }}>
                 <Text t="import steam games" />
@@ -369,7 +367,8 @@ export function Settings() {
                   }] `}>
                   ctrl + .
                 </div>
-                open settings
+
+                <Text t="open settings" />
               </div>
               <div className="flex items-center gap-3">
                 <div
@@ -378,7 +377,8 @@ export function Settings() {
                   }] `}>
                   ctrl + f
                 </div>
-                search bar
+
+                <Text t="search bar" />
               </div>
               <div className="flex items-center gap-3">
                 <div
@@ -387,7 +387,8 @@ export function Settings() {
                   }] `}>
                   ctrl + m
                 </div>
-                new folder
+
+                <Text t="new folder" />
               </div>
               <div className="flex items-center gap-3">
                 <div
@@ -396,7 +397,8 @@ export function Settings() {
                   }] `}>
                   ctrl + l
                 </div>
-                open notepad
+
+                <Text t="open notepad" />
               </div>
               <div className="flex items-center gap-3">
                 <div
@@ -405,7 +407,8 @@ export function Settings() {
                   }] `}>
                   ctrl + \\
                 </div>
-                hide sidebar
+
+                <Text t="hide sidebar" />
               </div>
               <div className="flex items-center gap-3">
                 <div
@@ -414,7 +417,8 @@ export function Settings() {
                   }] `}>
                   ctrl + w
                 </div>
-                close app
+
+                <Text t="close app" />
               </div>
               <div className="flex items-center gap-3">
                 <div
@@ -423,7 +427,8 @@ export function Settings() {
                   }] `}>
                   escape
                 </div>
-                close dialogs
+
+                <Text t="close dialogs" />
               </div>
 
               <div className="flex items-center gap-3">
@@ -433,7 +438,8 @@ export function Settings() {
                   }] `}>
                   ctrl + click
                 </div>
-                quick open game
+
+                <Text t="quick open game" />
               </div>
             </div>
 
@@ -451,7 +457,7 @@ export function Settings() {
                   });
                 }}
                 className="underline cursor-pointer">
-                feedback & suggestions
+                <Text t="feedback" />
               </p>
               <p
                 onClick={() => {
@@ -460,9 +466,10 @@ export function Settings() {
                   });
                 }}
                 className="underline cursor-pointer">
-                visit website
+                <Text t="visit website" />
               </p>
               <div>
+                <Text t="made by" />{" "}
                 <a
                   onClick={() => {
                     invoke("open_location", {
@@ -470,7 +477,8 @@ export function Settings() {
                     });
                   }}
                   className="underline cursor-pointer">
-                  made by adithya
+                  {" "}
+                  adithya
                 </a>
               </div>
               <a
@@ -480,7 +488,7 @@ export function Settings() {
                   });
                 }}
                 className="underline cursor-pointer">
-                buy me a coffee
+                <Text t="buy me a coffee" />
               </a>
             </div>
           </div>

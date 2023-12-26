@@ -9,12 +9,14 @@ import {
   roundedBorders,
   setShowToast,
   setToastMessage,
+  language,
 } from "../Signals";
 
 import { Show } from "solid-js";
 import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
 import { getData } from "../App";
+import { Text } from "../components/Text";
 
 export function NewFolder() {
   async function addFolder() {
@@ -76,7 +78,7 @@ export function NewFolder() {
           <div className="flex justify-between">
             <div>
               <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
-                add new folder
+                <Text t="add new folder" />
               </p>
             </div>
             <div className="flex items-center gap-5">
@@ -87,20 +89,24 @@ export function NewFolder() {
                 className="relative cursor-pointer">
                 <Show when={hideFolder()}>
                   <div className="relative">
-                    <div className="">hide in expanded view</div>
+                    <div className="">
+                      <Text t="hide in expanded view" />
+                    </div>
                     <div className="absolute blur-[5px] opacity-70 inset-0">
-                      hide in expanded view
+                      <Text t="hide in expanded view" />
                     </div>
                   </div>
                 </Show>
                 <Show when={!hideFolder()}>
-                  <div className="">hide in expanded view</div>
+                  <div className="">
+                    <Text t="hide in expanded view" />
+                  </div>
                 </Show>
               </div>
               <button
                 onClick={addFolder}
                 className="flex items-center standardButton !w-max">
-                save
+                <Text t="save" />
                 <svg
                   width="18"
                   height="18"
@@ -162,7 +168,13 @@ export function NewFolder() {
                 setFolderName(e.currentTarget.value);
               }}
               value={folderName() || ""}
-              placeholder="name of folder"
+              placeholder={`${
+                language() == "en"
+                  ? "name of folder"
+                  : language() == "jp"
+                  ? "フォルダの名前"
+                  : ""
+              }`}
             />
           </div>
         </div>

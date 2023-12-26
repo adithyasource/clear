@@ -5,10 +5,12 @@ import {
   setNotepadValue,
   notepadValue,
   roundedBorders,
+  language,
 } from "../Signals";
 
 import { getData } from "../App";
 import { onCleanup, onMount } from "solid-js";
+import { Text } from "../components/Text";
 
 export function Notepad() {
   async function saveNotepad() {
@@ -45,7 +47,7 @@ export function Notepad() {
             <div className="flex justify-between">
               <div>
                 <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
-                  notepad
+                  <Text t="notepad" />
                 </p>
               </div>
 
@@ -78,7 +80,13 @@ export function Notepad() {
                 saveNotepad();
               }}
               className="w-full h-[40vh] mt-6 bg-transparent rounded-[6px] focus:outline-none resize-none"
-              placeholder="write anything you want over here!"
+              placeholder={`${
+                language() == "en"
+                  ? "write anything you want over here!"
+                  : language() == "jp"
+                  ? "ここに何でも書いてください！"
+                  : ""
+              }`}
               spellcheck="false"
               value={notepadValue()}></textarea>
           </div>

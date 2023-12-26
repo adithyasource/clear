@@ -4,6 +4,7 @@ import { Show } from "solid-js";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 
 import { openGame } from "../App";
+import { Text } from "../components/Text";
 
 export function GamePopUp() {
   return (
@@ -31,7 +32,9 @@ export function GamePopUp() {
                 onClick={() => {
                   openGame(selectedGame().location);
                 }}>
-                play
+                <div className="!w-max">
+                  <Text t="play" />
+                </div>
                 <svg
                   width="13"
                   height="16"

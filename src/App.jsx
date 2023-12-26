@@ -354,118 +354,150 @@ export async function downloadImage(name, integerBytesList) {
 }
 
 export async function importSteamGames() {
-  invoke("read_steam_vdf").then(async (data) => {
-    if (data == "error") {
+  document.querySelector("[data-loadingModal]").show();
+
+  await fetch("https://clear-api.vercel.app/?version=a")
+    .then(() => {
+      invoke("read_steam_vdf").then(async (data) => {
+        if (data == "error") {
+          document.querySelector("[data-loadingModal]").close();
+
+          setShowToast(true);
+          setToastMessage(
+            "sorry but there was an error \n reading your steam library :(",
+          );
+          setTimeout(() => {
+            setShowToast(false);
+          }, 2500);
+
+          return;
+        }
+        let steamData = parseVDF(data);
+
+        console.log(Object.keys(steamData.libraryfolders[1].apps));
+
+        let steamGameIds = Object.keys(steamData.libraryfolders[1].apps);
+
+        let allGameNames = [];
+
+        delete libraryData().folders["steam"];
+
+        setLibraryData(libraryData());
+
+        await writeTextFile(
+          {
+            path: "data.json",
+            contents: JSON.stringify(libraryData(), null, 4),
+          },
+          {
+            dir: BaseDirectory.AppData,
+          },
+        ).then(() => {
+          getData();
+
+          steamGameIds.forEach(async (steamId) => {
+            await fetch(
+              `https://clear-api.vercel.app/?steamID=${steamId}`,
+            ).then((res) =>
+              res.json().then(async (jsonres) => {
+                let gameId = jsonres.data.id;
+                let name = jsonres.data.name;
+
+                allGameNames.push(name);
+
+                let gridImageFileName = generateRandomString() + ".png";
+                let heroImageFileName = generateRandomString() + ".png";
+                let logoImageFileName = generateRandomString() + ".png";
+                let iconImageFileName = generateRandomString() + ".png";
+
+                await fetch(
+                  `https://clear-api.vercel.app/?limitedAssets=${gameId}`,
+                )
+                  .then((res) =>
+                    res.json().then(async (jsonres) => {
+                      console.log(jsonres.grid);
+                      console.log(jsonres.hero);
+                      console.log(jsonres.logo);
+
+                      jsonres.grid.length != 0
+                        ? downloadImage(
+                            "grids\\" + gridImageFileName,
+                            jsonres.grid,
+                          )
+                        : (gridImageFileName = undefined);
+                      jsonres.hero.length != 0
+                        ? downloadImage(
+                            "heroes\\" + heroImageFileName,
+                            jsonres.hero,
+                          )
+                        : (heroImageFileName = undefined);
+                      jsonres.logo.length != 0
+                        ? downloadImage(
+                            "logos\\" + logoImageFileName,
+                            jsonres.logo,
+                          )
+                        : (logoImageFileName = undefined);
+                      jsonres.icon.length != 0
+                        ? downloadImage(
+                            "icons\\" + iconImageFileName,
+                            jsonres.icon,
+                          )
+                        : (iconImageFileName = undefined);
+
+                      libraryData().games[name] = {
+                        location: `steam://rungameid/${steamId}`,
+                        name: name,
+                        heroImage: heroImageFileName,
+                        gridImage: gridImageFileName,
+                        logo: logoImageFileName,
+                        icon: iconImageFileName,
+                        favourite: false,
+                      };
+
+                      libraryData().folders["steam"] = {
+                        name: "steam",
+                        hide: false,
+                        games: allGameNames,
+                        index: currentFolders().length,
+                      };
+
+                      setLibraryData(libraryData());
+
+                      await writeTextFile(
+                        {
+                          path: "data.json",
+                          contents: JSON.stringify(libraryData(), null, 4),
+                        },
+                        {
+                          dir: BaseDirectory.AppData,
+                        },
+                      ).then(() => {
+                        setTimeout(() => {
+                          getData();
+                          document.querySelector("[data-loadingModal]").close();
+                        }, 3000);
+                      });
+                    }),
+                  )
+                  .catch((err) => {
+                    console.log("no assets found at all for " + name);
+                  });
+              }),
+            );
+          });
+        });
+      });
+    })
+    .catch((err) => {
       document.querySelector("[data-loadingModal]").close();
 
       setShowToast(true);
-      setToastMessage(
-        "sorry but there was an error \n reading your steam library :(",
-      );
+      setToastMessage("you're not connected to the internet :(");
       setTimeout(() => {
         setShowToast(false);
       }, 2500);
-
       return;
-    }
-    let steamData = parseVDF(data);
-
-    console.log(Object.keys(steamData.libraryfolders[1].apps));
-
-    let steamGameIds = Object.keys(steamData.libraryfolders[1].apps);
-
-    let allGameNames = [];
-
-    delete libraryData().folders["steam"];
-
-    setLibraryData(libraryData());
-
-    await writeTextFile(
-      {
-        path: "data.json",
-        contents: JSON.stringify(libraryData(), null, 4),
-      },
-      {
-        dir: BaseDirectory.AppData,
-      },
-    ).then(() => {
-      getData();
     });
-
-    steamGameIds.forEach(async (steamId) => {
-      await fetch(`https://clear-api.vercel.app/?steamID=${steamId}`).then(
-        (res) =>
-          res.json().then(async (jsonres) => {
-            let gameId = jsonres.data.id;
-            let name = jsonres.data.name;
-
-            allGameNames.push(name);
-
-            let gridImageFileName = generateRandomString() + ".png";
-            let heroImageFileName = generateRandomString() + ".png";
-            let logoImageFileName = generateRandomString() + ".png";
-
-            await fetch(`https://clear-api.vercel.app/?limitedAssets=${gameId}`)
-              .then((res) =>
-                res.json().then(async (jsonres) => {
-                  console.log(jsonres.grid);
-                  console.log(jsonres.hero);
-                  console.log(jsonres.logo);
-
-                  jsonres.grid.length != 0
-                    ? downloadImage("grids\\" + gridImageFileName, jsonres.grid)
-                    : (gridImageFileName = undefined);
-                  jsonres.hero.length != 0
-                    ? downloadImage(
-                        "heroes\\" + heroImageFileName,
-                        jsonres.hero,
-                      )
-                    : (heroImageFileName = undefined);
-                  jsonres.logo.length != 0
-                    ? downloadImage("logos\\" + logoImageFileName, jsonres.logo)
-                    : (logoImageFileName = undefined);
-
-                  libraryData().games[name] = {
-                    location: `steam://rungameid/${steamId}`,
-                    name: name,
-                    heroImage: heroImageFileName,
-                    gridImage: gridImageFileName,
-                    logo: logoImageFileName,
-                    favourite: false,
-                  };
-
-                  libraryData().folders["steam"] = {
-                    name: "steam",
-                    hide: false,
-                    games: allGameNames,
-                    index: currentFolders().length,
-                  };
-
-                  setLibraryData(libraryData());
-
-                  await writeTextFile(
-                    {
-                      path: "data.json",
-                      contents: JSON.stringify(libraryData(), null, 4),
-                    },
-                    {
-                      dir: BaseDirectory.AppData,
-                    },
-                  ).then(() => {
-                    setTimeout(() => {
-                      getData();
-                      document.querySelector("[data-loadingModal]").close();
-                    }, 3000);
-                  });
-                }),
-              )
-              .catch((err) => {
-                console.log("no assets found at all for " + name);
-              });
-          }),
-      );
-    });
-  });
 }
 
 function App() {
@@ -724,8 +756,6 @@ function App() {
                   className="standardButton mt-[35px] hint--bottom !flex !w-max !gap-3"
                   aria-label="might not work perfectly!"
                   onClick={() => {
-                    document.querySelector("[data-loadingModal]").show();
-
                     importSteamGames();
                   }}>
                   <Text t="import steam games" />

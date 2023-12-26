@@ -196,6 +196,15 @@ let textLanguages = {
   "confirm?": {
     jp: "確認する？",
   },
+  "scroll on the image to select a different asset": {
+    jp: "画像をスクロールして別のアセットを選択します",
+  },
+  "select the official name of your game": {
+    jp: "ゲームの正式名を選択してください",
+  },
+  "open containing folder": {
+    jp: "含まれているフォルダーを開く",
+  },
 };
 
 export function Text(props) {

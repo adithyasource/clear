@@ -49,6 +49,7 @@ import * as fs from "@tauri-apps/api/fs";
 import { getData, generateRandomString, downloadImage } from "../App";
 
 import { open } from "@tauri-apps/api/dialog";
+import { Text } from "../components/Text";
 
 export function NewGame() {
   const [showGridImageLoading, setShowGridImageLoading] = createSignal(false);
@@ -287,19 +288,34 @@ export function NewGame() {
 
   async function searchGameName() {
     setSGDBGames(undefined);
-    await fetch(`https://clear-api.vercel.app/?gameName=${gameName()}`).then(
-      (res) =>
+    await fetch(`https://clear-api.vercel.app/?gameName=${gameName()}`)
+      .then((res) =>
         res.json().then(async (jsonres) => {
-          setSGDBGames(jsonres.data);
+          if (jsonres.data.length == 0) {
+            setShowToast(true);
+            setToastMessage("couldn't find that game :(");
+            setTimeout(() => {
+              setShowToast(false);
+            }, 2500);
+          } else {
+            setSGDBGames(jsonres.data);
+          }
         }),
-    );
+      )
+      .catch((err) => {
+        setShowToast(true);
+        setToastMessage("you're not connected to the internet :(");
+        setTimeout(() => {
+          setShowToast(false);
+        }, 2500);
+      });
   }
 
   async function getGameAssets() {
     setFoundGridImage(undefined);
     setFoundHeroImage(undefined);
     setFoundLogoImage(undefined);
-    setFoundIconImage(false);
+    setFoundIconImage(undefined);
 
     await fetch(
       `https://clear-api.vercel.app/?assets=${selectedGameId()}`,
@@ -368,38 +384,50 @@ export function NewGame() {
         setLocatedLogo("");
         setlocatedGame(undefined);
         setLocatedIcon("");
+        setFoundGridImage(undefined);
+        setFoundHeroImage(undefined);
+        setFoundLogoImage(undefined);
+        setFoundIconImage(undefined);
+        setSelectedGameId(undefined);
       }}
       className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#121212cc] bg-[#d1d1d1cc]">
       <div className="flex flex-col  justify-center items-center  w-screen h-screen gap-3">
         <div className="flex justify-between max-large:w-[61rem] w-[84rem]">
           <div>
             <p className="dark:text-[#ffffff80] text-[#00000080] text-[25px]">
-              add new game
+              <Text t="add new game" />
             </p>
           </div>
           <div className="flex items-center gap-4">
             <div
-              className="cursor-pointer"
+              className="cursor-pointer "
               onClick={() => {
                 setFavouriteGame(!favouriteGame());
               }}>
               <Show when={favouriteGame()}>
                 <div className="relative">
-                  <div className="">favourite</div>
-                  <div className="absolute blur-[5px] opacity-70 -z-10 inset-0">
-                    favourite
+                  <div className="!w-max">
+                    <Text t="favourite" />
+                  </div>
+                  <div className="absolute blur-[5px] opacity-70 -z-10 inset-0 !w-max">
+                    <Text t="favourite" />
                   </div>
                 </div>
               </Show>
 
               <Show when={!favouriteGame()}>
-                <div className="">favourite</div>
+                <div className="!w-max">
+                  <Text t="favourite" />
+                </div>
               </Show>
             </div>
             <button
               onClick={addGame}
-              className="flex items-center gap-1 standardButton">
-              save
+              className="flex items-center gap-1 standardButton ">
+              <p className="!w-max">
+                <Text t="save" />
+              </p>
+
               <svg
                 width="18"
                 height="18"
@@ -489,12 +517,12 @@ export function NewGame() {
                     }}
                   />
                   <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
-                    grid/cover <br />
+                    <Text t="grid/cover" /> <br />
                   </span>
                 </Show>
                 <Show when={showGridImageLoading() == true}>
                   <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
-                    grid/cover <br />
+                    <Text t="grid/cover" /> <br />
                   </span>
 
                   <svg
@@ -514,7 +542,7 @@ export function NewGame() {
                 </Show>
 
                 <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
-                  grid/cover
+                  <Text t="grid/cover" />
                 </span>
               </Show>
               <Show when={!foundGridImage()}>
@@ -526,12 +554,12 @@ export function NewGame() {
                     alt=""
                   />
                   <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
-                    grid/cover <br />
+                    <Text t="grid/cover" /> <br />
                   </span>
                 </Show>
                 <Show when={!locatedGridImage()}>
                   <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
-                    grid/cover <br />
+                    <Text t="grid/cover" /> <br />
                   </span>
                 </Show>
               </Show>
@@ -606,7 +634,7 @@ export function NewGame() {
                       </svg>
                     </Show>
                     <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
-                      hero image
+                      <Text t="hero" />
                     </span>
                   </Show>
                   <Show when={!foundHeroImage()}>
@@ -624,12 +652,12 @@ export function NewGame() {
                         className="absolute inset-0 -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.4]"
                       />
                       <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
-                        hero image
+                        <Text t="hero" />
                       </span>
                     </Show>
                     <Show when={!locatedHeroImage()}>
                       <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
-                        hero image
+                        <Text t="hero" />
                       </span>
                     </Show>
                   </Show>
@@ -700,7 +728,7 @@ export function NewGame() {
                   </Show>
                   <Show when={showLogoImageLoading() == false}>
                     <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
-                      logo
+                      <Text t="logo" />
                     </span>
                   </Show>
                 </div>
@@ -722,7 +750,7 @@ export function NewGame() {
                       className="relative aspect-auto max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
                     />
                     <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
-                      logo
+                      <Text t="logo" />
                     </span>
                   </div>
                 </Show>
@@ -737,7 +765,7 @@ export function NewGame() {
                     className="panelButton bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[20px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] "
                     aria-label="logo">
                     <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
-                      logo
+                      <Text t="logo" />
                     </span>
                   </div>
                 </Show>
@@ -805,7 +833,7 @@ export function NewGame() {
                     </div>
                   </Show>
                   <span class="absolute tooltip z-[10000] group-hover:opacity-100 left-[-10%] top-[120%] opacity-0 ">
-                    icon
+                    <Text t="icon" />
                   </span>
                 </div>
               </Show>
@@ -833,7 +861,7 @@ export function NewGame() {
                     />
                   </Show>
                   <span class="absolute tooltip z-[10000] group-hover:opacity-100 left-[-10%] top-[120%] opacity-0 ">
-                    icon
+                    <Text t="icon" />
                   </span>
                 </div>
               </Show>
@@ -876,7 +904,7 @@ export function NewGame() {
                     setFoundLogoImage(undefined);
                     setFoundIconImage(undefined);
                   }}>
-                  auto find assets
+                  <Text t="auto find assets" />
                 </button>
                 <button
                   className={`standardButton !w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80] rounded-[${
@@ -897,7 +925,7 @@ export function NewGame() {
                             gameName(),
                         });
                   }}>
-                  find assets
+                  <Text t="find assets" />
                 </button>
               </div>
 
@@ -917,17 +945,17 @@ export function NewGame() {
 
         <div className="flex  justify-between max-large:w-[61rem] w-[84rem]">
           <span className="opacity-50">
-            right click to empty image selection
+            <Text t="right click to empty image selection" />
           </span>
           <Show when={SGDBGames()}>
             <Show when={selectedGameId() == undefined}>
               <span className="opacity-80">
-                select the official name of your game
+                <Text t="select the official name of your game" />
               </span>
             </Show>
             <Show when={selectedGameId()}>
               <span className="opacity-80">
-                scroll on the image to select a different asset
+                <Text t="scroll on the image to select a different asset" />
               </span>
             </Show>
           </Show>

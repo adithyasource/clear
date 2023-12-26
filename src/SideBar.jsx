@@ -698,7 +698,9 @@ export function SideBar() {
                             "uncategorized",
                           );
                         }}
-                        className="mt-5 sideBarGame cursor-grab text-[#00000080] dark:text-[#ffffff80]  active:dark:text-[#ffffff3a] active:text-[#0000003a]"
+                        className={`!flex gap-[5px] bg-transparent ${
+                          i() == 0 ? "mt-4" : "mt-5"
+                        }  sideBarGame cursor-grab `}
                         aria-label="play"
                         onClick={async (e) => {
                           await setSelectedGame(
@@ -710,7 +712,21 @@ export function SideBar() {
                             openGame(libraryData().games[currentGame].location);
                           }
                         }}>
-                        {currentGame}
+                        <Show when={libraryData().games[currentGame].icon}>
+                          <img
+                            src={convertFileSrc(
+                              appDataDirPath() +
+                                "icons\\" +
+                                libraryData().games[currentGame].icon,
+                            )}
+                            alt=""
+                            className="h-[16px] aspect-square"
+                          />
+                        </Show>
+
+                        <span className="text-[#00000080] dark:text-[#ffffff80] active:dark:text-[#ffffff3a] active:text-[#0000003a]">
+                          {currentGame}
+                        </span>
                       </p>
                     </Show>
                   );
