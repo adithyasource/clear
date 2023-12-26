@@ -23,11 +23,21 @@ fn close_app() {
 
 #[tauri::command]
 fn read_steam_vdf() -> String {
-    let mut file = File::open("C:\\Program Files (x86)\\Steam\\steamapps\\libraryfolders.vdf")
-        .expect("File not found");
+    let file_path = "C:\\Program Files (x86)\\Steam\\steamapps\\libraryfolders.vdf";
+
+    let file = match File::open(file_path) {
+        Ok(file) => file,
+        Err(_) => {
+            return "error".to_string();
+        }
+    };
+
     let mut data = String::new();
-    file.read_to_string(&mut data)
-        .expect("Error while reading file");
+    if let Err(err) = file.take(1024).read_to_string(&mut data) {
+        return "error".to_string();
+    }
+
+    // Return the data string
     data.into()
 }
 

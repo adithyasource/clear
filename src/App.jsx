@@ -355,6 +355,19 @@ export async function downloadImage(name, integerBytesList) {
 
 export async function importSteamGames() {
   invoke("read_steam_vdf").then(async (data) => {
+    if (data == "error") {
+      document.querySelector("[data-loadingModal]").close();
+
+      setShowToast(true);
+      setToastMessage(
+        "sorry but there was an error \n reading your steam library :(",
+      );
+      setTimeout(() => {
+        setShowToast(false);
+      }, 2500);
+
+      return;
+    }
     let steamData = parseVDF(data);
 
     console.log(Object.keys(steamData.libraryfolders[1].apps));
@@ -392,48 +405,63 @@ export async function importSteamGames() {
             let heroImageFileName = generateRandomString() + ".png";
             let logoImageFileName = generateRandomString() + ".png";
 
-            await fetch(
-              `https://clear-api.vercel.app/?limitedAssets=${gameId}`,
-            ).then((res) =>
-              res.json().then(async (jsonres) => {
-                downloadImage("grids\\" + gridImageFileName, jsonres.grid);
-                downloadImage("heroes\\" + heroImageFileName, jsonres.hero);
-                downloadImage("logos\\" + logoImageFileName, jsonres.logo);
+            await fetch(`https://clear-api.vercel.app/?limitedAssets=${gameId}`)
+              .then((res) =>
+                res.json().then(async (jsonres) => {
+                  console.log(jsonres.grid);
+                  console.log(jsonres.hero);
+                  console.log(jsonres.logo);
 
-                libraryData().games[name] = {
-                  location: `steam://rungameid/${steamId}`,
-                  name: name,
-                  heroImage: heroImageFileName,
-                  gridImage: gridImageFileName,
-                  logo: logoImageFileName,
-                  favourite: false,
-                };
+                  jsonres.grid.length != 0
+                    ? downloadImage("grids\\" + gridImageFileName, jsonres.grid)
+                    : (gridImageFileName = undefined);
+                  jsonres.hero.length != 0
+                    ? downloadImage(
+                        "heroes\\" + heroImageFileName,
+                        jsonres.hero,
+                      )
+                    : (heroImageFileName = undefined);
+                  jsonres.logo.length != 0
+                    ? downloadImage("logos\\" + logoImageFileName, jsonres.logo)
+                    : (logoImageFileName = undefined);
 
-                libraryData().folders["steam"] = {
-                  name: "steam",
-                  hide: false,
-                  games: allGameNames,
-                  index: currentFolders().length,
-                };
+                  libraryData().games[name] = {
+                    location: `steam://rungameid/${steamId}`,
+                    name: name,
+                    heroImage: heroImageFileName,
+                    gridImage: gridImageFileName,
+                    logo: logoImageFileName,
+                    favourite: false,
+                  };
 
-                setLibraryData(libraryData());
+                  libraryData().folders["steam"] = {
+                    name: "steam",
+                    hide: false,
+                    games: allGameNames,
+                    index: currentFolders().length,
+                  };
 
-                await writeTextFile(
-                  {
-                    path: "data.json",
-                    contents: JSON.stringify(libraryData(), null, 4),
-                  },
-                  {
-                    dir: BaseDirectory.AppData,
-                  },
-                ).then(() => {
-                  setTimeout(() => {
-                    getData();
-                    document.querySelector("[data-loadingModal]").close();
-                  }, 3000);
-                });
-              }),
-            );
+                  setLibraryData(libraryData());
+
+                  await writeTextFile(
+                    {
+                      path: "data.json",
+                      contents: JSON.stringify(libraryData(), null, 4),
+                    },
+                    {
+                      dir: BaseDirectory.AppData,
+                    },
+                  ).then(() => {
+                    setTimeout(() => {
+                      getData();
+                      document.querySelector("[data-loadingModal]").close();
+                    }, 3000);
+                  });
+                }),
+              )
+              .catch((err) => {
+                console.log("no assets found at all for " + name);
+              });
           }),
       );
     });

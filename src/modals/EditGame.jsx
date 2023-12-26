@@ -740,36 +740,39 @@ export function EditGame() {
               </button>
 
               <Show when={selectedGame().location}>
-                <button
-                  onClick={() => {
-                    invoke("open_location", {
-                      location: openGame(
-                        selectedGame()
-                          .location.split("\\")
-                          .slice(0, -1)
-                          .join("\\"),
-                      ),
-                    });
-                  }}
-                  className="relative group standardButton !w-max"
-                  aria-label="logo">
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M5.63605 18.364L18.364 5.63603M18.364 5.63603L8.46446 5.63604M18.364 5.63603V15.5355"
-                      className="dark:stroke-white stroke-black"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"></path>
-                  </svg>
-                  <span class="absolute tooltip group-hover:opacity-100 left-[-150%] top-[120%] opacity-0">
-                    open containing folder
-                  </span>
-                </button>
+                <Show when={selectedGame().location.split("//")[0] != "steam:"}>
+                  <button
+                    onClick={() => {
+                      invoke("open_location", {
+                        location: openGame(
+                          selectedGame()
+                            .location.split("\\")
+                            .slice(0, -1)
+                            .join("\\"),
+                        ),
+                      });
+                    }}
+                    className="relative group standardButton !w-max"
+                    aria-label="logo">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M5.63605 18.364L18.364 5.63603M18.364 5.63603L8.46446 5.63604M18.364 5.63603V15.5355"
+                        className="dark:stroke-white stroke-black"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                    </svg>
+
+                    <span class="absolute tooltip group-hover:opacity-100 left-[-150%] top-[120%] opacity-0">
+                      open containing folder
+                    </span>
+                  </button>
+                </Show>
               </Show>
             </div>
           </div>

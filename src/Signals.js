@@ -13,7 +13,7 @@ export const [notepadValue, setNotepadValue] = createSignal("");
 export const [toastError, setToastMessage] = createSignal("");
 export const [showToast, setShowToast] = createSignal(false);
 export const [windowWidth, setWindowWidth] = createSignal(window.innerWidth);
-export const [language, setLanguage] = createSignal("english");
+export const [language, setLanguage] = createSignal("en");
 
 // !? References
 export const [selectedGame, setSelectedGame] = createSignal({});

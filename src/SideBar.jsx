@@ -143,11 +143,7 @@ export function SideBar() {
               name=""
               className="dark:bg-[#232323] bg-[#E8E8E8] dark:text-white text-black w-full hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b]"
               placeholder={`${
-                language() == "english"
-                  ? "search"
-                  : language() == "jp"
-                  ? "検索"
-                  : ""
+                language() == "en" ? "search" : language() == "jp" ? "検索" : ""
               }`}
               onInput={(e) => {
                 setSearchValue(e.currentTarget.value);

@@ -199,7 +199,7 @@ let textLanguages = {
 };
 
 export function Text(props) {
-  return language() == undefined || language() == "english"
+  return language() == undefined || language() == "en"
     ? props.t
     : textLanguages[props.t][language()];
 }

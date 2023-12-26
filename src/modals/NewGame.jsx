@@ -296,32 +296,60 @@ export function NewGame() {
   }
 
   async function getGameAssets() {
-    setShowGridImageLoading(true);
     setFoundGridImage(undefined);
     setFoundHeroImage(undefined);
     setFoundLogoImage(undefined);
-    setFoundIconImage(undefined);
+    setFoundIconImage(false);
 
     await fetch(
       `https://clear-api.vercel.app/?assets=${selectedGameId()}`,
     ).then((res) =>
       res.json().then(async (jsonres) => {
-        console.log(jsonres);
+        let missingAssets = [];
 
-        jsonres.grids
+        jsonres.grids.length != 0
           ? setFoundGridImage(jsonres.grids)
-          : setFoundGridImage(undefined);
-        jsonres.heroes
+          : missingAssets.push("grids");
+        jsonres.heroes.length != 0
           ? setFoundHeroImage(jsonres.heroes)
-          : setFoundHeroImage(undefined);
-        jsonres.logos
+          : missingAssets.push("heroes");
+        jsonres.logos.length != 0
           ? setFoundLogoImage(jsonres.logos)
-          : setFoundLogoImage(undefined);
-        jsonres.icons
+          : missingAssets.push("logos");
+        jsonres.icons.length != 0
           ? setFoundIconImage(jsonres.icons)
-          : setFoundIconImage(undefined);
+          : missingAssets.push("icons");
 
-        setShowGridImageLoading(false);
+        console.log(missingAssets);
+
+        if (missingAssets.length != 0) {
+          if (missingAssets.length == 4) {
+            setShowToast(true);
+            setToastMessage("couldn't find any assets :(");
+            setTimeout(() => {
+              setShowToast(false);
+            }, 2500);
+            return;
+          }
+
+          if (missingAssets.length >= 2) {
+            let lastAssetType = missingAssets.splice(-1);
+            setShowToast(true);
+            setToastMessage(
+              `couldn't find ${missingAssets.join(", ")} & ${lastAssetType} :(`,
+            );
+            setTimeout(() => {
+              setShowToast(false);
+            }, 2500);
+            return;
+          }
+
+          setShowToast(true);
+          setToastMessage(`couldn't find ${missingAssets[0]} :(`);
+          setTimeout(() => {
+            setShowToast(false);
+          }, 2500);
+        }
       }),
     );
   }
@@ -831,6 +859,15 @@ export function NewGame() {
                     roundedBorders() ? "6px" : "0px"
                   }] `}
                   onClick={async () => {
+                    if (gameName() == "" || gameName() == undefined) {
+                      setShowToast(true);
+                      setToastMessage("no game name");
+                      setTimeout(() => {
+                        setShowToast(false);
+                      }, 1500);
+                      return;
+                    }
+
                     searchGameName();
                     setSelectedGameId(undefined);
                     setSGDBGames(undefined);
