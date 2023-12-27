@@ -32,6 +32,26 @@ InstallDirRegKey HKLM "Software\clear" "Install_Dir"
 ;--------------------------------
 
 
+; Loads and sets languages
+
+LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
+LoadLanguageFile "${NSISDIR}\Contrib\Language files\Japanese.nlf"
+LoadLanguageFile "${NSISDIR}\Contrib\Language files\Spanish.nlf"
+LoadLanguageFile "${NSISDIR}\Contrib\Language files\Hindi.nlf"
+LoadLanguageFile "${NSISDIR}\Contrib\Language files\Russian.nlf"
+LoadLanguageFile "${NSISDIR}\Contrib\Language files\French.nlf"
+
+LangString Name ${LANG_ENGLISH} "English"
+LangString Name ${LANG_JAPANESE} "Japanese"
+LangString Name ${LANG_SPANISH} "Spanish"
+LangString Name ${LANG_HINDI} "Hindi"
+LangString Name ${LANG_RUSSIAN} "Russian"
+LangString Name ${LANG_FRENCH} "French"
+
+
+;--------------------------------
+
+
 ; Pages
 
 Page directory
@@ -104,6 +124,38 @@ Function .onInstSuccess
     Goto EndDialog
   NoOpen:
   EndDialog:
+FunctionEnd
+
+
+;--------------------------------
+
+
+; Runs when installer opens and asks to select language
+
+Function .onInit
+
+	;Language selection dialog
+
+	Push ""
+	Push ${LANG_ENGLISH}
+	Push English
+	Push ${LANG_JAPANESE}
+	Push Japanese
+	Push ${LANG_SPANISH}
+	Push Spanish
+	Push ${LANG_HINDI}
+	Push Hindi
+	Push ${LANG_RUSSIAN}
+	Push Russian
+	Push ${LANG_FRENCH}
+	Push French
+	Push A ; A means auto count languages
+	       ; for the auto count to work the first empty push (Push "") must remain
+	LangDLL::LangDialog "installer language" "please select the language of the installer"
+
+	Pop $LANGUAGE
+	StrCmp $LANGUAGE "cancel" 0 +2
+		Abort
 FunctionEnd
 
 

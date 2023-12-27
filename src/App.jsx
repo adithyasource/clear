@@ -786,7 +786,7 @@ function App() {
               <div>
                 <button
                   className="standardButton mt-[35px] hint--bottom !flex !w-max !gap-3"
-                  aria-label={"might not work perfectly!"}
+                  aria-label={translateText("might not work perfectly!")}
                   onClick={() => {
                     if (steamFolderExists()) {
                       console.log("wh");
@@ -803,9 +803,11 @@ function App() {
                   }}>
                   <Show when={steamFolderExists() == true}>
                     <Show when={showImportAndOverwriteConfirm() == true}>
-                      {translateText(
-                        "current 'steam' folder will be overwritten. confirm?",
-                      )}
+                      <span className="text-[#FF3636]">
+                        {translateText(
+                          "current 'steam' folder will be overwritten. confirm?",
+                        )}
+                      </span>
                     </Show>
                     <Show when={showImportAndOverwriteConfirm() == false}>
                       {translateText("import steam games")}

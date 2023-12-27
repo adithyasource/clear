@@ -285,7 +285,8 @@ export function Settings() {
                   [{translateText("font")}]
                 </span>
                 <div className="">
-                  {fontName().toLowerCase() || "sans serif"}
+                  {translateText(fontName().toLowerCase()) ||
+                    translateText("sans serif")}
                 </div>
               </div>
               <div
@@ -310,13 +311,17 @@ export function Settings() {
                 <span className="dark:text-[#ffffff80] text-[#12121280]">
                   [{translateText("theme")}]
                 </span>
-                <div className="">{currentTheme().toLowerCase() || "dark"}</div>
+                <div className="">
+                  {translateText(currentTheme().toLowerCase()) ||
+                    translateText("dark")}
+                </div>
               </div>
               <div className="flex gap-2 cursor-pointer relative">
                 <div
                   onClick={() => {
                     setShowLanguageSelector((x) => !x);
-                  }}>
+                  }}
+                  className="w-full">
                   <span className="dark:text-[#ffffff80] text-[#12121280]">
                     [{translateText("language")}]
                   </span>
@@ -331,12 +336,8 @@ export function Settings() {
                     ? "हिंदी"
                     : language() == "ru"
                     ? "русский"
-                    : language() == "ko"
-                    ? "한국인"
                     : language() == "fr"
                     ? "français"
-                    : language() == "ch"
-                    ? "中国人"
                     : "english"}
                 </div>
 
@@ -383,23 +384,9 @@ export function Settings() {
                     <div
                       className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75"
                       onClick={() => {
-                        changeLanguage("ko");
-                      }}>
-                      한국인 [korean]
-                    </div>
-                    <div
-                      className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75"
-                      onClick={() => {
                         changeLanguage("fr");
                       }}>
                       français [french]
-                    </div>
-                    <div
-                      className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75"
-                      onClick={() => {
-                        changeLanguage("ch");
-                      }}>
-                      中国人 [chinese]
                     </div>
                   </div>
                 </Show>
@@ -409,7 +396,7 @@ export function Settings() {
             <div>
               <button
                 className="standardButton mt-[35px] hint--bottom !flex !w-max !gap-3"
-                aria-label="might not work perfectly!"
+                aria-label={translateText("might not work perfectly!")}
                 onClick={() => {
                   if (steamFolderExists()) {
                     console.log("wh");
@@ -426,9 +413,11 @@ export function Settings() {
                 }}>
                 <Show when={steamFolderExists() == true}>
                   <Show when={showImportAndOverwriteConfirm() == true}>
-                    {translateText(
-                      "current 'steam' folder will be overwritten. confirm?",
-                    )}
+                    <span className="text-[#FF3636]">
+                      {translateText(
+                        "current 'steam' folder will be overwritten. confirm?",
+                      )}
+                    </span>
                   </Show>
                   <Show when={showImportAndOverwriteConfirm() == false}>
                     {translateText("import steam games")}
