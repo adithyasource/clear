@@ -1,5 +1,5 @@
 # clear
- 
+
 1.0 very soon!
 
 <table>
@@ -11,11 +11,9 @@
 
 ![image](https://github.com/adithyasource/clear/assets/140549783/e61fc082-c493-4ce3-820b-0d07d4d1c78e)
 
-
 ## Feedback
 
 If there are any features or bug fixes you'd like to suggest, please open a new issue in the "Issue" tab.
-
 
 ## Contributions + Translations
 
@@ -32,17 +30,20 @@ If you would like to, you can create your own completely different version of th
 
 ## Acknowledgments
 
-For the full list of the licenses for all the tools and libraries, please refer to the ACKNOWLEDGEMENTS file.
+For the full list of the licenses for all the tools and libraries, please refer to the [ACKNOWLEDGEMENTS](https://github.com/adithyasource/clear/blob/main/ACKNOWLEDGEMENTS) file.
 
 Libraries
-* [Tauri](https://tauri.app)
-* [Solid.js](https://www.solidjs.com)
-* [Tailwind CSS](https://tailwindcss.com)
-* [Fuse.js](https://www.fusejs.io)
-* [Hint.css](https://kushagra.dev/lab/hint/)
+
+- [Tauri](https://tauri.app)
+- [Solid.js](https://www.solidjs.com)
+- [Tailwind CSS](https://tailwindcss.com)
+- [Fuse.js](https://www.fusejs.io)
+- [Hint.css](https://kushagra.dev/lab/hint/)
 
 Design
-* [Basicons](https://basicons.xyz)
+
+- [Basicons](https://basicons.xyz)
 
 Code Snippets
-* [Valve VDF Parser](https://github.com/node-steam/vdf)
+
+- [Valve VDF Parser](https://github.com/node-steam/vdf)
