@@ -23,6 +23,17 @@ If you'd like to contribute to the code or help translating 'clear', read [CONTR
 
 If you would like to setup the dev environment for the code or build an executable of the app for yourself, read the "getting started" section in [CONTRIBUTING.md](https://github.com/adithyasource/clear/blob/main/CONTRIBUTING.md)
 
+## Other Repositories For clear
+
+<table>
+<tbody>
+<tr>
+<td><a href="https://github.com/adithyasource/clear-api" target="_blank">steamgriddb proxy for clear</a></td>
+<td><a href="https://github.com/adithyasource/clear-website" target="_blank">landing page</a></td>
+</tr>
+</tbody>
+</table>
+
 ## License
 
 This project is licensed under [Unlicense](https://unlicense.org).
@@ -47,3 +58,7 @@ Design
 Code Snippets
 
 - [Valve VDF Parser](https://github.com/node-steam/vdf)
+
+APIs
+
+- [SteamGridDB](https://www.steamgriddb.com/api/v2)
