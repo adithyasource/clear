@@ -1,5 +1,13 @@
 # clear-api
 
+<table>
+<tbody>
+<tr>
+<td><a href="https://github.com/adithyasource/clear" target="_blank">main repo</a></td>
+</tr>
+</tbody>
+</table>
+
 [SteamGridDB](https://www.steamgriddb.com) proxy for [clear](https://clear.adithya.zip), a video game library manager.
 
 \
