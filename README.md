@@ -1,11 +1,11 @@
-## clear-api
+# clear-api
 
 [SteamGridDB](https://www.steamgriddb.com) proxy for [clear](https://clear.adithya.zip), a video game library manager.
 
 \
-Built on top of [Vercel's Flask Template](https://vercel.com/templates/python/flask-hello-world) and hosted there.
+Built using Flask in Python and hosted on Vercel
 \
-The following commands are available:
+The following parameters are available:
 
 - Get a game's SGDB ID using the game's Steam ID
   ```
