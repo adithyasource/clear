@@ -2,8 +2,11 @@ import requests
 from flask import Flask, jsonify
 from flask import request
 import json
+import os
 
 app = Flask(__name__)
+
+authToken = os.environ.get("AUTH_TOKEN")
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -21,7 +24,7 @@ def handleRequest():
 
         gameData = requests.get(
             f"https://www.steamgriddb.com/api/v2/search/autocomplete/{gameName}",
-            headers={"Authorization": "Bearer 02469044c89b4c09df44b6a79579018d"},
+            headers={"Authorization": f"Bearer {authToken}"},
             timeout=30,
         ).content
 
@@ -34,7 +37,7 @@ def handleRequest():
 
         gameData = requests.get(
             f"https://www.steamgriddb.com/api/v2/games/steam/{steamID}",
-            headers={"Authorization": "Bearer 02469044c89b4c09df44b6a79579018d"},
+            headers={"Authorization": f"Bearer {authToken}"},
             timeout=30,
         ).content
 
@@ -67,7 +70,7 @@ def handleRequest():
         gridImageData = json.loads(
             requests.get(
                 f"https://www.steamgriddb.com/api/v2/grids/game/{gameID}",
-                headers={"Authorization": "Bearer 02469044c89b4c09df44b6a79579018d"},
+                headers={"Authorization": f"Bearer {authToken}"},
                 timeout=30,
             ).content
         )
@@ -78,7 +81,7 @@ def handleRequest():
         heroImageData = json.loads(
             requests.get(
                 f"https://www.steamgriddb.com/api/v2/heroes/game/{gameID}",
-                headers={"Authorization": "Bearer 02469044c89b4c09df44b6a79579018d"},
+                headers={"Authorization": f"Bearer {authToken}"},
                 timeout=30,
             ).content
         )
@@ -89,7 +92,7 @@ def handleRequest():
         logoImageData = json.loads(
             requests.get(
                 f"https://www.steamgriddb.com/api/v2/logos/game/{gameID}",
-                headers={"Authorization": "Bearer 02469044c89b4c09df44b6a79579018d"},
+                headers={"Authorization": f"Bearer {authToken}"},
                 timeout=30,
             ).content
         )
@@ -100,7 +103,7 @@ def handleRequest():
         iconImageData = json.loads(
             requests.get(
                 f"https://www.steamgriddb.com/api/v2/icons/game/{gameID}",
-                headers={"Authorization": "Bearer 02469044c89b4c09df44b6a79579018d"},
+                headers={"Authorization": f"Bearer {authToken}"},
                 timeout=30,
             ).content
         )
@@ -135,7 +138,7 @@ def handleRequest():
         gridImageData = json.loads(
             requests.get(
                 f"https://www.steamgriddb.com/api/v2/grids/game/{gameID}",
-                headers={"Authorization": "Bearer 02469044c89b4c09df44b6a79579018d"},
+                headers={"Authorization": f"Bearer {authToken}"},
                 timeout=30,
             ).content
         )
@@ -153,7 +156,7 @@ def handleRequest():
         heroImageData = json.loads(
             requests.get(
                 f"https://www.steamgriddb.com/api/v2/heroes/game/{gameID}",
-                headers={"Authorization": "Bearer 02469044c89b4c09df44b6a79579018d"},
+                headers={"Authorization": f"Bearer {authToken}"},
                 timeout=30,
             ).content
         )
@@ -170,7 +173,7 @@ def handleRequest():
         logoImageData = json.loads(
             requests.get(
                 f"https://www.steamgriddb.com/api/v2/logos/game/{gameID}",
-                headers={"Authorization": "Bearer 02469044c89b4c09df44b6a79579018d"},
+                headers={"Authorization": f"Bearer {authToken}"},
                 timeout=30,
             ).content
         )
@@ -187,7 +190,7 @@ def handleRequest():
         iconImageData = json.loads(
             requests.get(
                 f"https://www.steamgriddb.com/api/v2/icons/game/{gameID}",
-                headers={"Authorization": "Bearer 02469044c89b4c09df44b6a79579018d"},
+                headers={"Authorization": f"Bearer {authToken}"},
                 timeout=30,
             ).content
         )
