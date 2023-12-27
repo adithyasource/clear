@@ -3,7 +3,9 @@
 <table>
 <tbody>
 <tr>
-<td><a href="https://clear.adithya.zip/" target="_blank">> landing page</a></td></tr>
+<td><a href="https://clear.adithya.zip/" target="_blank">> landing page</a></td>
+<td><a href="https://github.com/adithyasource/clear" target="_blank">main repo</a></td>
+</tr>
 </tbody>
 </table>
 
