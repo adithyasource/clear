@@ -3,10 +3,15 @@ from flask import Flask, jsonify
 from flask import request
 import json
 import os
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 
-authToken = os.environ.get("AUTH_TOKEN")
+load_dotenv()
+
+authToken = os.getenv("AUTH_TOKEN")
+
+print(authToken)
 
 
 @app.route("/", methods=["GET", "POST"])
