@@ -239,7 +239,6 @@ body {
   z-index: 1000000;
   pointer-events: none;
   backdrop-filter: blur(10px);
-  border-radius: 6px;
   padding: 8px 10px;
   line-height: 12px;
   white-space: nowrap;

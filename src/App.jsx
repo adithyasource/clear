@@ -10,7 +10,6 @@ import {
   writeTextFile,
 } from "@tauri-apps/api/fs";
 import { appDataDir } from "@tauri-apps/api/path";
-import * as fs from "@tauri-apps/api/fs";
 
 import {
   appDataDirPath,
@@ -48,6 +47,9 @@ import {
   steamFolderExists,
   language,
   setLanguage,
+  setShowLanguageSelector,
+  showLanguageSelector,
+  setShowSettingsLanguageSelector,
 } from "./Signals";
 
 import { SideBar } from "./SideBar";
@@ -269,6 +271,25 @@ export function generateRandomString() {
   return result;
 }
 
+export async function changeLanguage(lang) {
+  libraryData().userSettings.language = lang;
+
+  setLanguage("lang");
+
+  await writeTextFile(
+    {
+      path: "data.json",
+      contents: JSON.stringify(libraryData(), null, 4),
+    },
+    {
+      dir: BaseDirectory.AppData,
+    },
+  ).then(getData());
+
+  setShowLanguageSelector(false);
+  setShowSettingsLanguageSelector(false);
+}
+
 // ? VDF Parser From https://github.com/node-steam/vdf
 
 function parseVDF(text) {
@@ -367,7 +388,7 @@ function parseVDF(text) {
 }
 
 export async function downloadImage(name, integerBytesList) {
-  await fs.writeBinaryFile(name, integerBytesList, {
+  await writeBinaryFile(name, integerBytesList, {
     dir: BaseDirectory.AppData,
   });
 }
@@ -394,8 +415,6 @@ export async function importSteamGames() {
           return;
         }
         let steamData = parseVDF(data);
-
-        console.log(Object.keys(steamData.libraryfolders[1].apps));
 
         let steamGameIds = Object.keys(steamData.libraryfolders[1].apps);
 
@@ -436,10 +455,6 @@ export async function importSteamGames() {
                 )
                   .then((res) =>
                     res.json().then(async (jsonres) => {
-                      console.log(jsonres.grid);
-                      console.log(jsonres.hero);
-                      console.log(jsonres.logo);
-
                       jsonres.grid.length != 0
                         ? downloadImage(
                             "grids\\" + gridImageFileName,
@@ -504,7 +519,7 @@ export async function importSteamGames() {
                     }),
                   )
                   .catch((err) => {
-                    console.log("no assets found at all for " + name);
+                    // no assets found at all for this game
                   });
               }),
             );
@@ -688,6 +703,7 @@ function App() {
     window.addEventListener("resize", () => {
       setWindowWidth(window.innerWidth);
     });
+    invoke("show_window");
   });
 
   return (
@@ -708,14 +724,15 @@ function App() {
       }
 
       <style jsx>{`
-  button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
-  .sideBarFolder { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
-  .titleBarText { font-family: ${fontName() == "Sans Serif" ? "Segoe UI" : fontName() == "Serif" ? "Times New Roman" : "IBM Plex Mono, Consolas"}; }
-  * { font-family: ${fontName() == "Sans Serif" ? "Helvetica, Arial, sans-serif" : fontName() == "Serif" ? "Times New Roman" : "IBM Plex Mono, Consolas"}; color: ${currentTheme() == "light" ? "#000000" : "#ffffff"}; }
-  ::-webkit-scrollbar-thumb { border-radius: ${roundedBorders() ? "10px" : "0px"}; }
-  .gameInput { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
-  .tooltip { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
-  .currentlyDragging { box-shadow: 0 -3px 0 0 #646464; border-top-left-radius: 0; border-top-right-radius: 0; }
+button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
+.sideBarFolder { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
+.titleBarText { font-family: ${fontName() == "Sans Serif" ? "Segoe UI" : fontName() == "Serif" ? "Times New Roman" : "IBM Plex Mono, Consolas"}; }
+* { font-family: ${fontName() == "Sans Serif" ? "Helvetica, Arial, sans-serif" : fontName() == "Serif" ? "Times New Roman" : "IBM Plex Mono, Consolas"}; color: ${currentTheme() == "light" ? "#000000" : "#ffffff"}; }
+::-webkit-scrollbar-thumb { border-radius: ${roundedBorders() ? "10px" : "0px"}; }
+.gameInput { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
+.tooltip { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
+.currentlyDragging { box-shadow: 0 -3px 0 0 #646464; border-top-left-radius: 0; border-top-right-radius: 0; }
+[class*="hint--"]:after { border-radius: ${roundedBorders() ? "6px" : "0px"} }
 `}</style>
 
       {
@@ -772,24 +789,24 @@ function App() {
               <p className="dark:text-[#ffffff80] text-[#000000] ">
                 {translateText("hey there! thank you so much for using clear")}
                 <br />
-                <br />-
+                <br />-{" "}
                 {translateText("add some new games using the sidebar buttons")}
                 <br />
-                <br />-
+                <br />-{" "}
                 {translateText(
                   "create new folders and drag and drop your games into them",
                 )}
                 <br />
-                <br />-{translateText("dont forget to check out the settings!")}
+                <br />-{" "}
+                {translateText("dont forget to check out the settings!")}
               </p>
 
-              <div>
+              <div className="mt-[35px] flex gap-6">
                 <button
-                  className="standardButton mt-[35px] hint--bottom !flex !w-max !gap-3"
+                  className="standardButton hint--bottom !flex !w-max !gap-3"
                   aria-label={translateText("might not work perfectly!")}
                   onClick={() => {
                     if (steamFolderExists()) {
-                      console.log("wh");
                       showImportAndOverwriteConfirm()
                         ? importSteamGames()
                         : setShowImportAndOverwriteConfirm(true);
@@ -840,6 +857,84 @@ function App() {
                     />
                   </svg>
                 </button>
+
+                <div
+                  className={`standardButton flex !justify-between items-center cursor-pointer relative !w-max !p-4 rounded-[${
+                    roundedBorders() ? "6px" : "0px"
+                  }]`}
+                  onClick={() => {
+                    setShowLanguageSelector((x) => !x);
+                  }}>
+                  <div className="w-full">
+                    <span className="dark:text-[#ffffff80] text-[#12121280]">
+                      [{translateText("language")}]
+                    </span>
+                    &nbsp;{" "}
+                    {language() == "en"
+                      ? "english"
+                      : language() == "jp"
+                      ? "日本語"
+                      : language() == "es"
+                      ? "español"
+                      : language() == "hi"
+                      ? "हिंदी"
+                      : language() == "ru"
+                      ? "русский"
+                      : language() == "fr"
+                      ? "français"
+                      : "english"}
+                  </div>
+
+                  <Show when={showLanguageSelector()}>
+                    <div
+                      className={`flex flex-col gap-4 absolute border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
+                        roundedBorders() ? "6px" : "0px"
+                      }] p-3 z-[100000] top-[120%] left-0`}>
+                      <div
+                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
+                        onClick={() => {
+                          changeLanguage("en");
+                        }}>
+                        english
+                      </div>
+                      <div
+                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
+                        onClick={() => {
+                          changeLanguage("jp");
+                        }}>
+                        日本語 [japanese]
+                      </div>
+                      <div
+                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
+                        onClick={() => {
+                          changeLanguage("es");
+                        }}>
+                        español [spanish]
+                      </div>
+                      <div
+                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
+                        onClick={() => {
+                          changeLanguage("hi");
+                        }}>
+                        हिंदी [hindi]
+                      </div>
+                      <div
+                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75"
+                        onClick={() => {
+                          changeLanguage("ru");
+                        }}>
+                        русский [russian]
+                      </div>
+                      <div
+                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75"
+                        onClick={() => {
+                          changeLanguage("fr");
+                        }}>
+                        français [french]
+                      </div>
+                    </div>
+                  </Show>
+                </div>
               </div>
 
               <div className="grid grid-cols-2 mt-[35px] gap-y-4">

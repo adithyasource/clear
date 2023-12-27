@@ -2,7 +2,7 @@ import { createSignal } from "solid-js";
 
 // !? Misc / Globals
 
-export const [appVersion, setAppVersion] = createSignal("0.18.0");
+export const [appVersion, setAppVersion] = createSignal("0.19.0");
 export const [latestVersion, setLatestVersion] = createSignal("");
 export const [newVersionAvailable, setNewVersionAvailable] =
   createSignal(false);
@@ -25,6 +25,8 @@ export const [showImportAndOverwriteConfirm, setShowImportAndOverwriteConfirm] =
   createSignal(false);
 export const [steamFolderExists, setSteamFolderExists] = createSignal(false);
 export const [language, setLanguage] = createSignal("en");
+export const [showSettingsLanguageSelector, setShowSettingsLanguageSelector] =
+  createSignal(false);
 export const [showLanguageSelector, setShowLanguageSelector] =
   createSignal(false);
 

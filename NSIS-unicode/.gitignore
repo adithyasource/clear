@@ -1,0 +1,17 @@
+Contrib/
+Docs/
+Examples/
+Include/
+Plugins/
+Stubs/
+COPYING
+makensis.exe
+makensisw.exe
+NSIS.chm
+NSIS.exe
+nsisconf.nsh
+uninst-nsis.exe
+*.exe
+*.manifest
+Bin
+Menu

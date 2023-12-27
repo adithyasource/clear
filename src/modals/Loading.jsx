@@ -1,3 +1,4 @@
+import { translateText } from "../App";
 import { roundedBorders } from "../Signals";
 
 export function Loading() {
@@ -11,7 +12,7 @@ export function Loading() {
           className={`flex justify-between gap-2 items-center border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
             roundedBorders() ? "6px" : "0px"
           }] w-max p-3`}>
-          loading
+          {translateText("loading")}
           <svg
             width="18"
             height="18"

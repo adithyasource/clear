@@ -9,7 +9,7 @@
   },
   "package": {
     "productName": "clear",
-    "version": "0.18.0"
+    "version": "0.19.0"
   },
 
   "tauri": {
@@ -51,7 +51,8 @@
         "fileDropEnabled": false,
         "minHeight": 390,
         "minWidth": 640,
-        "theme": "Dark"
+        "theme": "Dark",
+        "visible": false
       }
     ]
   }

@@ -295,8 +295,6 @@ export function EditGame() {
       }
     }
 
-    console.log(previousIndex);
-
     await writeTextFile(
       {
         path: "data.json",
@@ -365,8 +363,7 @@ export function EditGame() {
         <div className="flex justify-between max-large:w-[61rem] w-[84rem]">
           <div>
             <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
-              {translateText("edit")}
-              {selectedGame().name}
+              {translateText("edit")} {selectedGame().name}
             </p>
           </div>
           <div className="flex items-center gap-4">
@@ -445,8 +442,10 @@ export function EditGame() {
                 }, 1500);
               }}
               className="flex items-center standardButton ">
-              <span className="text-[#FF3636]">
-                {showDeleteConfirm() ? "confim?" : "delete"}
+              <span className="text-[#FF3636] w-max">
+                {showDeleteConfirm()
+                  ? translateText("confirm?")
+                  : translateText("delete")}
               </span>
               <svg
                 width="18"
@@ -564,7 +563,7 @@ export function EditGame() {
                           selectedGame().heroImage,
                       )}
                       alt=""
-                      className="absolute inset-0  aspect-[67/26] rounded-[6px]"
+                      className="absolute inset-0  aspect-[96/31]  h-full  rounded-[6px]"
                     />
                     <img
                       src={convertFileSrc(
@@ -573,7 +572,7 @@ export function EditGame() {
                           selectedGame().heroImage,
                       )}
                       alt=""
-                      className="absolute inset-0 aspect-[67/26] -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.6]"
+                      className="absolute inset-0 aspect-[96/31]  -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.6]"
                     />
                   </Show>
                   <Show
@@ -582,12 +581,12 @@ export function EditGame() {
                     <img
                       src={convertFileSrc(editedLocatedHeroImage())}
                       alt=""
-                      className="absolute inset-0  aspect-[67/26] rounded-[6px]"
+                      className="absolute inset-0  aspect-[96/31] h-full rounded-[6px]"
                     />
                     <img
                       src={convertFileSrc(editedLocatedHeroImage())}
                       alt=""
-                      className="absolute inset-0 -z-10 aspect-[67/26] h-full rounded-[6px] blur-[80px] opacity-[0.6]"
+                      className="absolute inset-0 -z-10 aspect-[96/31]  h-full rounded-[6px] blur-[80px] opacity-[0.6]"
                     />
                   </Show>
 
@@ -729,7 +728,6 @@ export function EditGame() {
                 onClick={locateEditedGame}
                 onContextMenu={() => {
                   setEditedlocatedGame(null);
-                  console.log(editedLocatedGame());
                 }}
                 className="standardButton !w-max !mt-0">
                 <Show when={editedLocatedGame() === undefined}>

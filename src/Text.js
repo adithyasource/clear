@@ -352,10 +352,10 @@ export let textLanguages = {
   },
   "auto find assets": {
     jp: "アセットの自動検索",
-    es: "búsqueda automática de activos",
+    es: "búsqueda automática",
     hi: "स्वत: संपत्ति खोजें",
-    ru: "автоматический поиск активов",
-    fr: "recherche automatique des actifs",
+    ru: "автоматический поиск",
+    fr: "recherche automatique",
   },
   "find assets": {
     jp: "資産を見つける",
@@ -369,7 +369,7 @@ export let textLanguages = {
     es: "localizar juego",
     hi: "खेल का पता लगाएं",
     ru: "найти игру",
-    fr: "localiser le jeu",
+    fr: "localiser",
   },
   "right click to empty image selection": {
     jp: "右クリックして画像の選択を空にします",
@@ -428,7 +428,7 @@ export let textLanguages = {
     fr: "supprimer",
   },
   "confirm?": {
-    jp: "確認する？",
+    jp: "確認する?",
     es: "¿confirmar?",
     hi: "पुष्टि करना?",
     ru: "подтверждать?",

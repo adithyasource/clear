@@ -76,7 +76,10 @@ export function NewFolder() {
           className={`border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
             roundedBorders() ? "6px" : "0px"
           }] w-[50%] p-6 `}>
-          <div className="flex justify-between">
+          <div
+            className={`flex justify-between ${
+              language() != "en" ? "flex-col large:flex-row" : ""
+            } `}>
             <div>
               <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
                 {translateText("add new folder")}

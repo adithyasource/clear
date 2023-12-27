@@ -92,8 +92,6 @@ export function NewGame() {
 
     document.querySelector("[data-loadingModal]").show();
 
-    console.log(foundGridImage());
-
     if (foundGridImage()) {
       gridImageFileName = generateRandomString() + ".png";
 
@@ -347,8 +345,6 @@ export function NewGame() {
           ? setFoundIconImage(jsonres.icons)
           : missingAssets.push("icons");
 
-        console.log(missingAssets);
-
         if (missingAssets.length != 0) {
           if (missingAssets.length == 4) {
             setShowToast(true);
@@ -518,7 +514,7 @@ export function NewGame() {
               <Show when={foundGridImage()}>
                 <Show when={showGridImageLoading() == false}>
                   <img
-                    className="absolute inset-0"
+                    className="absolute inset-0 aspect-[2/3]"
                     src={foundGridImage()[foundGridImageIndex()]}
                     alt=""
                     onLoad={() => {
@@ -562,7 +558,7 @@ export function NewGame() {
                     src={convertFileSrc(locatedGridImage())}
                     alt=""
                   />
-                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
+                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0 ">
                     {translateText("grid/cover")} <br />
                   </span>
                 </Show>
@@ -615,7 +611,7 @@ export function NewGame() {
                           setShowHeroImageLoading(false);
                         }}
                         alt=""
-                        className="absolute inset-0 h-full rounded-[6px]"
+                        className="absolute inset-0 h-full rounded-[6px] aspect-[96/31]"
                       />
                       <img
                         src={foundHeroImage()[foundHeroImageIndex()]}
@@ -623,7 +619,7 @@ export function NewGame() {
                           setShowHeroImageLoading(false);
                         }}
                         alt=""
-                        className="absolute inset-0 -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.4]"
+                        className="absolute inset-0 -z-10 h-full aspect-[96/31] rounded-[6px] blur-[80px] opacity-[0.4]"
                       />
                     </Show>
                     <Show when={showHeroImageLoading()}>
@@ -653,12 +649,12 @@ export function NewGame() {
                       <img
                         src={convertFileSrc(locatedHeroImage())}
                         alt=""
-                        className="absolute inset-0 h-full rounded-[6px]"
+                        className="absolute inset-0 h-full rounded-[6px] aspect-[96/31]"
                       />
                       <img
                         src={convertFileSrc(locatedHeroImage())}
                         alt=""
-                        className="absolute inset-0 -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.4]"
+                        className="absolute inset-0 -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.4] aspect-[96/31]"
                       />
                       <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
                         {translateText("hero")}

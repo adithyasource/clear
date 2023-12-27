@@ -5,6 +5,7 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::os::windows::process::CommandExt;
 use std::process::{Command, Stdio};
+use tauri::{Manager, Window};
 
 #[tauri::command]
 fn open_location(location: &str) {
@@ -41,12 +42,22 @@ fn read_steam_vdf() -> String {
     data.into()
 }
 
+#[tauri::command]
+async fn show_window(window: Window) {
+    window
+        .get_window("main")
+        .expect("no window labeled 'main' found")
+        .show()
+        .unwrap();
+}
+
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             open_location,
             close_app,
-            read_steam_vdf
+            read_steam_vdf,
+            show_window
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

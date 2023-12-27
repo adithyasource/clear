@@ -1,11 +1,10 @@
 ; Setting metadata
 VIAddVersionKey "ProductName" "clear"
 VIAddVersionKey "FileDescription" "clear - video game library"
-VIProductVersion "0.18.0.0"
-VIAddVersionKey "FileVersion" "0.18.0"
-VIAddVersionKey "ProductVersion" "0.18.0"
+VIProductVersion "0.19.0.0"
+VIAddVersionKey "FileVersion" "0.19.0"
+VIAddVersionKey "ProductVersion" "0.19.0"
 VIAddVersionKey "LegalCopyright" "Unlicense"
-
 
 ;--------------------------------
 
@@ -14,7 +13,7 @@ VIAddVersionKey "LegalCopyright" "Unlicense"
 Name "clear"
 
 ; The setup filename
-OutFile "clear v0.18.0 setup.exe"
+OutFile "clear v0.19.0 setup.exe"
 
 ; The setup icon
 Icon "${NSISDIR}\Contrib\Graphics\Icons\nsis1-install.ico"
@@ -48,6 +47,20 @@ LangString Name ${LANG_HINDI} "Hindi"
 LangString Name ${LANG_RUSSIAN} "Russian"
 LangString Name ${LANG_FRENCH} "French"
 
+LangString clearRunning ${LANG_ENGLISH} "'clear' is open ~ please close it and try again!"
+LangString clearRunning ${LANG_JAPANESE} "「クリア」が開いています ~ 閉じてもう一度お試しください。"
+LangString clearRunning ${LANG_SPANISH} "'clear' está abierto ~ ¡ciérrelo e inténtelo de nuevo!"
+LangString clearRunning ${LANG_HINDI} "'clear' खुला है ~ कृपया इसे बंद करें और पुनः प्रयास करें!"
+LangString clearRunning ${LANG_RUSSIAN} "« clear » открыто ~ закройте его и повторите попытку!"
+LangString clearRunning ${LANG_FRENCH} "« clear » est ouvert ~ veuillez le fermer et réessayer !"
+
+LangString clearLaunch ${LANG_ENGLISH} "launch 'clear' now?"
+LangString clearLaunch ${LANG_JAPANESE} "今すぐ「クリア」を起動しますか？"
+LangString clearLaunch ${LANG_SPANISH} "¿Lanzar 'clear' ahora?"
+LangString clearLaunch ${LANG_HINDI} "अभी 'clear' लॉन्च करें?"
+LangString clearLaunch ${LANG_RUSSIAN} "запустить « clear » сейчас?"
+LangString clearLaunch ${LANG_FRENCH} "lancer 'clear' maintenant ?"
+
 
 ;--------------------------------
 
@@ -74,7 +87,7 @@ Section "clear - video game library"
   SetOutPath $INSTDIR
   
   ; Put file there (you can add more File lines too)
-  File "..\..\src-tauri\target\x86_64-pc-windows-msvc\release\clear.exe"
+  File "..\src-tauri\target\x86_64-pc-windows-msvc\release\clear.exe"
   
   ; Write the installation path into the registry
   WriteRegStr HKLM SOFTWARE\clear "Install_Dir" "$INSTDIR"
@@ -118,7 +131,7 @@ SectionEnd
 ; Displays a dialogbox after installation
 
 Function .onInstSuccess
-   MessageBox MB_YESNO "launch clear now?" IDYES OpenApp IDNO NoOpen
+   MessageBox MB_YESNO "$(clearLaunch)" IDYES OpenApp IDNO NoOpen
   OpenApp:
     ExecShell "" '"$INSTDIR\clear.exe"'
     Goto EndDialog
@@ -133,6 +146,7 @@ FunctionEnd
 ; Runs when installer opens and asks to select language
 
 Function .onInit
+
 
 	;Language selection dialog
 
@@ -156,9 +170,22 @@ Function .onInit
 	Pop $LANGUAGE
 	StrCmp $LANGUAGE "cancel" 0 +2
 		Abort
+
+
+  ; Checks if clear is already open
+
+
+
+
 FunctionEnd
 
-
+Function .onGUIInit
+  FindWindow $0 "" "clear"
+  StrCmp $0 0 notRunning
+      MessageBox MB_OK|MB_ICONEXCLAMATION "$(clearRunning)" /SD IDOK
+      Abort
+  notRunning:
+FunctionEnd
 ;--------------------------------
 
 
