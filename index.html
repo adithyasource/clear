@@ -6,7 +6,7 @@
     <title>clear</title>
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <link rel="icon" type="image/x-icon" href="/images/128x128.png" />
-    <link rel="stylesheet" href="output.css" />
+    <link rel="stylesheet" href="styles.css" />
     <style>
       * {
         font-family: Helvetica, Arial, sans-serif;
@@ -23,34 +23,36 @@
       alt=""
       class="rounded-[6px] border-[#ffffff13] border-2 w-[50vw] max-[1300px]:w-[80vw] bg-[#1c1c1c] mt-[8vh]" />
     <div
-      class="w-[550px] max-[750px]:w-[80%] flex flex-col items-start gap-10 mt-10 pb-[10vh]">
-      <div>
-        <p class="text-white text-[16px]">clear</p>
-        <p class="text-[#ffffff80] text-[16px]">
-          simple and lightweight game launcher
-        </p>
-      </div>
+      class="w-[550px] max-[750px]:w-[80%] flex flex-col items-center gap-10 mt-12 pb-[10vh]">
+      <div class="flex flex-col gap-10 w-full">
+        <div>
+          <p class="text-white text-[16px]">clear</p>
+          <p class="text-[#ffffff80] text-[16px]">
+            simple and lightweight game launcher
+          </p>
+        </div>
 
-      <div class="flex flex-row gap-8 max-[750px]:flex-col">
-        <button
-          class="py-2 px-3 bg-[#232323] text-white rounded-[6px] text-[16px] hover:bg-[#2B2B2B] duration-100 h-min w-max">
-          download
-        </button>
+        <div class="flex flex-row gap-8 max-[750px]:flex-col">
+          <button
+            class="py-2 px-3 bg-[#232323] text-white rounded-[6px] text-[16px] hover:bg-[#2B2B2B] duration-100 h-min w-max">
+            download
+          </button>
 
-        <div
-          class="grid grid-cols-2 w-[50%] gap-x-6 max-[750px]:flex max-[750px]:flex-wrap max-[750px]:w-full max-[750px]:gap-y-2">
-          <p class="text-[#ffffff80] text-[14px] w-max whitespace-nowrap">
-            ~ 0.6 mb
-          </p>
-          <p class="text-[#ffffff80] text-[14px] w-max whitespace-nowrap">
-            ~ 0.6s load time
-          </p>
-          <p class="text-[#ffffff80] text-[14px] w-max whitespace-nowrap">
-            works offline
-          </p>
-          <p class="text-[#ffffff80] text-[14px] w-max whitespace-nowrap">
-            no data collected whatsoever
-          </p>
+          <div
+            class="grid grid-cols-2 w-[50%] gap-x-6 max-[750px]:flex max-[750px]:flex-wrap max-[750px]:w-full max-[750px]:gap-y-2">
+            <p class="text-[#ffffff80] text-[14px] w-max whitespace-nowrap">
+              ~ 0.6 mb
+            </p>
+            <p class="text-[#ffffff80] text-[14px] w-max whitespace-nowrap">
+              ~ 0.6s load time
+            </p>
+            <p class="text-[#ffffff80] text-[14px] w-max whitespace-nowrap">
+              works offline
+            </p>
+            <p class="text-[#ffffff80] text-[14px] w-max whitespace-nowrap">
+              no data collected whatsoever
+            </p>
+          </div>
         </div>
       </div>
 
@@ -95,7 +97,7 @@
 
       <hr class="h-1 w-full bg-[#ffffff] opacity-[3%] rounded-[6px]" />
 
-      <div class="w-full flex flex-col items-center gap-3">
+      <div class="w-[700px] flex flex-col items-center gap-3">
         <img
           draggable="false"
           src="images/auto find assets.png"
@@ -108,7 +110,7 @@
 
       <hr class="h-1 w-full bg-[#ffffff] opacity-[3%] rounded-[6px]" />
 
-      <div class="w-full flex flex-col items-center gap-3">
+      <div class="w-[650px] flex flex-col items-center gap-3">
         <img
           draggable="false"
           src="images/customize.png"
@@ -123,18 +125,44 @@
 
       <div class="flex justify-between w-full">
         <p class="text-[#ffffff80] text-[16px]">
-          made by
-          <a href="https://adithya.zip/" target="_blank" class="text-white"
-            >adithya</a
+          clear on
+          <a
+            href="https://github.com/adithyasource/clear"
+            target="_blank"
+            class="text-white"
+            >github</a
           >
         </p>
+        <a href="/feedback" class="text-white">feedback</a>
+      </div>
+
+      <div class="flex justify-between w-full">
+        <div>
+          <p class="text-[#ffffff80] text-[16px]">
+            made by
+            <a href="https://adithya.zip/" target="_blank" class="text-white"
+              >adithya</a
+            >
+            <div class="flex gap-3">
+              <a href="https://twitter.com/adithyasrc" target="_blank" class="text-white">twitter</a>
+              <button onclick="copyEmail()" class="text-white">me@adithya.zip</button>
+            </div>
+          </p>
+        </div>
         <a
           href="https://ko-fi.com/adithyasource"
           target="_blank"
           class="text-white"
-          >buy me a coffee?</a
-        >
+          >buy me a coffee
+        </a>
       </div>
     </div>
+
+    <script>
+      function copyEmail() {
+        navigator.clipboard.writeText("me@adithya.zip");
+        alert("email copied to clipboard!");
+      }
+    </script>
   </body>
 </html>

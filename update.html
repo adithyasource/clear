@@ -6,7 +6,7 @@
     <title>update clear</title>
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <link rel="icon" type="image/x-icon" href="/images/128x128.png" />
-    <link rel="stylesheet" href="output.css" />
+    <link rel="stylesheet" href="styles.css" />
     <style>
       * {
         font-family: Helvetica, Arial, sans-serif;
@@ -17,22 +17,22 @@
     class="bg-[#121212] flex items-center align-middle w-screen flex-col mt-[8vh] pb-[10vh]">
     <div class="flex items-start flex-col gap-[8vh] w-[550px]">
       <div class="flex justify-between w-full">
-        <p class="text-white text-[16px]">clear</p>
+        <a href="/"> <p class="text-white text-[16px]">clear</p></a>
         <p class="text-[#ffffff80] text-[16px]">
           simple and lightweight game launcher
         </p>
       </div>
 
-      <div>
+      <div class="w-full">
         <p class="text-[#ffffff80] text-[24px]">download latest version</p>
 
-        <div class="flex gap-4 items-start mt-6">
-          <div class="flex gap-2 w-[200px]">
-            <p class="text-white text-[14px]">windows</p>
-            <p class="text-[#ffffff80] text-[14px]">10 / 8.1 / 8</p>
+        <div class="flex justify-between mt-6 w-full">
+          <div class="flex gap-2 mt-2">
+            <p class="text-white text-[14px] w-max">windows</p>
+            <p class="text-[#ffffff80] text-[14px] w-max">10 / 8.1 / 8</p>
           </div>
 
-          <div class="grid grid-cols-2 w-full gap-y-2 gap-x-3">
+          <div class="flex-wrap flex flex-row gap-3 w-[291px]">
             <button
               class="py-2 px-3 bg-[#232323] text-white rounded-[6px] text-[16px] hover:bg-[#2B2B2B] duration-100 h-min w-max">
               installer (recommended)
@@ -50,6 +50,27 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="flex justify-between absolute w-[550px] bottom-20">
+      <div>
+        <p class="text-[#ffffff80] text-[16px]">
+          made by
+          <a href="https://adithya.zip/" target="_blank" class="text-white"
+            >adithya</a
+          >
+          <div class="flex gap-3">
+            <a href="https://twitter.com/adithyasrc" target="_blank" class="text-white">twitter</a>
+            <button onclick="copyEmail()" class="text-white">me@adithya.zip</button>
+          </div>
+        </p>
+      </div>
+      <a
+        href="https://ko-fi.com/adithyasource"
+        target="_blank"
+        class="text-white"
+        >buy me a coffee
+      </a>
     </div>
   </body>
 </html>
