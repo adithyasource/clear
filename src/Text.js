@@ -266,12 +266,12 @@ export let textLanguages = {
     ru: "обратная связь",
     fr: "retour",
   },
-  "visit website": {
-    jp: "ウェブサイトを訪問",
-    es: "visita el sitio web",
-    hi: "बेवसाइट देखना",
-    ru: "посетите вебсайт",
-    fr: "visiter le site Web",
+  website: {
+    jp: "ウェブサイト",
+    es: "sitio web",
+    hi: "वेबसाइट",
+    ru: "Веб-сайт",
+    fr: "site web",
   },
   "made by": {
     jp: "作られた",
