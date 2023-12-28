@@ -1,9 +1,0 @@
-[build]
-  command = "npm run build"  
-
-[node]
-  version = "14"
-
-[build.environment]
-  NODE_ENV = "production"
-
