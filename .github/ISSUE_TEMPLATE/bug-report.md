@@ -1,7 +1,7 @@
 ---
 name: Bug Report
 about: File a bug report to help improve the app!
-title: "[bug]"
+title: ''
 labels: ''
 assignees: ''
 
