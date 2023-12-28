@@ -38,7 +38,7 @@
     },
     "bundle": {
       "active": true,
-      "targets": "nsis",
+      "targets": ["nsis", "msi"],
       "identifier": "com.adithya.clear",
       "icon": ["icons/128x128.png", "icons/icon.ico"]
     },

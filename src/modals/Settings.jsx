@@ -560,7 +560,7 @@ export function Settings() {
               <p
                 onClick={() => {
                   invoke("open_location", {
-                    location: "https://github.com/adithyasource/clear/issues",
+                    location: "https://clear.adithya.zip/feedback",
                   });
                 }}
                 className="underline cursor-pointer">
@@ -573,7 +573,7 @@ export function Settings() {
                   });
                 }}
                 className="underline cursor-pointer">
-                {translateText("visit website")}
+                {translateText("website")}
               </p>
               <div>
                 {translateText("made by")}{" "}

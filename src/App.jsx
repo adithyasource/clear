@@ -604,6 +604,10 @@ function App() {
       }
     }
 
+    if (e.ctrlKey && e.code == "KeyR") {
+      e.preventDefault();
+    }
+
     if (e.ctrlKey && e.code == "Period") {
       e.preventDefault();
       if (document.querySelector("[data-settingsModal]").open) {

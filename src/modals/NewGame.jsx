@@ -400,6 +400,7 @@ export function NewGame() {
         setFoundLogoImage(undefined);
         setFoundIconImage(undefined);
         setSelectedGameId(undefined);
+        setSGDBGames(undefined);
       }}
       className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#121212cc] bg-[#d1d1d1cc]">
       <div className="flex flex-col  justify-center items-center  w-screen h-screen gap-3">

@@ -9,7 +9,7 @@ use tauri::{Manager, Window};
 
 #[tauri::command]
 fn open_location(location: &str) {
-    Command::new("cmd")
+    let _ = Command::new("cmd")
         .args(&["/C", "start", "", location])
         .stdout(Stdio::null())
         .stderr(Stdio::null())
@@ -34,7 +34,7 @@ fn read_steam_vdf() -> String {
     };
 
     let mut data = String::new();
-    if let Err(err) = file.take(1024).read_to_string(&mut data) {
+    if let Err(_err) = file.take(1024).read_to_string(&mut data) {
         return "error".to_string();
     }
 

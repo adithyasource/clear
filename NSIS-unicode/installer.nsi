@@ -40,13 +40,6 @@ LoadLanguageFile "${NSISDIR}\Contrib\Language files\Hindi.nlf"
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\Russian.nlf"
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\French.nlf"
 
-LangString Name ${LANG_ENGLISH} "English"
-LangString Name ${LANG_JAPANESE} "Japanese"
-LangString Name ${LANG_SPANISH} "Spanish"
-LangString Name ${LANG_HINDI} "Hindi"
-LangString Name ${LANG_RUSSIAN} "Russian"
-LangString Name ${LANG_FRENCH} "French"
-
 LangString clearRunning ${LANG_ENGLISH} "'clear' is open ~ please close it and try again!"
 LangString clearRunning ${LANG_JAPANESE} "「クリア」が開いています ~ 閉じてもう一度お試しください。"
 LangString clearRunning ${LANG_SPANISH} "'clear' está abierto ~ ¡ciérrelo e inténtelo de nuevo!"
@@ -173,8 +166,6 @@ Function .onInit
 
 
   ; Checks if clear is already open
-
-
 
 
 FunctionEnd
