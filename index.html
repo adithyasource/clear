@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>clear</title>
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-    <link rel="icon" type="image/x-icon" href="/images/128x128.png" />
+    <link rel="icon" type="image/x-icon" href="/assets/128x128.png" />
     <link rel="stylesheet" href="styles.css" />
     <style>
       * {
@@ -14,14 +14,57 @@
       img {
         user-select: none;
       }
+
+      video:hover::-webkit-media-controls {
+        display: flex !important;
+      }
+
+      video::-webkit-media-controls {
+        display: none !important;
+      }
+
+      video:focus {
+        outline: none;
+      }
+
+      video::-webkit-media-controls-fullscreen-button {
+        display: none !important;
+      }
+
+      video::-webkit-media-controls-volume-slider {
+        display: none;
+      }
+
+      video::-webkit-media-controls-mute-button {
+        display: none;
+      }
+
+      video::-webkit-media-controls-timeline {
+        display: none;
+      }
+
+      video::-webkit-media-controls {
+        visibility: hidden;
+      }
+
+      video::-webkit-media-controls-enclosure {
+        visibility: visible;
+      }
     </style>
   </head>
   <body class="bg-[#121212] flex flex-col items-center w-full">
-    <img
-      draggable="false"
-      src="screenshot.png"
-      alt=""
-      class="rounded-[6px] border-[#ffffff13] border-2 w-[50vw] max-[1300px]:w-[80vw] bg-[#1c1c1c] mt-[8vh]" />
+    <video
+      class="rounded-[6px] border-[#ffffff13] border-2 w-[50vw] max-[1300px]:w-[80vw] bg-[#1c1c1c] mt-[8vh]"
+      controls
+      loop
+      disablePictureInPicture
+      disableDownload
+      controlslist="nodownload noplaybackrate"
+      id="videoPlayer"
+      poster="assets/screenshot.png">
+      <source src="/assets/clear product video with sfx.mp4" type="video/mp4" />
+    </video>
+
     <div
       class="w-[550px] max-[750px]:w-[80%] flex flex-col items-center gap-10 mt-12 pb-[10vh]">
       <div class="flex flex-col gap-10 w-full">
@@ -80,7 +123,7 @@
       <div class="w-full flex flex-col items-center gap-3">
         <img
           draggable="false"
-          src="images/drag and drop.png"
+          src="assets/drag and drop.png"
           alt=""
           class="w-full" />
         <p class="text-[16px] text-[#ffffff80]">
@@ -91,7 +134,7 @@
       <hr class="h-1 w-full bg-[#ffffff] opacity-[3%] rounded-[6px]" />
 
       <div class="w-full flex flex-col items-center gap-3">
-        <img draggable="false" src="images/import steam.svg" alt="" class="" />
+        <img draggable="false" src="assets/import steam.svg" alt="" class="" />
         <p class="text-[16px] text-[#ffffff80]">auto import all your games</p>
       </div>
 
@@ -100,7 +143,7 @@
       <div class="w-[700px] flex flex-col items-center gap-3">
         <img
           draggable="false"
-          src="images/auto find assets.png"
+          src="assets/auto find assets.png"
           alt=""
           class="w-full" />
         <p class="text-[16px] text-[#ffffff80]">
@@ -113,7 +156,7 @@
       <div class="w-[650px] flex flex-col items-center gap-3">
         <img
           draggable="false"
-          src="images/customize.png"
+          src="assets/customize.png"
           alt=""
           class="w-full" />
         <p class="text-[16px] text-[#ffffff80]">
@@ -164,7 +207,6 @@
         </a>
       </div>
     </div>
-
     <script>
       function copyEmail() {
         navigator.clipboard.writeText("me@adithya.zip");
