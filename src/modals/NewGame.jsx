@@ -96,7 +96,7 @@ export function NewGame() {
       gridImageFileName = generateRandomString() + ".png";
 
       await fetch(
-        `https://clear-api.vercel.app/?image=${
+        `https://clear-api.adithya.zip/?image=${
           foundGridImage()[foundGridImageIndex()]
         }`,
       ).then((res) =>
@@ -123,7 +123,7 @@ export function NewGame() {
       heroImageFileName = generateRandomString() + ".png";
 
       await fetch(
-        `https://clear-api.vercel.app/?image=${
+        `https://clear-api.adithya.zip/?image=${
           foundHeroImage()[foundHeroImageIndex()]
         }`,
       ).then((res) =>
@@ -150,7 +150,7 @@ export function NewGame() {
       logoFileName = generateRandomString() + ".png";
 
       await fetch(
-        `https://clear-api.vercel.app/?image=${
+        `https://clear-api.adithya.zip/?image=${
           foundLogoImage()[foundLogoImageIndex()]
         }`,
       ).then((res) =>
@@ -175,7 +175,7 @@ export function NewGame() {
       iconFileName = generateRandomString() + ".png";
 
       await fetch(
-        `https://clear-api.vercel.app/?image=${
+        `https://clear-api.adithya.zip/?image=${
           foundIconImage()[foundIconImageIndex()]
         }`,
       ).then((res) =>
@@ -295,7 +295,7 @@ export function NewGame() {
 
   async function searchGameName() {
     setSGDBGames(undefined);
-    await fetch(`https://clear-api.vercel.app/?gameName=${gameName()}`)
+    await fetch(`https://clear-api.adithya.zip/?gameName=${gameName()}`)
       .then((res) =>
         res.json().then(async (jsonres) => {
           if (jsonres.data.length == 0) {
@@ -327,7 +327,7 @@ export function NewGame() {
     setFoundIconImage(undefined);
 
     await fetch(
-      `https://clear-api.vercel.app/?assets=${selectedGameId()}`,
+      `https://clear-api.adithya.zip/?assets=${selectedGameId()}`,
     ).then((res) =>
       res.json().then(async (jsonres) => {
         let missingAssets = [];
