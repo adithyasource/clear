@@ -27,10 +27,6 @@
         outline: none;
       }
 
-      video::-webkit-media-controls-fullscreen-button {
-        display: none !important;
-      }
-
       video::-webkit-media-controls-volume-slider {
         display: none;
       }
@@ -50,18 +46,41 @@
       video::-webkit-media-controls-enclosure {
         visibility: visible;
       }
+
+      video::-webkit-media-controls-play-button {
+        display: none;
+      }
+
+      video::-webkit-media-controls-timeline {
+        display: none;
+      }
     </style>
   </head>
   <body class="bg-[#121212] flex flex-col items-center w-full">
+    <img
+      src="assets/screenshot.png"
+      id="videoThumbnail"
+      onclick="handleThumbnailClick()"
+      class="cursor-pointer rounded-[6px] border-[#ffffff13] border-2 w-[50vw] max-[1300px]:w-[80vw] bg-[#1c1c1c] mt-[8vh] max-[750px]:hidden"
+      alt=""
+      title="play" />
+
+    <img
+      src="assets/thin screenshot.png"
+      id="videoThumbnailThin"
+      onclick="handleThumbnailClick()"
+      class="hidden max-[750px]:block cursor-pointer rounded-[6px] border-[#ffffff13] border-2 w-[50vw] max-[1300px]:w-[80vw] bg-[#1c1c1c] mt-[8vh]"
+      alt=""
+      title="play" />
+
     <video
-      class="rounded-[6px] border-[#ffffff13] border-2 w-[50vw] max-[1300px]:w-[80vw] bg-[#1c1c1c] mt-[8vh]"
+      class="cursor-pointer hidden rounded-[6px] border-[#ffffff13] border-2 w-[50vw] max-[1300px]:w-[80vw] bg-[#1c1c1c] mt-[8vh]"
       controls
       loop
       disablePictureInPicture
       disableDownload
       controlslist="nodownload noplaybackrate"
-      id="videoPlayer"
-      poster="assets/screenshot.png">
+      id="videoPlayer">
       <source src="/assets/clear product video with sfx.mp4" type="video/mp4" />
     </video>
 
@@ -76,10 +95,12 @@
         </div>
 
         <div class="flex flex-row gap-8 max-[750px]:flex-col">
-          <button
-            class="py-2 px-3 bg-[#232323] text-white rounded-[6px] text-[16px] hover:bg-[#2B2B2B] duration-100 h-min w-max">
-            download
-          </button>
+          <a href="/download">
+            <button
+              class="py-2 px-3 bg-[#232323] text-white rounded-[6px] text-[16px] hover:bg-[#2B2B2B] duration-100 h-min w-max">
+              download
+            </button>
+          </a>
 
           <div
             class="grid grid-cols-2 w-[50%] gap-x-6 max-[750px]:flex max-[750px]:flex-wrap max-[750px]:w-full max-[750px]:gap-y-2">
@@ -140,7 +161,8 @@
 
       <hr class="h-1 w-full bg-[#ffffff] opacity-[3%] rounded-[6px]" />
 
-      <div class="w-[700px] flex flex-col items-center gap-3">
+      <div
+        class="w-[700px] max-[750px]:w-full flex flex-col items-center gap-3">
         <img
           draggable="false"
           src="assets/auto find assets.png"
@@ -153,7 +175,8 @@
 
       <hr class="h-1 w-full bg-[#ffffff] opacity-[3%] rounded-[6px]" />
 
-      <div class="w-[650px] flex flex-col items-center gap-3">
+      <div
+        class="w-[650px] max-[750px]:w-full flex flex-col items-center gap-3">
         <img
           draggable="false"
           src="assets/customize.png"
@@ -211,6 +234,13 @@
       function copyEmail() {
         navigator.clipboard.writeText("me@adithya.zip");
         alert("email copied to clipboard!");
+      }
+
+      function handleThumbnailClick() {
+        document.getElementById("videoThumbnail").style.display = "none";
+        document.getElementById("videoThumbnailThin").style.display = "none";
+        document.getElementById("videoPlayer").style.display = "block";
+        document.getElementById("videoPlayer").play();
       }
     </script>
   </body>
