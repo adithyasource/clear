@@ -43,22 +43,50 @@ If you would like to, you can create your own completely different version of th
 
 For the full list of the licenses for all the tools and libraries, please refer to the [ACKNOWLEDGEMENTS](https://github.com/adithyasource/clear/blob/main/ACKNOWLEDGEMENTS) file.
 
-Libraries
+### Libraries
 
-- [Tauri](https://tauri.app)
-- [Solid.js](https://www.solidjs.com)
-- [Tailwind CSS](https://tailwindcss.com)
-- [Fuse.js](https://www.fusejs.io)
-- [Hint.css](https://kushagra.dev/lab/hint/)
 
-Design
+<table>
+<tbody>
+<tr>
+<td><a href="https://tauri.app" target="_blank">Tauri</a></td>
+<td><a href="https://www.solidjs.com" target="_blank">Solid.js</a></td>
+<td><a href="https://tailwindcss.com" target="_blank">Tailwind CSS</a></td>
+<td><a href="https://www.fusejs.io" target="_blank">Fuse.js</a></td>
+<td><a href="https://kushagra.dev/lab/hint/" target="_blank">Hint.css</a></td>
+</tr>
+</tbody>
+</table>
 
-- [Basicons](https://basicons.xyz)
 
-Code Snippets
+### Design
 
-- [Valve VDF Parser](https://github.com/node-steam/vdf)
+<table>
+<tbody>
+<tr>
+<td><a href="https://basicons.xyz" target="_blank">Basicons</a></td>
+</tr>
+</tbody>
+</table>
 
-APIs
 
-- [SteamGridDB](https://www.steamgriddb.com/api/v2)
+### Code Snippets
+
+<table>
+<tbody>
+<tr>
+<td><a href="https://github.com/node-steam/vdf" target="_blank">Valve VDF Parser</a></td>
+</tr>
+</tbody>
+</table>
+
+
+### APIs
+
+<table>
+<tbody>
+<tr>
+<td><a href="https://www.steamgriddb.com/api/v2" target="_blank">SteamGridDB</a></td>
+</tr>
+</tbody>
+</table>
