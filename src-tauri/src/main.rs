@@ -1,8 +1,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::fs::File;
-use std::io::prelude::*;
+use std::fs;
 use std::os::windows::process::CommandExt;
 use std::process::{Command, Stdio};
 use tauri::{Manager, Window};
@@ -24,22 +23,10 @@ fn close_app() {
 
 #[tauri::command]
 fn read_steam_vdf() -> String {
-    let file_path = "C:\\Program Files (x86)\\Steam\\steamapps\\libraryfolders.vdf";
-
-    let file = match File::open(file_path) {
-        Ok(file) => file,
-        Err(_) => {
-            return "error".to_string();
-        }
-    };
-
-    let mut data = String::new();
-    if let Err(_err) = file.take(1024).read_to_string(&mut data) {
-        return "error".to_string();
+    match fs::read_to_string("C:\\Program Files (x86)\\Steam\\steamapps\\libraryfolders.vdf") {
+        Ok(file_contents) => file_contents.into(),
+        Err(_err) => return "error".to_string(),
     }
-
-    // Return the data string
-    data.into()
 }
 
 #[tauri::command]

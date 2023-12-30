@@ -398,6 +398,9 @@ export async function importSteamGames() {
 
   await fetch("https://clear-api.adithya.zip/?version=a")
     .then(() => {
+      console.log("version read");
+
+      readTextFile;
       invoke("read_steam_vdf").then(async (data) => {
         if (data == "error") {
           document.querySelector("[data-loadingModal]").close();
@@ -414,9 +417,17 @@ export async function importSteamGames() {
 
           return;
         }
-        let steamData = parseVDF(data);
 
-        let steamGameIds = Object.keys(steamData.libraryfolders[1].apps);
+        let steamData = parseVDF(data);
+        console.log(steamData);
+
+        let steamGameIds = [];
+
+        for (let x = 0; x < Object.keys(steamData.libraryfolders).length; x++) {
+          steamGameIds.push(...Object.keys(steamData.libraryfolders[x].apps));
+        }
+
+        console.log(steamGameIds);
 
         let allGameNames = [];
 
@@ -455,6 +466,8 @@ export async function importSteamGames() {
                 )
                   .then((res) =>
                     res.json().then(async (jsonres) => {
+                      console.log(jsonres);
+
                       jsonres.grid.length != 0
                         ? downloadImage(
                             "grids\\" + gridImageFileName,
