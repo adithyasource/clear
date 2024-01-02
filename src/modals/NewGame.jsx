@@ -18,7 +18,6 @@ import {
   setToastMessage,
   setLocatedIcon,
   locatedIcon,
-  setEditedLocatedIcon,
   foundGridImage,
   setFoundGridImage,
   foundHeroImage,
@@ -39,10 +38,9 @@ import {
   setFoundLogoImageIndex,
   foundIconImageIndex,
   setFoundIconImageIndex,
-  language,
 } from "../Signals";
 
-import { Show, Suspense, createSignal } from "solid-js";
+import { Show, createSignal } from "solid-js";
 import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
 import { writeTextFile, BaseDirectory, copyFile } from "@tauri-apps/api/fs";
 import * as fs from "@tauri-apps/api/fs";
@@ -702,7 +700,7 @@ export function NewGame() {
                     <img
                       src={foundLogoImage()[foundLogoImageIndex()]}
                       alt=""
-                      className="h-[60px] "
+                      className="relative aspect-auto max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
                       onLoad={() => {
                         setShowLogoImageLoading(false);
                       }}

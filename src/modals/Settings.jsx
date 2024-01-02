@@ -27,12 +27,10 @@ import {
   setShowImportAndOverwriteConfirm,
   setShowSettingsLanguageSelector,
   showSettingsLanguageSelector,
-  setLanguage,
 } from "../Signals";
 
 import {
   getData,
-  getSettingsData,
   importSteamGames,
   translateText,
   changeLanguage,
@@ -537,10 +535,10 @@ export function Settings() {
                   className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }] `}>
-                  escape
+                  ctrl - / =
                 </div>
 
-                {translateText("close dialogs")}
+                {translateText("change zoom")}
               </div>
 
               <div className="flex items-center gap-3">

@@ -76,12 +76,12 @@ export let textLanguages = {
     ru: "закрыть приложение",
     fr: "fermer l'application",
   },
-  "close dialogs": {
-    jp: "ダイアログを閉じる",
-    es: "cerrar diálogos",
-    hi: "संवाद बंद करें",
-    ru: "закрывать диалоги",
-    fr: "fermer les boîtes de dialogue",
+  "change zoom": {
+    jp: "ズームを変更する",
+    es: "cambiar zoom",
+    hi: "ज़ूम बदलें",
+    ru: "изменить масштаб",
+    fr: "changer le zoom",
   },
   "search bar": {
     jp: "検索バー",
