@@ -1,9 +1,9 @@
 ; Setting metadata
 VIAddVersionKey "ProductName" "clear"
 VIAddVersionKey "FileDescription" "clear - video game library"
-VIProductVersion "0.19.1.0"
-VIAddVersionKey "FileVersion" "0.19.1"
-VIAddVersionKey "ProductVersion" "0.19.1"
+VIProductVersion "0.19.2.0"
+VIAddVersionKey "FileVersion" "0.19.2"
+VIAddVersionKey "ProductVersion" "0.19.2"
 VIAddVersionKey "LegalCopyright" "Unlicense"
 Unicode true
 
@@ -14,7 +14,7 @@ Unicode true
 Name "clear"
 
 ; The setup filename
-OutFile "clear v0.19.1 setup.exe"
+OutFile "clear v0.19.2 setup.exe"
 
 ; The setup icon
 Icon "${NSISDIR}\Contrib\Graphics\Icons\nsis1-install.ico"
