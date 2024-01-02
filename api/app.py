@@ -21,7 +21,7 @@ def handleRequest():
 
     if request.args.get("version"):
         response = jsonify({"clearVersion": "0.19.2"})
-        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Origin", "tauri://localhost")
         return response
 
     if request.args.get("gameName"):
@@ -34,7 +34,7 @@ def handleRequest():
         ).content
 
         response = jsonify(json.loads(gameData))
-        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Origin", "tauri://localhost")
         return response
 
     if request.args.get("steamID"):
@@ -47,7 +47,7 @@ def handleRequest():
         ).content
 
         response = jsonify(json.loads(gameData))
-        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Origin", "tauri://localhost")
         return response
 
     if request.args.get("image"):
@@ -61,7 +61,7 @@ def handleRequest():
         imageFileBytes = list(imageFile.content)
 
         response = jsonify({"image": imageFileBytes})
-        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Origin", "tauri://localhost")
         return response
 
     if request.args.get("assets"):
@@ -124,7 +124,7 @@ def handleRequest():
         }
 
         response = jsonify(allImages)
-        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Origin", "tauri://localhost")
         return response
 
     if request.args.get("limitedAssets"):
@@ -217,7 +217,7 @@ def handleRequest():
         }
 
         response = jsonify(allImages)
-        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Origin", "tauri://localhost")
         return response
 
     return "hey there, how'd you end up here? this is the main website: https://clear.adithya.zip"
