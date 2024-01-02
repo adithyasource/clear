@@ -29,7 +29,6 @@ import {
   setFolderTitle,
   setFontName,
   setGameTitle,
-  setGamesDivLeftPadding,
   setLibraryData,
   setQuitAfterOpen,
   setRoundedBorders,
@@ -50,6 +49,10 @@ import {
   setShowLanguageSelector,
   showLanguageSelector,
   setShowSettingsLanguageSelector,
+  setTotalSteamGames,
+  setTotalImportedSteamGames,
+  setZoomLevel,
+  zoomLevel,
 } from "./Signals";
 
 import { SideBar } from "./SideBar";
@@ -122,24 +125,23 @@ export function getSettingsData() {
     setLanguage(libraryData().userSettings.language);
   }
 
+  if (
+    libraryData().userSettings.zoomLevel == undefined ||
+    libraryData().userSettings.zoomLevel == 1
+  ) {
+    setZoomLevel(1);
+  } else {
+    setZoomLevel(libraryData().userSettings.zoomLevel);
+  }
+
   setFontName(libraryData().userSettings.fontName || "Sans Serif");
 
   document.documentElement.classList.add("dark");
 
   if (currentTheme() == "light") {
     document.documentElement.classList.remove("dark");
-    setGamesDivLeftPadding("10px");
   } else {
     document.documentElement.classList.add("dark");
-    setGamesDivLeftPadding("10px");
-  }
-
-  try {
-    setGamesDivLeftPadding("23%");
-    setShowSideBar(libraryData().userSettings.showSideBar || true);
-  } catch (error) {
-    setGamesDivLeftPadding("30px");
-    setShowSideBar(false);
   }
 
   libraryData().userSettings.showSideBar == undefined
@@ -398,9 +400,6 @@ export async function importSteamGames() {
 
   await fetch("https://clear-api.adithya.zip/?version=a")
     .then(() => {
-      console.log("version read");
-
-      readTextFile;
       invoke("read_steam_vdf").then(async (data) => {
         if (data == "error") {
           document.querySelector("[data-loadingModal]").close();
@@ -419,7 +418,6 @@ export async function importSteamGames() {
         }
 
         let steamData = parseVDF(data);
-        console.log(steamData);
 
         let steamGameIds = [];
 
@@ -427,7 +425,11 @@ export async function importSteamGames() {
           steamGameIds.push(...Object.keys(steamData.libraryfolders[x].apps));
         }
 
-        console.log(steamGameIds);
+        const index = steamGameIds.indexOf("228980");
+
+        index != -1 ? steamGameIds.splice(index, 1) : null;
+
+        setTotalSteamGames(steamGameIds.length);
 
         let allGameNames = [];
 
@@ -443,101 +445,113 @@ export async function importSteamGames() {
           {
             dir: BaseDirectory.AppData,
           },
-        ).then(() => {
-          getData();
+        )
+          .then(async () => {
+            getData();
 
-          steamGameIds.forEach(async (steamId) => {
-            await fetch(
-              `https://clear-api.adithya.zip/?steamID=${steamId}`,
-            ).then((res) =>
-              res.json().then(async (jsonres) => {
-                let gameId = jsonres.data.id;
-                let name = jsonres.data.name;
+            for (const steamId of steamGameIds) {
+              await fetch(
+                `https://clear-api.adithya.zip/?steamID=${steamId}`,
+              ).then((res) =>
+                res.json().then(async (jsonres) => {
+                  let gameId = jsonres.data.id;
+                  let name = jsonres.data.name;
 
-                allGameNames.push(name);
+                  allGameNames.push(name);
 
-                let gridImageFileName = generateRandomString() + ".png";
-                let heroImageFileName = generateRandomString() + ".png";
-                let logoImageFileName = generateRandomString() + ".png";
-                let iconImageFileName = generateRandomString() + ".png";
+                  let gridImageFileName = generateRandomString() + ".png";
+                  let heroImageFileName = generateRandomString() + ".png";
+                  let logoImageFileName = generateRandomString() + ".png";
+                  let iconImageFileName = generateRandomString() + ".png";
 
-                await fetch(
-                  `https://clear-api.adithya.zip/?limitedAssets=${gameId}`,
-                )
-                  .then((res) =>
-                    res.json().then(async (jsonres) => {
-                      console.log(jsonres);
-
-                      jsonres.grid.length != 0
-                        ? downloadImage(
-                            "grids\\" + gridImageFileName,
-                            jsonres.grid,
-                          )
-                        : (gridImageFileName = undefined);
-                      jsonres.hero.length != 0
-                        ? downloadImage(
-                            "heroes\\" + heroImageFileName,
-                            jsonres.hero,
-                          )
-                        : (heroImageFileName = undefined);
-                      jsonres.logo.length != 0
-                        ? downloadImage(
-                            "logos\\" + logoImageFileName,
-                            jsonres.logo,
-                          )
-                        : (logoImageFileName = undefined);
-                      jsonres.icon.length != 0
-                        ? downloadImage(
-                            "icons\\" + iconImageFileName,
-                            jsonres.icon,
-                          )
-                        : (iconImageFileName = undefined);
-
-                      libraryData().games[name] = {
-                        location: `steam://rungameid/${steamId}`,
-                        name: name,
-                        heroImage: heroImageFileName,
-                        gridImage: gridImageFileName,
-                        logo: logoImageFileName,
-                        icon: iconImageFileName,
-                        favourite: false,
-                      };
-
-                      libraryData().folders["steam"] = {
-                        name: "steam",
-                        hide: false,
-                        games: allGameNames,
-                        index: currentFolders().length,
-                      };
-
-                      setLibraryData(libraryData());
-
-                      await writeTextFile(
-                        {
-                          path: "data.json",
-                          contents: JSON.stringify(libraryData(), null, 4),
-                        },
-                        {
-                          dir: BaseDirectory.AppData,
-                        },
-                      ).then(() => {
-                        setTimeout(() => {
-                          getData();
-                          document.querySelector("[data-loadingModal]").close();
-                          document
-                            .querySelector("[data-settingsModal]")
-                            .close();
-                        }, 3000);
-                      });
-                    }),
+                  await fetch(
+                    `https://clear-api.adithya.zip/?limitedAssets=${gameId}`,
                   )
-                  .catch((err) => {
-                    // no assets found at all for this game
-                  });
-              }),
-            );
+                    .then((res) =>
+                      res.json().then(async (jsonres) => {
+                        jsonres.grid.length != 0
+                          ? downloadImage(
+                              "grids\\" + gridImageFileName,
+                              jsonres.grid,
+                            )
+                          : (gridImageFileName = undefined);
+                        jsonres.hero.length != 0
+                          ? downloadImage(
+                              "heroes\\" + heroImageFileName,
+                              jsonres.hero,
+                            )
+                          : (heroImageFileName = undefined);
+                        jsonres.logo.length != 0
+                          ? downloadImage(
+                              "logos\\" + logoImageFileName,
+                              jsonres.logo,
+                            )
+                          : (logoImageFileName = undefined);
+                        jsonres.icon.length != 0
+                          ? downloadImage(
+                              "icons\\" + iconImageFileName,
+                              jsonres.icon,
+                            )
+                          : (iconImageFileName = undefined);
+
+                        libraryData().games[name] = {
+                          location: `steam://rungameid/${steamId}`,
+                          name: name,
+                          heroImage: heroImageFileName,
+                          gridImage: gridImageFileName,
+                          logo: logoImageFileName,
+                          icon: iconImageFileName,
+                          favourite: false,
+                        };
+
+                        setLibraryData(libraryData());
+
+                        await writeTextFile(
+                          {
+                            path: "data.json",
+                            contents: JSON.stringify(libraryData(), null, 4),
+                          },
+                          {
+                            dir: BaseDirectory.AppData,
+                          },
+                        );
+
+                        setTotalImportedSteamGames((x) => x + 1);
+                      }),
+                    )
+                    .catch((err) => {
+                      // no assets found at all for this game
+                    });
+                }),
+              );
+            }
+          })
+          .then(async () => {
+            libraryData().folders["steam"] = {
+              name: "steam",
+              hide: false,
+              games: allGameNames,
+              index: currentFolders().length,
+            };
+
+            await writeTextFile(
+              {
+                path: "data.json",
+                contents: JSON.stringify(libraryData(), null, 4),
+              },
+              {
+                dir: BaseDirectory.AppData,
+              },
+            ).then(() => {
+              document.querySelector("[data-loadingModal]").close();
+              document.querySelector("[data-settingsModal]").close();
+
+              getData();
+
+              setTotalImportedSteamGames(0);
+              setTotalSteamGames(0);
+            });
           });
-        });
       });
     })
     .catch((err) => {
@@ -556,6 +570,18 @@ export function translateText(text) {
   return language() == undefined || language() == "en"
     ? text
     : textLanguages[text][language()];
+}
+
+async function updateData() {
+  await writeTextFile(
+    {
+      path: "data.json",
+      contents: JSON.stringify(libraryData(), null, 4),
+    },
+    {
+      dir: BaseDirectory.AppData,
+    },
+  ).then(getData());
 }
 
 function App() {
@@ -578,6 +604,22 @@ function App() {
       for (let i = 0; i < document.querySelectorAll(".gameCard").length; i++) {
         document.querySelectorAll(".gameCard")[i].classList.add("hint--center");
       }
+    }
+
+    if (e.ctrlKey && e.code == "Equal") {
+      setZoomLevel((x) => (x != 2 ? (x += 1) : (x = 2)));
+
+      libraryData().userSettings.zoomLevel = zoomLevel();
+
+      updateData();
+    }
+
+    if (e.ctrlKey && e.code == "Minus") {
+      setZoomLevel((x) => (x != 0 ? (x -= 1) : (x = 0)));
+
+      libraryData().userSettings.zoomLevel = zoomLevel();
+
+      updateData();
     }
 
     if (e.ctrlKey && e.code == "KeyF") {
@@ -673,10 +715,9 @@ function App() {
   async function toggleSideBar() {
     setSearchValue("");
 
-    libraryData().userSettings.showSideBar == undefined
-      ? (libraryData().userSettings.showSideBar = false)
-      : (libraryData().userSettings.showSideBar =
-          !libraryData().userSettings.showSideBar);
+    setShowSideBar((x) => !x);
+
+    libraryData().userSettings.showSideBar = showSideBar();
 
     await writeTextFile(
       {
@@ -686,7 +727,9 @@ function App() {
       {
         dir: BaseDirectory.AppData,
       },
-    ).then(getData());
+    ).then(() => {
+      getData();
+    });
   }
 
   document.addEventListener("contextmenu", (event) => event.preventDefault());
@@ -1083,12 +1126,23 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                         </p>
                       </Show>
                       <div
-                        className={`grid gap-5 mt-4 foldersDiv 
-                          ${
-                            showSideBar()
+                        className={`grid gap-5 mt-4 foldersDiv
+                        ${
+                          zoomLevel() == 0
+                            ? showSideBar()
+                              ? "medium:grid-cols-5 grid-cols-4 large:grid-cols-7"
+                              : "medium:grid-cols-6 grid-cols-4 large:grid-cols-8"
+                            : zoomLevel() == 1
+                            ? showSideBar()
                               ? "medium:grid-cols-4 grid-cols-3 large:grid-cols-6"
                               : "medium:grid-cols-5 grid-cols-3 large:grid-cols-7"
-                          }`}>
+                            : zoomLevel() == 2
+                            ? showSideBar()
+                              ? "medium:grid-cols-3 grid-cols-2 large:grid-cols-5"
+                              : "medium:grid-cols-4 grid-cols-2 large:grid-cols-6"
+                            : ""
+                        }
+                        `}>
                         <For each={folder.games}>
                           {(gameName) => {
                             return (

@@ -41,10 +41,6 @@ import {
 import { appDataDir } from "@tauri-apps/api/path";
 
 export function Settings() {
-  setTimeout(() => {
-    getSettingsData();
-  }, 50);
-
   onMount(() => {
     fetch("https://clear-api.adithya.zip/?version=a").then((res) =>
       res.json().then((jsonres) => {

@@ -13,6 +13,7 @@ export const [notepadValue, setNotepadValue] = createSignal("");
 export const [toastError, setToastMessage] = createSignal("");
 export const [showToast, setShowToast] = createSignal(false);
 export const [windowWidth, setWindowWidth] = createSignal(window.innerWidth);
+export const [zoomLevel, setZoomLevel] = createSignal();
 
 // !? References
 export const [selectedGame, setSelectedGame] = createSignal({});
@@ -30,9 +31,12 @@ export const [showSettingsLanguageSelector, setShowSettingsLanguageSelector] =
 export const [showLanguageSelector, setShowLanguageSelector] =
   createSignal(false);
 
+export const [totalSteamGames, setTotalSteamGames] = createSignal(0);
+export const [totalImportedSteamGames, setTotalImportedSteamGames] =
+  createSignal(0);
+
 // !? Styles Signals
 export const [currentTheme, setCurrentTheme] = createSignal("");
-export const [gamesDivLeftPadding, setGamesDivLeftPadding] = createSignal("");
 
 // !? Settings Signals
 export const [showSideBar, setShowSideBar] = createSignal(true);

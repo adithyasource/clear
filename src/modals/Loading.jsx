@@ -1,5 +1,9 @@
 import { translateText } from "../App";
-import { roundedBorders } from "../Signals";
+import {
+  roundedBorders,
+  totalImportedSteamGames,
+  totalSteamGames,
+} from "../Signals";
 
 export function Loading() {
   return (
@@ -13,6 +17,11 @@ export function Loading() {
             roundedBorders() ? "6px" : "0px"
           }] w-max p-3`}>
           {translateText("loading")}
+          <Show when={totalSteamGames() != 0}>
+            {" "}
+            {totalImportedSteamGames() + " / " + totalSteamGames()}
+          </Show>
+
           <svg
             width="18"
             height="18"
