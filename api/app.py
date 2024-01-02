@@ -24,22 +24,6 @@ def handleRequest():
         response.headers.add("Access-Control-Allow-Origin", "*")
         return response
 
-    if request.args.get("update"):
-        response = jsonify(
-            {
-                "version": "v0.19.2",
-                "notes": "Test version",
-                "platforms": {
-                    "windows-x86_64": {
-                        "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRVExQaEtudkVWaTl4VmNVNC9PQUw0dk9wZ09ua1ZramZ1Y2pYZTBROG9VTkk3NlJ4aWYwRlI0TDF5aXJxV21ocC9vRFRZMmI3bTUyVkxJRko3aTBKK3p3YUdVQmlHa2dBPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzA0MTc1MjUwCWZpbGU6Y2xlYXJfMC4xOS4yX3g2NC1zZXR1cC5uc2lzLnppcAovQ2NqYkk1TFJsMlFWd1krVnl5REVzMkRzemFjcnBmRnBXUEcxNFVIZlZ3RVMvUmExcjVzWVZqMnRhNmdoL1NFQUhrNWQ1NnplRmY3V1dOY1VBaTJEZz09Cg==",
-                        "url": "https://github.com/adithyasource/clear/releases/download/testing-beta/clear_0.19.2_x64-setup.nsis.zip",
-                    },
-                },
-            }
-        )
-        response.headers.add("Access-Control-Allow-Origin", "*")
-        return response
-
     if request.args.get("gameName"):
         gameName = str(request.args.get("gameName"))
 
