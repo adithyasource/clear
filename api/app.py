@@ -25,10 +25,6 @@ def handleRequest():
             "Access-Control-Allow-Origin",
             "https://tauri.localhost",
         )
-        response.headers.add(
-            "Access-Control-Allow-Origin",
-            "http://localhost:1420",
-        )
         return response
 
     if request.args.get("gameName"):
@@ -44,10 +40,6 @@ def handleRequest():
         response.headers.add(
             "Access-Control-Allow-Origin",
             "https://tauri.localhost",
-        )
-        response.headers.add(
-            "Access-Control-Allow-Origin",
-            "http://localhost:1420",
         )
         return response
 
@@ -65,10 +57,6 @@ def handleRequest():
             "Access-Control-Allow-Origin",
             "https://tauri.localhost",
         )
-        response.headers.add(
-            "Access-Control-Allow-Origin",
-            "http://localhost:1420",
-        )
         return response
 
     if request.args.get("image"):
@@ -85,10 +73,6 @@ def handleRequest():
         response.headers.add(
             "Access-Control-Allow-Origin",
             "https://tauri.localhost",
-        )
-        response.headers.add(
-            "Access-Control-Allow-Origin",
-            "http://localhost:1420",
         )
         return response
 
@@ -155,10 +139,6 @@ def handleRequest():
         response.headers.add(
             "Access-Control-Allow-Origin",
             "https://tauri.localhost",
-        )
-        response.headers.add(
-            "Access-Control-Allow-Origin",
-            "http://localhost:1420",
         )
         return response
 
@@ -255,10 +235,6 @@ def handleRequest():
         response.headers.add(
             "Access-Control-Allow-Origin",
             "https://tauri.localhost",
-        )
-        response.headers.add(
-            "Access-Control-Allow-Origin",
-            "http://localhost:1420",
         )
         return response
 
