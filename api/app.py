@@ -23,7 +23,11 @@ def handleRequest():
         response = jsonify({"clearVersion": "0.19.2"})
         response.headers.add(
             "Access-Control-Allow-Origin",
-            ["https://tauri.localhost", "http://localhost:1420"],
+            "https://tauri.localhost",
+        )
+        response.headers.add(
+            "Access-Control-Allow-Origin",
+            "http://localhost:1420",
         )
         return response
 
@@ -39,7 +43,11 @@ def handleRequest():
         response = jsonify(json.loads(gameData))
         response.headers.add(
             "Access-Control-Allow-Origin",
-            ["https://tauri.localhost", "http://localhost:1420"],
+            "https://tauri.localhost",
+        )
+        response.headers.add(
+            "Access-Control-Allow-Origin",
+            "http://localhost:1420",
         )
         return response
 
@@ -55,7 +63,11 @@ def handleRequest():
         response = jsonify(json.loads(gameData))
         response.headers.add(
             "Access-Control-Allow-Origin",
-            ["https://tauri.localhost", "http://localhost:1420"],
+            "https://tauri.localhost",
+        )
+        response.headers.add(
+            "Access-Control-Allow-Origin",
+            "http://localhost:1420",
         )
         return response
 
@@ -72,7 +84,11 @@ def handleRequest():
         response = jsonify({"image": imageFileBytes})
         response.headers.add(
             "Access-Control-Allow-Origin",
-            ["https://tauri.localhost", "http://localhost:1420"],
+            "https://tauri.localhost",
+        )
+        response.headers.add(
+            "Access-Control-Allow-Origin",
+            "http://localhost:1420",
         )
         return response
 
@@ -138,7 +154,11 @@ def handleRequest():
         response = jsonify(allImages)
         response.headers.add(
             "Access-Control-Allow-Origin",
-            ["https://tauri.localhost", "http://localhost:1420"],
+            "https://tauri.localhost",
+        )
+        response.headers.add(
+            "Access-Control-Allow-Origin",
+            "http://localhost:1420",
         )
         return response
 
@@ -234,7 +254,11 @@ def handleRequest():
         response = jsonify(allImages)
         response.headers.add(
             "Access-Control-Allow-Origin",
-            ["https://tauri.localhost", "http://localhost:1420"],
+            "https://tauri.localhost",
+        )
+        response.headers.add(
+            "Access-Control-Allow-Origin",
+            "http://localhost:1420",
         )
         return response
 
