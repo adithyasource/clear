@@ -64,7 +64,7 @@ export function Settings() {
             <div className="flex justify-between">
               <div>
                 <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
-                  {translateText("settings")}
+                  {translateText("Settings")}
                 </p>
               </div>
 
@@ -112,14 +112,14 @@ export function Settings() {
                 className="relative cursor-pointer">
                 <Show when={roundedBorders()}>
                   <div className="relative ">
-                    <div className="">{translateText("rounded borders")}</div>
+                    <div className="">{translateText("Rounded borders")}</div>
                     <div className="absolute blur-[5px] opacity-70 inset-0  ">
-                      {translateText("rounded borders")}
+                      {translateText("Rounded borders")}
                     </div>
                   </div>
                 </Show>
                 <Show when={!roundedBorders()}>
-                  <div className="">{translateText("rounded borders")}</div>
+                  <div className="">{translateText("Rounded borders")}</div>
                 </Show>
               </div>
               <div
@@ -141,14 +141,14 @@ export function Settings() {
                 className="relative cursor-pointer">
                 <Show when={gameTitle()}>
                   <div className="relative">
-                    <div className="">{translateText("game title")}</div>
+                    <div className="">{translateText("Game title")}</div>
                     <div className="absolute blur-[5px] opacity-70 inset-0  ">
-                      {translateText("game title")}
+                      {translateText("Game title")}
                     </div>
                   </div>
                 </Show>
                 <Show when={!gameTitle()}>
-                  <div className="">{translateText("game title")}</div>
+                  <div className="">{translateText("Game title")}</div>
                 </Show>
               </div>
               <div
@@ -170,14 +170,14 @@ export function Settings() {
                 className="relative cursor-pointer">
                 <Show when={folderTitle()}>
                   <div className="relative">
-                    <div className="">{translateText("folder title")}</div>
+                    <div className="">{translateText("Folder title")}</div>
                     <div className="absolute blur-[5px] opacity-70 inset-0  ">
-                      {translateText("folder title")}
+                      {translateText("Folder title")}
                     </div>
                   </div>
                 </Show>
                 <Show when={!folderTitle()}>
-                  <div className="">{translateText("folder title")}</div>
+                  <div className="">{translateText("Folder title")}</div>
                 </Show>
               </div>
               <div
@@ -200,30 +200,30 @@ export function Settings() {
                 <Show when={quitAfterOpen()}>
                   <div className="relative">
                     <div className="">
-                      {translateText("quit after opening game")}
+                      {translateText("Quit after opening game")}
                     </div>
                     <div className="absolute blur-[5px] opacity-70 inset-0  ">
-                      {translateText("quit after opening game")}
+                      {translateText("Quit after opening game")}
                     </div>
                   </div>
                 </Show>
                 <Show when={!quitAfterOpen()}>
                   <div className="">
-                    {translateText("quit after opening game")}
+                    {translateText("Quit after opening game")}
                   </div>
                 </Show>
               </div>
 
               <div
                 onClick={async () => {
-                  if (fontName() == "Sans Serif") {
+                  if (fontName().toLocaleLowerCase() == "sans serif") {
                     setFontName("Serif");
                   } else {
-                    if (fontName() == "Serif") {
+                    if (fontName().toLocaleLowerCase() == "serif") {
                       setFontName("Mono");
                     } else {
-                      if (fontName() == "Mono") {
-                        setFontName("Sans Serif");
+                      if (fontName().toLocaleLowerCase() == "mono") {
+                        setFontName("Sans serif");
                       }
                     }
                   }
@@ -242,18 +242,18 @@ export function Settings() {
                 }}
                 className="flex gap-2 cursor-pointer ">
                 <span className="dark:text-[#ffffff80] text-[#12121280]">
-                  [{translateText("font")}]
+                  [{translateText("Font")}]
                 </span>
                 <div className="">
-                  {translateText(fontName().toLowerCase()) ||
-                    translateText("sans serif")}
+                  {translateText(fontName()) ||
+                    translateText("Sans serif")}
                 </div>
               </div>
               <div
                 onClick={async () => {
-                  currentTheme() == "dark"
-                    ? setCurrentTheme("light")
-                    : setCurrentTheme("dark");
+                currentTheme().toLocaleLowerCase() == "dark"
+                    ? setCurrentTheme("Light")
+                    : setCurrentTheme("Dark");
 
                   libraryData().userSettings.theme = currentTheme();
 
@@ -269,11 +269,11 @@ export function Settings() {
                 }}
                 className="flex gap-2 cursor-pointer ">
                 <span className="dark:text-[#ffffff80] text-[#12121280]">
-                  [{translateText("theme")}]
+                  [{translateText("Theme")}]
                 </span>
                 <div className="">
-                  {translateText(currentTheme().toLowerCase()) ||
-                    translateText("dark")}
+                  {translateText(currentTheme()) ||
+                    translateText("Dark")}
                 </div>
               </div>
               <div className="flex gap-2 cursor-pointer relative">
@@ -283,22 +283,22 @@ export function Settings() {
                   }}
                   className="w-full">
                   <span className="dark:text-[#ffffff80] text-[#12121280]">
-                    [{translateText("language")}]
+                    [{translateText("Language")}]
                   </span>
                   &nbsp;{" "}
                   {language() == "en"
-                    ? "english"
+                    ? "English"
                     : language() == "jp"
                     ? "日本語"
                     : language() == "es"
-                    ? "español"
+                    ? "Español"
                     : language() == "hi"
                     ? "हिंदी"
                     : language() == "ru"
                     ? "русский"
                     : language() == "fr"
-                    ? "français"
-                    : "english"}
+                    ? "Français"
+                    : "English"}
                 </div>
 
                 <Show when={showSettingsLanguageSelector()}>
@@ -311,42 +311,42 @@ export function Settings() {
                       onClick={() => {
                         changeLanguage("en");
                       }}>
-                      english
+                      English
                     </div>
                     <div
                       className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
                       onClick={() => {
                         changeLanguage("jp");
                       }}>
-                      日本語 [japanese]
+                      日本語 [Japanese]
                     </div>
                     <div
                       className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
                       onClick={() => {
                         changeLanguage("es");
                       }}>
-                      español [spanish]
+                      Español [Spanish]
                     </div>
                     <div
                       className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
                       onClick={() => {
                         changeLanguage("hi");
                       }}>
-                      हिंदी [hindi]
+                      हिंदी [Hindi]
                     </div>
                     <div
                       className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75"
                       onClick={() => {
                         changeLanguage("ru");
                       }}>
-                      русский [russian]
+                      русский [Russian]
                     </div>
                     <div
                       className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75"
                       onClick={() => {
                         changeLanguage("fr");
                       }}>
-                      français [french]
+                      Français [French]
                     </div>
                   </div>
                 </Show>
@@ -362,7 +362,7 @@ export function Settings() {
                       location: "https://clear.adithya.zip/update",
                     });
                   }}>
-                  {translateText("new update available!")}
+                  {translateText("New update available!")}
                   <span className="dark:text-[#ffffff80] text-[#12121280]">
                     v{latestVersion()}
                   </span>
@@ -374,7 +374,7 @@ export function Settings() {
               <div>
                 <button
                   className="standardButton hint--bottom !flex !w-max !gap-3 "
-                  aria-label={translateText("might not work perfectly!")}
+                  aria-label={translateText("Might not work perfectly!")}
                   onClick={() => {
                     if (steamFolderExists()) {
                       showImportAndOverwriteConfirm()
@@ -392,16 +392,16 @@ export function Settings() {
                     <Show when={showImportAndOverwriteConfirm() == true}>
                       <span className="text-[#FF3636]">
                         {translateText(
-                          "current 'steam' folder will be overwritten. confirm?",
+                          "Current 'steam' folder will be overwritten. confirm?",
                         )}
                       </span>
                     </Show>
                     <Show when={showImportAndOverwriteConfirm() == false}>
-                      {translateText("import steam games")}
+                      {translateText("Import Steam games")}
                     </Show>
                   </Show>
                   <Show when={steamFolderExists() == false}>
-                    {translateText("import steam games")}
+                    {translateText("Import Steam games")}
                   </Show>
 
                   <svg
@@ -448,11 +448,11 @@ export function Settings() {
                       location: appDataDirPath,
                     });
                   }}>
-                  {translateText("open library location")}
+                  {translateText("Open library location")}
                 </button>
                 <span className="dark:text-[#ffffff80] text-[#12121280] w-[50%]">
                   {translateText(
-                    "these are all the files that the app stores on your pc. you can copy these files to the same location on another pc to get your library there",
+                    "These are all the files that the app stores on your pc. You can copy these files to the same location on another pc to get your library there",
                   )}
                 </span>
               </div>
@@ -467,7 +467,7 @@ export function Settings() {
                   ctrl + n
                 </div>
 
-                {translateText("new game")}
+                {translateText("New game")}
               </div>
 
               <div className="flex items-center gap-3">
@@ -478,7 +478,7 @@ export function Settings() {
                   ctrl + .
                 </div>
 
-                {translateText("open settings")}
+                {translateText("Open settings")}
               </div>
               <div className="flex items-center gap-3">
                 <div
@@ -488,7 +488,7 @@ export function Settings() {
                   ctrl + f
                 </div>
 
-                {translateText("search bar")}
+                {translateText("Search bar")}
               </div>
               <div className="flex items-center gap-3">
                 <div
@@ -498,7 +498,7 @@ export function Settings() {
                   ctrl + m
                 </div>
 
-                {translateText("new folder")}
+                {translateText("New folder")}
               </div>
               <div className="flex items-center gap-3">
                 <div
@@ -508,7 +508,7 @@ export function Settings() {
                   ctrl + l
                 </div>
 
-                {translateText("open notepad")}
+                {translateText("Open notepad")}
               </div>
               <div className="flex items-center gap-3">
                 <div
@@ -518,7 +518,7 @@ export function Settings() {
                   ctrl + \\
                 </div>
 
-                {translateText("hide sidebar")}
+                {translateText("Hide sidebar")}
               </div>
               <div className="flex items-center gap-3">
                 <div
@@ -528,7 +528,7 @@ export function Settings() {
                   ctrl + w
                 </div>
 
-                {translateText("close app")}
+                {translateText("Close app")}
               </div>
               <div className="flex items-center gap-3">
                 <div
@@ -538,7 +538,7 @@ export function Settings() {
                   ctrl - / =
                 </div>
 
-                {translateText("change zoom")}
+                {translateText("Change zoom")}
               </div>
 
               <div className="flex items-center gap-3">
@@ -549,7 +549,7 @@ export function Settings() {
                   ctrl + click
                 </div>
 
-                {translateText("quick open game")}
+                {translateText("Quick open game")}
               </div>
             </div>
 
@@ -567,7 +567,7 @@ export function Settings() {
                   });
                 }}
                 className="underline cursor-pointer">
-                {translateText("feedback")}
+                {translateText("Feedback")}
               </p>
               <p
                 onClick={() => {
@@ -576,10 +576,10 @@ export function Settings() {
                   });
                 }}
                 className="underline cursor-pointer">
-                {translateText("website")}
+                {translateText("Website")}
               </p>
               <div>
-                {translateText("made by")}{" "}
+                {translateText("Made by")}{" "}
                 <a
                   onClick={() => {
                     invoke("open_location", {
@@ -598,7 +598,7 @@ export function Settings() {
                   });
                 }}
                 className="underline cursor-pointer">
-                {translateText("buy me a coffee")}
+                {translateText("Buy me a coffee")}
               </a>
             </div>
           </div>

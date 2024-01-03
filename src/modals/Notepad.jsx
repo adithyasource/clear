@@ -45,7 +45,7 @@ export function Notepad() {
             <div className="flex justify-between">
               <div>
                 <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
-                  {translateText("notepad")}
+                  {translateText("Notepad")}
                 </p>
               </div>
 
@@ -78,7 +78,7 @@ export function Notepad() {
                 saveNotepad();
               }}
               className="w-full h-[40vh] mt-6 bg-transparent rounded-[6px] focus:outline-none resize-none"
-              placeholder={translateText("write anything you want over here!")}
+              placeholder={translateText("Write anything you want over here!")}
               spellcheck="false"
               value={notepadValue()}></textarea>
           </div>

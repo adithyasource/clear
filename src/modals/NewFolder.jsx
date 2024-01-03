@@ -21,7 +21,7 @@ export function NewFolder() {
   async function addFolder() {
     if (folderName() == "" || folderName() == undefined) {
       setShowToast(true);
-      setToastMessage(translateText("no folder name"));
+      setToastMessage(translateText("No folder name"));
       setTimeout(() => {
         setShowToast(false);
       }, 1500);
@@ -82,7 +82,7 @@ export function NewFolder() {
             } `}>
             <div>
               <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
-                {translateText("add new folder")}
+                {translateText("Add new folder")}
               </p>
             </div>
             <div className="flex items-center gap-5">
@@ -94,23 +94,23 @@ export function NewFolder() {
                 <Show when={hideFolder()}>
                   <div className="relative">
                     <div className="">
-                      {translateText("hide in expanded view")}
+                      {translateText("Hide in expanded view")}
                     </div>
                     <div className="absolute blur-[5px] opacity-70 inset-0">
-                      {translateText("hide in expanded view")}
+                      {translateText("Hide in expanded view")}
                     </div>
                   </div>
                 </Show>
                 <Show when={!hideFolder()}>
                   <div className="">
-                    {translateText("hide in expanded view")}
+                    {translateText("Hide in expanded view")}
                   </div>
                 </Show>
               </div>
               <button
                 onClick={addFolder}
                 className="flex items-center standardButton !w-max">
-                {translateText("save")}
+                {translateText("Save")}
                 <svg
                   width="18"
                   height="18"
@@ -172,7 +172,7 @@ export function NewFolder() {
                 setFolderName(e.currentTarget.value);
               }}
               value={folderName() || ""}
-              placeholder={translateText("name of folder")}
+              placeholder={translateText("Name of folder")}
             />
           </div>
         </div>

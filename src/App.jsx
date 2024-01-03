@@ -109,11 +109,11 @@ export function getSettingsData() {
 
   if (
     libraryData().userSettings.theme == undefined ||
-    libraryData().userSettings.theme == "dark"
+    libraryData().userSettings.theme.toLocaleLowerCase() == "dark"
   ) {
-    setCurrentTheme("dark");
+    setCurrentTheme("Dark");
   } else {
-    setCurrentTheme("light");
+    setCurrentTheme("Light");
   }
 
   if (
@@ -134,11 +134,11 @@ export function getSettingsData() {
     setZoomLevel(libraryData().userSettings.zoomLevel);
   }
 
-  setFontName(libraryData().userSettings.fontName || "Sans Serif");
+  setFontName(libraryData().userSettings.fontName || "Sans serif");
 
   document.documentElement.classList.add("dark");
 
-  if (currentTheme() == "light") {
+  if (currentTheme().toLocaleLowerCase() == "light") {
     document.documentElement.classList.remove("dark");
   } else {
     document.documentElement.classList.add("dark");
@@ -235,7 +235,7 @@ export async function getData() {
 export async function openGame(gameLocation) {
   if (gameLocation == undefined) {
     setShowToast(true);
-    setToastMessage(translateText("no game file provided!"));
+    setToastMessage(translateText("No game file provided!"));
     setTimeout(() => {
       setShowToast(false);
     }, 1500);
@@ -253,7 +253,7 @@ export async function openGame(gameLocation) {
     }, 500);
   } else {
     setShowToast(true);
-    setToastMessage(translateText("game launched! enjoy your session!"));
+    setToastMessage(translateText("Game launched! Enjoy your session!"));
     setTimeout(() => {
       setShowToast(false);
     }, 1500);
@@ -407,7 +407,7 @@ export async function importSteamGames() {
           setShowToast(true);
           setToastMessage(
             translateText(
-              "sorry but there was an error \n reading your steam library :(",
+              "Sorry but there was an error \n reading your steam library :(",
             ),
           );
           setTimeout(() => {
@@ -558,7 +558,7 @@ export async function importSteamGames() {
       document.querySelector("[data-loadingModal]").close();
 
       setShowToast(true);
-      setToastMessage(translateText("you're not connected to the internet :("));
+      setToastMessage(translateText("You're not connected to the internet :("));
       setTimeout(() => {
         setShowToast(false);
       }, 2500);
@@ -567,6 +567,13 @@ export async function importSteamGames() {
 }
 
 export function translateText(text) {
+
+  if (!textLanguages.hasOwnProperty(text)) {
+    console.trace(`missing text translation '${text}'`);
+
+    return undefined;
+  }
+
   return language() == undefined || language() == "en"
     ? text
     : textLanguages[text][language()];
@@ -786,8 +793,8 @@ function App() {
       <style jsx>{`
 button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
 .sideBarFolder { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
-.titleBarText { font-family: ${fontName() == "Sans Serif" ? "Segoe UI" : fontName() == "Serif" ? "Times New Roman" : "IBM Plex Mono, Consolas"}; }
-* { font-family: ${fontName() == "Sans Serif" ? "Helvetica, Arial, sans-serif" : fontName() == "Serif" ? "Times New Roman" : "IBM Plex Mono, Consolas"}; color: ${currentTheme() == "light" ? "#000000" : "#ffffff"}; }
+.titleBarText { font-family: ${fontName().toLocaleLowerCase() == "sans serif" ? "Segoe UI" : fontName().toLocaleLowerCase() == "serif" ? "Times New Roman" : "IBM Plex Mono, Consolas"}; }
+* { font-family: ${fontName().toLocaleLowerCase() == "sans serif" ? "Helvetica, Arial, sans-serif" : fontName().toLocaleLowerCase() == "serif" ? "Times New Roman" : "IBM Plex Mono, Consolas"}; color: ${currentTheme().toLocaleLowerCase() == "light" ? "#000000" : "#ffffff"}; }
 ::-webkit-scrollbar-thumb { border-radius: ${roundedBorders() ? "10px" : "0px"}; }
 .gameInput { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
 .tooltip { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
@@ -847,24 +854,24 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
             }`}>
             <div className="!z-50">
               <p className="dark:text-[#ffffff80] text-[#000000] ">
-                {translateText("hey there! thank you so much for using clear")}
+                {translateText("Hey there! thank you so much for using clear")}
                 <br />
                 <br />-{" "}
-                {translateText("add some new games using the sidebar buttons")}
+                {translateText("Add some new games using the sidebar buttons")}
                 <br />
                 <br />-{" "}
                 {translateText(
-                  "create new folders and drag and drop your games into them",
+                  "Create new folders and drag and drop your games into them",
                 )}
                 <br />
                 <br />-{" "}
-                {translateText("dont forget to check out the settings!")}
+                {translateText("Don't forget to check out the settings!")}
               </p>
 
               <div className="mt-[35px] flex gap-6">
                 <button
                   className="standardButton hint--bottom !flex !w-max !gap-3"
-                  aria-label={translateText("might not work perfectly!")}
+                  aria-label={translateText("Might not work perfectly!")}
                   onClick={() => {
                     if (steamFolderExists()) {
                       showImportAndOverwriteConfirm()
@@ -882,16 +889,16 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                     <Show when={showImportAndOverwriteConfirm() == true}>
                       <span className="text-[#FF3636]">
                         {translateText(
-                          "current 'steam' folder will be overwritten. confirm?",
+                          "Current 'steam' folder will be overwritten. confirm?",
                         )}
                       </span>
                     </Show>
                     <Show when={showImportAndOverwriteConfirm() == false}>
-                      {translateText("import steam games")}
+                      {translateText("Import Steam games")}
                     </Show>
                   </Show>
                   <Show when={steamFolderExists() == false}>
-                    {translateText("import steam games")}
+                    {translateText("Import Steam games")}
                   </Show>
 
                   <svg
@@ -936,22 +943,22 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                   }}>
                   <div className="w-full">
                     <span className="dark:text-[#ffffff80] text-[#12121280]">
-                      [{translateText("language")}]
+                      [{translateText("Language")}]
                     </span>
                     &nbsp;{" "}
                     {language() == "en"
-                      ? "english"
+                      ? "English"
                       : language() == "jp"
                       ? "日本語"
                       : language() == "es"
-                      ? "español"
+                      ? "Español"
                       : language() == "hi"
                       ? "हिंदी"
                       : language() == "ru"
                       ? "русский"
                       : language() == "fr"
-                      ? "français"
-                      : "english"}
+                      ? "Français"
+                      : "English"}
                   </div>
 
                   <Show when={showLanguageSelector()}>
@@ -964,42 +971,42 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                         onClick={() => {
                           changeLanguage("en");
                         }}>
-                        english
+                        English
                       </div>
                       <div
                         className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
                         onClick={() => {
                           changeLanguage("jp");
                         }}>
-                        日本語 [japanese]
+                        日本語 [Japanese]
                       </div>
                       <div
                         className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
                         onClick={() => {
                           changeLanguage("es");
                         }}>
-                        español [spanish]
+                        Español [Spanish]
                       </div>
                       <div
                         className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
                         onClick={() => {
                           changeLanguage("hi");
                         }}>
-                        हिंदी [hindi]
+                        हिंदी [Hindi]
                       </div>
                       <div
                         className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75"
                         onClick={() => {
                           changeLanguage("ru");
                         }}>
-                        русский [russian]
+                        русский [Russian]
                       </div>
                       <div
                         className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75"
                         onClick={() => {
                           changeLanguage("fr");
                         }}>
-                        français [french]
+                        Français [French]
                       </div>
                     </div>
                   </Show>
@@ -1015,7 +1022,7 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                     ctrl + n
                   </div>
 
-                  {translateText("new game")}
+                  {translateText("New game")}
                 </div>
 
                 <div className="flex items-center gap-3">
@@ -1025,7 +1032,7 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                     }] `}>
                     ctrl + .
                   </div>
-                  {translateText("open settings")}
+                  {translateText("Open settings")}
                 </div>
 
                 <div className="flex items-center gap-3">
@@ -1036,7 +1043,7 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                     ctrl + m
                   </div>
 
-                  {translateText("new folder")}
+                  {translateText("New folder")}
                 </div>
                 <div className="flex items-center gap-3">
                   <div
@@ -1046,7 +1053,7 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                     ctrl + l
                   </div>
 
-                  {translateText("open notepad")}
+                  {translateText("Open notepad")}
                 </div>
 
                 <div className="flex items-center gap-3">
@@ -1057,7 +1064,7 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                     ctrl + w
                   </div>
 
-                  {translateText("close app")}
+                  {translateText("Close app")}
                 </div>
                 <div className="flex items-center gap-3">
                   <div
@@ -1067,7 +1074,7 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                     ctrl - / =
                   </div>
 
-                  {translateText("change zoom")}
+                  {translateText("Change zoom")}
                 </div>
               </div>
 
@@ -1080,7 +1087,7 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                     ctrl + f
                   </div>
 
-                  {translateText("search bar")}
+                  {translateText("Search bar")}
                 </div>
                 <div className="flex items-center gap-3">
                   <div
@@ -1090,7 +1097,7 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                     ctrl + \\
                   </div>
 
-                  {translateText("hide sidebar")}
+                  {translateText("Hide sidebar")}
                 </div>
                 <div className="flex items-center gap-3">
                   <div
@@ -1100,7 +1107,7 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                     ctrl + click
                   </div>
 
-                  {translateText("quick open game")}
+                  {translateText("Quick open game")}
                 </div>
               </div>
             </div>
@@ -1148,7 +1155,7 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                             return (
                               <div
                                 className="relative w-full bg-transparent cursor-pointer gameCard group"
-                                aria-label={translateText("play")}
+                                aria-label={translateText("Play")}
                                 onDragStart={(e) => {
                                   e.preventDefault();
                                 }}
@@ -1183,7 +1190,7 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                                                 .location
                                             }>
                                             <span class="absolute tooltip z-[100] bottom-[30px]">
-                                              {translateText("no game file")}
+                                              {translateText("No game file")}
                                             </span>
                                           </Show>
                                         </Show>
@@ -1218,7 +1225,7 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                                                 .location
                                             }>
                                             <span class="absolute tooltip z-[100] bottom-[30px]">
-                                              {translateText("no game file")}
+                                              {translateText("No game file")}
                                             </span>
                                           </Show>
                                         </Show>
@@ -1272,7 +1279,7 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                                                 .location
                                             }>
                                             <span class="absolute tooltip z-[100] bottom-[30px]">
-                                              {translateText("no game file")}
+                                              {translateText("No game file")}
                                             </span>
                                           </Show>
                                         </Show>
@@ -1321,7 +1328,7 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                                       </span>
 
                                       <span class=" tooltip z-[100]">
-                                        {translateText("no game file")}
+                                        {translateText("No game file")}
                                       </span>
                                     </Show>
                                   </div>
@@ -1370,7 +1377,7 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                         return (
                           <div
                             className="relative w-full bg-transparent cursor-pointer gameCard group"
-                            aria-label={translateText("play")}
+                            aria-label={translateText("Play")}
                             onDragStart={(e) => {
                               e.preventDefault();
                             }}
@@ -1421,7 +1428,7 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                                             .location
                                         }>
                                         <span class="absolute tooltip z-[100] bottom-[30px]">
-                                          {translateText("no game file")}
+                                          {translateText("No game file")}
                                         </span>
                                       </Show>
                                     </Show>
@@ -1467,7 +1474,7 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                                         !libraryData().games[gameName].location
                                       }>
                                       <span class="absolute tooltip z-[100] bottom-[30px]">
-                                        {translateText("no game file")}
+                                        {translateText("No game file")}
                                       </span>
                                     </Show>
                                   </Show>
@@ -1506,7 +1513,7 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                                     !libraryData().games[gameName].location
                                   }>
                                   <span class=" tooltip z-[100]">
-                                    {translateText("no game file")}
+                                    {translateText("No game file")}
                                   </span>
                                 </Show>
                               </div>
@@ -1533,7 +1540,7 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                             stroke-linejoin="round"></path>
                         </svg>
 
-                        {translateText("no games found")}
+                        {translateText("No games found")}
                       </div>
                     </Show>
                   </div>

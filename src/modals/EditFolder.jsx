@@ -20,7 +20,7 @@ export function EditFolder() {
   async function editFolder() {
     if (editedFolderName() == "") {
       setShowToast(true);
-      setToastMessage(translateText("no folder name"));
+      setToastMessage(translateText("No folder name"));
       setTimeout(() => {
         setShowToast(false);
       }, 1500);
@@ -112,7 +112,7 @@ export function EditFolder() {
             } `}>
             <div>
               <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
-                {translateText("edit")} {selectedFolder().name}
+                {translateText("Edit")} {selectedFolder().name}
               </p>
             </div>
 
@@ -130,16 +130,16 @@ export function EditFolder() {
                   <Show when={selectedFolder().hide}>
                     <div className="relative">
                       <div className="">
-                        {translateText("hide in expanded view")}
+                        {translateText("Hide in expanded view")}
                       </div>
                       <div className="absolute blur-[5px] opacity-70 inset-0">
-                        {translateText("hide in expanded view")}
+                        {translateText("Hide in expanded view")}
                       </div>
                     </div>
                   </Show>
                   <Show when={!selectedFolder().hide}>
                     <div className="">
-                      {translateText("hide in expanded view")}
+                      {translateText("Hide in expanded view")}
                     </div>
                   </Show>
                 </Show>
@@ -147,17 +147,17 @@ export function EditFolder() {
                 <Show when={editedHideFolder() == true}>
                   <div className="relative">
                     <div className="">
-                      {translateText("hide in expanded view")}
+                      {translateText("Hide in expanded view")}
                     </div>
                     <div className="absolute blur-[5px] opacity-70 inset-0">
-                      {translateText("hide in expanded view")}
+                      {translateText("Hide in expanded view")}
                     </div>
                   </div>
                 </Show>
 
                 <Show when={editedHideFolder() == false}>
                   <div className="">
-                    {translateText("hide in expanded view")}
+                    {translateText("Hide in expanded view")}
                   </div>
                 </Show>
               </div>
@@ -165,7 +165,7 @@ export function EditFolder() {
               <button
                 onClick={editFolder}
                 className="flex items-center standardButton !w-max">
-                {translateText("save")}
+                {translateText("Save")}
                 <svg
                   width="18"
                   height="18"
@@ -206,8 +206,8 @@ export function EditFolder() {
                 className="flex items-center standardButton !w-max">
                 <span className="text-[#FF3636]">
                   {showDeleteConfirm()
-                    ? translateText("confirm?")
-                    : translateText("delete")}
+                    ? translateText("Confirm?")
+                    : translateText("Delete")}
                 </span>
                 <svg
                   width="18"
@@ -271,7 +271,7 @@ export function EditFolder() {
               onInput={(e) => {
                 setEditedFolderName(e.currentTarget.value);
               }}
-              placeholder={translateText("name of folder")}
+              placeholder={translateText("Name of folder")}
               value={selectedFolder().name}
             />
           </div>
