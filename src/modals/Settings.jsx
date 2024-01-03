@@ -216,13 +216,13 @@ export function Settings() {
 
               <div
                 onClick={async () => {
-                  if (fontName().toLocaleLowerCase() == "sans serif") {
+                  if (fontName() == "sans serif") {
                     setFontName("serif");
                   } else {
-                    if (fontName().toLocaleLowerCase() == "serif") {
+                    if (fontName() == "serif") {
                       setFontName("mono");
                     } else {
-                      if (fontName().toLocaleLowerCase() == "mono") {
+                      if (fontName() == "mono") {
                         setFontName("sans serif");
                       }
                     }
@@ -250,7 +250,7 @@ export function Settings() {
               </div>
               <div
                 onClick={async () => {
-                  currentTheme().toLocaleLowerCase() == "dark"
+                  currentTheme() == "dark"
                     ? setCurrentTheme("light")
                     : setCurrentTheme("dark");
 

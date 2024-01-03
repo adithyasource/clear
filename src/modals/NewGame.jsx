@@ -38,6 +38,7 @@ import {
   setFoundLogoImageIndex,
   foundIconImageIndex,
   setFoundIconImageIndex,
+  language,
 } from "../Signals";
 
 import { Show, createSignal } from "solid-js";
@@ -908,7 +909,44 @@ export function NewGame() {
                     setFoundLogoImage(undefined);
                     setFoundIconImage(undefined);
                   }}>
-                  {translateText("auto find assets")}
+                  <Show when={language() == "fr"}>
+                    <p
+                      innerHTML={translateText("auto find assets")}
+                      className="text-[10px]"></p>
+                  </Show>
+
+                  <Show when={language() != "fr"}>
+                    {translateText("auto find assets")}
+                  </Show>
+                </button>
+                <button
+                  className={`standardButton !w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80] rounded-[${
+                    roundedBorders() ? "6px" : "0px"
+                  }] `}
+                  onClick={async () => {
+                    gameName() == undefined
+                      ? invoke("open_location", {
+                          location: "https://www.steamgriddb.com/",
+                        })
+                      : gameName() == ""
+                      ? invoke("open_location", {
+                          location: "https://www.steamgriddb.com/",
+                        })
+                      : invoke("open_location", {
+                          location:
+                            "https://www.steamgriddb.com/search/grids?term=" +
+                            gameName(),
+                        });
+                  }}>
+                  <Show when={language() == "fr"}>
+                    <p
+                      innerHTML={translateText("find assets")}
+                      className="text-[10px]"></p>
+                  </Show>
+
+                  <Show when={language() != "fr"}>
+                    {translateText("find assets")}
+                  </Show>
                 </button>
               </div>
 

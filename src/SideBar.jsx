@@ -263,9 +263,11 @@ export function SideBar() {
                 });
               }
             }}
-            class={`h-[calc(100vh-275px)] overflow-auto  rounded-[${
-              roundedBorders() ? "6px" : "0px"
-            }]`}>
+            class={` ${
+              language() == "fr"
+                ? "medium:h-[calc(100vh-330px)] large:h-[calc(100vh-275px)]"
+                : "h-[calc(100vh-275px)]"
+            } overflow-auto  rounded-[${roundedBorders() ? "6px" : "0px"}]`}>
             <p className="mt-[5px]"></p>
             <For each={currentFolders()}>
               {(folderName, i) => {
@@ -782,7 +784,12 @@ export function SideBar() {
             </button>
           </div>
 
-          <div className="flex gap-3">
+          <div
+            className={`flex ${
+              language() == "fr"
+                ? "medium:flex-col flex-col large:flex-row gap-0 medium:gap-0 large:gap-3"
+                : "gap-3"
+            }`}>
             <button
               className={`standardButton mt-[12px] ${
                 newVersionAvailable() ? "!w-[80%]" : ""

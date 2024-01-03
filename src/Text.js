@@ -355,7 +355,14 @@ export let textLanguages = {
     es: "búsqueda automática",
     hi: "स्वत: संपत्ति खोजें",
     ru: "автоматический поиск",
-    fr: "Recherche automatique",
+    fr: "Recherche <br /> automatique",
+  },
+  "find assets": {
+    jp: "資産を見つける",
+    es: "encontrar activos",
+    hi: "संपत्ति खोजें",
+    ru: "найти активы",
+    fr: "Trouver des <br /> éléments graphiques",
   },
   "locate game": {
     jp: "ゲームを探す",

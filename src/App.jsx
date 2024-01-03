@@ -109,7 +109,7 @@ export function getSettingsData() {
 
   if (
     libraryData().userSettings.theme == undefined ||
-    libraryData().userSettings.theme.toLocaleLowerCase() == "dark"
+    libraryData().userSettings.theme == "dark"
   ) {
     setCurrentTheme("dark");
   } else {
@@ -138,7 +138,7 @@ export function getSettingsData() {
 
   document.documentElement.classList.add("dark");
 
-  if (currentTheme().toLocaleLowerCase() == "light") {
+  if (currentTheme() == "light") {
     document.documentElement.classList.remove("dark");
   } else {
     document.documentElement.classList.add("dark");
@@ -792,8 +792,8 @@ function App() {
       <style jsx>{`
 button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
 .sideBarFolder { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
-.titleBarText { font-family: ${fontName().toLocaleLowerCase() == "sans serif" ? "Segoe UI" : fontName().toLocaleLowerCase() == "serif" ? "Times New Roman" : "IBM Plex Mono, Consolas"}; }
-* { font-family: ${fontName().toLocaleLowerCase() == "sans serif" ? "Helvetica, Arial, sans-serif" : fontName().toLocaleLowerCase() == "serif" ? "Times New Roman" : "IBM Plex Mono, Consolas"}; color: ${currentTheme().toLocaleLowerCase() == "light" ? "#000000" : "#ffffff"}; }
+.titleBarText { font-family: ${fontName() == "sans serif" ? "Segoe UI" : fontName() == "serif" ? "Times New Roman" : "IBM Plex Mono, Consolas"}; }
+* { font-family: ${fontName() == "sans serif" ? "Helvetica, Arial, sans-serif" : fontName() == "serif" ? "Times New Roman" : "IBM Plex Mono, Consolas"}; color: ${currentTheme() == "light" ? "#000000" : "#ffffff"}; }
 ::-webkit-scrollbar-thumb { border-radius: ${roundedBorders() ? "10px" : "0px"}; }
 .gameInput { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
 .tooltip { border-radius: ${roundedBorders() ? "6px" : "0px"}; }
@@ -1370,7 +1370,23 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
 
               return (
                 <div>
-                  <div className="grid grid-cols-3 gap-5 mt-4 medium:grid-cols-4 large:grid-cols-6 foldersDiv">
+                  <div
+                    className={`grid gap-5 mt-4 foldersDiv 
+                    ${
+                      zoomLevel() == 0
+                        ? showSideBar()
+                          ? "medium:grid-cols-5 grid-cols-4 large:grid-cols-7"
+                          : "medium:grid-cols-6 grid-cols-4 large:grid-cols-8"
+                        : zoomLevel() == 1
+                        ? showSideBar()
+                          ? "medium:grid-cols-4 grid-cols-3 large:grid-cols-6"
+                          : "medium:grid-cols-5 grid-cols-3 large:grid-cols-7"
+                        : zoomLevel() == 2
+                        ? showSideBar()
+                          ? "medium:grid-cols-3 grid-cols-2 large:grid-cols-5"
+                          : "medium:grid-cols-4 grid-cols-2 large:grid-cols-6"
+                        : ""
+                    }`}>
                     <For each={searchResults}>
                       {(gameName) => {
                         return (
