@@ -39,6 +39,7 @@ import {
   foundIconImageIndex,
   setFoundIconImageIndex,
   language,
+  windowWidth,
 } from "../Signals";
 
 import { Show, createSignal } from "solid-js";
@@ -909,10 +910,14 @@ export function NewGame() {
                     setFoundLogoImage(undefined);
                     setFoundIconImage(undefined);
                   }}>
-                  <Show when={language() == "fr"}>
-                    <p
-                      innerHTML={translateText("auto find assets")}
-                      className="text-[10px]"></p>
+                  <Show when={language() == "fr" && windowWidth() >= 1500}>
+                    {translateText("auto find assets")}
+                  </Show>
+
+                  <Show when={language() == "fr" && windowWidth() <= 1500}>
+                    <p className="text-[10px] text-clip w-[70px]">
+                      {translateText("auto find assets")}
+                    </p>
                   </Show>
 
                   <Show when={language() != "fr"}>
@@ -938,10 +943,14 @@ export function NewGame() {
                             gameName(),
                         });
                   }}>
-                  <Show when={language() == "fr"}>
-                    <p
-                      innerHTML={translateText("find assets")}
-                      className="text-[10px]"></p>
+                  <Show when={language() == "fr" && windowWidth() >= 1500}>
+                    {translateText("find assets")}
+                  </Show>
+
+                  <Show when={language() == "fr" && windowWidth() <= 1500}>
+                    <p className="text-[10px] text-clip w-[100px]">
+                      {translateText("find assets")}
+                    </p>
                   </Show>
 
                   <Show when={language() != "fr"}>
