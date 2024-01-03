@@ -1,319 +1,319 @@
 export let textLanguages = {
-  "hey there! thank you so much for using clear": {
+  "Hey there! Thank you so much for using clear": {
     jp: "ちょっと、そこ！いつもクリアをご利用いただき誠にありがとうございます",
     es: "¡hola! muchas gracias por usar claro",
     hi: "सुनो! क्लियर का उपयोग करने के लिए आपका बहुत-बहुत धन्यवाद",
     ru: "Привет! большое спасибо за использование ясности",
-    fr: "salut! merci beaucoup d'utiliser clear",
+    fr: "Salut! Merci beaucoup d'utiliser clear",
   },
-  "add some new games using the sidebar buttons": {
+  "Add some new games using the sidebar buttons": {
     jp: "サイドバーボタンを使用して新しいゲームを追加します",
     es: "agregue algunos juegos nuevos usando los botones de la barra lateral",
     hi: "साइडबार बटनों का उपयोग करके कुछ नए गेम जोड़ें",
     ru: "добавьте несколько новых игр с помощью кнопок боковой панели",
-    fr: "ajoutez de nouveaux jeux en utilisant les boutons de la barre latérale",
+    fr: "Ajoute de nouveaux jeux en utilisant les boutons de la barre latérale",
   },
-  "create new folders and drag and drop your games into them": {
+  "Create new folders and drag and drop your games into them": {
     jp: "新しいフォルダーを作成し、そこにゲームをドラッグ アンド ドロップします。",
     es: "Crea nuevas carpetas y arrastra y suelta tus juegos en ellas.",
     hi: "नए फ़ोल्डर बनाएं और अपने गेम को उनमें खींचें और छोड़ें",
     ru: "создавайте новые папки и перетаскивайте в них свои игры",
-    fr: "créez de nouveaux dossiers et faites-y glisser et déposez vos jeux",
+    fr: "Créer de nouveaux dossiers et glisse-y des jeux",
   },
-  "dont forget to check out the settings!": {
+  "Don't forget to check out the settings!": {
     jp: "設定を確認することを忘れないでください",
     es: "¡No olvides revisar la configuración!",
     hi: "सेटिंग्स की जांच करना न भूलें!",
     ru: "не забудьте проверить настройки!",
-    fr: "n'oubliez pas de vérifier les paramètres !",
+    fr: "N'oublie pas de visiter les paramètres !",
   },
-  "import steam games": {
+  "Import Steam games": {
     jp: "Steam ゲームをインポートする",
     es: "importar juegos de steam",
     hi: "स्टीम गेम्स आयात करें",
     ru: "импортировать игры из Steam",
-    fr: "importer des jeux Steam",
+    fr: "Importer des jeux Steam",
   },
-  "might not work perfectly!": {
+  "Might not work perfectly!": {
     jp: "完全に動作しない可能性があります!",
     es: "¡Puede que no funcione perfectamente!",
     hi: "हो सकता है कि यह पूरी तरह से काम न करे!",
     ru: "может работать не идеально!",
-    fr: "pourrait ne pas fonctionner parfaitement !",
+    fr: "Pourrait ne pas fonctionner parfaitement !",
   },
-  "new game": {
+  "New game": {
     jp: "新しいゲーム",
     es: "nuevo juego",
     hi: "नया खेल",
     ru: "новая игра",
-    fr: "nouveau jeu",
+    fr: "Nouveau jeu",
   },
-  "open settings": {
+  "Open settings": {
     jp: "設定を開く",
     es: "configuración abierta",
     hi: "खुली सेटिंग",
     ru: "открыть настройки",
-    fr: "ouvrir les paramètres",
+    fr: "Ouvrir les paramètres",
   },
-  "new folder": {
+  "New folder": {
     jp: "新しいフォルダ",
     es: "nueva carpeta",
     hi: "नया फ़ोल्डर",
     ru: "новая папка",
-    fr: "nouveau dossier",
+    fr: "Nouveau dossier",
   },
-  "open notepad": {
+  "Open notepad": {
     jp: "メモ帳を開く",
     es: "abrir el bloc de notas",
     hi: "नोटपैड खोलें",
     ru: "открыть блокнот",
-    fr: "ouvrir le bloc-notes",
+    fr: "Ouvrir le bloc-notes",
   },
-  "close app": {
+  "Close app": {
     jp: "アプリを閉じる",
     es: "cerrar app",
     hi: "ऐप बंद करें",
     ru: "закрыть приложение",
-    fr: "fermer l'application",
+    fr: "Fermer l'application",
   },
-  "change zoom": {
+  "Change zoom": {
     jp: "ズームを変更する",
     es: "cambiar zoom",
     hi: "ज़ूम बदलें",
     ru: "изменить масштаб",
-    fr: "changer le zoom",
+    fr: "Changer le zoom",
   },
-  "search bar": {
+  "Search bar": {
     jp: "検索バー",
     es: "barra de búsqueda",
     hi: "खोज पट्टी",
     ru: "панель поиска",
-    fr: "barre de recherche",
+    fr: "Barre de recherche",
   },
-  "hide sidebar": {
+  "Hide sidebar": {
     jp: "サイドバーを隠す",
     es: "esconder barra lateral",
     hi: "किनारे की बाधा को हटाएं",
     ru: "скрыть боковую панель",
-    fr: "masquer la barre latérale",
+    fr: "Masquer la barre latérale",
   },
-  "quick open game": {
+  "Quick open game": {
     jp: "クイックオープンゲーム",
     es: "juego abierto rápido",
     hi: "त्वरित खुला खेल",
     ru: "быстро открыть игру",
-    fr: "jeu ouvert et rapide",
+    fr: "Lancement rapide du jeu",
   },
-  "no game file": {
+  "No game file": {
     jp: "ファイルがない",
     es: "ningún archivo",
     hi: "कोई गेम फ़ाइल नहीं",
     ru: "нет файла игры",
-    fr: "pas de fichier de jeu",
+    fr: "Pas de fichier de jeu",
   },
-  "no games found": {
+  "No games found": {
     jp: "ゲームが見つかりません",
     es: "no se han encontrado juegos",
     hi: "कोई गेम नहीं मिला",
     ru: "игры не найдены",
-    fr: "aucun jeu trouvé",
+    fr: "Aucun jeu trouvé",
   },
-  uncategorized: {
+  Uncategorized: {
     jp: "未分類",
     es: "sin categoría",
     hi: "अवर्गीकृत",
     ru: "без категории",
-    fr: "non classé",
+    fr: "Non classé",
   },
-  "add game": {
+  "Add game": {
     jp: "ゲームを追加",
     es: "agregar juego",
     hi: "गेम जोड़ें",
     ru: "добавить игру",
-    fr: "ajouter un jeu",
+    fr: "Ajouter un jeu",
   },
-  "add folder": {
+  "Add folder": {
     jp: "フォルダーを追加",
     es: "agregar carpeta",
     hi: "फ़ोल्डर जोड़ें",
     ru: "добавить папку",
-    fr: "ajouter le dossier",
+    fr: "Ajouter un dossier",
   },
-  notepad: {
+  Notepad: {
     jp: "メモ帳",
     es: "bloc",
     hi: "नोटपैड",
     ru: "блокнот",
-    fr: "bloc-notes",
+    fr: "Bloc-notes",
   },
-  settings: {
+  Settings: {
     jp: "設定",
     es: "ajustes",
     hi: "समायोजन",
     ru: "настройки",
-    fr: "paramètres",
+    fr: "Paramètres",
   },
-  search: {
+  Search: {
     jp: "検索",
     es: "buscar",
     hi: "खोज",
     ru: "поиск",
-    fr: "recherche",
+    fr: "Rechercher",
   },
-  "new update available!": {
+  "New update available!": {
     jp: "新しいアップデートが利用可能になりました!",
     es: "¡Nueva actualización disponible!",
     hi: "नई सूचना उपलब्ध है!",
     ru: "доступно новое обновление!",
-    fr: "nouvelle mise à jour disponible!",
+    fr: "Nouvelle mise à jour disponible!",
   },
-  "rounded borders": {
+  "Rounded borders": {
     jp: "丸い境界線",
     es: "bordes redondeados",
     hi: "गोलाकार सीमाएँ",
     ru: "закругленные границы",
-    fr: "bordures arrondies",
+    fr: "Bordures arrondies",
   },
-  "game title": {
+  "Game title": {
     jp: "ゲームタイトル",
     es: "título del juego",
     hi: "खेल का शीर्षक",
     ru: "название игры",
-    fr: "titre du jeu",
+    fr: "Titre du jeu",
   },
-  "folder title": {
+  "Folder title": {
     jp: "フォルダタイトル",
     es: "título de la carpeta",
     hi: "फ़ोल्डर शीर्षक",
     ru: "название папки",
-    fr: "titre du dossier",
+    fr: "Titre du dossier",
   },
-  "quit after opening game": {
+  "Quit after opening game": {
     jp: "ゲーム開始後に終了",
     es: "salir después de abrir el juego",
     hi: "खेल शुरू करने के बाद छोड़ दें",
     ru: "выйти после открытия игры",
-    fr: "quitter après avoir ouvert le jeu",
+    fr: "Quitter après avoir lancer le jeu",
   },
-  font: {
+  Font: {
     jp: "フォント",
     es: "fuente",
     hi: "फ़ॉन्ट",
     ru: "шрифт",
-    fr: "Police de caractère",
+    fr: "Police",
   },
-  "sans serif": {
+  "Sans serif": {
     jp: "サンセリフ",
-    es: "sans serif",
+    es: "Sans serif",
     hi: "सान्स सेरिफ़",
     ru: "без засечек",
-    fr: "sans empattement",
+    fr: "Sans sérif",
   },
-  mono: {
+  Mono: {
     jp: "単核症",
     es: "mononucleosis infecciosa",
     hi: "मोनो",
     ru: "мононуклеоз",
-    fr: "mono",
+    fr: "Mono",
   },
-  serif: {
+  Serif: {
     jp: "セリフ",
     es: "serifa",
     hi: "सेरिफ़",
     ru: "засечка",
-    fr: "empattement",
+    fr: "Sérif",
   },
-  light: {
+  Light: {
     jp: "ライト",
     es: "Ligero",
     hi: "रोशनी",
     ru: "свет",
-    fr: "lumière",
+    fr: "Clair",
   },
-  dark: {
+  Dark: {
     jp: "暗い",
     es: "oscuro",
     hi: "अँधेरा",
     ru: "темный",
-    fr: "sombre",
+    fr: "Sombre",
   },
-  theme: {
+  Theme: {
     jp: "テーマ",
     es: "tema",
     hi: "विषय",
     ru: "тема",
-    fr: "thème",
+    fr: "Thème",
   },
-  "open library location": {
+  "Open library location": {
     jp: "図書館の場所を開く",
     es: "ubicación de la biblioteca abierta",
     hi: "पुस्तकालय का स्थान खोलें",
     ru: "расположение открытой библиотеки",
-    fr: "emplacement de la bibliothèque ouverte",
+    fr: "Ouvrir le dossier de bibliothèque",
   },
-  "these are all the files that the app stores on your pc. you can copy these files to the same location on another pc to get your library there":
+  "These are all the files that the app stores on your pc. You can copy these files to the same location on another pc to get your library there":
     {
       jp: "これらはすべて、アプリが PC に保存するファイルです。これらのファイルを別の PC の同じ場所にコピーして、そこにライブラリを取得できます。",
       es: "Estos son todos los archivos que la aplicación almacena en tu PC. Puedes copiar estos archivos a la misma ubicación en otra PC para llevar tu biblioteca allí.",
       hi: "ये सभी फ़ाइलें हैं जिन्हें ऐप आपके पीसी पर संग्रहीत करता है। आप अपनी लाइब्रेरी को वहां पहुंचाने के लिए इन फ़ाइलों को दूसरे पीसी पर उसी स्थान पर कॉपी कर सकते हैं",
       ru: "это все файлы, которые приложение хранит на вашем компьютере. вы можете скопировать эти файлы в то же место на другом компьютере, чтобы разместить там свою библиотеку.",
-      fr: "ce sont tous les fichiers que l’application stocke sur votre PC. vous pouvez copier ces fichiers au même emplacement sur un autre PC pour y placer votre bibliothèque",
+      fr: "Tous les fichiers de l’application sur le PC. Copiez ces fichiers au même emplacement sur un autre PC pour y placer la bibliothèque",
     },
-  feedback: {
+  Feedback: {
     jp: "フィードバック",
     es: "comentario",
     hi: "प्रतिक्रिया",
     ru: "обратная связь",
-    fr: "retour",
+    fr: "Commentaire",
   },
-  website: {
+  Website: {
     jp: "ウェブサイト",
     es: "sitio web",
     hi: "वेबसाइट",
     ru: "Веб-сайт",
-    fr: "site web",
+    fr: "Site web",
   },
-  "made by": {
+  "Made by": {
     jp: "作られた",
     es: "hecho por",
     hi: "द्वारा बनाया गया",
     ru: "сделан",
-    fr: "faite par",
+    fr: "Fait par",
   },
-  "buy me a coffee": {
+  "Buy me a coffee": {
     jp: "コーヒーを買ってください",
     es: "cómprame un café",
     hi: "मेरे लिए एक कॉफ़ी खरीदो",
     ru: "купи мне кофе",
-    fr: "achète-moi un café",
+    fr: "Achètez-moi un café",
   },
-  "write anything you want over here!": {
+  "Write anything you want over here!": {
     jp: "ここに何でも書いてください！",
     es: "¡Escribe lo que quieras aquí!",
     hi: "यहां पर आप जो चाहें लिखें!",
     ru: "пишите сюда все, что хотите!",
-    fr: "écrivez tout ce que vous voulez ici !",
+    fr: "Écrivez tout ce que vous voulez ici !",
   },
-  "add new game": {
+  "Add new game": {
     jp: "新しいゲームを追加する",
     es: "agregar nuevo juego",
     hi: "नया गेम जोड़ें",
     ru: "добавить новую игру",
-    fr: "ajouter un nouveau jeu",
+    fr: "Ajouter un nouveau jeu",
   },
-  favourite: {
+  Favourite: {
     jp: "お気に入り",
     es: "favorita",
     hi: "पसंदीदा",
     ru: "любимый",
-    fr: "préféré",
+    fr: "Favoris",
   },
-  save: {
+  Save: {
     jp: "保存",
     es: "ahorrar",
     hi: "बचाना",
     ru: "сохранять",
-    fr: "sauvegarder",
+    fr: "Sauvegarder",
   },
   "grid/cover": {
     jp: "グリッド/カバー",
@@ -322,173 +322,173 @@ export let textLanguages = {
     ru: "сетка/крышка",
     fr: "grille/couvercle",
   },
-  hero: {
+  Hero: {
     jp: "ヒーロー",
     es: "héroe",
     hi: "नायक",
     ru: "герой",
-    fr: "héros",
+    fr: "Bannière",
   },
-  logo: {
+  Logo: {
     jp: "ロゴ",
     es: "logo",
     hi: "प्रतीक चिन्ह",
     ru: "логотип",
-    fr: "logo",
+    fr: "Logo",
   },
-  icon: {
+  Icon: {
     jp: "アイコン",
     es: "icono",
     hi: "आइकन",
     ru: "икона",
-    fr: "icône",
+    fr: "Icône",
   },
-  "name of game": {
+  "Name of game": {
     jp: "ゲームの名前",
     es: "nombre del juego",
     hi: "खेल का नाम",
     ru: "название игры",
-    fr: "nom du jeu",
+    fr: "Nom du jeu",
   },
-  "auto find assets": {
+  "Auto find assets": {
     jp: "アセットの自動検索",
     es: "búsqueda automática",
     hi: "स्वत: संपत्ति खोजें",
     ru: "автоматический поиск",
-    fr: "recherche automatique",
+    fr: "Recherche automatique",
   },
-  "find assets": {
+  "Find assets": {
     jp: "資産を見つける",
     es: "encontrar activos",
     hi: "संपत्ति खोजें",
     ru: "найти активы",
-    fr: "trouver des actifs",
+    fr: "Trouver des éléments graphiques",
   },
-  "locate game": {
+  "Locate game": {
     jp: "ゲームを探す",
     es: "localizar juego",
     hi: "खेल का पता लगाएं",
     ru: "найти игру",
-    fr: "localiser",
+    fr: "Localiser le jeu",
   },
-  "right click to empty image selection": {
+  "Right click to empty image selection": {
     jp: "右クリックして画像の選択を空にします",
     es: "clic derecho para vaciar la selección de imágenes",
     hi: "छवि चयन खाली करने के लिए राइट क्लिक करें",
     ru: "щелкните правой кнопкой мыши, чтобы очистить выбор изображения",
-    fr: "clic droit pour vider la sélection d'images",
+    fr: "Clic droit pour vider la sélection d'images",
   },
-  "add new folder": {
+  "Add new folder": {
     jp: "新しいフォルダーを追加する",
     es: "agregar nueva carpeta",
     hi: "नया फ़ोल्डर जोड़ें",
     ru: "добавить новую папку",
-    fr: "ajouter un nouveau dossier",
+    fr: "Ajouter un nouveau dossier",
   },
-  "hide in expanded view": {
+  "Hide in expanded view": {
     jp: "展開表示で非表示にする",
     es: "ocultar en vista ampliada",
     hi: "विस्तारित दृश्य में छिपाएँ",
     ru: "скрыть в развернутом виде",
-    fr: "masquer dans la vue développée",
+    fr: "Masquer dans la vue développée",
   },
-  "name of folder": {
+  "Name of folder": {
     jp: "フォルダの名前",
     es: "nombre de la carpeta",
     hi: "फ़ोल्डर का नाम",
     ru: "имя папки",
-    fr: "nom du dossier",
+    fr: "Nom du dossier",
   },
-  loading: {
+  Loading: {
     jp: "読み込み中",
     es: "cargando",
     hi: "लोड हो रहा है",
     ru: "загрузка",
-    fr: "chargement",
+    fr: "Chargement",
   },
-  play: {
+  Play: {
     jp: "遊ぶ",
     es: "jugar",
     hi: "खेल",
     ru: "играть",
-    fr: "jouer",
+    fr: "Jouer",
   },
-  edit: {
+  Edit: {
     jp: "編集",
     es: "editar",
     hi: "संपादन करना",
     ru: "редактировать",
-    fr: "modifier",
+    fr: "Modifier",
   },
-  delete: {
+  Delete: {
     jp: "消去",
     es: "borrar",
     hi: "मिटाना",
     ru: "удалить",
-    fr: "supprimer",
+    fr: "Supprimer",
   },
-  "confirm?": {
+  "Confirm?": {
     jp: "確認する?",
     es: "¿confirmar?",
     hi: "पुष्टि करना?",
     ru: "подтверждать?",
-    fr: "confirmer?",
+    fr: "Confirmer ?",
   },
-  "scroll on the image to select a different asset": {
+  "Scroll on the image to select a different asset": {
     jp: "画像をスクロールして別のアセットを選択します",
     es: "desplácese por la imagen para seleccionar un activo diferente",
     hi: "किसी भिन्न संपत्ति का चयन करने के लिए छवि पर स्क्रॉल करें",
     ru: "прокрутите изображение, чтобы выбрать другой актив",
-    fr: "faites défiler l'image pour sélectionner un autre actif",
+    fr: "Utilisez la molette sur l'image pour en sélectionner une autre",
   },
-  "select the official name of your game": {
+  "Select the official name of your game": {
     jp: "ゲームの正式名を選択してください",
     es: "selecciona el nombre oficial de tu juego",
     hi: "अपने गेम का आधिकारिक नाम चुनें",
     ru: "выберите официальное название вашей игры",
-    fr: "sélectionnez le nom officiel de votre jeu",
+    fr: "Sélectionnez le nom officiel de votre jeu",
   },
-  "open containing folder": {
+  "Open containing folder": {
     jp: "含まれているフォルダーを開く",
     es: "carpeta que contiene abierto",
     hi: "धारक फोल्डर खोलें",
     ru: "открыть содержащую папку",
-    fr: "ouvrir dossier contenant",
+    fr: "Ouvrir le dossier contenant",
   },
-  "current 'steam' folder will be overwritten. confirm?": {
+  "Current 'steam' folder will be overwritten. Confirm?": {
     jp: "現在の「steam」フォルダーは上書きされます。確認する?",
     es: "Se sobrescribirá la carpeta 'Steam' actual. ¿confirmar?",
     hi: "वर्तमान 'स्टीम' फ़ोल्डर अधिलेखित कर दिया जाएगा. पुष्टि करना?",
     ru: "текущая папка Steam будет перезаписана. подтверждать?",
-    fr: "Le dossier « Steam » actuel sera écrasé. confirmer?",
+    fr: "Le dossier « Steam » actuel sera écrasé. Confirmer ?",
   },
-  "no game file provided!": {
+  "No game file provided!": {
     jp: "ゲームファイルが提供されていません!",
     es: "¡No se proporciona ningún archivo de juego!",
     hi: "कोई गेम फ़ाइल प्रदान नहीं की गई!",
     ru: "Файл игры не предоставлен!",
-    fr: "aucun fichier de jeu fourni !",
+    fr: "Aucun fichier de jeu fourni !",
   },
-  "game launched! enjoy your session!": {
+  "Game launched! Enjoy your session!": {
     jp: "ゲームが起動しました！セッションをお楽しみください！",
     es: "¡Juego lanzado! ¡Disfruta tu sesión!",
     hi: "गेम लॉन्च हो गया! अपने सत्र का आनंद लें!",
     ru: "игра запущена! наслаждайтесь сеансом!",
-    fr: "jeu lancé ! bonne séance !",
+    fr: "Jeu lancé ! Bonne séance !",
   },
-  "you're not connected to the internet :(": {
+  "You're not connected to the internet :(": {
     jp: "インターネットに接続していません:(",
     es: "No estas conectado a internet :(",
     hi: "आप इंटरनेट से कनेक्ट नहीं हैं :(",
     ru: "у тебя нет подключения к интернету :(",
-    fr: "tu n'es pas connecté à internet :(",
+    fr: "Pas de connection à internet :(",
   },
-  "no folder name": {
+  "No folder name": {
     jp: "フォルダ名がありません",
     es: "sin nombre de carpeta",
     hi: "कोई फ़ोल्डर नाम नहीं",
     ru: "нет имени папки",
-    fr: "pas de nom de dossier",
+    fr: "Pas de nom de dossier",
   },
   "is already in your library": {
     jp: "すでにライブラリにあります",
@@ -497,53 +497,46 @@ export let textLanguages = {
     ru: "уже в вашей библиотеке",
     fr: "est déjà dans votre bibliothèque",
   },
-  "no game name": {
+  "No game name": {
     jp: "ゲーム名なし",
     es: "sin nombre de juego",
     hi: "कोई गेम नाम नहीं",
     ru: "нет названия игры",
-    fr: "pas de nom de jeu",
+    fr: "Pas de nom de jeu",
   },
-  "no folder name": {
-    jp: "フォルダ名がありません",
-    es: "sin nombre de carpeta",
-    hi: "कोई फ़ोल्डर नाम नहीं",
-    ru: "нет имени папки",
-    fr: "pas de nom de dossier",
-  },
-  "couldn't find that game :(": {
+  "Couldn't find that game :(": {
     jp: "そのゲームは見つかりませんでした:(",
     es: "no pude encontrar ese juego :(",
     hi: "वह गेम नहीं मिल सका :(",
     ru: "не нашел эту игру :(",
-    fr: "je n'ai pas trouvé ce jeu :(",
+    fr: "Jeu non trouvé :(",
   },
-  "couldn't find any assets :(": {
+  "Couldn't find any assets :(": {
     jp: "アセットが見つかりませんでした:(",
     es: "no pude encontrar ningún activo :(",
     hi: "कोई संपत्ति नहीं मिल सकी :(",
     ru: "не нашел никаких активов :(",
-    fr: "je n'ai trouvé aucun élément :(",
+    fr: "Aucun élément trouvé :(",
   },
-  "couldn't find": {
+  "Couldn't find": {
     jp: "見つかりませんでした",
     es: "no pude encontrar",
     hi: "नहीं मिल सका",
     ru: "не смог найти",
-    fr: "je n'ai pas pu trouver",
+    fr: "Pas trouver",
   },
-  "sorry but there was an error \n reading your steam library :(": {
+  "Sorry but there was an error \n reading your steam library :(": {
     jp: "申し訳ありませんが、Steam ライブラリの読み取り中にエラーが発生しました:(",
     es: "Lo siento pero hubo un error \n al leer tu biblioteca de Steam :(",
     hi: "क्षमा करें, लेकिन आपकी स्टीम लाइब्रेरी को पढ़ने में त्रुटि हुई :(",
     ru: "извините, но при чтении вашей библиотеки Steam произошла ошибка :(",
-    fr: "désolé mais il y a eu une erreur lors de la lecture de votre bibliothèque Steam :(",
+    fr: "Désolé mais il y a eu une erreur lors de la lecture de votre bibliothèque Steam :(",
   },
-  language: {
+  Language: {
     jp: "言語",
     es: "idioma",
     hi: "भाषा",
     ru: "язык",
-    fr: "langue",
+    fr: "Langue",
   },
 };

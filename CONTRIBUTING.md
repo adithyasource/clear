@@ -13,14 +13,14 @@ You can also add a new language by adding a new simple 2-3 letter key to the JSO
 For example, to add a new language, say Hebrew (shortened to he)
 
 ```
-  "import steam games": {
+  "import Steam games": {
     jp: "Steam ゲームをインポートする",
     .
     .
     .
     .
-    fr: "importer des jeux Steam",
-    he: "your translation goes here"
+    fr: "Importer des jeux Steam",
+    he: "Your translation goes here"
   },
 ```
 
