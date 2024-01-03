@@ -2,8 +2,8 @@
 
 Thank you so much for considering contributing to 'clear'! Not only will you be helping create an amazing experience for people who play video games, but also contribute to a body that is open source and dedicated to the public domain.
 
-
 ## if you would like to contribute to the translations:
+
 You would need to look at the file [Text.js](https://github.com/adithyasource/clear/blob/main/src/Text.js). Here you can find the translations for each language. The text was originally generated using Google Translate in order to get started. \
 \
 To update the file with more accurate translations you'll have to fork the repository and create a new branch with your changes after which you can create a pull request. \
@@ -26,8 +26,8 @@ For example, to add a new language, say Hebrew (shortened to he)
 
 If you would like to contribute to the translations but do not know how to do so by modifying JSON or using Git/GitHub, you can create a [new issue](https://github.com/adithyasource/clear/issues) with all the improved/new translations for all the text.
 
-
 ## if you would like to contribute to improving the code:
+
 [This](https://adithyaa.notion.site/1557ca8ac05e4aee8ed35e270c58ee48?v=64af609e060c4a39ba527d8f2a1ee8e2) is a notion board with a couple of ideas and features that would be cool to have in the application. If you find something
 that interests you, it'd be great if you could implement it! If you need any help, you can always open up a [new issue](https://github.com/adithyasource/clear/issues) \
 \
@@ -36,15 +36,17 @@ opening an issue discussing it. This is in order to make that that the clear's o
 \
 You'll have to fork the repository and create a new branch with your changes after which you can create a pull request. \
 \
-If you find any bugs, you can always open a [new issue](https://github.com/adithyasource/clear/issues) or fix the bug yourself! 
+If you find any bugs, you can always open a [new issue](https://github.com/adithyasource/clear/issues) or fix the bug yourself!
 
 ### getting started
 
 In order to set up your dev environment, you need to have the following prerequisites installed:
-- nodejs 
-- rust 
 
-When that is done you can begin setting up Tauri! 
+- nodejs
+- rust
+
+When that is done you can begin setting up Tauri!
+
 1. Clone the repo
    ```sh
    git clone https://github.com/adithyasource/clear
@@ -65,9 +67,9 @@ When that is done you can begin setting up Tauri!
 **This is all you would need if you are contributing for development, however if you want to build your own version of the app, then you can do the following**
 
 1. Remove the following line from "src-tauri\tauri.conf.json"
-    ```
-    "beforeBundleCommand": ".\\before-build.bat",
-    ```
+   ```
+   "beforeBundleCommand": ".\\before-build.bat",
+   ```
 2. And then run the build command
    ```sh
    npm run tauri build
@@ -85,4 +87,3 @@ However this way of bundling is not that one that the final release versions use
    ```
 
 And you're done!
-

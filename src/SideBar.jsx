@@ -141,7 +141,7 @@ export function SideBar() {
               id="searchInput"
               name=""
               className="dark:bg-[#232323] bg-[#E8E8E8] dark:text-white text-black w-full hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b]"
-              placeholder={translateText("Search")}
+              placeholder={translateText("search")}
               onInput={(e) => {
                 setSearchValue(e.currentTarget.value);
               }}
@@ -469,7 +469,7 @@ export function SideBar() {
                             className={`!flex gap-[5px] bg-transparent ${
                               i() == 0 ? "mt-4" : "mt-5"
                             }  sideBarGame cursor-grab `}
-                            aria-label={translateText("Play")}
+                            aria-label={translateText("play")}
                             draggable={true}
                             onDragStart={(e) => {
                               setTimeout(() => {
@@ -661,7 +661,7 @@ export function SideBar() {
               }}>
               <div className=" flex gap-[10px] items-center cursor-default">
                 <p className="pd-3 text-[#00000080] dark:text-[#ffffff80] ">
-                  {translateText("Uncategorized")}
+                  {translateText("uncategorized")}
                 </p>
               </div>
               <For each={currentGames()}>
@@ -698,7 +698,7 @@ export function SideBar() {
                         className={`!flex gap-[5px] bg-transparent ${
                           i() == 0 ? "mt-4" : "mt-5"
                         }  sideBarGame cursor-grab `}
-                        aria-label={translateText("Play")}
+                        aria-label={translateText("play")}
                         onClick={async (e) => {
                           await setSelectedGame(
                             libraryData().games[currentGame],
@@ -739,7 +739,7 @@ export function SideBar() {
               onClick={() => {
                 document.querySelector("[data-newGameModal]").show();
               }}>
-              {translateText("Add game")}
+              {translateText("add game")}
               <svg
                 width="18"
                 height="18"
@@ -759,7 +759,7 @@ export function SideBar() {
               onClick={() => {
                 document.querySelector("[data-newFolderModal]").show();
               }}>
-              {translateText("Add folder")}
+              {translateText("add folder")}
               <svg
                 width="18"
                 height="18"
@@ -786,11 +786,11 @@ export function SideBar() {
             <button
               className={`standardButton mt-[12px] ${
                 newVersionAvailable() ? "!w-[80%]" : ""
-              } `}
+              } whitespace-nowrap`}
               onClick={() => {
                 document.querySelector("[data-notepadModal]").show();
               }}>
-              {translateText("Notepad")}
+              {translateText("notepad")}
               <svg
                 width="18"
                 height="18"
@@ -816,7 +816,7 @@ export function SideBar() {
               onClick={() => {
                 document.querySelector("[data-settingsModal]").show();
               }}>
-              {translateText("Settings")}
+              {translateText("settings")}
               <Show when={newVersionAvailable()}>
                 <svg
                   width="18"

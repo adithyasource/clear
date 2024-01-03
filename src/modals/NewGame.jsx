@@ -63,7 +63,7 @@ export function NewGame() {
   async function addGame() {
     if (gameName() == "" || gameName() == undefined) {
       setShowToast(true);
-      setToastMessage(translateText("No game name"));
+      setToastMessage(translateText("no game name"));
       setTimeout(() => {
         setShowToast(false);
       }, 1500);
@@ -298,7 +298,7 @@ export function NewGame() {
         res.json().then(async (jsonres) => {
           if (jsonres.data.length == 0) {
             setShowToast(true);
-            setToastMessage(translateText("Couldn't find that game :("));
+            setToastMessage(translateText("couldn't find that game :("));
             setTimeout(() => {
               setShowToast(false);
             }, 2500);
@@ -310,7 +310,7 @@ export function NewGame() {
       .catch((err) => {
         setShowToast(true);
         setToastMessage(
-          translateText("You're not connected to the internet :("),
+          translateText("you're not connected to the internet :("),
         );
         setTimeout(() => {
           setShowToast(false);
@@ -346,7 +346,7 @@ export function NewGame() {
         if (missingAssets.length != 0) {
           if (missingAssets.length == 4) {
             setShowToast(true);
-            setToastMessage(translateText("Couldn't find any assets :("));
+            setToastMessage(translateText("couldn't find any assets :("));
             setTimeout(() => {
               setShowToast(false);
             }, 2500);
@@ -357,7 +357,7 @@ export function NewGame() {
             let lastAssetType = missingAssets.splice(-1);
             setShowToast(true);
             setToastMessage(
-              `${translateText("Couldn't find")} ${missingAssets.join(
+              `${translateText("couldn't find")} ${missingAssets.join(
                 ", ",
               )} & ${lastAssetType} :(`,
             );
@@ -369,7 +369,7 @@ export function NewGame() {
 
           setShowToast(true);
           setToastMessage(
-            `${translateText("Couldn't find")} ${missingAssets[0]} :(`,
+            `${translateText("couldn't find")} ${missingAssets[0]} :(`,
           );
           setTimeout(() => {
             setShowToast(false);
@@ -405,7 +405,7 @@ export function NewGame() {
         <div className="flex justify-between max-large:w-[61rem] w-[84rem]">
           <div>
             <p className="dark:text-[#ffffff80] text-[#00000080] text-[25px]">
-              {translateText("Add new game")}
+              {translateText("add new game")}
             </p>
           </div>
           <div className="flex items-center gap-4">
@@ -416,21 +416,21 @@ export function NewGame() {
               }}>
               <Show when={favouriteGame()}>
                 <div className="relative">
-                  <div className="!w-max">{translateText("Favourite")}</div>
+                  <div className="!w-max">{translateText("favourite")}</div>
                   <div className="absolute blur-[5px] opacity-70 -z-10 inset-0 !w-max">
-                    {translateText("Favourite")}
+                    {translateText("favourite")}
                   </div>
                 </div>
               </Show>
 
               <Show when={!favouriteGame()}>
-                <div className="!w-max">{translateText("Favourite")}</div>
+                <div className="!w-max">{translateText("favourite")}</div>
               </Show>
             </div>
             <button
               onClick={addGame}
               className="flex items-center gap-1 standardButton ">
-              <p className="!w-max">{translateText("Save")}</p>
+              <p className="!w-max">{translateText("save")}</p>
 
               <svg
                 width="18"
@@ -638,7 +638,7 @@ export function NewGame() {
                       </svg>
                     </Show>
                     <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
-                      {translateText("Hero")}
+                      {translateText("hero")}
                     </span>
                   </Show>
                   <Show when={!foundHeroImage()}>
@@ -656,12 +656,12 @@ export function NewGame() {
                         className="absolute inset-0 -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.4] aspect-[96/31]"
                       />
                       <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
-                        {translateText("Hero")}
+                        {translateText("hero")}
                       </span>
                     </Show>
                     <Show when={!locatedHeroImage()}>
                       <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
-                        {translateText("Hero")}
+                        {translateText("hero")}
                       </span>
                     </Show>
                   </Show>
@@ -732,7 +732,7 @@ export function NewGame() {
                   </Show>
                   <Show when={showLogoImageLoading() == false}>
                     <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
-                      {translateText("Logo")}
+                      {translateText("logo")}
                     </span>
                   </Show>
                 </div>
@@ -754,7 +754,7 @@ export function NewGame() {
                       className="relative aspect-auto max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
                     />
                     <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
-                      {translateText("Logo")}
+                      {translateText("logo")}
                     </span>
                   </div>
                 </Show>
@@ -769,7 +769,7 @@ export function NewGame() {
                     className="panelButton bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[20px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] "
                     aria-label="logo">
                     <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
-                      {translateText("Logo")}
+                      {translateText("logo")}
                     </span>
                   </div>
                 </Show>
@@ -837,7 +837,7 @@ export function NewGame() {
                     </div>
                   </Show>
                   <span class="absolute tooltip z-[10000] group-hover:opacity-100 left-[-10%] top-[120%] opacity-0 ">
-                    {translateText("Icon")}
+                    {translateText("icon")}
                   </span>
                 </div>
               </Show>
@@ -865,7 +865,7 @@ export function NewGame() {
                     />
                   </Show>
                   <span class="absolute tooltip z-[10000] group-hover:opacity-100 left-[-10%] top-[120%] opacity-0 ">
-                    {translateText("Icon")}
+                    {translateText("icon")}
                   </span>
                 </div>
               </Show>
@@ -884,7 +884,7 @@ export function NewGame() {
                   }}
                   value={gameName()}
                   className="!bg-transparent"
-                  placeholder={translateText("Name of game")}
+                  placeholder={translateText("name of game")}
                 />
                 <button
                   className={`standardButton !w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80] rounded-[${
@@ -893,7 +893,7 @@ export function NewGame() {
                   onClick={async () => {
                     if (gameName() == "" || gameName() == undefined) {
                       setShowToast(true);
-                      setToastMessage(translateText("No game name"));
+                      setToastMessage(translateText("no game name"));
                       setTimeout(() => {
                         setShowToast(false);
                       }, 1500);
@@ -908,28 +908,7 @@ export function NewGame() {
                     setFoundLogoImage(undefined);
                     setFoundIconImage(undefined);
                   }}>
-                  {translateText("Auto find assets")}
-                </button>
-                <button
-                  className={`standardButton !w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80] rounded-[${
-                    roundedBorders() ? "6px" : "0px"
-                  }] `}
-                  onClick={async () => {
-                    gameName() == undefined
-                      ? invoke("open_location", {
-                          location: "https://www.steamgriddb.com/",
-                        })
-                      : gameName() == ""
-                      ? invoke("open_location", {
-                          location: "https://www.steamgriddb.com/",
-                        })
-                      : invoke("open_location", {
-                          location:
-                            "https://www.steamgriddb.com/search/grids?term=" +
-                            gameName(),
-                        });
-                  }}>
-                  {translateText("Find assets")}
+                  {translateText("auto find assets")}
                 </button>
               </div>
 
@@ -940,7 +919,7 @@ export function NewGame() {
                 }}
                 className="standardButton !w-max !mt-0">
                 {locatedGame() == undefined
-                  ? translateText("Locate game")
+                  ? translateText("locate game")
                   : "..." + locatedGame().slice(-25)}
               </button>
             </div>
@@ -949,18 +928,18 @@ export function NewGame() {
 
         <div className="flex  justify-between max-large:w-[61rem] w-[84rem]">
           <span className="opacity-50">
-            {translateText("Right click to empty image selection")}
+            {translateText("right click to empty image selection")}
           </span>
           <Show when={SGDBGames()}>
             <Show when={selectedGameId() == undefined}>
               <span className="opacity-80">
-                {translateText("Select the official name of your game")}
+                {translateText("select the official name of your game")}
               </span>
             </Show>
             <Show when={selectedGameId()}>
               <span className="opacity-80">
                 {translateText(
-                  "Scroll on the image to select a different asset",
+                  "scroll on the image to select a different asset",
                 )}
               </span>
             </Show>

@@ -44,7 +44,7 @@ export const [roundedBorders, setRoundedBorders] = createSignal(true);
 export const [gameTitle, setGameTitle] = createSignal(true);
 export const [folderTitle, setFolderTitle] = createSignal(true);
 export const [quitAfterOpen, setQuitAfterOpen] = createSignal(true);
-export const [fontName, setFontName] = createSignal("Sans serif");
+export const [fontName, setFontName] = createSignal("sans serif");
 
 // !? Create Signals
 export const [gameName, setGameName] = createSignal("");

@@ -31,7 +31,7 @@ export function GamePopUp() {
                 onClick={() => {
                   openGame(selectedGame().location);
                 }}>
-                <div className="!w-max">{translateText("Play")}</div>
+                <div className="!w-max">{translateText("play")}</div>
                 <svg
                   width="13"
                   height="16"
