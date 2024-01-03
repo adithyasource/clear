@@ -20,7 +20,7 @@ def handleRequest():
         return "hey there, how'd you end up here? this is the main website: https://clear.adithya.zip"
 
     if request.args.get("version"):
-        response = jsonify({"clearVersion": "1.0.1"})
+        response = jsonify({"clearVersion": "1.0.0"})
         response.headers.add(
             "Access-Control-Allow-Origin",
             "https://tauri.localhost",
