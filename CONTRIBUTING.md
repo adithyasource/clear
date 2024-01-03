@@ -4,8 +4,17 @@ Thank you so much for considering contributing to 'clear'! Not only will you be 
 
 ## if you would like to contribute to the translations:
 
-You would need to look at the file [Text.js](https://github.com/adithyasource/clear/blob/main/src/Text.js). Here you can find the translations for each language. The text was originally generated using Google Translate in order to get started. \
-\
+You would need to look at the file [Text.js](https://github.com/adithyasource/clear/blob/main/src/Text.js). Here you can find the translations for each language. The text was originally generated using Google Translate in order to get started. 
+
+| Language  | Status |
+| ------------- | ------------- |
+| French  | ✅ Completed  |
+| Japanese  | Google Translate  |
+| Spanish  | Google Translate  |
+| Hindi  | Google Translate  |
+| Russian  | Google Translate  |
+
+
 To update the file with more accurate translations you'll have to fork the repository and create a new branch with your changes after which you can create a pull request. \
 \
 You can also add a new language by adding a new simple 2-3 letter key to the JSON for every language. \
