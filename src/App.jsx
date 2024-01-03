@@ -109,11 +109,11 @@ export function getSettingsData() {
 
   if (
     libraryData().userSettings.theme == undefined ||
-    libraryData().userSettings.theme == "dark"
+    libraryData().userSettings.theme.toLocaleLowerCase() == "dark"
   ) {
-    setCurrentTheme("dark");
+    setCurrentTheme("Dark");
   } else {
-    setCurrentTheme("light");
+    setCurrentTheme("Light");
   }
 
   if (
@@ -138,7 +138,7 @@ export function getSettingsData() {
 
   document.documentElement.classList.add("dark");
 
-  if (currentTheme() == "light") {
+  if (currentTheme().toLocaleLowerCase() == "light") {
     document.documentElement.classList.remove("dark");
   } else {
     document.documentElement.classList.add("dark");
