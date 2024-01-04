@@ -1,15 +1,15 @@
 # clear
 
-1.0 very soon!
-
 <table>
 <tbody>
 <tr>
-<td><a href="https://clear.adithya.zip/" target="_blank">> product page</a></td></tr>
+<td><a href="https://clear.adithya.zip/" target="_blank">> product page</a></td>
+<td><a href="https://github.com/adithyasource/clear/releases/tag/1.0.0">download</a></td>
+</tr>
 </tbody>
 </table>
 
-![image](https://github.com/adithyasource/clear/assets/140549783/e61fc082-c493-4ce3-820b-0d07d4d1c78e)
+![image](https://github.com/adithyasource/clear/assets/140549783/bd4dae97-4b0b-466f-a1ff-570ae05a0eec)
 
 ## Feedback
 
