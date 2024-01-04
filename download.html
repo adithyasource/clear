@@ -14,7 +14,7 @@
     </style>
   </head>
   <body
-    class="bg-[#121212] flex items-center align-middle w-screen flex-col mt-[8vh] pb-[10vh]">
+    class="bg-[#121212] flex items-center align-middle w-full flex-col mt-[8vh] pb-[10vh]">
     <div
       class="flex items-start flex-col gap-[8vh] w-[550px] max-[750px]:w-[80%]">
       <div class="flex justify-between w-full">
@@ -35,27 +35,57 @@
           </div>
 
           <div class="flex-wrap flex flex-row gap-3 w-[291px]">
-            <button
-              class="py-2 px-3 bg-[#232323] text-white rounded-[6px] text-[16px] hover:bg-[#2B2B2B] duration-100 h-min w-max">
-              installer (recommended)
-            </button>
+            <a
+              href="https://github.com/adithyasource/clear/releases/download/1.0.0/clear.v1.0.0.setup.exe"
+              target="_blank">
+              <button
+                class="py-2 px-3 bg-[#232323] text-white rounded-[6px] text-[16px] hover:bg-[#2B2B2B] duration-100 h-min w-max">
+                setup (recommended)
+              </button>
+            </a>
 
-            <button
-              class="py-2 px-3 bg-[#232323] text-white rounded-[6px] text-[16px] hover:bg-[#2B2B2B] duration-100 h-min w-max">
-              portable
-            </button>
+            <a
+              href="https://github.com/adithyasource/clear/releases/download/1.0.0/clear.v1.0.0.portable.exe"
+              target="_blank">
+              <button
+                class="py-2 px-3 bg-[#232323] text-white rounded-[6px] text-[16px] hover:bg-[#2B2B2B] duration-100 h-min w-max">
+                portable
+              </button>
+            </a>
 
-            <button
-              class="py-2 px-3 bg-[#232323] rounded-[6px] hover:bg-[#2B2B2B] duration-100 h-min text-[#ffffff80] text-[14px] w-max">
-              try this if others fail / windows 7
-            </button>
+            <a
+              href="https://github.com/adithyasource/clear/releases/download/1.0.0/secondary.clear.v1.0.0.setup.exe"
+              target="_blank">
+              <button
+                class="py-2 px-3 bg-[#232323] rounded-[6px] hover:bg-[#2B2B2B] duration-100 h-min text-[#ffffff80] text-[14px] w-max">
+                try this if others fail / windows 7
+              </button>
+            </a>
           </div>
         </div>
       </div>
+      <div class="bg-[#1c1c1c] w-full rounded-[6px] p-2 flex flex-col gap-3">
+        <p class="text-[#ffffff80] text-[16px]">
+          your browser or windows might try to disable the download and you'll
+          have to go click "view more" a couple times and prompt windows to keep
+          the file.
+          <br /><br />
+          the warnings are a flase positive and the application's complete
+          source code can be viewed and audited
+          <a
+            href="https://github.com/adithyasource/clear"
+            target="_blank"
+            class="underline"
+            >here</a
+          >
+        </p>
+        <img src="assets/edge1.png" alt="" class="rounded-[6px] w-full" />
+        <img src="assets/edge2.png" alt="" class="rounded-[6px] w-full" />
+        <img src="assets/windows.png" alt="" class="rounded-[6px] w-full" />
+      </div>
     </div>
 
-    <div
-      class="flex justify-between absolute bottom-20 w-[550px] max-[750px]:w-[80%]">
+    <div class="flex justify-between w-[550px] max-[750px]:w-[80%] mt-10">
       <div>
         <p class="text-[#ffffff80] text-[16px]">
           made by
