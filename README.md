@@ -13,11 +13,10 @@ lightweight and minimalistic landing page for [clear](https://github.com/adithya
 
 ## Acknowledgements
 
-### Libraries
-
 <table>
 <tbody>
 <tr>
+<td><b>Libraries</b></td>
 <td><a href="https://tailwindcss.com/" target="_blank">Tailwind CSS</a></td>
 </tr>
 </tbody>
