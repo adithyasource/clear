@@ -45,22 +45,20 @@ The following parameters are available:
 
 ## Acknowledgements
 
-### Libraries
-
 <table>
 <tbody>
 <tr>
+<td><b>Libraries</b></td>
 <td><a href="https://pypi.org/project/Flask/" target="_blank">Flask</a></td>
 <td><a href="https://pypi.org/project/requests/" target="_blank">Requests</a></td>
 </tr>
 </tbody>
 </table>
 
-### APIs
-
 <table>
 <tbody>
 <tr>
+<td><b>APIs</b></td>
 <td><a href="https://www.steamgriddb.com/api/v2" target="_blank">SteamGridDB</a></td>
 </tr>
 </tbody>
