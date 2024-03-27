@@ -9,10 +9,10 @@ You would need to look at the file [Text.js](https://github.com/adithyasource/cl
 | Language  | Status |
 | ------------- | ------------- |
 | French  | ✅ Completed  |
+| Russian  | ✅ Completed  |
 | Japanese  | Google Translate  |
 | Spanish  | Google Translate  |
 | Hindi  | Google Translate  |
-| Russian  | Google Translate  |
 
 
 To update the file with more accurate translations you'll have to fork the repository and create a new branch with your changes after which you can create a pull request. \
