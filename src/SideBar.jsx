@@ -131,8 +131,7 @@ export function SideBar() {
 
   return (
     <>
-      <div
-        className={`flex sideBar flex-col h-[100vh] text-black z-10 py-[20px] pl-[20px] relative overflow-hidden w-[20%] min-[1500px]:w-[15%]`}>
+      <div className="flex sideBar flex-col h-[100vh] text-black z-10 py-[20px] pl-[20px] relative overflow-hidden w-[20%] min-[1500px]:w-[15%]">
         <div id="sideBarTop">
           <div className="flex justify-between items-center gap-[15px]">
             <input

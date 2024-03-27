@@ -36,6 +36,14 @@ select:focus {
   outline: 0;
 }
 
+button:active,
+input:active,
+.gameCard:active,
+.sideBarGame:active {
+  scale: 98%;
+  transition: 0.2s;
+}
+
 button,
 input,
 .panelButton {
@@ -141,6 +149,17 @@ select {
   }
 }
 
+@keyframes dialogFadeInShorter {
+  from {
+    opacity: 0.6;
+    transform: scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @keyframes dialogFadeOut {
   from {
     opacity: 1;
@@ -163,8 +182,14 @@ dialog[open] {
   animation: dialogFadeIn 0.3s ease normal;
 }
 
-dialog[close] {
-  animation: dialogFadeOut 0.3s ease normal;
+.gameCard {
+  opacity: 1;
+  animation: dialogFadeInShorter 0.3s ease normal;
+}
+
+dialog {
+  box-shadow: 0 0 0.5rem 100vw rgba(0, 0, 0, 0.2);
+  transition: 2s ease-out;
 }
 
 .toast {

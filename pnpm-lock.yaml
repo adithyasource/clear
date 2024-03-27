@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@popperjs/core':
+    specifier: ^2.11.8
+    version: 2.11.8
   '@tauri-apps/api':
     specifier: ^1.5.1
     version: 1.5.1
@@ -14,6 +17,9 @@ dependencies:
   solid-js:
     specifier: ^1.7.8
     version: 1.7.8
+  solid-popper:
+    specifier: ^0.3.0
+    version: 0.3.0(@popperjs/core@2.11.8)(solid-js@1.7.8)
 
 devDependencies:
   '@tauri-apps/cli':
@@ -637,6 +643,10 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
     dev: true
+
+  /@popperjs/core@2.11.8:
+    resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
+    dev: false
 
   /@tauri-apps/api@1.5.1:
     resolution: {integrity: sha512-6unsZDOdlXTmauU3NhWhn+Cx0rODV+rvNvTdvolE5Kls5ybA6cqndQENDt1+FS0tF7ozCP66jwWoH6a5h90BrA==}
@@ -1606,6 +1616,17 @@ packages:
     dependencies:
       csstype: 3.1.2
       seroval: 0.5.1
+
+  /solid-popper@0.3.0(@popperjs/core@2.11.8)(solid-js@1.7.8):
+    resolution: {integrity: sha512-XlfEWAyxGGqFgg/uRpF+BemSfCqjbLA8p6fToDa+6v3paw3eBQj0TU08aBOIj2VeigaEiz8ZTlDx1eBLVRivBg==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      '@popperjs/core': ^2.11
+      solid-js: ^1.2
+    dependencies:
+      '@popperjs/core': 2.11.8
+      solid-js: 1.7.8
+    dev: false
 
   /solid-refresh@0.5.3(solid-js@1.7.8):
     resolution: {integrity: sha512-Otg5it5sjOdZbQZJnvo99TEBAr6J7PQ5AubZLNU6szZzg3RQQ5MX04oteBIIGDs0y2Qv8aXKm9e44V8z+UnFdw==}
