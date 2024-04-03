@@ -109,7 +109,7 @@ export function NewFolder() {
               </div>
               <button
                 onClick={addFolder}
-                className="flex items-center standardButton !w-max">
+                className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max">
                 {translateText("save")}
                 <svg
                   width="18"
@@ -138,7 +138,7 @@ export function NewFolder() {
                 </svg>
               </button>
               <button
-                className="flex items-center standardButton !w-max !gap-0"
+                className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !gap-0"
                 onClick={() => {
                   document.querySelector("[data-newFolderModal]").close();
                   getData();

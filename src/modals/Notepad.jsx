@@ -50,7 +50,7 @@ export function Notepad() {
               </div>
 
               <button
-                className="standardButton !w-max !gap-0"
+                className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !gap-0"
                 onClick={() => {
                   document.querySelector("[data-notepadModal]").close();
                   getData();

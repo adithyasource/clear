@@ -275,7 +275,7 @@ export function SideBar() {
                 if (folder.games.length > 0) {
                   return (
                     <div
-                      className="!py-2 sideBarFolder"
+                      className="!py-2 sideBarFolder bg-[#f1f1f1] dark:bg-[#1c1c1c]"
                       draggable={true}
                       onDragStart={(e) => {
                         setTimeout(
@@ -523,7 +523,7 @@ export function SideBar() {
                 } else {
                   return (
                     <div
-                      className="sideBarFolder"
+                      className="sideBarFolder bg-[#f1f1f1] dark:bg-[#1c1c1c]"
                       onDragOver={(e) => {
                         e.preventDefault();
                       }}
@@ -634,7 +634,7 @@ export function SideBar() {
             {/* uncategorized */}
 
             <div
-              className="sideBarFolder"
+              className="sideBarFolder bg-[#f1f1f1] dark:bg-[#1c1c1c]"
               id="uncategorizedFolder"
               onDragOver={(e) => {
                 e.preventDefault();
@@ -736,7 +736,7 @@ export function SideBar() {
         <div id="sideBarBottom" class="absolute bottom-[20px] w-full pr-[20px]">
           <div className="">
             <button
-              className="standardButton mt-[12px]"
+              className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] mt-[12px]"
               onClick={() => {
                 document.querySelector("[data-newGameModal]").show();
               }}>
@@ -756,7 +756,7 @@ export function SideBar() {
               </svg>
             </button>
             <button
-              className="standardButton mt-[12px] "
+              className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] mt-[12px] "
               onClick={() => {
                 document.querySelector("[data-newFolderModal]").show();
               }}>
@@ -790,7 +790,7 @@ export function SideBar() {
                 : "gap-3"
             }`}>
             <button
-              className={`standardButton mt-[12px] ${
+              className={`standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] mt-[12px] ${
                 newVersionAvailable() ? "!w-[80%]" : ""
               } whitespace-nowrap`}
               onClick={() => {
@@ -818,7 +818,7 @@ export function SideBar() {
               </svg>
             </button>
             <button
-              className=" standardButton mt-[12px] "
+              className=" standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] mt-[12px] "
               onClick={() => {
                 document.querySelector("[data-settingsModal]").show();
               }}>

@@ -405,7 +405,7 @@ export function EditGame() {
             </div>
             <button
               onClick={updateGame}
-              className="flex items-center standardButton ">
+              className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] ">
               <div className="!w-max"> {translateText("save")}</div>
               <svg
                 width="18"
@@ -441,7 +441,7 @@ export function EditGame() {
                   setShowDeleteConfirm(false);
                 }, 1500);
               }}
-              className="flex items-center standardButton ">
+              className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] ">
               <span className="text-[#FF3636] w-max">
                 {showDeleteConfirm()
                   ? translateText("confirm?")
@@ -474,7 +474,7 @@ export function EditGame() {
               </svg>
             </button>
             <button
-              className="flex items-center standardButton !gap-0 "
+              className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !gap-0 "
               onClick={() => {
                 document.querySelector("[data-editGameModal]").close();
                 getData();
@@ -504,7 +504,7 @@ export function EditGame() {
               onContextMenu={() => {
                 setEditedLocatedGridImage(null);
               }}
-              className="panelButton locatingGridImg h-full aspect-[2/3] group relative overflow-hidden"
+              className="panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] locatingGridImg h-full aspect-[2/3] group relative overflow-hidden"
               aria-label="grid/cover">
               <Show when={editedLocatedGridImage() === undefined}>
                 <img
@@ -544,7 +544,7 @@ export function EditGame() {
                   onContextMenu={() => {
                     setEditedLocatedHeroImage(null);
                   }}
-                  className="max-large:h-[250px] h-[350px] aspect-[67/26] group relative p-0 m-0 panelButton"
+                  className="max-large:h-[250px] h-[350px] aspect-[67/26] group relative p-0 m-0 panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
                   aria-label="hero">
                   <Show
                     when={editedLocatedHeroImage() === null}
@@ -602,7 +602,7 @@ export function EditGame() {
                   onContextMenu={() => {
                     setEditedLocatedLogo(null);
                   }}
-                  className={`panelButton !bg-[#27272700] group  absolute bottom-[20px] left-[20px] ${
+                  className={`panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] !bg-[#27272700] group  absolute bottom-[20px] left-[20px] ${
                     selectedGame().logo ? "" : "!w-[200px] !h-[65px]"
                   } `}
                   aria-label="logo">
@@ -641,7 +641,7 @@ export function EditGame() {
                   onContextMenu={() => {
                     setEditedLocatedLogo(null);
                   }}
-                  className={`panelButton !bg-[#27272700] group  absolute bottom-[60px] left-[20px] max-large:bottom-[40px] ${
+                  className={`panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] !bg-[#27272700] group  absolute bottom-[60px] left-[20px] max-large:bottom-[40px] ${
                     selectedGame().logo ? "" : "!w-[200px] !h-[65px]"
                   } `}
                   aria-label="logo">
@@ -729,10 +729,29 @@ export function EditGame() {
                 onContextMenu={() => {
                   setEditedlocatedGame(null);
                 }}
-                className="standardButton !w-max !mt-0">
+                className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0">
                 <Show when={editedLocatedGame() === undefined}>
                   <Show when={selectedGame().location}>
-                    {"..." + selectedGame()["location"].slice(-25)}
+                    {selectedGame()
+                      ["location"].toString()
+                      .split("\\")
+                      .slice(-1)
+                      .toString().length > 17
+                      ? "..." +
+                        selectedGame()
+                          ["location"].toString()
+                          .split("\\")
+                          .slice(-1)
+                          .toString()
+                          .slice(0, 7) +
+                        "..." +
+                        selectedGame()["location"].toString().slice(-7)
+                      : "..." +
+                        selectedGame()
+                          ["location"].toString()
+                          .split("\\")
+                          .slice(-1)
+                          .toString()}
                   </Show>
                   <Show when={!selectedGame().location}>
                     {" "}
@@ -743,7 +762,26 @@ export function EditGame() {
                   {translateText("locate game")}
                 </Show>
                 <Show when={editedLocatedGame()}>
-                  {"..." + editedLocatedGame().slice(-25)}
+                  {editedLocatedGame()
+                    .toString()
+                    .split("\\")
+                    .slice(-1)
+                    .toString().length > 17
+                    ? "..." +
+                      editedLocatedGame()
+                        .toString()
+                        .split("\\")
+                        .slice(-1)
+                        .toString()
+                        .slice(0, 7) +
+                      "..." +
+                      editedLocatedGame().toString().slice(-7)
+                    : "..." +
+                      editedLocatedGame()
+                        .toString()
+                        .split("\\")
+                        .slice(-1)
+                        .toString()}
                 </Show>
               </button>
 
@@ -758,7 +796,7 @@ export function EditGame() {
                           .join("\\"),
                       });
                     }}
-                    className="relative group standardButton !w-max"
+                    className="relative group standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max"
                     aria-label="logo">
                     <svg
                       width="18"

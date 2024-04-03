@@ -69,7 +69,7 @@ export function Settings() {
               </div>
 
               <button
-                className="standardButton !w-max !gap-0"
+                className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !gap-0"
                 onClick={() => {
                   document.querySelector("[data-settingsModal]").close();
                   getData();
@@ -319,6 +319,13 @@ export function Settings() {
                       Français [french]
                     </div>
                     <div
+                      className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75"
+                      onClick={() => {
+                        changeLanguage("ru");
+                      }}>
+                      русский [russian]
+                    </div>
+                    <div
                       className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
                       onClick={() => {
                         changeLanguage("jp");
@@ -339,13 +346,6 @@ export function Settings() {
                       }}>
                       हिंदी [hindi]
                     </div>
-                    <div
-                      className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75"
-                      onClick={() => {
-                        changeLanguage("ru");
-                      }}>
-                      русский [russian]
-                    </div>
                   </div>
                 </Show>
               </div>
@@ -354,7 +354,7 @@ export function Settings() {
             <Show when={newVersionAvailable()}>
               <div className="flex gap-3 items-start mt-[35px]">
                 <button
-                  className="flex items-center standardButton !w-max !m-0"
+                  className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !m-0"
                   onClick={() => {
                     invoke("open_location", {
                       location: "https://clear.adithya.zip/update",
@@ -371,7 +371,7 @@ export function Settings() {
             <div className="flex flex-row items-start mt-[35px] gap-4">
               <div>
                 <button
-                  className="standardButton hint--bottom !flex !w-max !gap-3 "
+                  className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] hint--bottom !flex !w-max !gap-3 "
                   aria-label={translateText("might not work perfectly!")}
                   onClick={() => {
                     if (steamFolderExists()) {
@@ -438,7 +438,7 @@ export function Settings() {
 
               <div className="flex gap-3 items-start">
                 <button
-                  className="flex items-center standardButton !w-max !m-0"
+                  className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !m-0"
                   onClick={async () => {
                     const appDataDirPath = await appDataDir();
 

@@ -431,7 +431,7 @@ export function NewGame() {
             </div>
             <button
               onClick={addGame}
-              className="flex items-center gap-1 standardButton ">
+              className="flex items-center gap-1 standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] ">
               <p className="!w-max">{translateText("save")}</p>
 
               <svg
@@ -461,7 +461,7 @@ export function NewGame() {
               </svg>
             </button>
             <button
-              className="flex items-center standardButton !gap-0"
+              className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !gap-0"
               onClick={() => {
                 document.querySelector("[data-newGameModal]").close();
                 getData();
@@ -511,7 +511,7 @@ export function NewGame() {
                 setLocatedGridImage(undefined);
                 setFoundGridImage(undefined);
               }}
-              className="panelButton locatingGridImg h-full aspect-[2/3] group relative overflow-hidden">
+              className="panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] locatingGridImg h-full aspect-[2/3] group relative overflow-hidden">
               <Show when={foundGridImage()}>
                 <Show when={showGridImageLoading() == false}>
                   <img
@@ -600,7 +600,7 @@ export function NewGame() {
                     setLocatedHeroImage(undefined);
                     setFoundHeroImage(undefined);
                   }}
-                  className="max-large:h-[250px] h-[350px] aspect-[67/26] group relative p-0 m-0 panelButton"
+                  className="max-large:h-[250px] h-[350px] aspect-[67/26] group relative p-0 m-0 panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
                   aria-label="hero">
                   <Show
                     when={foundHeroImage()}
@@ -696,7 +696,7 @@ export function NewGame() {
                     setLocatedLogo(undefined);
                     setFoundLogoImage(undefined);
                   }}
-                  className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[20px] left-[20px] panelButton"
+                  className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[20px] left-[20px] panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
                   aria-label="logo">
                   <Show when={showLogoImageLoading() == false}>
                     <img
@@ -715,7 +715,7 @@ export function NewGame() {
                         setLocatedLogo(undefined);
                         setFoundLogoImage(undefined);
                       }}
-                      className="panelButton bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[20px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] ">
+                      className="panelButton cursor-pointer   bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[20px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] ">
                       <svg
                         width="18"
                         height="18"
@@ -748,7 +748,7 @@ export function NewGame() {
                       setLocatedLogo(undefined);
                       setFoundLogoImage(undefined);
                     }}
-                    className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[20px] left-[20px] panelButton"
+                    className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[20px] left-[20px] panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
                     aria-label="logo">
                     <img
                       src={convertFileSrc(locatedLogo())}
@@ -768,7 +768,7 @@ export function NewGame() {
                       setLocatedLogo(undefined);
                       setFoundLogoImage(undefined);
                     }}
-                    className="panelButton bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[20px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] "
+                    className="panelButton cursor-pointer  bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[20px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] "
                     aria-label="logo">
                     <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
                       {translateText("logo")}
@@ -889,7 +889,7 @@ export function NewGame() {
                   placeholder={translateText("name of game")}
                 />
                 <button
-                  className={`standardButton !w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80] rounded-[${
+                  className={`standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80] rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }] `}
                   onClick={async () => {
@@ -925,7 +925,7 @@ export function NewGame() {
                   </Show>
                 </button>
                 <button
-                  className={`standardButton !w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80] rounded-[${
+                  className={`standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80] rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }] `}
                   onClick={async () => {
@@ -964,10 +964,22 @@ export function NewGame() {
                 onContextMenu={() => {
                   setlocatedGame(undefined);
                 }}
-                className="standardButton !w-max !mt-0">
+                className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0">
                 {locatedGame() == undefined
                   ? translateText("locate game")
-                  : "..." + locatedGame().slice(-25)}
+                  : locatedGame().toString().split("\\").slice(-1).toString()
+                      .length > 17
+                  ? "..." +
+                    locatedGame()
+                      .toString()
+                      .split("\\")
+                      .slice(-1)
+                      .toString()
+                      .slice(0, 7) +
+                    "..." +
+                    locatedGame().toString().slice(-7)
+                  : "..." +
+                    locatedGame().toString().split("\\").slice(-1).toString()}
               </button>
             </div>
           </div>

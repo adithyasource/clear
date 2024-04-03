@@ -27,7 +27,7 @@ export function GamePopUp() {
           <div className="relative">
             <div className="absolute bottom-[30px] right-[30px] flex gap-[15px]">
               <button
-                className="standardButton !bg-opacity-80 hover:backdrop-blur-[5px]  !backdrop-blur-[10px]"
+                className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !bg-opacity-80 hover:backdrop-blur-[5px]  !backdrop-blur-[10px]"
                 onClick={() => {
                   openGame(selectedGame().location);
                 }}>
@@ -48,7 +48,7 @@ export function GamePopUp() {
                 </svg>
               </button>
               <button
-                className="standardButton !bg-opacity-80 hover:backdrop-blur-[5px]  !backdrop-blur-[10px]"
+                className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !bg-opacity-80 hover:backdrop-blur-[5px]  !backdrop-blur-[10px]"
                 onClick={() => {
                   document.querySelector("[data-gamePopup]").close();
                   document.querySelector("[data-editGameModal]").show();
@@ -74,7 +74,7 @@ export function GamePopUp() {
                 </svg>
               </button>
               <button
-                className="standardButton !bg-opacity-80 hover:backdrop-blur-[5px]  !backdrop-blur-[10px]"
+                className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !bg-opacity-80 hover:backdrop-blur-[5px]  !backdrop-blur-[10px]"
                 onClick={() => {
                   document.querySelector("[data-gamePopup]").close();
                 }}>

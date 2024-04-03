@@ -17,7 +17,7 @@ export function Toast() {
           <div
             className={`border-0 p-[10px] rounded-[${
               roundedBorders() ? "6px" : "0px"
-            }] relative gap-1 z-[100000000] standardButton !w-max h-max toast`}>
+            }] relative gap-1 z-[100000000] standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max h-max toast`}>
             {toastError()}
           </div>
         </div>

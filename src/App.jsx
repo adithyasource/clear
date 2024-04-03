@@ -869,7 +869,7 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
 
               <div className="mt-[35px] flex gap-6">
                 <button
-                  className="standardButton hint--bottom !flex !w-max !gap-3"
+                  className="standardButton hint--bottom !flex !w-max !gap-3 dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b]"
                   aria-label={translateText("might not work perfectly!")}
                   onClick={() => {
                     if (steamFolderExists()) {
@@ -934,7 +934,7 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                 </button>
 
                 <div
-                  className={`standardButton flex !justify-between items-center cursor-pointer relative !w-max !p-4 rounded-[${
+                  className={`standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] flex !justify-between items-center cursor-pointer relative !w-max !p-4 rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }]`}
                   onClick={() => {
@@ -980,6 +980,13 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                         Français [french]
                       </div>
                       <div
+                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75"
+                        onClick={() => {
+                          changeLanguage("ru");
+                        }}>
+                        русский [russian]
+                      </div>
+                      <div
                         className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
                         onClick={() => {
                           changeLanguage("jp");
@@ -999,13 +1006,6 @@ button, input, .panelButton { border-radius: ${roundedBorders() ? "6px" : "0px"}
                           changeLanguage("hi");
                         }}>
                         हिंदी [hindi]
-                      </div>
-                      <div
-                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75"
-                        onClick={() => {
-                          changeLanguage("ru");
-                        }}>
-                        русский [russian]
                       </div>
                     </div>
                   </Show>

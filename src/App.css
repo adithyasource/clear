@@ -2,23 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+/* * Tailwind Styles (for inaccessable selectors in html) */
+
 @layer components {
-  .standardButton {
-    @apply dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b];
+  html,
+  body {
+    @apply dark:bg-[#121212] bg-[#FFFFFC];
   }
 
   .tooltip,
   [class*="hint--"]:after {
     @apply dark:bg-[#272727cc] bg-[#E8E8E8cc] dark:text-white text-black border-2 border-solid border-[#00000010] dark:border-[#ffffff10];
-  }
-
-  .panelButton,
-  .sideBarFolder {
-    @apply bg-[#f1f1f1] dark:bg-[#1c1c1c];
-  }
-  html,
-  body {
-    @apply dark:bg-[#121212] bg-[#FFFFFC];
   }
 
   *::-webkit-scrollbar-thumb {
@@ -30,67 +24,7 @@
   }
 }
 
-button:focus,
-input:focus,
-select:focus {
-  outline: 0;
-}
-
-button:active,
-input:active,
-.gameCard:active,
-.sideBarGame:active {
-  scale: 98%;
-  transition: 0.2s;
-}
-
-button,
-input,
-.panelButton {
-  padding: 10px;
-  border: 0;
-}
-
-.panelButton {
-  cursor: pointer;
-}
-
-.sideBarFolder {
-  display: flex;
-  flex-direction: column;
-  justify-items: center;
-  justify-content: space-between;
-  padding: 10px;
-  margin: 0px 0px 12px 0px;
-}
-
-* {
-  padding: 0;
-  margin: 0;
-  font-size: 14px;
-  font-weight: normal;
-  user-select: none;
-  color-scheme: dark;
-}
-
-html,
-body {
-  height: 100%;
-  margin: 0;
-  overflow: hidden;
-}
-
-.tooltip {
-  padding: 8px 10px;
-  font-family: Helvetica;
-  line-height: 12px;
-  white-space: nowrap;
-  backdrop-filter: blur(10px);
-}
-
-img {
-  object-fit: cover !important;
-}
+/* * Styling Scrollbars */
 
 #sideBarFolders:hover::-webkit-scrollbar {
   width: 5px;
@@ -118,25 +52,7 @@ img {
   background-color: #00000000;
 }
 
-.standardButton {
-  display: flex;
-  justify-items: center;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  gap: 5px;
-  transition: 0.2s;
-}
-
-button,
-input,
-#searchInput {
-  transition: 0.2s;
-}
-
-select {
-  appearance: none;
-}
+/* * Animation Keyframes */
 
 @keyframes dialogFadeIn {
   from {
@@ -169,12 +85,123 @@ select {
   }
 }
 
+@keyframes loadingFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* * Setting Base Styles */
+
+* {
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+  font-weight: normal;
+  user-select: none;
+  color-scheme: dark;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+button:focus,
+input:focus,
+select:focus {
+  outline: 0;
+}
+
+img {
+  object-fit: cover !important;
+}
+
+select {
+  appearance: none;
+}
+
 dialog {
   overflow: hidden;
   padding: 0px 50px 50px 0px;
   border: none !important;
   background-color: #00000000;
   opacity: 0;
+}
+
+button,
+input,
+.panelButton {
+  padding: 10px;
+  border: 0;
+}
+
+body {
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
+
+.sideBarFolder {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 0px 0px 12px 0px;
+}
+
+.tooltip {
+  padding: 8px 10px;
+  font-family: Helvetica;
+  line-height: 12px;
+  white-space: nowrap;
+  backdrop-filter: blur(10px);
+}
+
+.titleButton {
+  width: 48px;
+  height: 32px;
+  padding: 0px 10px 0px 18px;
+  border: 0;
+  margin: 0;
+  background: transparent;
+  outline: 0;
+}
+
+.titleButton svg {
+  width: 10px;
+  height: 10px;
+}
+
+/* * Elements with Animations */
+
+.standardButton {
+  display: flex;
+  justify-items: center;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 5px;
+  transition: 0.2s;
+}
+
+button:active,
+input:active,
+.gameCard:active,
+.sideBarGame:active {
+  scale: 98%;
+  transition: 0.2s;
+}
+
+button,
+input,
+#searchInput {
+  transition: 0.2s;
 }
 
 dialog[open] {
@@ -203,34 +230,6 @@ dialog {
   opacity: 1;
   animation: loadingFadeOut 0.3s;
   opacity: 0;
-}
-
-@keyframes loadingFadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-.titleButton {
-  width: 48px;
-  height: 32px;
-  padding: 0px 10px 0px 18px;
-  border: 0;
-  margin: 0;
-  background: transparent;
-  outline: 0;
-}
-.titleButton svg {
-  width: 10px;
-  height: 10px;
-}
-
-body {
-  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
-  font-size: 16px;
 }
 
 /*
