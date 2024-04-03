@@ -23,7 +23,7 @@ def handleRequest():
         response = jsonify({"clearVersion": "1.0.0"})
         response.headers.add(
             "Access-Control-Allow-Origin",
-            "https://tauri.localhost",
+            "*",
         )
         return response
 
@@ -39,7 +39,7 @@ def handleRequest():
         response = jsonify(json.loads(gameData))
         response.headers.add(
             "Access-Control-Allow-Origin",
-            "https://tauri.localhost",
+            "*",
         )
         return response
 
@@ -55,7 +55,7 @@ def handleRequest():
         response = jsonify(json.loads(gameData))
         response.headers.add(
             "Access-Control-Allow-Origin",
-            "https://tauri.localhost",
+            "*",
         )
         return response
 
@@ -72,7 +72,7 @@ def handleRequest():
         response = jsonify({"image": imageFileBytes})
         response.headers.add(
             "Access-Control-Allow-Origin",
-            "https://tauri.localhost",
+            "*",
         )
         return response
 
@@ -138,7 +138,7 @@ def handleRequest():
         response = jsonify(allImages)
         response.headers.add(
             "Access-Control-Allow-Origin",
-            "https://tauri.localhost",
+            "*",
         )
         return response
 
@@ -234,7 +234,7 @@ def handleRequest():
         response = jsonify(allImages)
         response.headers.add(
             "Access-Control-Allow-Origin",
-            "https://tauri.localhost",
+            "*",
         )
         return response
 
