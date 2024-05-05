@@ -4,8 +4,15 @@
 <tbody>
 <tr>
 <td><img src="https://img.shields.io/github/downloads/adithyasource/clear/1.0.0/total.svg?style=flat-square&logo=none&label=downloads:&labelColor=666666&color=666666"></td>
-<td><a href="https://clear.adithya.zip/" target="_blank">> product page</a></td>
 <td><a href="https://github.com/adithyasource/clear/releases/tag/1.0.0">download</a></td>
+<td><a href="https://clear.adithya.zip/" target="_blank">> product page</a></td>
+</tr>
+</tbody>
+</table>
+<table>
+<tbody>
+<tr>
+<td>major update currently in active development!</td>
 </tr>
 </tbody>
 </table>
