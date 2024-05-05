@@ -484,92 +484,90 @@ export function NewGame() {
             </button>
           </div>
         </div>
-        <div className="flex max-large:gap-[13.5rem] gap-[18.5rem]">
-          <div>
-            <div
-              onClick={locateGridImage}
-              onWheel={(e) => {
-                if (SGDBGames()) {
-                  if (e.deltaY == -100) {
-                    setFoundGridImageIndex((i) =>
-                      i == foundGridImage().length - 1 ? 0 : i + 1,
-                    );
-                    setShowGridImageLoading(true);
-                  }
+        <div className="flex gap-[1rem]">
+          <div
+            onClick={locateGridImage}
+            onWheel={(e) => {
+              if (SGDBGames()) {
+                if (e.deltaY == -100) {
+                  setFoundGridImageIndex((i) =>
+                    i == foundGridImage().length - 1 ? 0 : i + 1,
+                  );
+                  setShowGridImageLoading(true);
+                }
 
-                  if (e.deltaY == 100) {
-                    if (foundGridImageIndex() != 0) {
-                      setFoundGridImageIndex((i) => i - 1);
-                      setShowGridImageLoading(true);
-                    } else {
-                      setShowGridImageLoading(false);
-                    }
+                if (e.deltaY == 100) {
+                  if (foundGridImageIndex() != 0) {
+                    setFoundGridImageIndex((i) => i - 1);
+                    setShowGridImageLoading(true);
+                  } else {
+                    setShowGridImageLoading(false);
                   }
                 }
-              }}
-              onContextMenu={() => {
-                setLocatedGridImage(undefined);
-                setFoundGridImage(undefined);
-              }}
-              className="panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] locatingGridImg h-full aspect-[2/3] group relative overflow-hidden">
-              <Show when={foundGridImage()}>
-                <Show when={showGridImageLoading() == false}>
-                  <img
-                    className="absolute inset-0 aspect-[2/3]"
-                    src={foundGridImage()[foundGridImageIndex()]}
-                    alt=""
-                    onLoad={() => {
-                      setShowGridImageLoading(false);
-                    }}
-                  />
-                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
-                    {translateText("grid/cover")} <br />
-                  </span>
-                </Show>
-                <Show when={showGridImageLoading() == true}>
-                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
-                    {translateText("grid/cover")} <br />
-                  </span>
-
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    className="animate-spin-slow absolute"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M16 16L19 19M18 12H22M8 8L5 5M16 8L19 5M8 16L5 19M2 12H6M12 2V6M12 18V22"
-                      className="stroke-[#000000] dark:stroke-[#ffffff] "
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"></path>
-                  </svg>
-                </Show>
-
-                <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
-                  {translateText("grid/cover")}
+              }
+            }}
+            onContextMenu={() => {
+              setLocatedGridImage(undefined);
+              setFoundGridImage(undefined);
+            }}
+            className="panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] locatingGridImg h-full aspect-[2/3] group relative overflow-hidden">
+            <Show when={foundGridImage()}>
+              <Show when={showGridImageLoading() == false}>
+                <img
+                  className="absolute inset-0 aspect-[2/3]"
+                  src={foundGridImage()[foundGridImageIndex()]}
+                  alt=""
+                  onLoad={() => {
+                    setShowGridImageLoading(false);
+                  }}
+                />
+                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
+                  {translateText("grid/cover")} <br />
                 </span>
               </Show>
-              <Show when={!foundGridImage()}>
-                {" "}
-                <Show when={locatedGridImage()}>
-                  <img
-                    className="absolute inset-0 aspect-[2/3]"
-                    src={convertFileSrc(locatedGridImage())}
-                    alt=""
-                  />
-                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0 ">
-                    {translateText("grid/cover")} <br />
-                  </span>
-                </Show>
-                <Show when={!locatedGridImage()}>
-                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
-                    {translateText("grid/cover")} <br />
-                  </span>
-                </Show>
+              <Show when={showGridImageLoading() == true}>
+                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
+                  {translateText("grid/cover")} <br />
+                </span>
+
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  className="animate-spin-slow absolute"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M16 16L19 19M18 12H22M8 8L5 5M16 8L19 5M8 16L5 19M2 12H6M12 2V6M12 18V22"
+                    className="stroke-[#000000] dark:stroke-[#ffffff] "
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+                </svg>
               </Show>
-            </div>
+
+              <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
+                {translateText("grid/cover")}
+              </span>
+            </Show>
+            <Show when={!foundGridImage()}>
+              {" "}
+              <Show when={locatedGridImage()}>
+                <img
+                  className="absolute inset-0 aspect-[2/3]"
+                  src={convertFileSrc(locatedGridImage())}
+                  alt=""
+                />
+                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0 ">
+                  {translateText("grid/cover")} <br />
+                </span>
+              </Show>
+              <Show when={!locatedGridImage()}>
+                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
+                  {translateText("grid/cover")} <br />
+                </span>
+              </Show>
+            </Show>
           </div>
 
           <div className="flex flex-col gap-3">
@@ -889,7 +887,7 @@ export function NewGame() {
                   placeholder={translateText("name of game")}
                 />
                 <button
-                  className={`standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80] rounded-[${
+                  className={`standardButton  !text-black dark:!text-white  hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80] rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }] `}
                   onClick={async () => {
@@ -925,7 +923,7 @@ export function NewGame() {
                   </Show>
                 </button>
                 <button
-                  className={`standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80] rounded-[${
+                  className={`standardButton  !text-black dark:!text-white  hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0 bg-[#f1f1f1] dark:bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80] rounded-[${
                     roundedBorders() ? "6px" : "0px"
                   }] `}
                   onClick={async () => {

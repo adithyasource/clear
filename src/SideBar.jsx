@@ -733,7 +733,9 @@ export function SideBar() {
             </div>
           </div>
         </div>
-        <div id="sideBarBottom" class="absolute bottom-[20px] w-full pr-[20px]">
+        <div
+          id="sideBarBottom"
+          class="absolute bottom-[20px] w-[calc(100%-2px)] pr-[20px]">
           <div className="">
             <button
               className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] mt-[12px]"
@@ -756,7 +758,7 @@ export function SideBar() {
               </svg>
             </button>
             <button
-              className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] mt-[12px] "
+              className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] mt-[12px]"
               onClick={() => {
                 document.querySelector("[data-newFolderModal]").show();
               }}>
@@ -818,7 +820,7 @@ export function SideBar() {
               </svg>
             </button>
             <button
-              className=" standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] mt-[12px] "
+              className=" standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] mt-[12px]"
               onClick={() => {
                 document.querySelector("[data-settingsModal]").show();
               }}>

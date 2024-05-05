@@ -539,4 +539,11 @@ export let textLanguages = {
     ru: "Язык",
     fr: "Langue",
   },
+  "": {
+    jp: "",
+    es: "",
+    hi: "",
+    ru: "",
+    fr: "",
+  },
 };

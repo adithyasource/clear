@@ -1,6 +1,6 @@
 [package]
 name = "clear"
-version = "1.0.0"
+version = "1.1.0"
 description = "clear - video game library"
 authors = ["adithya.zip"]
 license = "Unlicense"

@@ -194,8 +194,8 @@ button:active,
 input:active,
 .gameCard:active,
 .sideBarGame:active {
-  scale: 98%;
-  transition: 0.2s;
+  scale: 99%;
+  transition: 0.08s;
 }
 
 button,
