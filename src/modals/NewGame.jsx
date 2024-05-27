@@ -40,6 +40,7 @@ import {
   setFoundIconImageIndex,
   language,
   windowWidth,
+  appDataDirPath,
 } from "../Signals";
 
 import { Show, createSignal } from "solid-js";
@@ -92,18 +93,17 @@ export function NewGame() {
 
     document.querySelector("[data-loadingModal]").show();
 
+    console.log(foundGridImage()[foundGridImageIndex()]);
+    console.log(foundHeroImage()[foundHeroImageIndex()]);
+    console.log(foundLogoImage()[foundLogoImageIndex()]);
+    console.log(foundIconImage()[foundIconImageIndex()]);
+
     if (foundGridImage()) {
       gridImageFileName = generateRandomString() + ".png";
-
-      await fetch(
-        `https://clear-api.adithya.zip/?image=${
-          foundGridImage()[foundGridImageIndex()]
-        }`,
-      ).then((res) =>
-        res.json().then(async (jsonres) => {
-          downloadImage("grids\\" + gridImageFileName, jsonres.image);
-        }),
-      );
+      invoke("download_image", {
+        link: foundGridImage()[foundGridImageIndex()],
+        location: appDataDirPath() + "grids\\" + gridImageFileName,
+      });
     } else {
       if (locatedGridImage()) {
         gridImageFileName =
@@ -122,15 +122,10 @@ export function NewGame() {
     if (foundHeroImage()) {
       heroImageFileName = generateRandomString() + ".png";
 
-      await fetch(
-        `https://clear-api.adithya.zip/?image=${
-          foundHeroImage()[foundHeroImageIndex()]
-        }`,
-      ).then((res) =>
-        res.json().then(async (jsonres) => {
-          downloadImage("heroes\\" + heroImageFileName, jsonres.image);
-        }),
-      );
+      invoke("download_image", {
+        link: foundHeroImage()[foundHeroImageIndex()],
+        location: appDataDirPath() + "heroes\\" + heroImageFileName,
+      });
     } else {
       if (locatedHeroImage()) {
         heroImageFileName =
@@ -149,15 +144,10 @@ export function NewGame() {
     if (foundLogoImage()) {
       logoFileName = generateRandomString() + ".png";
 
-      await fetch(
-        `https://clear-api.adithya.zip/?image=${
-          foundLogoImage()[foundLogoImageIndex()]
-        }`,
-      ).then((res) =>
-        res.json().then(async (jsonres) => {
-          downloadImage("logos\\" + logoFileName, jsonres.image);
-        }),
-      );
+      invoke("download_image", {
+        link: foundLogoImage()[foundLogoImageIndex()],
+        location: appDataDirPath() + "logos\\" + logoFileName,
+      });
     } else {
       if (locatedLogo()) {
         logoFileName =
@@ -174,15 +164,10 @@ export function NewGame() {
     if (foundIconImage()) {
       iconFileName = generateRandomString() + ".png";
 
-      await fetch(
-        `https://clear-api.adithya.zip/?image=${
-          foundIconImage()[foundIconImageIndex()]
-        }`,
-      ).then((res) =>
-        res.json().then(async (jsonres) => {
-          downloadImage("icons\\" + iconFileName, jsonres.image);
-        }),
-      );
+      invoke("download_image", {
+        link: foundIconImage()[foundIconImageIndex()],
+        location: appDataDirPath() + "icons\\" + iconFileName,
+      });
     } else {
       if (locatedIcon()) {
         iconFileName =
@@ -412,7 +397,7 @@ export function NewGame() {
           </div>
           <div className="flex items-center gap-4">
             <div
-              className="cursor-pointer "
+              className="cursor-pointer"
               onClick={() => {
                 setFavouriteGame(!favouriteGame());
               }}>
@@ -484,19 +469,21 @@ export function NewGame() {
             </button>
           </div>
         </div>
+
         <div className="flex gap-[1rem]">
           <div
             onClick={locateGridImage}
+            onScroll={() => {}}
             onWheel={(e) => {
               if (SGDBGames()) {
-                if (e.deltaY == -100) {
+                if (e.deltaY <= 0) {
                   setFoundGridImageIndex((i) =>
                     i == foundGridImage().length - 1 ? 0 : i + 1,
                   );
                   setShowGridImageLoading(true);
                 }
 
-                if (e.deltaY == 100) {
+                if (e.deltaY >= 0) {
                   if (foundGridImageIndex() != 0) {
                     setFoundGridImageIndex((i) => i - 1);
                     setShowGridImageLoading(true);
@@ -570,226 +557,225 @@ export function NewGame() {
             </Show>
           </div>
 
-          <div className="flex flex-col gap-3">
-            <div className="relative ">
-              <div>
-                <div
-                  onClick={locateHeroImage}
-                  onWheel={(e) => {
-                    if (SGDBGames()) {
-                      if (e.deltaY == -100) {
-                        setFoundHeroImageIndex((i) =>
-                          i == foundHeroImage().length - 1 ? 0 : i + 1,
-                        );
-                        setShowHeroImageLoading(true);
-                      }
+          <div className="flex flex-col gap-3 relative">
+            <div
+              onClick={locateHeroImage}
+              onScroll={() => {}}
+              onWheel={(e) => {
+                if (SGDBGames()) {
+                  if (e.deltaY <= 0) {
+                    setFoundHeroImageIndex((i) =>
+                      i == foundHeroImage().length - 1 ? 0 : i + 1,
+                    );
+                    setShowHeroImageLoading(true);
+                  }
 
-                      if (e.deltaY == 100) {
-                        if (foundHeroImageIndex() != 0) {
-                          setFoundHeroImageIndex((i) => i - 1);
-                          setShowHeroImageLoading(true);
-                        } else {
-                          setShowHeroImageLoading(false);
-                        }
+                  if (e.deltaY >= 0) {
+                    if (foundHeroImageIndex() != 0) {
+                      setFoundHeroImageIndex((i) => i - 1);
+                      setShowHeroImageLoading(true);
+                    } else {
+                      setShowHeroImageLoading(false);
+                    }
+                  }
+                }
+              }}
+              onContextMenu={() => {
+                setLocatedHeroImage(undefined);
+                setFoundHeroImage(undefined);
+              }}
+              className="max-large:h-[250px] h-[350px] aspect-[67/26] group relative p-0 m-0 panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
+              aria-label="hero">
+              <Show
+                when={foundHeroImage()}
+                className="absolute inset-0 overflow-hidden">
+                <Show when={showHeroImageLoading() == false}>
+                  <img
+                    src={foundHeroImage()[foundHeroImageIndex()]}
+                    onLoad={() => {
+                      setShowHeroImageLoading(false);
+                    }}
+                    alt=""
+                    className="absolute inset-0 h-full rounded-[6px] aspect-[96/31]"
+                  />
+                  <img
+                    src={foundHeroImage()[foundHeroImageIndex()]}
+                    onLoad={() => {
+                      setShowHeroImageLoading(false);
+                    }}
+                    alt=""
+                    className="absolute inset-0 -z-10 h-full aspect-[96/31] rounded-[6px] blur-[80px] opacity-[0.4]"
+                  />
+                </Show>
+                <Show when={showHeroImageLoading()}>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    className="animate-spin-slow"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M16 16L19 19M18 12H22M8 8L5 5M16 8L19 5M8 16L5 19M2 12H6M12 2V6M12 18V22"
+                      className="stroke-[#000000] dark:stroke-[#ffffff] "
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                  </svg>
+                </Show>
+                <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
+                  {translateText("hero")}
+                </span>
+              </Show>
+              <Show when={!foundHeroImage()}>
+                <Show
+                  when={locatedHeroImage()}
+                  className="absolute inset-0 overflow-hidden">
+                  <img
+                    src={convertFileSrc(locatedHeroImage())}
+                    alt=""
+                    className="absolute inset-0 h-full rounded-[6px] aspect-[96/31]"
+                  />
+                  <img
+                    src={convertFileSrc(locatedHeroImage())}
+                    alt=""
+                    className="absolute inset-0 -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.4] aspect-[96/31]"
+                  />
+                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
+                    {translateText("hero")}
+                  </span>
+                </Show>
+                <Show when={!locatedHeroImage()}>
+                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
+                    {translateText("hero")}
+                  </span>
+                </Show>
+              </Show>
+            </div>
+
+            <Show when={foundLogoImage()}>
+              <div
+                onClick={locateLogo}
+                onScroll={() => {}}
+                onWheel={(e) => {
+                  if (SGDBGames()) {
+                    if (e.deltaY <= 0) {
+                      setFoundLogoImageIndex((i) =>
+                        i == foundLogoImage().length - 1 ? 0 : i + 1,
+                      );
+                      setShowLogoImageLoading(true);
+                    }
+
+                    if (e.deltaY >= 0) {
+                      if (foundLogoImageIndex() != 0) {
+                        setFoundLogoImageIndex((i) => i - 1);
+                        setShowLogoImageLoading(true);
+                      } else {
+                        setShowLogoImageLoading(false);
                       }
                     }
-                  }}
-                  onContextMenu={() => {
-                    setLocatedHeroImage(undefined);
-                    setFoundHeroImage(undefined);
-                  }}
-                  className="max-large:h-[250px] h-[350px] aspect-[67/26] group relative p-0 m-0 panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
-                  aria-label="hero">
-                  <Show
-                    when={foundHeroImage()}
-                    className="absolute inset-0 overflow-hidden">
-                    <Show when={showHeroImageLoading() == false}>
-                      <img
-                        src={foundHeroImage()[foundHeroImageIndex()]}
-                        onLoad={() => {
-                          setShowHeroImageLoading(false);
-                        }}
-                        alt=""
-                        className="absolute inset-0 h-full rounded-[6px] aspect-[96/31]"
-                      />
-                      <img
-                        src={foundHeroImage()[foundHeroImageIndex()]}
-                        onLoad={() => {
-                          setShowHeroImageLoading(false);
-                        }}
-                        alt=""
-                        className="absolute inset-0 -z-10 h-full aspect-[96/31] rounded-[6px] blur-[80px] opacity-[0.4]"
-                      />
-                    </Show>
-                    <Show when={showHeroImageLoading()}>
-                      <svg
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        className="animate-spin-slow"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                          d="M16 16L19 19M18 12H22M8 8L5 5M16 8L19 5M8 16L5 19M2 12H6M12 2V6M12 18V22"
-                          className="stroke-[#000000] dark:stroke-[#ffffff] "
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"></path>
-                      </svg>
-                    </Show>
-                    <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
-                      {translateText("hero")}
-                    </span>
-                  </Show>
-                  <Show when={!foundHeroImage()}>
-                    <Show
-                      when={locatedHeroImage()}
-                      className="absolute inset-0 overflow-hidden">
-                      <img
-                        src={convertFileSrc(locatedHeroImage())}
-                        alt=""
-                        className="absolute inset-0 h-full rounded-[6px] aspect-[96/31]"
-                      />
-                      <img
-                        src={convertFileSrc(locatedHeroImage())}
-                        alt=""
-                        className="absolute inset-0 -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.4] aspect-[96/31]"
-                      />
-                      <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
-                        {translateText("hero")}
-                      </span>
-                    </Show>
-                    <Show when={!locatedHeroImage()}>
-                      <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
-                        {translateText("hero")}
-                      </span>
-                    </Show>
-                  </Show>
-                </div>
+                  }
+                }}
+                onContextMenu={() => {
+                  setLocatedLogo(undefined);
+                  setFoundLogoImage(undefined);
+                }}
+                className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[70px] left-[20px] panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
+                aria-label="logo">
+                <Show when={showLogoImageLoading() == false}>
+                  <img
+                    src={foundLogoImage()[foundLogoImageIndex()]}
+                    alt=""
+                    className="relative aspect-auto max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
+                    onLoad={() => {
+                      setShowLogoImageLoading(false);
+                    }}
+                  />
+                </Show>
+                <Show when={showLogoImageLoading()}>
+                  <div
+                    onClick={locateLogo}
+                    onContextMenu={() => {
+                      setLocatedLogo(undefined);
+                      setFoundLogoImage(undefined);
+                    }}
+                    className="panelButton cursor-pointer   bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[20px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] ">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      className="animate-spin-slow"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M16 16L19 19M18 12H22M8 8L5 5M16 8L19 5M8 16L5 19M2 12H6M12 2V6M12 18V22"
+                        className="stroke-[#000000] dark:stroke-[#ffffff] "
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                    </svg>
+                  </div>
+                </Show>
+                <Show when={showLogoImageLoading() == false}>
+                  <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
+                    {translateText("logo")}
+                  </span>
+                </Show>
               </div>
+            </Show>
 
-              <Show when={foundLogoImage()}>
+            <Show when={!foundLogoImage()}>
+              <Show when={locatedLogo()}>
                 <div
                   onClick={locateLogo}
-                  onWheel={(e) => {
-                    if (SGDBGames()) {
-                      if (e.deltaY == -100) {
-                        setFoundLogoImageIndex((i) =>
-                          i == foundLogoImage().length - 1 ? 0 : i + 1,
-                        );
-                        setShowLogoImageLoading(true);
-                      }
-
-                      if (e.deltaY == 100) {
-                        if (foundLogoImageIndex() != 0) {
-                          setFoundLogoImageIndex((i) => i - 1);
-                          setShowLogoImageLoading(true);
-                        } else {
-                          setShowLogoImageLoading(false);
-                        }
-                      }
-                    }
-                  }}
                   onContextMenu={() => {
                     setLocatedLogo(undefined);
                     setFoundLogoImage(undefined);
                   }}
-                  className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[20px] left-[20px] panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
+                  className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[70px] left-[20px] panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
                   aria-label="logo">
-                  <Show when={showLogoImageLoading() == false}>
-                    <img
-                      src={foundLogoImage()[foundLogoImageIndex()]}
-                      alt=""
-                      className="relative aspect-auto max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
-                      onLoad={() => {
-                        setShowLogoImageLoading(false);
-                      }}
-                    />
-                  </Show>
-                  <Show when={showLogoImageLoading()}>
-                    <div
-                      onClick={locateLogo}
-                      onContextMenu={() => {
-                        setLocatedLogo(undefined);
-                        setFoundLogoImage(undefined);
-                      }}
-                      className="panelButton cursor-pointer   bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[20px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] ">
-                      <svg
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        className="animate-spin-slow"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                          d="M16 16L19 19M18 12H22M8 8L5 5M16 8L19 5M8 16L5 19M2 12H6M12 2V6M12 18V22"
-                          className="stroke-[#000000] dark:stroke-[#ffffff] "
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"></path>
-                      </svg>
-                    </div>
-                  </Show>
-                  <Show when={showLogoImageLoading() == false}>
-                    <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
-                      {translateText("logo")}
-                    </span>
-                  </Show>
+                  <img
+                    src={convertFileSrc(locatedLogo())}
+                    alt=""
+                    className="relative aspect-auto max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
+                  />
+                  <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
+                    {translateText("logo")}
+                  </span>
                 </div>
               </Show>
 
-              <Show when={!foundLogoImage()}>
-                <Show when={locatedLogo()}>
-                  <div
-                    onClick={locateLogo}
-                    onContextMenu={() => {
-                      setLocatedLogo(undefined);
-                      setFoundLogoImage(undefined);
-                    }}
-                    className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[20px] left-[20px] panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
-                    aria-label="logo">
-                    <img
-                      src={convertFileSrc(locatedLogo())}
-                      alt=""
-                      className="relative aspect-auto max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
-                    />
-                    <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
-                      {translateText("logo")}
-                    </span>
-                  </div>
-                </Show>
-
-                <Show when={!locatedLogo()}>
-                  <div
-                    onClick={locateLogo}
-                    onContextMenu={() => {
-                      setLocatedLogo(undefined);
-                      setFoundLogoImage(undefined);
-                    }}
-                    className="panelButton cursor-pointer  bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[20px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] "
-                    aria-label="logo">
-                    <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
-                      {translateText("logo")}
-                    </span>
-                  </div>
-                </Show>
+              <Show when={!locatedLogo()}>
+                <div
+                  onClick={locateLogo}
+                  onContextMenu={() => {
+                    setLocatedLogo(undefined);
+                    setFoundLogoImage(undefined);
+                  }}
+                  className="panelButton cursor-pointer  bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[70px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] "
+                  aria-label="logo">
+                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
+                    {translateText("logo")}
+                  </span>
+                </div>
               </Show>
-            </div>
+            </Show>
 
             <div className="flex gap-3 items-center cursor-pointer ">
               <Show when={foundIconImage()}>
                 <div
                   onClick={locateIcon}
+                  onScroll={() => {}}
                   onWheel={(e) => {
                     if (SGDBGames()) {
-                      if (e.deltaY == -100) {
+                      if (e.deltaY <= 0) {
                         setFoundIconImageIndex((i) =>
                           i == foundIconImage().length - 1 ? 0 : i + 1,
                         );
                         setShowIconImageLoading(true);
                       }
 
-                      if (e.deltaY == 100) {
+                      if (e.deltaY >= 0) {
                         if (foundIconImageIndex() != 0) {
                           setFoundIconImageIndex((i) => i - 1);
                           setShowIconImageLoading(true);

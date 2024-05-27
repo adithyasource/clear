@@ -190,13 +190,13 @@ body {
   transition: 0.2s;
 }
 
-button:active,
+/* button:active,
 input:active,
 .gameCard:active,
 .sideBarGame:active {
   scale: 99%;
   transition: 0.08s;
-}
+} */
 
 button,
 input,
@@ -209,10 +209,10 @@ dialog[open] {
   animation: dialogFadeIn 0.3s ease normal;
 }
 
-.gameCard {
+/* .gameCard {
   opacity: 1;
   animation: dialogFadeInShorter 0.3s ease normal;
-}
+} */
 
 dialog {
   box-shadow: 0 0 0.5rem 100vw rgba(0, 0, 0, 0.2);

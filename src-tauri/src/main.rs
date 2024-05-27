@@ -38,13 +38,24 @@ async fn show_window(window: Window) {
         .unwrap();
 }
 
+#[tauri::command]
+fn download_image(link: &str, location: &str) {
+    let _ = Command::new("powershell")
+        .args(&["-Command" , "Invoke-WebRequest", link, "-Outfile", location])
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .creation_flags(0x08000000)
+        .spawn();
+}
+
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             open_location,
             close_app,
             read_steam_vdf,
-            show_window
+            show_window,
+            download_image
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

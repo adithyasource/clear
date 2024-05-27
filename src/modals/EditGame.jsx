@@ -497,175 +497,166 @@ export function EditGame() {
             </button>
           </div>
         </div>
-        <div className="flex max-large:gap-[13.5rem] gap-[18.5rem]">
-          <div>
-            <div
-              onClick={locateEditedGridImage}
-              onContextMenu={() => {
-                setEditedLocatedGridImage(null);
-              }}
-              className="panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] locatingGridImg h-full aspect-[2/3] group relative overflow-hidden"
-              aria-label="grid/cover">
-              <Show when={editedLocatedGridImage() === undefined}>
-                <img
-                  className="absolute inset-0 aspect-[2/3]"
-                  src={convertFileSrc(
-                    appDataDirPath() + "grids\\" + selectedGame().gridImage,
-                  )}
-                  alt=""
-                />
-                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
-                  {translateText("grid/cover")}
-                </span>
-              </Show>
-              <Show when={editedLocatedGridImage()}>
-                <img
-                  className="absolute inset-0 aspect-[2/3]"
-                  src={convertFileSrc(editedLocatedGridImage())}
-                  alt=""
-                />
-                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
-                  {translateText("grid/cover")}
-                </span>
-              </Show>
-              <Show when={editedLocatedGridImage() === null}>
-                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
-                  {translateText("grid/cover")}
-                </span>
-              </Show>
-            </div>
+        <div className="flex gap-3">
+          <div
+            onClick={locateEditedGridImage}
+            onContextMenu={() => {
+              setEditedLocatedGridImage(null);
+            }}
+            className="panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] locatingGridImg h-full aspect-[2/3] group relative overflow-hidden"
+            aria-label="grid/cover">
+            <Show when={editedLocatedGridImage() === undefined}>
+              <img
+                className="absolute inset-0 aspect-[2/3]"
+                src={convertFileSrc(
+                  appDataDirPath() + "grids\\" + selectedGame().gridImage,
+                )}
+                alt=""
+              />
+              <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
+                {translateText("grid/cover")}
+              </span>
+            </Show>
+            <Show when={editedLocatedGridImage()}>
+              <img
+                className="absolute inset-0 aspect-[2/3]"
+                src={convertFileSrc(editedLocatedGridImage())}
+                alt=""
+              />
+              <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
+                {translateText("grid/cover")}
+              </span>
+            </Show>
+            <Show when={editedLocatedGridImage() === null}>
+              <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
+                {translateText("grid/cover")}
+              </span>
+            </Show>
           </div>
 
-          <div className="flex flex-col gap-3">
-            <div className="relative ">
-              <div>
-                <div
-                  onClick={locateEditedHeroImage}
-                  onContextMenu={() => {
-                    setEditedLocatedHeroImage(null);
-                  }}
-                  className="max-large:h-[250px] h-[350px] aspect-[67/26] group relative p-0 m-0 panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
-                  aria-label="hero">
-                  <Show
-                    when={editedLocatedHeroImage() === null}
-                    className="absolute inset-0 overflow-hidden">
-                    <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
-                      {translateText("hero")}
-                    </span>
-                  </Show>
-                  <Show
-                    when={editedLocatedHeroImage() === undefined}
-                    className="absolute inset-0 overflow-hidden">
-                    <img
-                      src={convertFileSrc(
-                        appDataDirPath() +
-                          "heroes\\" +
-                          selectedGame().heroImage,
-                      )}
-                      alt=""
-                      className="absolute inset-0  aspect-[96/31]  h-full  rounded-[6px]"
-                    />
-                    <img
-                      src={convertFileSrc(
-                        appDataDirPath() +
-                          "heroes\\" +
-                          selectedGame().heroImage,
-                      )}
-                      alt=""
-                      className="absolute inset-0 aspect-[96/31]  -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.6]"
-                    />
-                  </Show>
-                  <Show
-                    when={editedLocatedHeroImage()}
-                    className="absolute inset-0 overflow-hidden">
-                    <img
-                      src={convertFileSrc(editedLocatedHeroImage())}
-                      alt=""
-                      className="absolute inset-0  aspect-[96/31] h-full rounded-[6px]"
-                    />
-                    <img
-                      src={convertFileSrc(editedLocatedHeroImage())}
-                      alt=""
-                      className="absolute inset-0 -z-10 aspect-[96/31]  h-full rounded-[6px] blur-[80px] opacity-[0.6]"
-                    />
-                  </Show>
-
-                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
-                    {translateText("hero")}
-                  </span>
-                </div>
-              </div>
-
-              <Show when={selectedGame().logo}>
-                <div
-                  onClick={locateEditedLogo}
-                  onContextMenu={() => {
-                    setEditedLocatedLogo(null);
-                  }}
-                  className={`panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] !bg-[#27272700] group  absolute bottom-[20px] left-[20px] ${
-                    selectedGame().logo ? "" : "!w-[200px] !h-[65px]"
-                  } `}
-                  aria-label="logo">
-                  <Show when={editedLocatedLogo() === undefined}>
-                    <img
-                      src={convertFileSrc(
-                        appDataDirPath() + "logos\\" + selectedGame().logo,
-                      )}
-                      alt=""
-                      className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
-                    />
-                  </Show>
-                  <Show when={editedLocatedLogo()}>
-                    <img
-                      src={convertFileSrc(editedLocatedLogo())}
-                      alt=""
-                      className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
-                    />
-                  </Show>
-                  <Show when={editedLocatedLogo() === null}>
-                    <div
-                      className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] relative bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                        roundedBorders() ? "6px" : "0px"
-                      }]`}
-                    />
-                  </Show>
-
-                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
-                    {translateText("logo")}
-                  </span>
-                </div>
+          <div className="flex flex-col gap-3 relative">
+            <div
+              onClick={locateEditedHeroImage}
+              onContextMenu={() => {
+                setEditedLocatedHeroImage(null);
+              }}
+              className="max-large:h-[250px] h-[350px] aspect-[67/26] group relative p-0 m-0 panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
+              aria-label="hero">
+              <Show
+                when={editedLocatedHeroImage() === null}
+                className="absolute inset-0 overflow-hidden">
+                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
+                  {translateText("hero")}
+                </span>
               </Show>
-              <Show when={!selectedGame().logo}>
-                <div
-                  onClick={locateEditedLogo}
-                  onContextMenu={() => {
-                    setEditedLocatedLogo(null);
-                  }}
-                  className={`panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] !bg-[#27272700] group  absolute bottom-[60px] left-[20px] max-large:bottom-[40px] ${
-                    selectedGame().logo ? "" : "!w-[200px] !h-[65px]"
-                  } `}
-                  aria-label="logo">
-                  <Show when={editedLocatedLogo()}>
-                    <img
-                      src={convertFileSrc(editedLocatedLogo())}
-                      alt=""
-                      className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
-                    />
-                  </Show>
-                  <Show when={!editedLocatedLogo()}>
-                    <div
-                      className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] relative bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                        roundedBorders() ? "6px" : "0px"
-                      }]`}
-                    />
-                  </Show>
-
-                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[45%] left-[55%] top-[65%] opacity-0">
-                    {translateText("logo")}
-                  </span>
-                </div>
+              <Show
+                when={editedLocatedHeroImage() === undefined}
+                className="absolute inset-0 overflow-hidden">
+                <img
+                  src={convertFileSrc(
+                    appDataDirPath() + "heroes\\" + selectedGame().heroImage,
+                  )}
+                  alt=""
+                  className="absolute inset-0  aspect-[96/31]  h-full  rounded-[6px]"
+                />
+                <img
+                  src={convertFileSrc(
+                    appDataDirPath() + "heroes\\" + selectedGame().heroImage,
+                  )}
+                  alt=""
+                  className="absolute inset-0 aspect-[96/31]  -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.6]"
+                />
               </Show>
+              <Show
+                when={editedLocatedHeroImage()}
+                className="absolute inset-0 overflow-hidden">
+                <img
+                  src={convertFileSrc(editedLocatedHeroImage())}
+                  alt=""
+                  className="absolute inset-0  aspect-[96/31] h-full rounded-[6px]"
+                />
+                <img
+                  src={convertFileSrc(editedLocatedHeroImage())}
+                  alt=""
+                  className="absolute inset-0 -z-10 aspect-[96/31]  h-full rounded-[6px] blur-[80px] opacity-[0.6]"
+                />
+              </Show>
+
+              <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
+                {translateText("hero")}
+              </span>
             </div>
+
+            <Show when={selectedGame().logo}>
+              <div
+                onClick={locateEditedLogo}
+                onContextMenu={() => {
+                  setEditedLocatedLogo(null);
+                }}
+                className={`panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] !bg-[#27272700] group  absolute bottom-[70px] left-[20px] ${
+                  selectedGame().logo ? "" : "!w-[200px] !h-[65px]"
+                } `}
+                aria-label="logo">
+                <Show when={editedLocatedLogo() === undefined}>
+                  <img
+                    src={convertFileSrc(
+                      appDataDirPath() + "logos\\" + selectedGame().logo,
+                    )}
+                    alt=""
+                    className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
+                  />
+                </Show>
+                <Show when={editedLocatedLogo()}>
+                  <img
+                    src={convertFileSrc(editedLocatedLogo())}
+                    alt=""
+                    className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
+                  />
+                </Show>
+                <Show when={editedLocatedLogo() === null}>
+                  <div
+                    className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] relative bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
+                      roundedBorders() ? "6px" : "0px"
+                    }]`}
+                  />
+                </Show>
+
+                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
+                  {translateText("logo")}
+                </span>
+              </div>
+            </Show>
+            <Show when={!selectedGame().logo}>
+              <div
+                onClick={locateEditedLogo}
+                onContextMenu={() => {
+                  setEditedLocatedLogo(null);
+                }}
+                className={`panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] !bg-[#27272700] group  absolute bottom-[60px] left-[20px] max-large:bottom-[40px] ${
+                  selectedGame().logo ? "" : "!w-[200px] !h-[65px]"
+                } `}
+                aria-label="logo">
+                <Show when={editedLocatedLogo()}>
+                  <img
+                    src={convertFileSrc(editedLocatedLogo())}
+                    alt=""
+                    className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
+                  />
+                </Show>
+                <Show when={!editedLocatedLogo()}>
+                  <div
+                    className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] relative bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
+                      roundedBorders() ? "6px" : "0px"
+                    }]`}
+                  />
+                </Show>
+
+                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[45%] left-[55%] top-[65%] opacity-0">
+                  {translateText("logo")}
+                </span>
+              </div>
+            </Show>
+
             <div className="flex gap-3 items-center cursor-pointer">
               <div
                 onClick={locateEditedIcon}
