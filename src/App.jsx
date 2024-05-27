@@ -771,11 +771,6 @@ function App() {
       setWindowWidth(window.innerWidth);
     });
     invoke("show_window");
-    // invoke("download_image", {
-    //   link: "https://cdn2.steamgriddb.com/thumb/19e8eca3844064c94a2f9c838df1541d.jpg",
-    //   location:
-    //     "C:\\Users\\getsg\\AppData\\Roaming\\com.adithya.clear\\lmao.png",
-    // });
   });
 
   return (
