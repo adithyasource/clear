@@ -37,6 +37,7 @@ import {
 } from "../App";
 
 import { appDataDir } from "@tauri-apps/api/path";
+import { Close, Steam } from "../components/Icons";
 
 export function Settings() {
   onMount(() => {
@@ -75,20 +76,7 @@ export function Settings() {
                   getData();
                 }}>
                 ​
-                <svg
-                  width="16"
-                  height="12"
-                  viewBox="0 0 12 12"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M1 1L11 10.3369M1 10.3369L11 1"
-                    stroke="#FF3636"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
+                <Close />
               </button>
             </div>
 
@@ -402,37 +390,7 @@ export function Settings() {
                     {translateText("import Steam games")}
                   </Show>
 
-                  <svg
-                    width="19"
-                    height="19"
-                    viewBox="0 0 19 19"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M9.33521 10.141L10.8362 11.166L11.8246 12.667L15.0096 10.3973L11.5683 6.88281"
-                      className="fill-[#00000080] dark:fill-[#ffffff80] "
-                    />
-                    <path
-                      d="M15.0827 8.6404C16.0734 8.6404 16.8765 7.83728 16.8765 6.84657C16.8765 5.85586 16.0734 5.05273 15.0827 5.05273C14.0919 5.05273 13.2888 5.85586 13.2888 6.84657C13.2888 7.83728 14.0919 8.6404 15.0827 8.6404Z"
-                      className="fill-[#00000080] dark:fill-[#ffffff80] "
-                    />
-                    <path
-                      d="M9.18868 15.0834C10.4624 15.0834 11.495 14.0508 11.495 12.7771C11.495 11.5033 10.4624 10.4707 9.18868 10.4707C7.91492 10.4707 6.88232 11.5033 6.88232 12.7771C6.88232 14.0508 7.91492 15.0834 9.18868 15.0834Z"
-                      className="stroke-[#00000080] dark:stroke-[#ffffff80] "
-                      stroke-width="0.695568"
-                    />
-                    <path
-                      d="M1.97681 9.81055L9.11554 12.7759"
-                      className="stroke-[#00000080] dark:stroke-[#ffffff80] "
-                      stroke-width="2.92871"
-                      stroke-linecap="round"
-                    />
-                    <path
-                      d="M15.0827 9.81149C16.7204 9.81149 18.0481 8.48388 18.0481 6.84618C18.0481 5.20848 16.7204 3.88086 15.0827 3.88086C13.445 3.88086 12.1174 5.20848 12.1174 6.84618C12.1174 8.48388 13.445 9.81149 15.0827 9.81149Z"
-                      className="stroke-[#00000080] dark:stroke-[#ffffff80] "
-                      stroke-width="1.17148"
-                    />
-                  </svg>
+                  <Steam />
                 </button>
               </div>
 

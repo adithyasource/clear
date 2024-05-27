@@ -15,6 +15,7 @@ import {
 import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
 import { getData, translateText } from "../App";
+import { Close, SaveDisk, TrashDelete } from "../components/Icons";
 
 export function EditFolder() {
   async function editFolder() {
@@ -166,31 +167,7 @@ export function EditFolder() {
                 onClick={editFolder}
                 className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max">
                 {translateText("save")}
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M5 21H19C20.1046 21 21 20.1046 21 19V8.82843C21 8.29799 20.7893 7.78929 20.4142 7.41421L16.5858 3.58579C16.2107 3.21071 15.702 3 15.1716 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21Z"
-                    className="stroke-black dark:stroke-white"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"></path>
-                  <path
-                    d="M7 3V8H15V3"
-                    className="stroke-black dark:stroke-white"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"></path>
-                  <path
-                    d="M7 21V15H17V21"
-                    className="stroke-black dark:stroke-white"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"></path>
-                </svg>
+                <SaveDisk />
               </button>
 
               <button
@@ -209,31 +186,7 @@ export function EditFolder() {
                     ? translateText("confirm?")
                     : translateText("delete")}
                 </span>
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M3 6H21M5 6V20C5 21.1046 5.89543 22 7 22H17C18.1046 22 19 21.1046 19 20V6M8 6V4C8 2.89543 8.89543 2 10 2H14C15.1046 2 16 2.89543 16 4V6"
-                    stroke="#FF3636"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"></path>
-                  <path
-                    d="M14 11V17"
-                    stroke="#FF3636"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"></path>
-                  <path
-                    d="M10 11V17"
-                    stroke="#FF3636"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"></path>
-                </svg>
+                <TrashDelete />
               </button>
 
               <button
@@ -243,20 +196,7 @@ export function EditFolder() {
                   getData();
                 }}>
                 ​
-                <svg
-                  width="16"
-                  height="12"
-                  viewBox="0 0 12 12"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M1 1L11 10.3369M1 10.3369L11 1"
-                    stroke="#FF3636"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
+                <Close />
               </button>
             </div>
           </div>

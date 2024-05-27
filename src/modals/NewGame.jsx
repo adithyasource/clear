@@ -56,6 +56,7 @@ import {
 } from "../App";
 
 import { open } from "@tauri-apps/api/dialog";
+import { ChevronArrow, Close, Loading, SaveDisk } from "../components/Icons";
 
 export function NewGame() {
   const [showGridImageLoading, setShowGridImageLoading] = createSignal(false);
@@ -419,31 +420,7 @@ export function NewGame() {
               className="flex items-center gap-1 standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] ">
               <p className="!w-max">{translateText("save")}</p>
 
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M5 21H19C20.1046 21 21 20.1046 21 19V8.82843C21 8.29799 20.7893 7.78929 20.4142 7.41421L16.5858 3.58579C16.2107 3.21071 15.702 3 15.1716 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21Z"
-                  className="stroke-black dark:stroke-white"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"></path>
-                <path
-                  d="M7 3V8H15V3"
-                  className="stroke-black dark:stroke-white"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"></path>
-                <path
-                  d="M7 21V15H17V21"
-                  className="stroke-black dark:stroke-white"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"></path>
-              </svg>
+              <SaveDisk />
             </button>
             <button
               className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !gap-0"
@@ -452,20 +429,7 @@ export function NewGame() {
                 getData();
               }}>
               ​
-              <svg
-                width="16"
-                height="12"
-                viewBox="0 0 12 12"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M1 1L11 10.3369M1 10.3369L11 1"
-                  stroke="#FF3636"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+              <Close />
             </button>
           </div>
         </div>
@@ -517,20 +481,9 @@ export function NewGame() {
                   {translateText("grid/cover")} <br />
                 </span>
 
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  className="animate-spin-slow absolute"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M16 16L19 19M18 12H22M8 8L5 5M16 8L19 5M8 16L5 19M2 12H6M12 2V6M12 18V22"
-                    className="stroke-[#000000] dark:stroke-[#ffffff] "
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"></path>
-                </svg>
+                <div className="animate-spin-slow absolute">
+                  <Loading />
+                </div>
               </Show>
 
               <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
@@ -608,20 +561,9 @@ export function NewGame() {
                   />
                 </Show>
                 <Show when={showHeroImageLoading()}>
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    className="animate-spin-slow"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M16 16L19 19M18 12H22M8 8L5 5M16 8L19 5M8 16L5 19M2 12H6M12 2V6M12 18V22"
-                      className="stroke-[#000000] dark:stroke-[#ffffff] "
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"></path>
-                  </svg>
+                  <div className="animate-spin-slow absolute">
+                    <Loading />
+                  </div>
                 </Show>
                 <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
                   {translateText("hero")}
@@ -700,20 +642,9 @@ export function NewGame() {
                       setFoundLogoImage(undefined);
                     }}
                     className="panelButton cursor-pointer   bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[20px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] ">
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      className="animate-spin-slow"
-                      xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        d="M16 16L19 19M18 12H22M8 8L5 5M16 8L19 5M8 16L5 19M2 12H6M12 2V6M12 18V22"
-                        className="stroke-[#000000] dark:stroke-[#ffffff] "
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"></path>
-                    </svg>
+                    <div className="animate-spin-slow absolute">
+                      <Loading />
+                    </div>
                   </div>
                 </Show>
                 <Show when={showLogoImageLoading() == false}>
@@ -806,20 +737,9 @@ export function NewGame() {
                       className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]  rounded-[${
                         roundedBorders() ? "6px" : "0px"
                       }]`}>
-                      <svg
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        className="animate-spin-slow absolute top-[24%] left-[27%]"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                          d="M16 16L19 19M18 12H22M8 8L5 5M16 8L19 5M8 16L5 19M2 12H6M12 2V6M12 18V22"
-                          className="stroke-[#000000] dark:stroke-[#ffffff] "
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"></path>
-                      </svg>
+                      <div className="animate-spin-slow absolute top-[24%] left-[27%]">
+                        <Loading />
+                      </div>
                     </div>
                   </Show>
                   <span class="absolute tooltip z-[10000] group-hover:opacity-100 left-[-10%] top-[120%] opacity-0 ">
@@ -998,19 +918,7 @@ export function NewGame() {
                     "SGDBGamesContainer",
                   ).scrollLeft -= 40;
                 }}>
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M14 8L10 12L14 16"
-                    stroke="rgba(255,255,255,0.5)"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"></path>
-                </svg>
+                <ChevronArrow />
               </button>
               <div
                 id="SGDBGamesContainer"
@@ -1037,19 +945,9 @@ export function NewGame() {
                     "SGDBGamesContainer",
                   ).scrollLeft += 40;
                 }}>
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M10 8L14 12L10 16"
-                    stroke="rgba(255,255,255,0.5)"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"></path>
-                </svg>
+                <div className="rotate-180">
+                  <ChevronArrow />
+                </div>
               </button>
             </div>
           </Show>

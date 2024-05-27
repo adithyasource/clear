@@ -9,6 +9,7 @@ import {
 } from "../Signals";
 
 import { getData, translateText } from "../App";
+import { Close } from "../components/Icons";
 
 export function Notepad() {
   async function saveNotepad() {
@@ -56,20 +57,7 @@ export function Notepad() {
                   getData();
                 }}>
                 ​
-                <svg
-                  width="16"
-                  height="12"
-                  viewBox="0 0 12 12"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M1 1L11 10.3369M1 10.3369L11 1"
-                    stroke="#FF3636"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
+                <Close />
               </button>
             </div>
             <textarea

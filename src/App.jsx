@@ -72,6 +72,7 @@ import { textLanguages } from "./Text";
 import "./App.css";
 
 import Fuse from "fuse.js";
+import { ChevronArrows, EmptyTray, Steam } from "./components/Icons";
 
 export function getSettingsData() {
   if (
@@ -770,8 +771,6 @@ function App() {
       setWindowWidth(window.innerWidth);
     });
     invoke("show_window");
-    console.warn(BaseDirectory.AppData);
-
     // invoke("download_image", {
     //   link: "https://cdn2.steamgriddb.com/thumb/19e8eca3844064c94a2f9c838df1541d.jpg",
     //   location:
@@ -845,31 +844,13 @@ function App() {
 
       <div className={`h-full flex gap-[30px] overflow-y-hidden`}>
         <Show when={showSideBar() == false && windowWidth() >= 1000}>
-          <svg
+          <div
             className={`absolute right-[31px] top-[32px] z-20 rotate-180 cursor-pointer hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[25.25px] rounded-[${
               roundedBorders() ? "6px" : "0px"
             }]`}
-            onClick={toggleSideBar}
-            viewBox="0 0 12 12"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M6 11L1 6L6 1"
-              className="stroke-[#000000] dark:stroke-[#ffffff] "
-              stroke-opacity="0.5"
-              stroke-width="1.3"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M11 11L6 6L11 1"
-              className="stroke-[#000000] dark:stroke-[#ffffff] "
-              stroke-opacity="0.5"
-              stroke-width="1.3"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+            onClick={toggleSideBar}>
+            <ChevronArrows />
+          </div>
         </Show>
         <Show when={showSideBar() && windowWidth() >= 1000}>
           <SideBar />
@@ -936,37 +917,7 @@ function App() {
                     {translateText("import Steam games")}
                   </Show>
 
-                  <svg
-                    width="19"
-                    height="19"
-                    viewBox="0 0 19 19"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M9.33521 10.141L10.8362 11.166L11.8246 12.667L15.0096 10.3973L11.5683 6.88281"
-                      className="fill-[#00000080] dark:fill-[#ffffff80] "
-                    />
-                    <path
-                      d="M15.0827 8.6404C16.0734 8.6404 16.8765 7.83728 16.8765 6.84657C16.8765 5.85586 16.0734 5.05273 15.0827 5.05273C14.0919 5.05273 13.2888 5.85586 13.2888 6.84657C13.2888 7.83728 14.0919 8.6404 15.0827 8.6404Z"
-                      className="fill-[#00000080] dark:fill-[#ffffff80] "
-                    />
-                    <path
-                      d="M9.18868 15.0834C10.4624 15.0834 11.495 14.0508 11.495 12.7771C11.495 11.5033 10.4624 10.4707 9.18868 10.4707C7.91492 10.4707 6.88232 11.5033 6.88232 12.7771C6.88232 14.0508 7.91492 15.0834 9.18868 15.0834Z"
-                      className="stroke-[#00000080] dark:stroke-[#ffffff80] "
-                      stroke-width="0.695568"
-                    />
-                    <path
-                      d="M1.97681 9.81055L9.11554 12.7759"
-                      className="stroke-[#00000080] dark:stroke-[#ffffff80] "
-                      stroke-width="2.92871"
-                      stroke-linecap="round"
-                    />
-                    <path
-                      d="M15.0827 9.81149C16.7204 9.81149 18.0481 8.48388 18.0481 6.84618C18.0481 5.20848 16.7204 3.88086 15.0827 3.88086C13.445 3.88086 12.1174 5.20848 12.1174 6.84618C12.1174 8.48388 13.445 9.81149 15.0827 9.81149Z"
-                      className="stroke-[#00000080] dark:stroke-[#ffffff80] "
-                      stroke-width="1.17148"
-                    />
-                  </svg>
+                  <Steam />
                 </button>
 
                 <div
@@ -1577,20 +1528,7 @@ function App() {
                   <div className="items-center">
                     <Show when={searchResults == ""}>
                       <div className="flex items-center  justify-center w-full h-[calc(100vh-100px)] gap-3 align-middle">
-                        <svg
-                          width="20"
-                          height="20"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg">
-                          <path
-                            d="M3.04819 12H8.44444L10.2222 14H13.7778L15.5556 12H20.9361M6.70951 5.4902L3.27942 11.2785C3.09651 11.5871 3 11.9393 3 12.2981V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V12.2981C21 11.9393 20.9035 11.5871 20.7206 11.2785L17.2905 5.4902C17.1104 5.18633 16.7834 5 16.4302 5H7.5698C7.21659 5 6.88958 5.18633 6.70951 5.4902Z"
-                            stroke="white"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"></path>
-                        </svg>
-
+                        <EmptyTray />
                         {translateText("no games found")}
                       </div>
                     </Show>
