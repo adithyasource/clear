@@ -55,7 +55,38 @@ export function Settings() {
     <>
       <dialog
         data-settingsModal
-        onClose={() => {}}
+        onClose={() => {
+          setShowSettingsLanguageSelector(false);
+        }}
+        ref={(ref) => {
+          const focusableElements = ref.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+          );
+          const firstElement = focusableElements[0];
+          const lastElement = focusableElements[focusableElements.length - 1];
+
+          function handleTab(e) {
+            if (e.key === "Tab") {
+              if (e.shiftKey) {
+                if (document.activeElement === firstElement) {
+                  e.preventDefault();
+                  lastElement.focus();
+                }
+              } else {
+                if (document.activeElement === lastElement) {
+                  e.preventDefault();
+                  firstElement.focus();
+                }
+              }
+            }
+          }
+
+          ref.addEventListener("keydown", handleTab);
+
+          ref.addEventListener("close", () => {
+            previouslyFocusedElement.focus();
+          });
+        }}
         className="outline-none absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#d1d1d166]">
         <div className="flex items-center justify-center w-screen h-screen align-middle ">
           <div
@@ -81,7 +112,7 @@ export function Settings() {
             </div>
 
             <div className="grid grid-cols-3 mt-[25px] gap-y-4">
-              <div
+              <button
                 onClick={async () => {
                   setRoundedBorders((x) => !x);
 
@@ -97,11 +128,11 @@ export function Settings() {
                     },
                   ).then(getData());
                 }}
-                className="relative cursor-pointer">
+                className="relative cursor-pointer p-0 text-left">
                 <Show when={roundedBorders()}>
                   <div className="relative ">
                     <div className="">{translateText("rounded borders")}</div>
-                    <div className="absolute blur-[5px] opacity-70 inset-0  ">
+                    <div className="absolute blur-[5px] opacity-70 inset-0">
                       {translateText("rounded borders")}
                     </div>
                   </div>
@@ -109,8 +140,8 @@ export function Settings() {
                 <Show when={!roundedBorders()}>
                   <div className="">{translateText("rounded borders")}</div>
                 </Show>
-              </div>
-              <div
+              </button>
+              <button
                 onClick={async () => {
                   setGameTitle((x) => !x);
 
@@ -126,7 +157,7 @@ export function Settings() {
                     },
                   ).then(getData());
                 }}
-                className="relative cursor-pointer">
+                className="relative cursor-pointer p-0 text-left">
                 <Show when={gameTitle()}>
                   <div className="relative">
                     <div className="">{translateText("game title")}</div>
@@ -138,8 +169,8 @@ export function Settings() {
                 <Show when={!gameTitle()}>
                   <div className="">{translateText("game title")}</div>
                 </Show>
-              </div>
-              <div
+              </button>
+              <button
                 onClick={async () => {
                   setFolderTitle((x) => !x);
 
@@ -155,7 +186,7 @@ export function Settings() {
                     },
                   ).then(getData());
                 }}
-                className="relative cursor-pointer">
+                className="relative cursor-pointer p-0 text-left">
                 <Show when={folderTitle()}>
                   <div className="relative">
                     <div className="">{translateText("folder title")}</div>
@@ -167,8 +198,8 @@ export function Settings() {
                 <Show when={!folderTitle()}>
                   <div className="">{translateText("folder title")}</div>
                 </Show>
-              </div>
-              <div
+              </button>
+              <button
                 onClick={async () => {
                   setQuitAfterOpen((x) => !x);
 
@@ -184,7 +215,7 @@ export function Settings() {
                     },
                   ).then(getData());
                 }}
-                className="relative cursor-pointer">
+                className="relative cursor-pointer p-0 text-left">
                 <Show when={quitAfterOpen()}>
                   <div className="relative">
                     <div className="">
@@ -200,9 +231,9 @@ export function Settings() {
                     {translateText("quit after opening game")}
                   </div>
                 </Show>
-              </div>
+              </button>
 
-              <div
+              <button
                 onClick={async () => {
                   if (fontName() == "sans serif") {
                     setFontName("serif");
@@ -228,15 +259,15 @@ export function Settings() {
                     },
                   ).then(getData());
                 }}
-                className="flex gap-2 cursor-pointer ">
+                className="flex gap-2 cursor-pointer p-0 text-left">
                 <span className="dark:text-[#ffffff80] text-[#12121280]">
                   [{translateText("font")}]
                 </span>
                 <div className="">
                   {translateText(fontName()) || translateText("sans serif")}
                 </div>
-              </div>
-              <div
+              </button>
+              <button
                 onClick={async () => {
                   currentTheme() == "dark"
                     ? setCurrentTheme("light")
@@ -254,20 +285,21 @@ export function Settings() {
                     },
                   ).then(getData());
                 }}
-                className="flex gap-2 cursor-pointer ">
+                className="flex gap-2 cursor-pointer p-0 text-left">
                 <span className="dark:text-[#ffffff80] text-[#12121280]">
                   [{translateText("theme")}]
                 </span>
                 <div className="">
                   {translateText(currentTheme()) || translateText("dark")}
                 </div>
-              </div>
+              </button>
               <div className="flex gap-2 cursor-pointer relative">
-                <div
+                <button
                   onClick={() => {
                     setShowSettingsLanguageSelector((x) => !x);
+                    document.getElementById("firstDropdownItem").focus();
                   }}
-                  className="w-full">
+                  className="w-full p-0 text-left">
                   <span className="dark:text-[#ffffff80] text-[#12121280]">
                     [{translateText("language")}]
                   </span>
@@ -285,57 +317,65 @@ export function Settings() {
                     : language() == "fr"
                     ? "Français"
                     : "english"}
-                </div>
-
-                <Show when={showSettingsLanguageSelector()}>
-                  <div
-                    className={`flex flex-col gap-4 absolute border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
-                      roundedBorders() ? "6px" : "0px"
-                    }] p-3 z-[100000] top-[150%]`}>
+                  <Show when={showSettingsLanguageSelector()}>
                     <div
-                      className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
-                      onClick={() => {
-                        changeLanguage("en");
+                      className={`flex flex-col gap-4 absolute border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
+                        roundedBorders() ? "6px" : "0px"
+                      }] p-3 z-[100000] top-[150%]`}
+                      onMouseLeave={() => {
+                        setShowSettingsLanguageSelector(false);
                       }}>
-                      english
+                      <button
+                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150 p-0 text-left"
+                        id="firstDropdownItem"
+                        onClick={() => {
+                          changeLanguage("en");
+                        }}>
+                        english
+                      </button>
+                      <button
+                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75 p-0 text-left"
+                        onClick={() => {
+                          changeLanguage("fr");
+                        }}>
+                        Français [french]
+                      </button>
+                      <button
+                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75 p-0 text-left"
+                        onClick={() => {
+                          changeLanguage("ru");
+                        }}>
+                        русский [russian]
+                      </button>
+                      <button
+                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150 p-0 text-left"
+                        onClick={() => {
+                          changeLanguage("jp");
+                        }}>
+                        日本語 [japanese]
+                      </button>
+                      <button
+                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150 p-0 text-left"
+                        onClick={() => {
+                          changeLanguage("es");
+                        }}>
+                        Español [spanish]
+                      </button>
+                      <button
+                        onKeyDown={(e) => {
+                          if (e.key === "Tab") {
+                            setShowSettingsLanguageSelector(false);
+                          }
+                        }}
+                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150 p-0 text-left"
+                        onClick={() => {
+                          changeLanguage("hi");
+                        }}>
+                        हिंदी [hindi]
+                      </button>
                     </div>
-                    <div
-                      className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75"
-                      onClick={() => {
-                        changeLanguage("fr");
-                      }}>
-                      Français [french]
-                    </div>
-                    <div
-                      className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75"
-                      onClick={() => {
-                        changeLanguage("ru");
-                      }}>
-                      русский [russian]
-                    </div>
-                    <div
-                      className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
-                      onClick={() => {
-                        changeLanguage("jp");
-                      }}>
-                      日本語 [japanese]
-                    </div>
-                    <div
-                      className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
-                      onClick={() => {
-                        changeLanguage("es");
-                      }}>
-                      Español [spanish]
-                    </div>
-                    <div
-                      className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
-                      onClick={() => {
-                        changeLanguage("hi");
-                      }}>
-                      हिंदी [hindi]
-                    </div>
-                  </div>
-                </Show>
+                  </Show>
+                </button>
               </div>
             </div>
 
@@ -516,46 +556,46 @@ export function Settings() {
                   v{appVersion()}
                 </span>
               </div>
-              <p
+              <button
                 onClick={() => {
                   invoke("open_location", {
                     location: "https://clear.adithya.zip/feedback",
                   });
                 }}
-                className="underline cursor-pointer">
+                className="underline cursor-pointer p-0">
                 {translateText("feedback")}
-              </p>
-              <p
+              </button>
+              <button
                 onClick={() => {
                   invoke("open_location", {
                     location: "https://clear.adithya.zip/",
                   });
                 }}
-                className="underline cursor-pointer">
+                className="underline cursor-pointer p-0">
                 {translateText("website")}
-              </p>
+              </button>
               <div>
                 {translateText("made by")}{" "}
-                <a
+                <button
                   onClick={() => {
                     invoke("open_location", {
                       location: "https://adithya.zip/",
                     });
                   }}
-                  className="underline cursor-pointer">
+                  className="underline cursor-pointer p-0">
                   {" "}
                   adithya
-                </a>
+                </button>
               </div>
-              <a
+              <button
                 onClick={() => {
                   invoke("open_location", {
                     location: "https://ko-fi.com/adithyasource",
                   });
                 }}
-                className="underline cursor-pointer">
+                className="underline cursor-pointer p-0">
                 {translateText("buy me a coffee")}
-              </a>
+              </button>
             </div>
           </div>
         </div>

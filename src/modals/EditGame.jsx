@@ -353,6 +353,35 @@ export function EditGame() {
       onDragStart={(e) => {
         e.preventDefault();
       }}
+      ref={(ref) => {
+        const focusableElements = ref.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        );
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        function handleTab(e) {
+          if (e.key === "Tab") {
+            if (e.shiftKey) {
+              if (document.activeElement === firstElement) {
+                e.preventDefault();
+                lastElement.focus();
+              }
+            } else {
+              if (document.activeElement === lastElement) {
+                e.preventDefault();
+                firstElement.focus();
+              }
+            }
+          }
+        }
+
+        ref.addEventListener("keydown", handleTab);
+
+        ref.addEventListener("close", () => {
+          previouslyFocusedElement.focus();
+        });
+      }}
       onClose={() => {
         setEditedFavouriteGame();
         setEditedGameName(undefined);
@@ -373,7 +402,7 @@ export function EditGame() {
             </p>
           </div>
           <div className="flex items-center gap-4">
-            <div
+            <button
               className="cursor-pointer"
               onClick={() => {
                 if (editedFavouriteGame() == undefined) {
@@ -408,7 +437,7 @@ export function EditGame() {
               <Show when={editedFavouriteGame() == false}>
                 <div className="!w-max">favourite</div>
               </Show>
-            </div>
+            </button>
             <button
               onClick={updateGame}
               className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] ">
@@ -443,7 +472,7 @@ export function EditGame() {
           </div>
         </div>
         <div className="flex gap-3">
-          <div
+          <button
             onClick={locateEditedGridImage}
             onContextMenu={() => {
               setEditedLocatedGridImage(null);
@@ -477,10 +506,10 @@ export function EditGame() {
                 {translateText("grid/cover")}
               </span>
             </Show>
-          </div>
+          </button>
 
           <div className="flex flex-col gap-3 relative">
-            <div
+            <button
               onClick={locateEditedHeroImage}
               onContextMenu={() => {
                 setEditedLocatedHeroImage(null);
@@ -530,10 +559,10 @@ export function EditGame() {
               <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
                 {translateText("hero")}
               </span>
-            </div>
+            </button>
 
             <Show when={selectedGame().logo}>
-              <div
+              <button
                 onClick={locateEditedLogo}
                 onContextMenu={() => {
                   setEditedLocatedLogo(null);
@@ -569,10 +598,10 @@ export function EditGame() {
                 <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
                   {translateText("logo")}
                 </span>
-              </div>
+              </button>
             </Show>
             <Show when={!selectedGame().logo}>
-              <div
+              <button
                 onClick={locateEditedLogo}
                 onContextMenu={() => {
                   setEditedLocatedLogo(null);
@@ -599,16 +628,16 @@ export function EditGame() {
                 <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[45%] left-[55%] top-[65%] opacity-0">
                   {translateText("logo")}
                 </span>
-              </div>
+              </button>
             </Show>
 
             <div className="flex gap-3 items-center cursor-pointer">
-              <div
+              <button
                 onClick={locateEditedIcon}
                 onContextMenu={() => {
                   setEditedLocatedIcon(null);
                 }}
-                className="relative !bg-[#27272700] group "
+                className="relative !bg-[#27272700] group p-0"
                 aria-label="logo">
                 <Show when={editedLocatedIcon() === undefined}>
                   <Show when={selectedGame().icon}>
@@ -645,7 +674,7 @@ export function EditGame() {
                 <span class="absolute tooltip z-[10000] group-hover:opacity-100 left-[-10%] top-[120%] opacity-0">
                   {translateText("icon")}
                 </span>
-              </div>
+              </button>
 
               <input
                 aria-autocomplete="none"

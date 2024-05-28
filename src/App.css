@@ -115,7 +115,13 @@ body {
 button:focus,
 input:focus,
 select:focus {
-  outline: 0;
+  outline: none;
+}
+
+body.user-is-tabbing button:focus,
+body.user-is-tabbing input:focus,
+body.user-is-tabbing select:focus {
+  outline: 1px solid white;
 }
 
 img {
@@ -198,7 +204,6 @@ input:active,
   transition: 0.08s;
 } */
 
-button,
 input,
 #searchInput {
   transition: 0.2s;

@@ -53,6 +53,8 @@ import {
   setTotalImportedSteamGames,
   setZoomLevel,
   zoomLevel,
+  setFocusGames,
+  setFocusSearchedGames,
 } from "./Signals";
 
 import { SideBar } from "./SideBar";
@@ -739,31 +741,59 @@ function App() {
     });
   }
 
-  document.addEventListener("contextmenu", (event) => event.preventDefault());
+  function addEventListeners() {
+    document.addEventListener("contextmenu", (event) => event.preventDefault());
 
-  document.addEventListener("keyup", (e) => {
-    for (let i = 0; i < document.querySelectorAll(".sideBarGame").length; i++) {
-      document.querySelectorAll(".sideBarGame")[i].style.cursor = "grab";
+    document.addEventListener("keyup", (e) => {
+      for (
+        let i = 0;
+        i < document.querySelectorAll(".sideBarGame").length;
+        i++
+      ) {
+        document.querySelectorAll(".sideBarGame")[i].style.cursor = "grab";
+      }
+
+      for (
+        let i = 0;
+        i < document.querySelectorAll(".sideBarGame").length;
+        i++
+      ) {
+        document.querySelectorAll(".sideBarGame")[i].classList.remove(
+          "hint--right",
+          "hint--no-animate",
+
+          "hint--no-arrow",
+        );
+      }
+
+      for (let i = 0; i < document.querySelectorAll(".gameCard").length; i++) {
+        document.querySelectorAll(".gameCard")[i].classList.remove(
+          "hint--center",
+          "hint--no-animate",
+
+          "hint--no-arrow",
+        );
+      }
+    });
+
+    let body = document.body;
+
+    function handleFirstTab(e) {
+      if (e.key === "Tab") {
+        body.classList.add("user-is-tabbing");
+        window.removeEventListener("keydown", handleFirstTab);
+        window.addEventListener("mousedown", handleMouseDown);
+      }
     }
 
-    for (let i = 0; i < document.querySelectorAll(".sideBarGame").length; i++) {
-      document.querySelectorAll(".sideBarGame")[i].classList.remove(
-        "hint--right",
-        "hint--no-animate",
-
-        "hint--no-arrow",
-      );
+    function handleMouseDown() {
+      body.classList.remove("user-is-tabbing");
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.addEventListener("keydown", handleFirstTab);
     }
 
-    for (let i = 0; i < document.querySelectorAll(".gameCard").length; i++) {
-      document.querySelectorAll(".gameCard")[i].classList.remove(
-        "hint--center",
-        "hint--no-animate",
-
-        "hint--no-arrow",
-      );
-    }
-  });
+    window.addEventListener("keydown", handleFirstTab);
+  }
 
   onMount(async () => {
     await getData();
@@ -771,6 +801,7 @@ function App() {
       setWindowWidth(window.innerWidth);
     });
     invoke("show_window");
+    addEventListeners();
   });
 
   return (
@@ -839,13 +870,13 @@ function App() {
 
       <div className={`h-full flex gap-[30px] overflow-y-hidden`}>
         <Show when={showSideBar() == false && windowWidth() >= 1000}>
-          <div
+          <button
             className={`absolute right-[31px] top-[32px] z-20 rotate-180 cursor-pointer hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[25.25px] rounded-[${
               roundedBorders() ? "6px" : "0px"
             }]`}
             onClick={toggleSideBar}>
             <ChevronArrows />
-          </div>
+          </button>
         </Show>
         <Show when={showSideBar() && windowWidth() >= 1000}>
           <SideBar />
@@ -1132,10 +1163,11 @@ function App() {
                         }
                         `}>
                         <For each={folder.games}>
-                          {(gameName) => {
+                          {(gameName, index) => {
                             return (
-                              <div
-                                className="relative w-full bg-transparent cursor-pointer gameCard group"
+                              <button
+                                className="relative w-full bg-transparent cursor-pointer gameCard group p-0"
+                                id={`${index() == 0 ? "firstGameCard" : ""}`}
                                 aria-label={translateText("play")}
                                 onDragStart={(e) => {
                                   e.preventDefault();
@@ -1314,7 +1346,7 @@ function App() {
                                     </Show>
                                   </div>
                                 </Show>
-                              </div>
+                              </button>
                             );
                           }}
                         </For>
@@ -1370,14 +1402,16 @@ function App() {
                         : ""
                     }`}>
                     <For each={searchResults}>
-                      {(gameName) => {
+                      {(gameName, index) => {
                         return (
-                          <div
-                            className="relative w-full bg-transparent cursor-pointer gameCard group"
+                          <button
+                            className="relative w-full bg-transparent cursor-pointer gameCard group p-0"
+                            id={`${index() == 0 ? "firstSearchResult" : ""}`}
                             aria-label={translateText("play")}
                             onDragStart={(e) => {
                               e.preventDefault();
                             }}
+                            // ref={index() === 0 ? setFocusSearchedGames : ""}
                             onClick={async (e) => {
                               if (e.ctrlKey) {
                                 openGame(
@@ -1515,7 +1549,7 @@ function App() {
                                 </Show>
                               </div>
                             </Show>
-                          </div>
+                          </button>
                         );
                       }}
                     </For>

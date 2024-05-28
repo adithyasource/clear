@@ -373,6 +373,35 @@ export function NewGame() {
       onDragStart={(e) => {
         e.preventDefault();
       }}
+      ref={(ref) => {
+        const focusableElements = ref.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        );
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        function handleTab(e) {
+          if (e.key === "Tab") {
+            if (e.shiftKey) {
+              if (document.activeElement === firstElement) {
+                e.preventDefault();
+                lastElement.focus();
+              }
+            } else {
+              if (document.activeElement === lastElement) {
+                e.preventDefault();
+                firstElement.focus();
+              }
+            }
+          }
+        }
+
+        ref.addEventListener("keydown", handleTab);
+
+        ref.addEventListener("close", () => {
+          previouslyFocusedElement.focus();
+        });
+      }}
       onClose={() => {
         setFavouriteGame();
         setGameName("");
@@ -397,7 +426,7 @@ export function NewGame() {
             </p>
           </div>
           <div className="flex items-center gap-4">
-            <div
+            <button
               className="cursor-pointer"
               onClick={() => {
                 setFavouriteGame(!favouriteGame());
@@ -414,7 +443,7 @@ export function NewGame() {
               <Show when={!favouriteGame()}>
                 <div className="!w-max">{translateText("favourite")}</div>
               </Show>
-            </div>
+            </button>
             <button
               onClick={addGame}
               className="flex items-center gap-1 standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] ">
@@ -435,7 +464,7 @@ export function NewGame() {
         </div>
 
         <div className="flex gap-[1rem]">
-          <div
+          <button
             onClick={locateGridImage}
             onScroll={() => {}}
             onWheel={(e) => {
@@ -508,10 +537,10 @@ export function NewGame() {
                 </span>
               </Show>
             </Show>
-          </div>
+          </button>
 
           <div className="flex flex-col gap-3 relative">
-            <div
+            <button
               onClick={locateHeroImage}
               onScroll={() => {}}
               onWheel={(e) => {
@@ -593,10 +622,10 @@ export function NewGame() {
                   </span>
                 </Show>
               </Show>
-            </div>
+            </button>
 
             <Show when={foundLogoImage()}>
-              <div
+              <button
                 onClick={locateLogo}
                 onScroll={() => {}}
                 onWheel={(e) => {
@@ -635,7 +664,7 @@ export function NewGame() {
                   />
                 </Show>
                 <Show when={showLogoImageLoading()}>
-                  <div
+                  <button
                     onClick={locateLogo}
                     onContextMenu={() => {
                       setLocatedLogo(undefined);
@@ -645,19 +674,19 @@ export function NewGame() {
                     <div className="animate-spin-slow absolute">
                       <Loading />
                     </div>
-                  </div>
+                  </button>
                 </Show>
                 <Show when={showLogoImageLoading() == false}>
                   <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
                     {translateText("logo")}
                   </span>
                 </Show>
-              </div>
+              </button>
             </Show>
 
             <Show when={!foundLogoImage()}>
               <Show when={locatedLogo()}>
-                <div
+                <button
                   onClick={locateLogo}
                   onContextMenu={() => {
                     setLocatedLogo(undefined);
@@ -673,11 +702,11 @@ export function NewGame() {
                   <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
                     {translateText("logo")}
                   </span>
-                </div>
+                </button>
               </Show>
 
               <Show when={!locatedLogo()}>
-                <div
+                <button
                   onClick={locateLogo}
                   onContextMenu={() => {
                     setLocatedLogo(undefined);
@@ -688,13 +717,13 @@ export function NewGame() {
                   <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
                     {translateText("logo")}
                   </span>
-                </div>
+                </button>
               </Show>
             </Show>
 
             <div className="flex gap-3 items-center cursor-pointer ">
               <Show when={foundIconImage()}>
-                <div
+                <button
                   onClick={locateIcon}
                   onScroll={() => {}}
                   onWheel={(e) => {
@@ -720,7 +749,7 @@ export function NewGame() {
                     setLocatedIcon(undefined);
                     setFoundIconImage(undefined);
                   }}
-                  className="relative group "
+                  className="relative group p-0"
                   aria-label="logo">
                   <Show when={showIconImageLeading() == false}>
                     <img
@@ -745,16 +774,16 @@ export function NewGame() {
                   <span class="absolute tooltip z-[10000] group-hover:opacity-100 left-[-10%] top-[120%] opacity-0 ">
                     {translateText("icon")}
                   </span>
-                </div>
+                </button>
               </Show>
               <Show when={!foundIconImage()}>
-                <div
+                <button
                   onClick={locateIcon}
                   onContextMenu={() => {
                     setLocatedIcon(undefined);
                     setFoundIconImage(undefined);
                   }}
-                  className="relative !bg-[#27272700] group "
+                  className="relative !bg-[#27272700] group p-0"
                   aria-label="logo">
                   <Show when={!locatedIcon()}>
                     <div
@@ -773,7 +802,7 @@ export function NewGame() {
                   <span class="absolute tooltip z-[10000] group-hover:opacity-100 left-[-10%] top-[120%] opacity-0 ">
                     {translateText("icon")}
                   </span>
-                </div>
+                </button>
               </Show>
 
               <div

@@ -25,7 +25,39 @@ export function GamePopUp() {
               roundedBorders() ? "6px" : "0px"
             }] absolute blur-[80px] opacity-[0.4] -z-10`}
           />
-          <div className="relative">
+          <div
+            className="relative"
+            ref={(ref) => {
+              console.log(ref);
+              const focusableElements = ref.querySelectorAll(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+              );
+              const firstElement = focusableElements[0];
+              const lastElement =
+                focusableElements[focusableElements.length - 1];
+
+              function handleTab(e) {
+                if (e.key === "Tab") {
+                  if (e.shiftKey) {
+                    if (document.activeElement === firstElement) {
+                      e.preventDefault();
+                      lastElement.focus();
+                    }
+                  } else {
+                    if (document.activeElement === lastElement) {
+                      e.preventDefault();
+                      firstElement.focus();
+                    }
+                  }
+                }
+              }
+
+              ref.addEventListener("keydown", handleTab);
+
+              ref.addEventListener("close", () => {
+                previouslyFocusedElement.focus();
+              });
+            }}>
             <div className="absolute bottom-[30px] right-[30px] flex gap-[15px]">
               <button
                 className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !bg-opacity-80 hover:backdrop-blur-[5px]  !backdrop-blur-[10px]"

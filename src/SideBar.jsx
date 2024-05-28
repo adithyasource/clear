@@ -13,6 +13,10 @@ import {
   appDataDirPath,
   newVersionAvailable,
   language,
+  showContentSkipButton,
+  setShowContentSkipButton,
+  focusGames,
+  focusSearchedGames,
 } from "./Signals";
 
 import {
@@ -155,17 +159,48 @@ export function SideBar() {
               onInput={(e) => {
                 setSearchValue(e.currentTarget.value);
               }}
+              onKeyUp={(e) => {
+                if (e.key === "Enter") {
+                  document.getElementById("firstSearchResult").focus();
+                  let body = document.body;
+                  body.classList.add("user-is-tabbing");
+                }
+              }}
             />
-            <div
+            <button
               className={`cursor-pointer hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[28px] rounded-[${
                 roundedBorders() ? "6px" : "0px"
               }]`}
               onClick={() => {
                 toggleSideBar();
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Tab" && e.shiftKey === false) {
+                  setShowContentSkipButton(true);
+                }
               }}>
               <ChevronArrows />
-            </div>
+            </button>
           </div>
+          <Show when={showContentSkipButton()}>
+            <button
+              className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] mt-[12px]"
+              onClick={() => {
+                setShowContentSkipButton(false);
+                document.getElementById("firstGameCard").focus();
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Tab") {
+                  setShowContentSkipButton(false);
+                }
+              }}
+              onBlur={() => {
+                setShowContentSkipButton(false);
+              }}>
+              {translateText("skip to games")}
+            </button>
+          </Show>
+
           <div
             id="sideBarFolders"
             className="mt-[20px]"
@@ -266,7 +301,7 @@ export function SideBar() {
             } overflow-auto  rounded-[${roundedBorders() ? "6px" : "0px"}]`}>
             <p className="mt-[5px]"></p>
             <For each={currentFolders()}>
-              {(folderName, i) => {
+              {(folderName, index) => {
                 let folder = libraryData().folders[folderName];
 
                 if (folder.games.length > 0) {
@@ -419,16 +454,23 @@ export function SideBar() {
                             setSelectedFolder(folder);
                             setEditedFolderName(selectedFolder().name);
                             setEditedHideFolder(selectedFolder().hide);
+                          }}
+                          onKeyDown={(e) => {
+                            if (index() === 0) {
+                              if (e.key === "Tab" && e.shiftKey === true) {
+                                setShowContentSkipButton(true);
+                              }
+                            }
                           }}>
                           <Edit />
                         </button>
                       </div>
                       <For each={folder.games}>
                         {(gameName, i) => (
-                          <span
+                          <button
                             className={`!flex gap-[5px] bg-transparent ${
                               i() == 0 ? "mt-4" : "mt-5"
-                            }  sideBarGame cursor-grab `}
+                            }  sideBarGame cursor-grab p-0`}
                             aria-label={translateText("play")}
                             draggable={true}
                             onDragStart={(e) => {
@@ -471,7 +513,7 @@ export function SideBar() {
                             <span className="text-[#00000080] dark:text-[#ffffff80] active:dark:text-[#ffffff3a] active:text-[#0000003a]">
                               {gameName}
                             </span>
-                          </span>
+                          </button>
                         )}
                       </For>
                       <p className="mt-[10px] w-full h-[3px] sideBarGame cursor-grab">
@@ -608,7 +650,7 @@ export function SideBar() {
                   }
                   return (
                     <Show when={!gamesInFolders.includes(currentGame)}>
-                      <p
+                      <button
                         draggable={true}
                         onDragStart={(e) => {
                           e.dataTransfer.setData("gameName", currentGame);
@@ -620,7 +662,7 @@ export function SideBar() {
                         }}
                         className={`!flex gap-[5px] bg-transparent ${
                           i() == 0 ? "mt-4" : "mt-5"
-                        }  sideBarGame cursor-grab `}
+                        }  sideBarGame cursor-grab p-0`}
                         aria-label={translateText("play")}
                         onClick={async (e) => {
                           await setSelectedGame(
@@ -647,7 +689,7 @@ export function SideBar() {
                         <span className="text-[#00000080] dark:text-[#ffffff80] active:dark:text-[#ffffff3a] active:text-[#0000003a]">
                           {currentGame}
                         </span>
-                      </p>
+                      </button>
                     </Show>
                   );
                 }}

@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@solid-primitives/autofocus':
+    specifier: ^0.0.111
+    version: 0.0.111(solid-js@1.7.8)
   '@tauri-apps/api':
     specifier: ^1.5.1
     version: 1.5.1
@@ -657,6 +660,23 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@solid-primitives/autofocus@0.0.111(solid-js@1.7.8):
+    resolution: {integrity: sha512-WQUCcBzUmLdmHeyN0Z1lH75IN1IGIbvOMTcBEmuCY5DXeahRJm3riTGqVj+XOA4G+NHCMt7wPOJoYOAuwUov/Q==}
+    peerDependencies:
+      solid-js: ^1.6.12
+    dependencies:
+      '@solid-primitives/utils': 6.2.3(solid-js@1.7.8)
+      solid-js: 1.7.8
+    dev: false
+
+  /@solid-primitives/utils@6.2.3(solid-js@1.7.8):
+    resolution: {integrity: sha512-CqAwKb2T5Vi72+rhebSsqNZ9o67buYRdEJrIFzRXz3U59QqezuuxPsyzTSVCacwS5Pf109VRsgCJQoxKRoECZQ==}
+    peerDependencies:
+      solid-js: ^1.6.12
+    dependencies:
+      solid-js: 1.7.8
+    dev: false
 
   /@tauri-apps/api@1.5.1:
     resolution: {integrity: sha512-6unsZDOdlXTmauU3NhWhn+Cx0rODV+rvNvTdvolE5Kls5ybA6cqndQENDt1+FS0tF7ozCP66jwWoH6a5h90BrA==}

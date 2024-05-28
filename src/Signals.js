@@ -14,6 +14,12 @@ export const [toastError, setToastMessage] = createSignal("");
 export const [showToast, setShowToast] = createSignal(false);
 export const [windowWidth, setWindowWidth] = createSignal(window.innerWidth);
 export const [zoomLevel, setZoomLevel] = createSignal();
+export const [showContentSkipButton, setShowContentSkipButton] =
+  createSignal(false);
+export const [focusFirstItem, setFocusFirstItem] = createSignal();
+export const [focusGames, setFocusGames] = createSignal();
+export const [focusSearchedGames, setFocusSearchedGames] = createSignal();
+export const [searchingGames, setSearchingGames] = createSignal(false);
 
 // !? References
 export const [selectedGame, setSelectedGame] = createSignal({});
@@ -30,7 +36,6 @@ export const [showSettingsLanguageSelector, setShowSettingsLanguageSelector] =
   createSignal(false);
 export const [showLanguageSelector, setShowLanguageSelector] =
   createSignal(false);
-
 export const [totalSteamGames, setTotalSteamGames] = createSignal(0);
 export const [totalImportedSteamGames, setTotalImportedSteamGames] =
   createSignal(0);

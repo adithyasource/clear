@@ -546,4 +546,11 @@ export let textLanguages = {
     ru: "",
     fr: "",
   },
+  "skip to games": {
+    jp: "",
+    es: "",
+    hi: "",
+    ru: "",
+    fr: "",
+  },
 };
