@@ -4,29 +4,16 @@ import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
 import {
   libraryData,
-  roundedBorders,
-  setRoundedBorders,
-  gameTitle,
-  setGameTitle,
-  folderTitle,
-  setFolderTitle,
-  quitAfterOpen,
-  setQuitAfterOpen,
-  setFontName,
-  fontName,
-  currentTheme,
-  setCurrentTheme,
   appVersion,
   latestVersion,
   setLatestVersion,
   newVersionAvailable,
   setNewVersionAvailable,
-  language,
-  steamFolderExists,
   showImportAndOverwriteConfirm,
   setShowImportAndOverwriteConfirm,
   setShowSettingsLanguageSelector,
   showSettingsLanguageSelector,
+  setLibraryData,
 } from "../Signals";
 
 import {
@@ -91,7 +78,7 @@ export function Settings() {
         <div className="flex items-center justify-center w-screen h-screen align-middle ">
           <div
             className={`border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
-              roundedBorders() ? "6px" : "0px"
+              libraryData.userSettings.roundedBorders ? "6px" : "0px"
             }] w-[70%] p-6`}>
             <div className="flex justify-between">
               <div>
@@ -114,14 +101,12 @@ export function Settings() {
             <div className="grid grid-cols-3 mt-[25px] gap-y-4">
               <button
                 onClick={async () => {
-                  setRoundedBorders((x) => !x);
-
-                  libraryData().userSettings.roundedBorders = roundedBorders();
+                  setLibraryData("userSettings", "roundedBorders", (x) => !x);
 
                   await writeTextFile(
                     {
                       path: "data.json",
-                      contents: JSON.stringify(libraryData(), null, 4),
+                      contents: JSON.stringify(libraryData, null, 4),
                     },
                     {
                       dir: BaseDirectory.AppData,
@@ -129,7 +114,7 @@ export function Settings() {
                   ).then(getData());
                 }}
                 className="relative cursor-pointer p-0 text-left">
-                <Show when={roundedBorders()}>
+                <Show when={libraryData.userSettings.roundedBorders}>
                   <div className="relative ">
                     <div className="">{translateText("rounded borders")}</div>
                     <div className="absolute blur-[5px] opacity-70 inset-0">
@@ -137,20 +122,18 @@ export function Settings() {
                     </div>
                   </div>
                 </Show>
-                <Show when={!roundedBorders()}>
+                <Show when={!libraryData.userSettings.roundedBorders}>
                   <div className="">{translateText("rounded borders")}</div>
                 </Show>
               </button>
               <button
                 onClick={async () => {
-                  setGameTitle((x) => !x);
-
-                  libraryData().userSettings.gameTitle = gameTitle();
+                  setLibraryData("userSettings", "gameTitle", (x) => !x);
 
                   await writeTextFile(
                     {
                       path: "data.json",
-                      contents: JSON.stringify(libraryData(), null, 4),
+                      contents: JSON.stringify(libraryData, null, 4),
                     },
                     {
                       dir: BaseDirectory.AppData,
@@ -158,7 +141,7 @@ export function Settings() {
                   ).then(getData());
                 }}
                 className="relative cursor-pointer p-0 text-left">
-                <Show when={gameTitle()}>
+                <Show when={libraryData.userSettings.gameTitle}>
                   <div className="relative">
                     <div className="">{translateText("game title")}</div>
                     <div className="absolute blur-[5px] opacity-70 inset-0  ">
@@ -166,20 +149,18 @@ export function Settings() {
                     </div>
                   </div>
                 </Show>
-                <Show when={!gameTitle()}>
+                <Show when={!libraryData.userSettings.gameTitle}>
                   <div className="">{translateText("game title")}</div>
                 </Show>
               </button>
               <button
                 onClick={async () => {
-                  setFolderTitle((x) => !x);
-
-                  libraryData().userSettings.folderTitle = folderTitle();
+                  setLibraryData("userSettings", "folderTitle", (x) => !x);
 
                   await writeTextFile(
                     {
                       path: "data.json",
-                      contents: JSON.stringify(libraryData(), null, 4),
+                      contents: JSON.stringify(libraryData, null, 4),
                     },
                     {
                       dir: BaseDirectory.AppData,
@@ -187,7 +168,7 @@ export function Settings() {
                   ).then(getData());
                 }}
                 className="relative cursor-pointer p-0 text-left">
-                <Show when={folderTitle()}>
+                <Show when={libraryData.userSettings.folderTitle}>
                   <div className="relative">
                     <div className="">{translateText("folder title")}</div>
                     <div className="absolute blur-[5px] opacity-70 inset-0  ">
@@ -195,20 +176,18 @@ export function Settings() {
                     </div>
                   </div>
                 </Show>
-                <Show when={!folderTitle()}>
+                <Show when={!libraryData.userSettings.folderTitle}>
                   <div className="">{translateText("folder title")}</div>
                 </Show>
               </button>
               <button
                 onClick={async () => {
-                  setQuitAfterOpen((x) => !x);
-
-                  libraryData().userSettings.quitAfterOpen = quitAfterOpen();
+                  setLibraryData("userSettings", "quitAfterOpen", (x) => !x);
 
                   await writeTextFile(
                     {
                       path: "data.json",
-                      contents: JSON.stringify(libraryData(), null, 4),
+                      contents: JSON.stringify(libraryData, null, 4),
                     },
                     {
                       dir: BaseDirectory.AppData,
@@ -216,7 +195,7 @@ export function Settings() {
                   ).then(getData());
                 }}
                 className="relative cursor-pointer p-0 text-left">
-                <Show when={quitAfterOpen()}>
+                <Show when={libraryData.userSettings.quitAfterOpen}>
                   <div className="relative">
                     <div className="">
                       {translateText("quit after opening game")}
@@ -226,7 +205,7 @@ export function Settings() {
                     </div>
                   </div>
                 </Show>
-                <Show when={!quitAfterOpen()}>
+                <Show when={!libraryData.userSettings.quitAfterOpen}>
                   <div className="">
                     {translateText("quit after opening game")}
                   </div>
@@ -235,24 +214,26 @@ export function Settings() {
 
               <button
                 onClick={async () => {
-                  if (fontName() == "sans serif") {
-                    setFontName("serif");
+                  if (libraryData.userSettings.fontName == "sans serif") {
+                    setLibraryData("userSettings", "fontName", "serif");
                   } else {
-                    if (fontName() == "serif") {
-                      setFontName("mono");
+                    if (libraryData.userSettings.fontName == "serif") {
+                      setLibraryData("userSettings", "fontName", "mono");
                     } else {
-                      if (fontName() == "mono") {
-                        setFontName("sans serif");
+                      if (libraryData.userSettings.fontName == "mono") {
+                        setLibraryData(
+                          "userSettings",
+                          "fontName",
+                          "sans serif",
+                        );
                       }
                     }
                   }
 
-                  libraryData().userSettings.fontName = fontName();
-
                   await writeTextFile(
                     {
                       path: "data.json",
-                      contents: JSON.stringify(libraryData(), null, 4),
+                      contents: JSON.stringify(libraryData, null, 4),
                     },
                     {
                       dir: BaseDirectory.AppData,
@@ -264,21 +245,20 @@ export function Settings() {
                   [{translateText("font")}]
                 </span>
                 <div className="">
-                  {translateText(fontName()) || translateText("sans serif")}
+                  {translateText(libraryData.userSettings.fontName) ||
+                    translateText("sans serif")}
                 </div>
               </button>
               <button
                 onClick={async () => {
-                  currentTheme() == "dark"
-                    ? setCurrentTheme("light")
-                    : setCurrentTheme("dark");
-
-                  libraryData().userSettings.theme = currentTheme();
+                  libraryData.userSettings.currentTheme == "dark"
+                    ? setLibraryData("userSettings", "currentTheme", "light")
+                    : setLibraryData("userSettings", "currentTheme", "dark");
 
                   await writeTextFile(
                     {
                       path: "data.json",
-                      contents: JSON.stringify(libraryData(), null, 4),
+                      contents: JSON.stringify(libraryData, null, 4),
                     },
                     {
                       dir: BaseDirectory.AppData,
@@ -290,7 +270,8 @@ export function Settings() {
                   [{translateText("theme")}]
                 </span>
                 <div className="">
-                  {translateText(currentTheme()) || translateText("dark")}
+                  {translateText(libraryData.userSettings.currentTheme) ||
+                    translateText("dark")}
                 </div>
               </button>
               <div className="flex gap-2 cursor-pointer relative">
@@ -304,23 +285,23 @@ export function Settings() {
                     [{translateText("language")}]
                   </span>
                   &nbsp;{" "}
-                  {language() == "en"
+                  {libraryData.userSettings.language == "en"
                     ? "english"
-                    : language() == "jp"
+                    : libraryData.userSettings.language == "jp"
                     ? "日本語"
-                    : language() == "es"
+                    : libraryData.userSettings.language == "es"
                     ? "Español"
-                    : language() == "hi"
+                    : libraryData.userSettings.language == "hi"
                     ? "हिंदी"
-                    : language() == "ru"
+                    : libraryData.userSettings.language == "ru"
                     ? "русский"
-                    : language() == "fr"
+                    : libraryData.userSettings.language == "fr"
                     ? "Français"
                     : "english"}
                   <Show when={showSettingsLanguageSelector()}>
                     <div
                       className={`flex flex-col gap-4 absolute border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
-                        roundedBorders() ? "6px" : "0px"
+                        libraryData.userSettings.roundedBorders ? "6px" : "0px"
                       }] p-3 z-[100000] top-[150%]`}
                       onMouseLeave={() => {
                         setShowSettingsLanguageSelector(false);
@@ -402,7 +383,7 @@ export function Settings() {
                   className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] hint--bottom !flex !w-max !gap-3 "
                   aria-label={translateText("might not work perfectly!")}
                   onClick={() => {
-                    if (steamFolderExists()) {
+                    if (libraryData.folders.steam != undefined) {
                       showImportAndOverwriteConfirm()
                         ? importSteamGames()
                         : setShowImportAndOverwriteConfirm(true);
@@ -414,7 +395,7 @@ export function Settings() {
                       importSteamGames();
                     }
                   }}>
-                  <Show when={steamFolderExists() == true}>
+                  <Show when={libraryData.folders.steam != undefined}>
                     <Show when={showImportAndOverwriteConfirm() == true}>
                       <span className="text-[#FF3636]">
                         {translateText(
@@ -426,7 +407,7 @@ export function Settings() {
                       {translateText("import Steam games")}
                     </Show>
                   </Show>
-                  <Show when={steamFolderExists() == false}>
+                  <Show when={libraryData.folders.steam == undefined}>
                     {translateText("import Steam games")}
                   </Show>
 
@@ -458,7 +439,7 @@ export function Settings() {
               <div className="flex items-center gap-3">
                 <div
                   className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    roundedBorders() ? "6px" : "0px"
+                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
                   }] `}>
                   ctrl + n
                 </div>
@@ -469,7 +450,7 @@ export function Settings() {
               <div className="flex items-center gap-3">
                 <div
                   className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    roundedBorders() ? "6px" : "0px"
+                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
                   }] `}>
                   ctrl + .
                 </div>
@@ -479,7 +460,7 @@ export function Settings() {
               <div className="flex items-center gap-3">
                 <div
                   className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    roundedBorders() ? "6px" : "0px"
+                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
                   }] `}>
                   ctrl + f
                 </div>
@@ -489,7 +470,7 @@ export function Settings() {
               <div className="flex items-center gap-3">
                 <div
                   className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    roundedBorders() ? "6px" : "0px"
+                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
                   }] `}>
                   ctrl + m
                 </div>
@@ -499,7 +480,7 @@ export function Settings() {
               <div className="flex items-center gap-3">
                 <div
                   className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    roundedBorders() ? "6px" : "0px"
+                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
                   }] `}>
                   ctrl + l
                 </div>
@@ -509,7 +490,7 @@ export function Settings() {
               <div className="flex items-center gap-3">
                 <div
                   className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    roundedBorders() ? "6px" : "0px"
+                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
                   }] `}>
                   ctrl + \\
                 </div>
@@ -519,7 +500,7 @@ export function Settings() {
               <div className="flex items-center gap-3">
                 <div
                   className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    roundedBorders() ? "6px" : "0px"
+                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
                   }] `}>
                   ctrl + w
                 </div>
@@ -529,7 +510,7 @@ export function Settings() {
               <div className="flex items-center gap-3">
                 <div
                   className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    roundedBorders() ? "6px" : "0px"
+                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
                   }] `}>
                   ctrl - / =
                 </div>
@@ -540,7 +521,7 @@ export function Settings() {
               <div className="flex items-center gap-3">
                 <div
                   className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    roundedBorders() ? "6px" : "0px"
+                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
                   }] `}>
                   ctrl + click
                 </div>

@@ -14,47 +14,25 @@ import { appDataDir } from "@tauri-apps/api/path";
 import {
   appDataDirPath,
   currentFolders,
-  currentTheme,
-  folderTitle,
-  fontName,
-  gameTitle,
   libraryData,
-  quitAfterOpen,
-  roundedBorders,
   searchValue,
   setAppDataDirPath,
   setCurrentFolders,
   setCurrentGames,
-  setCurrentTheme,
-  setFolderTitle,
-  setFontName,
-  setGameTitle,
   setLibraryData,
-  setQuitAfterOpen,
-  setRoundedBorders,
   setSearchValue,
   setSelectedGame,
-  setShowSideBar,
   setWindowWidth,
-  showSideBar,
   windowWidth,
   setToastMessage,
   setShowToast,
   setShowImportAndOverwriteConfirm,
   showImportAndOverwriteConfirm,
-  setSteamFolderExists,
-  steamFolderExists,
-  language,
-  setLanguage,
   setShowLanguageSelector,
   showLanguageSelector,
   setShowSettingsLanguageSelector,
   setTotalSteamGames,
   setTotalImportedSteamGames,
-  setZoomLevel,
-  zoomLevel,
-  setFocusGames,
-  setFocusSearchedGames,
 } from "./Signals";
 
 import { SideBar } from "./SideBar";
@@ -76,86 +54,6 @@ import "./App.css";
 import Fuse from "fuse.js";
 import { ChevronArrows, EmptyTray, Steam } from "./components/Icons";
 
-export function getSettingsData() {
-  if (
-    libraryData().userSettings.roundedBorders == undefined ||
-    libraryData().userSettings.roundedBorders == true
-  ) {
-    setRoundedBorders(true);
-  } else {
-    setRoundedBorders(false);
-  }
-  if (
-    libraryData().userSettings.gameTitle == undefined ||
-    libraryData().userSettings.gameTitle == true
-  ) {
-    setGameTitle(true);
-  } else {
-    setGameTitle(false);
-  }
-  if (
-    libraryData().userSettings.folderTitle == undefined ||
-    libraryData().userSettings.folderTitle == true
-  ) {
-    setFolderTitle(true);
-  } else {
-    setFolderTitle(false);
-  }
-  if (
-    libraryData().userSettings.quitAfterOpen == undefined ||
-    libraryData().userSettings.quitAfterOpen == true
-  ) {
-    setQuitAfterOpen(true);
-  } else {
-    setQuitAfterOpen(false);
-  }
-
-  if (
-    libraryData().userSettings.theme == undefined ||
-    libraryData().userSettings.theme == "dark"
-  ) {
-    setCurrentTheme("dark");
-  } else {
-    setCurrentTheme("light");
-  }
-
-  if (
-    libraryData().userSettings.language == undefined ||
-    libraryData().userSettings.language == "en"
-  ) {
-    setLanguage("en");
-  } else {
-    setLanguage(libraryData().userSettings.language);
-  }
-
-  if (
-    libraryData().userSettings.zoomLevel == undefined ||
-    libraryData().userSettings.zoomLevel == 1
-  ) {
-    setZoomLevel(1);
-  } else {
-    setZoomLevel(libraryData().userSettings.zoomLevel);
-  }
-
-  setFontName(libraryData().userSettings.fontName || "sans serif");
-
-  document.documentElement.classList.add("dark");
-
-  if (currentTheme() == "light") {
-    document.documentElement.classList.remove("dark");
-  } else {
-    document.documentElement.classList.add("dark");
-  }
-
-  libraryData().userSettings.showSideBar == undefined
-    ? setShowSideBar(true)
-    : setShowSideBar(libraryData().userSettings.showSideBar);
-
-  libraryData().folders.steam != undefined
-    ? setSteamFolderExists(true)
-    : setSteamFolderExists(false);
-}
-
 async function createEmptyLibrary() {
   await createDir("heroes", {
     dir: BaseDirectory.AppData,
@@ -174,16 +72,10 @@ async function createEmptyLibrary() {
     recursive: true,
   });
 
-  let emptyLibrary = {
-    games: {},
-    folders: {},
-    notepad: "",
-    userSettings: {},
-  };
   await writeTextFile(
     {
       path: "data.json",
-      contents: JSON.stringify(emptyLibrary, null, 4),
+      contents: JSON.stringify(libraryData, null, 4),
     },
     {
       dir: BaseDirectory.AppData,
@@ -201,28 +93,35 @@ export async function getData() {
       dir: BaseDirectory.AppData,
     });
 
+    // ! potential footgun here cause you're not checking if games are empty
     if (getLibraryData != "" && JSON.parse(getLibraryData).folders != "") {
       setCurrentGames("");
       setCurrentFolders("");
 
       setLibraryData(JSON.parse(getLibraryData));
 
-      for (let x = 0; x < Object.keys(libraryData()["folders"]).length; x++) {
-        for (let y = 0; y < Object.keys(libraryData()["folders"]).length; y++) {
-          if (Object.values(libraryData()["folders"])[y].index == x) {
+      for (let x = 0; x < Object.keys(libraryData["folders"]).length; x++) {
+        for (let y = 0; y < Object.keys(libraryData["folders"]).length; y++) {
+          if (Object.values(libraryData["folders"])[y].index == x) {
             setCurrentFolders((z) => [
               ...z,
-              Object.keys(libraryData()["folders"])[y],
+              Object.keys(libraryData["folders"])[y],
             ]);
           }
         }
       }
 
-      setCurrentGames(Object.keys(libraryData()["games"]));
+      setCurrentGames(Object.keys(libraryData["games"]));
 
       console.log("data fetched");
 
-      getSettingsData();
+      // ? Checks currentTheme and adds it to the document classList for Tailwind
+
+      if (libraryData.userSettings.currentTheme == "light") {
+        document.documentElement.classList.remove("dark");
+      } else {
+        document.documentElement.classList.add("dark");
+      }
 
       document.querySelector("[data-newGameModal]").close();
       document.querySelector("[data-newFolderModal]").close();
@@ -250,7 +149,10 @@ export async function openGame(gameLocation) {
     location: gameLocation,
   });
 
-  if (quitAfterOpen() == true || quitAfterOpen() == undefined) {
+  if (
+    libraryData.userSettings.quitAfterOpen == true ||
+    libraryData.userSettings.quitAfterOpen == undefined
+  ) {
     setTimeout(async () => {
       invoke("close_app");
     }, 500);
@@ -277,14 +179,12 @@ export function generateRandomString() {
 }
 
 export async function changeLanguage(lang) {
-  libraryData().userSettings.language = lang;
-
-  setLanguage("lang");
+  setLibraryData("userSettings", "language", lang);
 
   await writeTextFile(
     {
       path: "data.json",
-      contents: JSON.stringify(libraryData(), null, 4),
+      contents: JSON.stringify(libraryData, null, 4),
     },
     {
       dir: BaseDirectory.AppData,
@@ -297,7 +197,7 @@ export async function changeLanguage(lang) {
 
 // ? VDF Parser From https://github.com/node-steam/vdf
 
-function parseVDF(text) {
+export function parseVDF(text) {
   if (typeof text !== "string") {
     throw new TypeError("VDF | Parse: Expecting parameter to be a string");
   }
@@ -436,14 +336,15 @@ export async function importSteamGames() {
 
         let allGameNames = [];
 
-        delete libraryData().folders["steam"];
-
-        setLibraryData(libraryData());
+        setLibraryData((data) => {
+          delete data.folders["steam"];
+          return data;
+        });
 
         await writeTextFile(
           {
             path: "data.json",
-            contents: JSON.stringify(libraryData(), null, 4),
+            contents: JSON.stringify(libraryData, null, 4),
           },
           {
             dir: BaseDirectory.AppData,
@@ -497,22 +398,24 @@ export async function importSteamGames() {
                             )
                           : (iconImageFileName = undefined);
 
-                        libraryData().games[name] = {
-                          location: `steam://rungameid/${steamId}`,
-                          name: name,
-                          heroImage: heroImageFileName,
-                          gridImage: gridImageFileName,
-                          logo: logoImageFileName,
-                          icon: iconImageFileName,
-                          favourite: false,
-                        };
+                        setLibraryData((data) => {
+                          data.games[name] = {
+                            location: `steam://rungameid/${steamId}`,
+                            name: name,
+                            heroImage: heroImageFileName,
+                            gridImage: gridImageFileName,
+                            logo: logoImageFileName,
+                            icon: iconImageFileName,
+                            favourite: false,
+                          };
 
-                        setLibraryData(libraryData());
+                          return;
+                        });
 
                         await writeTextFile(
                           {
                             path: "data.json",
-                            contents: JSON.stringify(libraryData(), null, 4),
+                            contents: JSON.stringify(libraryData, null, 4),
                           },
                           {
                             dir: BaseDirectory.AppData,
@@ -530,17 +433,21 @@ export async function importSteamGames() {
             }
           })
           .then(async () => {
-            libraryData().folders["steam"] = {
-              name: "steam",
-              hide: false,
-              games: allGameNames,
-              index: currentFolders().length,
-            };
+            setLibraryData((data) => {
+              data.folders["steam"] = {
+                name: "steam",
+                hide: false,
+                games: allGameNames,
+                index: currentFolders().length,
+              };
+
+              return data;
+            });
 
             await writeTextFile(
               {
                 path: "data.json",
-                contents: JSON.stringify(libraryData(), null, 4),
+                contents: JSON.stringify(libraryData, null, 4),
               },
               {
                 dir: BaseDirectory.AppData,
@@ -576,16 +483,17 @@ export function translateText(text) {
     return undefined;
   }
 
-  return language() == undefined || language() == "en"
+  return libraryData.userSettings.language == undefined ||
+    libraryData.userSettings.language == "en"
     ? text
-    : textLanguages[text][language()];
+    : textLanguages[text][libraryData.userSettings.language];
 }
 
 async function updateData() {
   await writeTextFile(
     {
       path: "data.json",
-      contents: JSON.stringify(libraryData(), null, 4),
+      contents: JSON.stringify(libraryData, null, 4),
     },
     {
       dir: BaseDirectory.AppData,
@@ -616,17 +524,17 @@ function App() {
     }
 
     if (e.ctrlKey && e.code == "Equal") {
-      setZoomLevel((x) => (x != 2 ? (x += 1) : (x = 2)));
-
-      libraryData().userSettings.zoomLevel = zoomLevel();
+      setLibraryData("userSettings", "zoomLevel", (x) =>
+        x != 2 ? (x += 1) : (x = 2),
+      );
 
       updateData();
     }
 
     if (e.ctrlKey && e.code == "Minus") {
-      setZoomLevel((x) => (x != 0 ? (x -= 1) : (x = 0)));
-
-      libraryData().userSettings.zoomLevel = zoomLevel();
+      setLibraryData("userSettings", "zoomLevel", (x) =>
+        x != 0 ? (x -= 1) : (x = 0),
+      );
 
       updateData();
     }
@@ -724,14 +632,12 @@ function App() {
   async function toggleSideBar() {
     setSearchValue("");
 
-    setShowSideBar((x) => !x);
-
-    libraryData().userSettings.showSideBar = showSideBar();
+    setLibraryData("userSettings", "showSideBar", (x) => !x);
 
     await writeTextFile(
       {
         path: "data.json",
-        contents: JSON.stringify(libraryData(), null, 4),
+        contents: JSON.stringify(libraryData, null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -795,8 +701,9 @@ function App() {
     window.addEventListener("keydown", handleFirstTab);
   }
 
+  getData();
+
   onMount(async () => {
-    await getData();
     window.addEventListener("resize", () => {
       setWindowWidth(window.innerWidth);
     });
@@ -819,40 +726,52 @@ function App() {
         button,
         input,
         .panelButton {
-          border-radius: ${roundedBorders() ? "6px" : "0px"};
+          border-radius: ${libraryData.userSettings.roundedBorders
+            ? "6px"
+            : "0px"};
         }
 
         .sideBarFolder {
-          border-radius: ${roundedBorders() ? "6px" : "0px"};
+          border-radius: ${libraryData.userSettings.roundedBorders
+            ? "6px"
+            : "0px"};
         }
 
         .titleBarText {
-          font-family: ${fontName() == "sans serif"
+          font-family: ${libraryData.userSettings.fontName == "sans serif"
             ? "Segoe UI"
-            : fontName() == "serif"
+            : libraryData.userSettings.fontName == "serif"
             ? "Times New Roman"
             : "IBM Plex Mono, Consolas"};
         }
 
         * {
-          font-family: ${fontName() == "sans serif"
+          font-family: ${libraryData.userSettings.fontName == "sans serif"
             ? "Helvetica, Arial, sans-serif"
-            : fontName() == "serif"
+            : libraryData.userSettings.fontName == "serif"
             ? "Times New Roman"
             : "IBM Plex Mono, Consolas"};
-          color: ${currentTheme() == "light" ? "#000000" : "#ffffff"};
+          color: ${libraryData.userSettings.currentTheme == "light"
+            ? "#000000"
+            : "#ffffff"};
         }
 
         ::-webkit-scrollbar-thumb {
-          border-radius: ${roundedBorders() ? "10px" : "0px"};
+          border-radius: ${libraryData.userSettings.roundedBorders
+            ? "10px"
+            : "0px"};
         }
 
         .gameInput {
-          border-radius: ${roundedBorders() ? "6px" : "0px"};
+          border-radius: ${libraryData.userSettings.roundedBorders
+            ? "6px"
+            : "0px"};
         }
 
         .tooltip {
-          border-radius: ${roundedBorders() ? "6px" : "0px"};
+          border-radius: ${libraryData.userSettings.roundedBorders
+            ? "6px"
+            : "0px"};
         }
 
         .currentlyDragging {
@@ -862,35 +781,42 @@ function App() {
         }
 
         [class*="hint--"]:after {
-          border-radius: ${roundedBorders() ? "6px" : "0px"};
+          border-radius: ${libraryData.userSettings.roundedBorders
+            ? "6px"
+            : "0px"};
         }
       `}</style>
 
       <Toast />
 
       <div className={`h-full flex gap-[30px] overflow-y-hidden`}>
-        <Show when={showSideBar() == false && windowWidth() >= 1000}>
+        <Show
+          when={
+            libraryData.userSettings.showSideBar == false &&
+            windowWidth() >= 1000
+          }>
           <button
             className={`absolute right-[31px] top-[32px] z-20 rotate-180 cursor-pointer hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[25.25px] rounded-[${
-              roundedBorders() ? "6px" : "0px"
+              libraryData.userSettings.roundedBorders ? "6px" : "0px"
             }]`}
             onClick={toggleSideBar}>
             <ChevronArrows />
           </button>
         </Show>
-        <Show when={showSideBar() && windowWidth() >= 1000}>
+        <Show
+          when={libraryData.userSettings.showSideBar && windowWidth() >= 1000}>
           <SideBar />
         </Show>
 
         <Show
           when={
-            JSON.stringify(libraryData().folders) == "{}" &&
+            JSON.stringify(libraryData.folders) == "{}" &&
             (searchValue() == "" || searchValue() == undefined)
           }>
           <div
             className={` flex items-center justify-center flex-col w-full absolute h-[100vh]
             overflow-y-scroll py-[20px] pr-[30px]  ${
-              showSideBar() && windowWidth() >= 1000
+              libraryData.userSettings.showSideBar && windowWidth() >= 1000
                 ? "pl-[23%] large:pl-[17%]"
                 : "pl-[30px] large:pl-[30px]"
             }`}>
@@ -915,7 +841,7 @@ function App() {
                   className="standardButton hint--bottom !flex !w-max !gap-3 dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b]"
                   aria-label={translateText("might not work perfectly!")}
                   onClick={() => {
-                    if (steamFolderExists()) {
+                    if (libraryData.folders.steam != undefined) {
                       showImportAndOverwriteConfirm()
                         ? importSteamGames()
                         : setShowImportAndOverwriteConfirm(true);
@@ -927,7 +853,7 @@ function App() {
                       importSteamGames();
                     }
                   }}>
-                  <Show when={steamFolderExists() == true}>
+                  <Show when={libraryData.folders.steam != undefined}>
                     <Show when={showImportAndOverwriteConfirm() == true}>
                       <span className="text-[#FF3636]">
                         {translateText(
@@ -939,7 +865,7 @@ function App() {
                       {translateText("import Steam games")}
                     </Show>
                   </Show>
-                  <Show when={steamFolderExists() == false}>
+                  <Show when={libraryData.folders.steam == undefined}>
                     {translateText("import Steam games")}
                   </Show>
 
@@ -948,7 +874,7 @@ function App() {
 
                 <div
                   className={`standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] flex !justify-between items-center cursor-pointer relative !w-max !p-4 rounded-[${
-                    roundedBorders() ? "6px" : "0px"
+                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
                   }]`}
                   onClick={() => {
                     setShowLanguageSelector((x) => !x);
@@ -958,17 +884,17 @@ function App() {
                       [{translateText("language")}]
                     </span>
                     &nbsp;{" "}
-                    {language() == "en"
+                    {libraryData.userSettings.language == "en"
                       ? "english"
-                      : language() == "jp"
+                      : libraryData.userSettings.language == "jp"
                       ? "日本語"
-                      : language() == "es"
+                      : libraryData.userSettings.language == "es"
                       ? "Español"
-                      : language() == "hi"
+                      : libraryData.userSettings.language == "hi"
                       ? "हिंदी"
-                      : language() == "ru"
+                      : libraryData.userSettings.language == "ru"
                       ? "русский"
-                      : language() == "fr"
+                      : libraryData.userSettings.language == "fr"
                       ? "Français"
                       : "english"}
                   </div>
@@ -976,7 +902,7 @@ function App() {
                   <Show when={showLanguageSelector()}>
                     <div
                       className={`flex flex-col gap-4 absolute border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
-                        roundedBorders() ? "6px" : "0px"
+                        libraryData.userSettings.roundedBorders ? "6px" : "0px"
                       }] p-3 z-[100000] top-[120%] left-0`}>
                       <div
                         className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
@@ -1029,7 +955,7 @@ function App() {
                 <div className="flex items-center gap-3">
                   <div
                     className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                      roundedBorders() ? "6px" : "0px"
+                      libraryData.userSettings.roundedBorders ? "6px" : "0px"
                     }] `}>
                     ctrl + n
                   </div>
@@ -1040,7 +966,7 @@ function App() {
                 <div className="flex items-center gap-3">
                   <div
                     className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                      roundedBorders() ? "6px" : "0px"
+                      libraryData.userSettings.roundedBorders ? "6px" : "0px"
                     }] `}>
                     ctrl + .
                   </div>
@@ -1050,7 +976,7 @@ function App() {
                 <div className="flex items-center gap-3">
                   <div
                     className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                      roundedBorders() ? "6px" : "0px"
+                      libraryData.userSettings.roundedBorders ? "6px" : "0px"
                     }] `}>
                     ctrl + m
                   </div>
@@ -1060,7 +986,7 @@ function App() {
                 <div className="flex items-center gap-3">
                   <div
                     className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                      roundedBorders() ? "6px" : "0px"
+                      libraryData.userSettings.roundedBorders ? "6px" : "0px"
                     }] `}>
                     ctrl + l
                   </div>
@@ -1071,7 +997,7 @@ function App() {
                 <div className="flex items-center gap-3">
                   <div
                     className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                      roundedBorders() ? "6px" : "0px"
+                      libraryData.userSettings.roundedBorders ? "6px" : "0px"
                     }] `}>
                     ctrl + w
                   </div>
@@ -1081,7 +1007,7 @@ function App() {
                 <div className="flex items-center gap-3">
                   <div
                     className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                      roundedBorders() ? "6px" : "0px"
+                      libraryData.userSettings.roundedBorders ? "6px" : "0px"
                     }] `}>
                     ctrl - / =
                   </div>
@@ -1094,7 +1020,7 @@ function App() {
                 <div className="flex items-center gap-3">
                   <div
                     className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                      roundedBorders() ? "6px" : "0px"
+                      libraryData.userSettings.roundedBorders ? "6px" : "0px"
                     }] `}>
                     ctrl + f
                   </div>
@@ -1104,7 +1030,7 @@ function App() {
                 <div className="flex items-center gap-3">
                   <div
                     className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                      roundedBorders() ? "6px" : "0px"
+                      libraryData.userSettings.roundedBorders ? "6px" : "0px"
                     }] `}>
                     ctrl + \\
                   </div>
@@ -1114,7 +1040,7 @@ function App() {
                 <div className="flex items-center gap-3">
                   <div
                     className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                      roundedBorders() ? "6px" : "0px"
+                      libraryData.userSettings.roundedBorders ? "6px" : "0px"
                     }] `}>
                     ctrl + click
                   </div>
@@ -1127,19 +1053,19 @@ function App() {
         </Show>
         <div
           className={`w-full absolute h-[100vh] overflow-y-scroll py-[20px] pr-[30px]  ${
-            showSideBar() && windowWidth() >= 1000
+            libraryData.userSettings.showSideBar && windowWidth() >= 1000
               ? "pl-[23%] large:pl-[17%]"
               : "pl-[30px] large:pl-[30px]"
           }`}>
           <Show when={searchValue() == "" || searchValue() == undefined}>
             <For each={currentFolders()}>
               {(folderName) => {
-                let folder = libraryData().folders[folderName];
+                let folder = libraryData.folders[folderName];
 
                 return (
                   <Show when={folder.games != "" && !folder.hide}>
                     <div className="mb-[40px]">
-                      <Show when={folderTitle()}>
+                      <Show when={libraryData.userSettings.folderTitle}>
                         <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
                           {folder.name}
                         </p>
@@ -1147,16 +1073,16 @@ function App() {
                       <div
                         className={`grid gap-5 mt-4 foldersDiv
                         ${
-                          zoomLevel() == 0
-                            ? showSideBar()
+                          libraryData.userSettings.zoomLevel == 0
+                            ? libraryData.userSettings.showSideBar
                               ? "medium:grid-cols-5 grid-cols-4 large:grid-cols-7"
                               : "medium:grid-cols-6 grid-cols-4 large:grid-cols-8"
-                            : zoomLevel() == 1
-                            ? showSideBar()
+                            : libraryData.userSettings.zoomLevel == 1
+                            ? libraryData.userSettings.showSideBar
                               ? "medium:grid-cols-4 grid-cols-3 large:grid-cols-6"
                               : "medium:grid-cols-5 grid-cols-3 large:grid-cols-7"
-                            : zoomLevel() == 2
-                            ? showSideBar()
+                            : libraryData.userSettings.zoomLevel == 2
+                            ? libraryData.userSettings.showSideBar
                               ? "medium:grid-cols-3 grid-cols-2 large:grid-cols-5"
                               : "medium:grid-cols-4 grid-cols-2 large:grid-cols-6"
                             : ""
@@ -1175,31 +1101,32 @@ function App() {
                                 onClick={async (e) => {
                                   if (e.ctrlKey) {
                                     openGame(
-                                      libraryData().games[gameName].location,
+                                      libraryData.games[gameName].location,
                                     );
                                     return;
                                   }
                                   await setSelectedGame(
-                                    libraryData().games[gameName],
+                                    libraryData.games[gameName],
                                   );
                                   document
                                     .querySelector("[data-gamePopup]")
                                     .show();
                                 }}>
                                 <Show
-                                  when={
-                                    !libraryData().games[gameName].favourite
-                                  }>
+                                  when={!libraryData.games[gameName].favourite}>
                                   <div className="relative w-full">
                                     <Show
                                       when={
-                                        libraryData().games[gameName].gridImage
+                                        libraryData.games[gameName].gridImage
                                       }>
                                       <div className="relative flex items-center justify-center">
-                                        <Show when={!gameTitle()}>
+                                        <Show
+                                          when={
+                                            !libraryData.userSettings.gameTitle
+                                          }>
                                           <Show
                                             when={
-                                              !libraryData().games[gameName]
+                                              !libraryData.games[gameName]
                                                 .location
                                             }>
                                             <span class="absolute tooltip z-[100] bottom-[30px]">
@@ -1210,12 +1137,15 @@ function App() {
 
                                         <img
                                           className={`z-10 mb-[7px] rounded-[${
-                                            roundedBorders() ? "6px" : "0px"
+                                            libraryData.userSettings
+                                              .roundedBorders
+                                              ? "6px"
+                                              : "0px"
                                           }] group-hover:outline-[#0000001f] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
                                           src={convertFileSrc(
                                             appDataDirPath() +
                                               "grids\\" +
-                                              libraryData().games[gameName]
+                                              libraryData.games[gameName]
                                                 .gridImage,
                                           )}
                                           alt=""
@@ -1224,17 +1154,20 @@ function App() {
                                     </Show>
                                     <Show
                                       when={
-                                        !libraryData().games[gameName].gridImage
+                                        !libraryData.games[gameName].gridImage
                                       }>
                                       <div className="relative flex items-center justify-center">
-                                        <Show when={!gameTitle()}>
+                                        <Show
+                                          when={
+                                            !libraryData.userSettings.gameTitle
+                                          }>
                                           <span className="!max-w-[50%] absolute z-[100]">
                                             {gameName}
                                           </span>
 
                                           <Show
                                             when={
-                                              !libraryData().games[gameName]
+                                              !libraryData.games[gameName]
                                                 .location
                                             }>
                                             <span class="absolute tooltip z-[100] bottom-[30px]">
@@ -1245,7 +1178,10 @@ function App() {
 
                                         <div
                                           className={`z-10 mb-[7px] rounded-[${
-                                            roundedBorders() ? "6px" : "0px"
+                                            libraryData.userSettings
+                                              .roundedBorders
+                                              ? "6px"
+                                              : "0px"
                                           }] group-hover:outline-[#0000001f] dark:bg-[#1C1C1C] bg-[#F1F1F1]  w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
                                           alt=""
                                         />
@@ -1254,22 +1190,23 @@ function App() {
                                   </div>
                                 </Show>
                                 <Show
-                                  when={
-                                    libraryData().games[gameName].favourite
-                                  }>
+                                  when={libraryData.games[gameName].favourite}>
                                   <div className="relative w-full">
                                     <Show
                                       when={
-                                        libraryData().games[gameName].gridImage
+                                        libraryData.games[gameName].gridImage
                                       }>
                                       <img
                                         className={`relative z-10 mb-[7px] rounded-[${
-                                          roundedBorders() ? "6px" : "0px"
+                                          libraryData.userSettings
+                                            .roundedBorders
+                                            ? "6px"
+                                            : "0px"
                                         }] outline-[#0000001c] hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
                                         src={convertFileSrc(
                                           appDataDirPath() +
                                             "grids\\" +
-                                            libraryData().games[gameName]
+                                            libraryData.games[gameName]
                                               .gridImage,
                                         )}
                                         alt=""
@@ -1278,17 +1215,20 @@ function App() {
                                     </Show>
                                     <Show
                                       when={
-                                        !libraryData().games[gameName].gridImage
+                                        !libraryData.games[gameName].gridImage
                                       }>
                                       <div className="relative flex items-center justify-center">
-                                        <Show when={!gameTitle()}>
+                                        <Show
+                                          when={
+                                            !libraryData.userSettings.gameTitle
+                                          }>
                                           <span className="absolute z-[100] !max-w-[50%]">
                                             {gameName}
                                           </span>
 
                                           <Show
                                             when={
-                                              !libraryData().games[gameName]
+                                              !libraryData.games[gameName]
                                                 .location
                                             }>
                                             <span class="absolute tooltip z-[100] bottom-[30px]">
@@ -1298,7 +1238,10 @@ function App() {
                                         </Show>
                                         <div
                                           className={`relative z-10 mb-[7px] rounded-[${
-                                            roundedBorders() ? "6px" : "0px"
+                                            libraryData.userSettings
+                                              .roundedBorders
+                                              ? "6px"
+                                              : "0px"
                                           }] outline-[#0000001c] w-full aspect-[2/3] dark:bg-[#1C1C1C] bg-[#F1F1F1]  hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
                                         />
                                       </div>
@@ -1309,7 +1252,7 @@ function App() {
                                         src={convertFileSrc(
                                           appDataDirPath() +
                                             "grids\\" +
-                                            libraryData().games[gameName]
+                                            libraryData.games[gameName]
                                               .gridImage,
                                         )}
                                         alt=""
@@ -1321,11 +1264,11 @@ function App() {
                                     </div>
                                   </div>
                                 </Show>
-                                <Show when={gameTitle()}>
+                                <Show when={libraryData.userSettings.gameTitle}>
                                   <div className="flex justify-between items-start">
                                     <Show
                                       when={
-                                        libraryData().games[gameName].location
+                                        libraryData.games[gameName].location
                                       }>
                                       <span className="text-[#000000] dark:text-white">
                                         {gameName}
@@ -1334,7 +1277,7 @@ function App() {
 
                                     <Show
                                       when={
-                                        !libraryData().games[gameName].location
+                                        !libraryData.games[gameName].location
                                       }>
                                       <span className="text-[#000000] dark:text-white !max-w-[50%]">
                                         {gameName}
@@ -1366,14 +1309,14 @@ function App() {
               if (searchValue() != "" && searchValue() != undefined) {
                 for (
                   let i = 0;
-                  i < Object.values(libraryData().games).length;
+                  i < Object.values(libraryData.games).length;
                   i++
                 ) {
-                  allGameNames.push(Object.keys(libraryData().games)[i]);
+                  allGameNames.push(Object.keys(libraryData.games)[i]);
                 }
               }
 
-              let fuse = new Fuse(Object.values(libraryData().games), {
+              let fuse = new Fuse(Object.values(libraryData.games), {
                 threshold: 0.5,
                 keys: ["name"],
               });
@@ -1387,16 +1330,16 @@ function App() {
                   <div
                     className={`grid gap-5 mt-4 foldersDiv 
                     ${
-                      zoomLevel() == 0
-                        ? showSideBar()
+                      libraryData.userSettings.zoomLevel == 0
+                        ? libraryData.userSettings.showSideBar
                           ? "medium:grid-cols-5 grid-cols-4 large:grid-cols-7"
                           : "medium:grid-cols-6 grid-cols-4 large:grid-cols-8"
-                        : zoomLevel() == 1
-                        ? showSideBar()
+                        : libraryData.userSettings.zoomLevel == 1
+                        ? libraryData.userSettings.showSideBar
                           ? "medium:grid-cols-4 grid-cols-3 large:grid-cols-6"
                           : "medium:grid-cols-5 grid-cols-3 large:grid-cols-7"
-                        : zoomLevel() == 2
-                        ? showSideBar()
+                        : libraryData.userSettings.zoomLevel == 2
+                        ? libraryData.userSettings.showSideBar
                           ? "medium:grid-cols-3 grid-cols-2 large:grid-cols-5"
                           : "medium:grid-cols-4 grid-cols-2 large:grid-cols-6"
                         : ""
@@ -1411,52 +1354,48 @@ function App() {
                             onDragStart={(e) => {
                               e.preventDefault();
                             }}
-                            // ref={index() === 0 ? setFocusSearchedGames : ""}
                             onClick={async (e) => {
                               if (e.ctrlKey) {
-                                openGame(
-                                  libraryData().games[gameName].location,
-                                );
+                                openGame(libraryData.games[gameName].location);
                                 return;
                               }
                               await setSelectedGame(
-                                libraryData().games[gameName],
+                                libraryData.games[gameName],
                               );
                               document.querySelector("[data-gamePopup]").show();
                             }}>
-                            <Show
-                              when={!libraryData().games[gameName].favourite}>
+                            <Show when={!libraryData.games[gameName].favourite}>
                               <div className="relative w-full">
                                 <Show
-                                  when={
-                                    libraryData().games[gameName].gridImage
-                                  }>
+                                  when={libraryData.games[gameName].gridImage}>
                                   <img
                                     className={`z-10 mb-[7px] rounded-[${
-                                      roundedBorders() ? "6px" : "0px"
+                                      libraryData.userSettings.roundedBorders
+                                        ? "6px"
+                                        : "0px"
                                     }] group-hover:outline-[#0000001f] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
                                     src={convertFileSrc(
                                       appDataDirPath() +
                                         "grids\\" +
-                                        libraryData().games[gameName].gridImage,
+                                        libraryData.games[gameName].gridImage,
                                     )}
                                     alt=""
                                   />{" "}
                                 </Show>
                                 <Show
-                                  when={
-                                    !libraryData().games[gameName].gridImage
-                                  }>
+                                  when={!libraryData.games[gameName].gridImage}>
                                   <div className="relative flex items-center justify-center">
-                                    <Show when={!gameTitle()}>
+                                    <Show
+                                      when={
+                                        !libraryData.userSettings.gameTitle
+                                      }>
                                       <span className="absolute z-[100] !max-w-[50%]">
                                         {gameName}
                                       </span>
 
                                       <Show
                                         when={
-                                          !libraryData().games[gameName]
-                                            .location
+                                          !libraryData.games[gameName].location
                                         }>
                                         <span class="absolute tooltip z-[100] bottom-[30px]">
                                           {translateText("no game file")}
@@ -1466,7 +1405,9 @@ function App() {
 
                                     <div
                                       className={`z-10 mb-[7px] rounded-[${
-                                        roundedBorders() ? "6px" : "0px"
+                                        libraryData.userSettings.roundedBorders
+                                          ? "6px"
+                                          : "0px"
                                       }] group-hover:outline-[#0000001f] dark:bg-[#1C1C1C] bg-[#F1F1F1]  w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
                                       alt=""
                                     />
@@ -1474,18 +1415,19 @@ function App() {
                                 </Show>
                               </div>
                             </Show>
-                            <Show
-                              when={libraryData().games[gameName].favourite}>
+                            <Show when={libraryData.games[gameName].favourite}>
                               <Show
-                                when={libraryData().games[gameName].gridImage}>
+                                when={libraryData.games[gameName].gridImage}>
                                 <img
                                   className={`relative z-10 mb-[7px] rounded-[${
-                                    roundedBorders() ? "6px" : "0px"
+                                    libraryData.userSettings.roundedBorders
+                                      ? "6px"
+                                      : "0px"
                                   }] outline-[#0000001c] w-full aspect-[2/3] hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
                                   src={convertFileSrc(
                                     appDataDirPath() +
                                       "grids\\" +
-                                      libraryData().games[gameName].gridImage,
+                                      libraryData.games[gameName].gridImage,
                                   )}
                                   alt=""
                                   width="100%"
@@ -1493,16 +1435,17 @@ function App() {
                               </Show>
 
                               <Show
-                                when={!libraryData().games[gameName].gridImage}>
+                                when={!libraryData.games[gameName].gridImage}>
                                 <div className="relative flex items-center justify-center">
-                                  <Show when={!gameTitle()}>
+                                  <Show
+                                    when={!libraryData.userSettings.gameTitle}>
                                     <span className="absolute z-[100] !max-w-[50%]">
                                       {gameName}
                                     </span>
 
                                     <Show
                                       when={
-                                        !libraryData().games[gameName].location
+                                        !libraryData.games[gameName].location
                                       }>
                                       <span class="absolute tooltip z-[100] bottom-[30px]">
                                         {translateText("no game file")}
@@ -1511,7 +1454,9 @@ function App() {
                                   </Show>
                                   <div
                                     className={`relative z-10 mb-[7px] rounded-[${
-                                      roundedBorders() ? "6px" : "0px"
+                                      libraryData.userSettings.roundedBorders
+                                        ? "6px"
+                                        : "0px"
                                     }] outline-[#0000001c] w-full aspect-[2/3] dark:bg-[#1C1C1C] bg-[#F1F1F1]  hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
                                   />
                                 </div>
@@ -1522,7 +1467,7 @@ function App() {
                                   src={convertFileSrc(
                                     appDataDirPath() +
                                       "grids\\" +
-                                      libraryData().games[gameName].gridImage,
+                                      libraryData.games[gameName].gridImage,
                                   )}
                                   alt=""
                                 />
@@ -1533,16 +1478,14 @@ function App() {
                               </div>
                             </Show>
 
-                            <Show when={gameTitle()}>
+                            <Show when={libraryData.userSettings.gameTitle}>
                               <div className="flex justify-between items-start">
                                 <span className="text-[#000000] dark:text-white !max-w-[50%]">
                                   {gameName}
                                 </span>
 
                                 <Show
-                                  when={
-                                    !libraryData().games[gameName].location
-                                  }>
+                                  when={!libraryData.games[gameName].location}>
                                   <span class=" tooltip z-[100]">
                                     {translateText("no game file")}
                                   </span>

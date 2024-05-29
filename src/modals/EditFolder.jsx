@@ -5,17 +5,17 @@ import {
   setEditedFolderName,
   editedHideFolder,
   setEditedHideFolder,
-  roundedBorders,
   showDeleteConfirm,
   setShowDeleteConfirm,
   setShowToast,
   setToastMessage,
-  language,
+  setLibraryData,
 } from "../Signals";
 import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
 import { getData, translateText } from "../App";
 import { Close, SaveDisk, TrashDelete } from "../components/Icons";
+import { produce } from "solid-js/store";
 
 export function EditFolder() {
   async function editFolder() {
@@ -31,8 +31,8 @@ export function EditFolder() {
     if (selectedFolder().name != editedFolderName()) {
       let folderOccurances = 0;
 
-      for (let x = 0; x < Object.keys(libraryData().folders).length; x++) {
-        if (editedFolderName() == Object.keys(libraryData().folders)[x]) {
+      for (let x = 0; x < Object.keys(libraryData.folders).length; x++) {
+        if (editedFolderName() == Object.keys(libraryData.folders)[x]) {
           folderOccurances += 1;
         }
       }
@@ -51,18 +51,30 @@ export function EditFolder() {
       }
     }
 
-    delete libraryData().folders[selectedFolder().name];
+    setLibraryData(
+      produce((data) => {
+        delete data.folders[selectedFolder().name];
 
-    libraryData().folders[editedFolderName()] = {
-      ...selectedFolder(),
-      name: editedFolderName(),
-      hide: editedHideFolder(),
-    };
+        return data;
+      }),
+    );
+
+    setLibraryData(
+      produce((data) => {
+        data.folders[editedFolderName()] = {
+          ...selectedFolder(),
+          name: editedFolderName(),
+          hide: editedHideFolder(),
+        };
+
+        return data;
+      }),
+    );
 
     await writeTextFile(
       {
         path: "data.json",
-        contents: JSON.stringify(libraryData(), null, 4),
+        contents: JSON.stringify(libraryData, null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -74,18 +86,30 @@ export function EditFolder() {
   }
 
   async function deleteFolder() {
-    for (let x = 0; x < Object.keys(libraryData().folders).length; x++) {
-      if (x > libraryData().folders[selectedFolder().name].index) {
-        Object.values(libraryData().folders)[x].index -= 1;
+    for (let x = 0; x < Object.keys(libraryData.folders).length; x++) {
+      if (x > libraryData.folders[selectedFolder().name].index) {
+        setLibraryData(
+          produce((data) => {
+            Object.values(data.folders)[x].index -= 1;
+
+            return data;
+          }),
+        );
       }
     }
 
-    delete libraryData().folders[selectedFolder().name];
+    setLibraryData(
+      produce((data) => {
+        delete data.folders[selectedFolder().name];
+
+        return data;
+      }),
+    );
 
     await writeTextFile(
       {
         path: "data.json",
-        contents: JSON.stringify(libraryData(), null, 4),
+        contents: JSON.stringify(libraryData, null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -134,11 +158,13 @@ export function EditFolder() {
       <div className="flex items-center justify-center w-screen h-screen align-middle ">
         <div
           className={`border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
-            roundedBorders() ? "6px" : "0px"
+            libraryData.userSettings.roundedBorders ? "6px" : "0px"
           }] w-[50%] p-6 `}>
           <div
             className={`flex justify-between ${
-              language() != "en" ? "flex-col large:flex-row" : ""
+              libraryData.userSettings.language != "en"
+                ? "flex-col large:flex-row"
+                : ""
             } `}>
             <div>
               <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">

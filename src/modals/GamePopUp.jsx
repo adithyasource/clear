@@ -1,10 +1,11 @@
-import { appDataDirPath, selectedGame, roundedBorders } from "../Signals";
+import { appDataDirPath, selectedGame } from "../Signals";
 
 import { Show } from "solid-js";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 
 import { openGame, translateText } from "../App";
 import { Close, Play, Settings } from "../components/Icons";
+import { libraryData } from "../Signals";
 
 export function GamePopUp() {
   return (
@@ -22,13 +23,12 @@ export function GamePopUp() {
             )}
             alt=""
             className={`max-large:h-[270px] h-[350px] rounded-[${
-              roundedBorders() ? "6px" : "0px"
+              libraryData.userSettings.roundedBorders ? "6px" : "0px"
             }] absolute blur-[80px] opacity-[0.4] -z-10`}
           />
           <div
             className="relative"
             ref={(ref) => {
-              console.log(ref);
               const focusableElements = ref.querySelectorAll(
                 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
               );
@@ -90,14 +90,14 @@ export function GamePopUp() {
                 )}
                 alt=""
                 className={`max-large:h-[270px] h-[350px] aspect-[96/31]  rounded-[${
-                  roundedBorders() ? "6px" : "0px"
+                  libraryData.userSettings.roundedBorders ? "6px" : "0px"
                 }]`}
               />
             </Show>
             <Show when={!selectedGame().heroImage}>
               <div
                 className={`max-large:h-[270px] h-[350px] aspect-[96/31] bg-[#f1f1f1] dark:bg-[#1c1c1c]  rounded-[${
-                  roundedBorders() ? "6px" : "0px"
+                  libraryData.userSettings.roundedBorders ? "6px" : "0px"
                 }]`}
               />
             </Show>
@@ -115,7 +115,7 @@ export function GamePopUp() {
               <Show when={!selectedGame().logo}>
                 <div
                   className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] absolute bottom-[5px] bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                    roundedBorders() ? "6px" : "0px"
+                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
                   }]`}
                 />
               </Show>

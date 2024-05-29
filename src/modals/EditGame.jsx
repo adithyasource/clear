@@ -18,12 +18,10 @@ import {
   setSelectedGame,
   editedLocatedIcon,
   setEditedLocatedIcon,
-  roundedBorders,
   setShowToast,
   setToastMessage,
   setShowDeleteConfirm,
   showDeleteConfirm,
-  language,
 } from "../Signals";
 
 import { Show } from "solid-js";
@@ -40,6 +38,7 @@ import {
   SaveDisk,
   TrashDelete,
 } from "../components/Icons";
+import { produce } from "solid-js/store";
 
 export function EditGame() {
   async function locateEditedGame() {
@@ -127,8 +126,8 @@ export function EditGame() {
     if (selectedGame().name != editedGameName()) {
       let gameOccurances = 0;
 
-      for (let x = 0; x < Object.keys(libraryData().games).length; x++) {
-        if (editedGameName() == Object.keys(libraryData().games)[x]) {
+      for (let x = 0; x < Object.keys(libraryData.games).length; x++) {
+        if (editedGameName() == Object.keys(libraryData.games)[x]) {
           gameOccurances += 1;
         }
       }
@@ -145,24 +144,24 @@ export function EditGame() {
       }
     }
 
-    for (let i = 0; i < Object.values(libraryData().folders).length; i++) {
+    for (let i = 0; i < Object.values(libraryData.folders).length; i++) {
       for (
         let j = 0;
-        j < Object.values(libraryData().folders)[i].games.length;
+        j < Object.values(libraryData.folders)[i].games.length;
         j++
       ) {
         if (
-          Object.values(libraryData().folders)[i].games[j] ==
-          selectedGame().name
+          Object.values(libraryData.folders)[i].games[j] == selectedGame().name
         ) {
           previousIndex = j;
         }
       }
     }
 
-    delete libraryData().games[selectedGame().name];
-
-    setLibraryData(libraryData());
+    setLibraryData((data) => {
+      delete data.games[selectedGame().name];
+      return data;
+    });
 
     if (!editedGameName()) {
       setEditedGameName(selectedGame().name);
@@ -270,7 +269,7 @@ export function EditGame() {
       }
     }
 
-    libraryData().games[editedGameName()] = {
+    setLibraryData("games", editedGameName(), {
       location: editedLocatedGame(),
       name: editedGameName(),
       heroImage: editedLocatedHeroImage(),
@@ -278,33 +277,45 @@ export function EditGame() {
       logo: editedLocatedLogo(),
       icon: editedLocatedIcon(),
       favourite: editedFavouriteGame(),
-    };
+    });
 
-    for (let i = 0; i < Object.values(libraryData().folders).length; i++) {
-      for (
-        let j = 0;
-        j < Object.values(libraryData().folders)[i].games.length;
-        j++
-      ) {
-        if (
-          Object.values(libraryData().folders)[i].games[j] ==
-          selectedGame().name
-        ) {
-          Object.values(libraryData().folders)[i].games.splice(j, 1);
+    function getCurrentFolder() {
+      let folders = Object.values(libraryData.folders);
 
-          Object.values(libraryData().folders)[i].games.splice(
-            previousIndex,
-            0,
-            editedGameName(),
-          );
+      for (let i = 0; i < folders.length; i++) {
+        let games = folders[i].games;
+        for (let j = 0; j < games.length; j++) {
+          if (games[j] == selectedGame().name) {
+            let currentFolder = folders[i].name;
+            return currentFolder;
+          }
         }
+      }
+    }
+
+    let currentFolder = getCurrentFolder();
+
+    for (let j = 0; j < libraryData.folders[currentFolder].games.length; j++) {
+      if (libraryData.folders[currentFolder].games[j] == selectedGame().name) {
+        setLibraryData(
+          produce((data) => {
+            data.folders[currentFolder].games.splice(j, 1);
+            data.folders[currentFolder].games.splice(
+              previousIndex,
+              0,
+              editedGameName(),
+            );
+
+            return data;
+          }),
+        );
       }
     }
 
     await writeTextFile(
       {
         path: "data.json",
-        contents: JSON.stringify(libraryData(), null, 4),
+        contents: JSON.stringify(libraryData, null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -317,19 +328,22 @@ export function EditGame() {
   }
 
   async function deleteGame() {
-    delete libraryData().games[selectedGame().name];
+    setLibraryData((data) => {
+      delete data.games[selectedGame().name];
+      return data;
+    });
 
-    for (let i = 0; i < Object.values(libraryData().folders).length; i++) {
-      for (
-        let j = 0;
-        j < Object.values(libraryData().folders)[i].games.length;
-        j++
-      ) {
-        if (
-          Object.values(libraryData().folders)[i].games[j] ==
-          selectedGame().name
-        ) {
-          Object.values(libraryData().folders)[i].games.splice(j, 1);
+    let folders = Object.values(libraryData.folders);
+
+    for (let i = 0; i < folders.length; i++) {
+      for (let j = 0; j < folders[i].games.length; j++) {
+        if (folders[i].games[j] == selectedGame().name) {
+          setLibraryData(
+            produce((data) => {
+              Object.values(data.folders)[i].games.splice(j, 1);
+              return data;
+            }),
+          );
         }
       }
     }
@@ -337,7 +351,7 @@ export function EditGame() {
     await writeTextFile(
       {
         path: "data.json",
-        contents: JSON.stringify(libraryData(), null, 4),
+        contents: JSON.stringify(libraryData, null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -590,7 +604,7 @@ export function EditGame() {
                 <Show when={editedLocatedLogo() === null}>
                   <div
                     className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] relative bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                      roundedBorders() ? "6px" : "0px"
+                      libraryData.userSettings.roundedBorders ? "6px" : "0px"
                     }]`}
                   />
                 </Show>
@@ -620,7 +634,7 @@ export function EditGame() {
                 <Show when={!editedLocatedLogo()}>
                   <div
                     className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] relative bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                      roundedBorders() ? "6px" : "0px"
+                      libraryData.userSettings.roundedBorders ? "6px" : "0px"
                     }]`}
                   />
                 </Show>
@@ -652,7 +666,7 @@ export function EditGame() {
                   <Show when={!selectedGame().icon}>
                     <div
                       className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                        roundedBorders() ? "6px" : "0px"
+                        libraryData.userSettings.roundedBorders ? "6px" : "0px"
                       }]`}
                     />
                   </Show>
@@ -667,7 +681,7 @@ export function EditGame() {
                 <Show when={editedLocatedIcon() === null}>
                   <div
                     className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                      roundedBorders() ? "6px" : "0px"
+                      libraryData.userSettings.roundedBorders ? "6px" : "0px"
                     }]`}
                   />
                 </Show>

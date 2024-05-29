@@ -1,19 +1,35 @@
 import { createSignal } from "solid-js";
+import { createStore } from "solid-js/store";
 
-// !? Misc / Globals
+// !? Global Stores
+export const [libraryData, setLibraryData] = createStore({
+  // Default Values
+  games: {},
+  folders: {},
+  notepad: "",
+  userSettings: {
+    roundedBorders: true,
+    showSideBar: true,
+    gameTitle: true,
+    folderTitle: true,
+    quitAfterOpen: true,
+    fontName: "sans serif",
+    language: "en",
+    currentTheme: "dark",
+    zoomLevel: 1,
+  },
+});
 
+// !? Misc
 export const [appVersion, setAppVersion] = createSignal("1.1.0");
 export const [latestVersion, setLatestVersion] = createSignal("");
 export const [newVersionAvailable, setNewVersionAvailable] =
   createSignal(false);
-
 export const [appDataDirPath, setAppDataDirPath] = createSignal({});
-export const [libraryData, setLibraryData] = createSignal({});
 export const [notepadValue, setNotepadValue] = createSignal("");
 export const [toastError, setToastMessage] = createSignal("");
 export const [showToast, setShowToast] = createSignal(false);
 export const [windowWidth, setWindowWidth] = createSignal(window.innerWidth);
-export const [zoomLevel, setZoomLevel] = createSignal();
 export const [showContentSkipButton, setShowContentSkipButton] =
   createSignal(false);
 export const [focusFirstItem, setFocusFirstItem] = createSignal();
@@ -30,7 +46,6 @@ export const [searchValue, setSearchValue] = createSignal();
 export const [showDeleteConfirm, setShowDeleteConfirm] = createSignal(false);
 export const [showImportAndOverwriteConfirm, setShowImportAndOverwriteConfirm] =
   createSignal(false);
-export const [steamFolderExists, setSteamFolderExists] = createSignal(false);
 export const [language, setLanguage] = createSignal("en");
 export const [showSettingsLanguageSelector, setShowSettingsLanguageSelector] =
   createSignal(false);
@@ -39,17 +54,6 @@ export const [showLanguageSelector, setShowLanguageSelector] =
 export const [totalSteamGames, setTotalSteamGames] = createSignal(0);
 export const [totalImportedSteamGames, setTotalImportedSteamGames] =
   createSignal(0);
-
-// !? Styles Signals
-export const [currentTheme, setCurrentTheme] = createSignal("");
-
-// !? Settings Signals
-export const [showSideBar, setShowSideBar] = createSignal(true);
-export const [roundedBorders, setRoundedBorders] = createSignal(true);
-export const [gameTitle, setGameTitle] = createSignal(true);
-export const [folderTitle, setFolderTitle] = createSignal(true);
-export const [quitAfterOpen, setQuitAfterOpen] = createSignal(true);
-export const [fontName, setFontName] = createSignal("sans serif");
 
 // !? Create Signals
 export const [gameName, setGameName] = createSignal("");

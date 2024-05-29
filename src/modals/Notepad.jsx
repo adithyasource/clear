@@ -4,21 +4,21 @@ import {
   libraryData,
   setNotepadValue,
   notepadValue,
-  roundedBorders,
-  language,
+  setLibraryData,
 } from "../Signals";
 
 import { getData, translateText } from "../App";
 import { Close } from "../components/Icons";
+import { produce } from "solid-js/store";
 
 export function Notepad() {
   async function saveNotepad() {
-    libraryData().notepad = notepadValue();
+    setLibraryData("notepad", notepadValue());
 
     await writeTextFile(
       {
         path: "data.json",
-        contents: JSON.stringify(libraryData(), null, 4),
+        contents: JSON.stringify(libraryData, null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -27,7 +27,7 @@ export function Notepad() {
   }
 
   setTimeout(() => {
-    setNotepadValue(libraryData().notepad || "");
+    setNotepadValue(libraryData.notepad || "");
   }, 50);
 
   return (
@@ -35,7 +35,7 @@ export function Notepad() {
       <dialog
         data-notepadModal
         onClose={() => {
-          setNotepadValue(libraryData().notepad || "");
+          setNotepadValue(libraryData.notepad || "");
         }}
         ref={(ref) => {
           const focusableElements = ref.querySelectorAll(
@@ -70,7 +70,7 @@ export function Notepad() {
         <div className="flex items-center justify-center w-screen h-screen align-middle ">
           <div
             className={`border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
-              roundedBorders() ? "6px" : "0px"
+              libraryData.userSettings.roundedBorders ? "6px" : "0px"
             }] w-[50%] p-6`}>
             <div className="flex justify-between">
               <div>

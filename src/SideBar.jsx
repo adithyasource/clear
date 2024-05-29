@@ -8,15 +8,14 @@ import {
   gameName,
   setEditedFolderName,
   setEditedHideFolder,
-  roundedBorders,
   setSelectedGame,
   appDataDirPath,
   newVersionAvailable,
-  language,
   showContentSkipButton,
   setShowContentSkipButton,
   focusGames,
   focusSearchedGames,
+  setLibraryData,
 } from "./Signals";
 
 import {
@@ -36,6 +35,7 @@ import { For, Show, onMount } from "solid-js";
 import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
 import { getData, openGame, translateText } from "./App";
+import { produce, unwrap } from "solid-js/store";
 
 export function SideBar() {
   let scrollY = " ";
@@ -48,19 +48,12 @@ export function SideBar() {
   });
 
   async function toggleSideBar() {
-    if (
-      libraryData().userSettings.showSideBar == true ||
-      libraryData().userSettings.showSideBar == undefined
-    ) {
-      libraryData().userSettings.showSideBar = false;
-    } else {
-      libraryData().userSettings.showSideBar = true;
-    }
+    setLibraryData("userSettings", "showSideBar", (x) => !x);
 
     await writeTextFile(
       {
         path: "data.json",
-        contents: JSON.stringify(libraryData(), null, 4),
+        contents: JSON.stringify(libraryData, null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -84,9 +77,15 @@ export function SideBar() {
     }
 
     for (let x = 0; x < currentFolders().length; x++) {
-      for (let y = 0; y < Object.keys(libraryData()["folders"]).length; y++) {
-        if (currentFolders()[x] == Object.keys(libraryData()["folders"])[y]) {
-          Object.values(libraryData()["folders"])[y].index = x;
+      for (let y = 0; y < Object.keys(libraryData["folders"]).length; y++) {
+        if (currentFolders()[x] == Object.keys(libraryData["folders"])[y]) {
+          setLibraryData(
+            produce((data) => {
+              Object.values(data["folders"])[y].index = x;
+
+              return data;
+            }),
+          );
         }
       }
     }
@@ -94,7 +93,7 @@ export function SideBar() {
     await writeTextFile(
       {
         path: "data.json",
-        contents: JSON.stringify(libraryData(), null, 4),
+        contents: JSON.stringify(libraryData, null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -108,27 +107,42 @@ export function SideBar() {
     currentFolderName,
   ) {
     let pastPositionOfGame =
-      libraryData().folders[currentFolderName]["games"].indexOf(gameName);
+      libraryData.folders[currentFolderName]["games"].indexOf(gameName);
 
-    libraryData().folders[currentFolderName]["games"].splice(
-      libraryData().folders[currentFolderName]["games"].indexOf(gameName),
-      1,
+    setLibraryData(
+      produce((data) => {
+        data.folders[currentFolderName]["games"].splice(
+          data.folders[currentFolderName]["games"].indexOf(gameName),
+          1,
+        );
+        return data;
+      }),
     );
 
     if (toPosition == -1) {
-      libraryData().folders[currentFolderName]["games"].push(gameName);
+      libraryData.folders[currentFolderName]["games"].push(gameName);
     } else {
       if (toPosition > pastPositionOfGame) {
-        libraryData().folders[currentFolderName]["games"].splice(
-          toPosition - 1,
-          0,
-          gameName,
+        setLibraryData(
+          produce((data) => {
+            data.folders[currentFolderName]["games"].splice(
+              toPosition - 1,
+              0,
+              gameName,
+            );
+            return data;
+          }),
         );
       } else {
-        libraryData().folders[currentFolderName]["games"].splice(
-          toPosition,
-          0,
-          gameName,
+        setLibraryData(
+          produce((data) => {
+            data.folders[currentFolderName]["games"].splice(
+              toPosition,
+              0,
+              gameName,
+            );
+            return data;
+          }),
         );
       }
     }
@@ -136,7 +150,7 @@ export function SideBar() {
     await writeTextFile(
       {
         path: "data.json",
-        contents: JSON.stringify(libraryData(), null, 4),
+        contents: JSON.stringify(libraryData, null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -169,7 +183,7 @@ export function SideBar() {
             />
             <button
               className={`cursor-pointer hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[28px] rounded-[${
-                roundedBorders() ? "6px" : "0px"
+                libraryData.userSettings.roundedBorders ? "6px" : "0px"
               }]`}
               onClick={() => {
                 toggleSideBar();
@@ -280,11 +294,15 @@ export function SideBar() {
                   getData();
                 }
 
-                libraryData().folders[folder.name].games.push(gameName);
+                setLibraryData((data) => {
+                  data.folders[folderName].games.push(gameName);
+                  return data;
+                });
+
                 await writeTextFile(
                   {
                     path: "data.json",
-                    contents: JSON.stringify(libraryData(), null, 4),
+                    contents: JSON.stringify(libraryData, null, 4),
                   },
                   {
                     dir: BaseDirectory.AppData,
@@ -295,14 +313,16 @@ export function SideBar() {
               }
             }}
             class={` ${
-              language() == "fr"
+              libraryData.userSettings.language == "fr"
                 ? "medium:h-[calc(100vh-330px)] large:h-[calc(100vh-275px)]"
                 : "h-[calc(100vh-275px)]"
-            } overflow-auto  rounded-[${roundedBorders() ? "6px" : "0px"}]`}>
+            } overflow-auto  rounded-[${
+              libraryData.userSettings.roundedBorders ? "6px" : "0px"
+            }]`}>
             <p className="mt-[5px]"></p>
             <For each={currentFolders()}>
               {(folderName, index) => {
-                let folder = libraryData().folders[folderName];
+                let folder = libraryData.folders[folderName];
 
                 if (folder.games.length > 0) {
                   return (
@@ -395,7 +415,7 @@ export function SideBar() {
 
                               moveGameInCurrentFolder(
                                 currentDraggingItem,
-                                libraryData().folders[folderName][
+                                libraryData.folders[folderName][
                                   "games"
                                 ].indexOf(nextSiblingItem),
                                 folderName,
@@ -412,21 +432,34 @@ export function SideBar() {
 
                           if (oldFolderName != "uncategorized") {
                             const index =
-                              libraryData().folders[
-                                oldFolderName
-                              ].games.indexOf(gameName);
-                            libraryData().folders[oldFolderName].games.splice(
-                              index,
-                              1,
+                              libraryData.folders[oldFolderName].games.indexOf(
+                                gameName,
+                              );
+
+                            // ! [test this]
+
+                            setLibraryData(
+                              produce((data) => {
+                                data.folders[oldFolderName].games.splice(
+                                  index,
+                                  1,
+                                );
+                                return data;
+                              }),
                             );
                           }
-                          libraryData().folders[folder.name].games.push(
-                            gameName,
+
+                          setLibraryData(
+                            produce((data) => {
+                              data.folders[folder.name].games.push(gameName);
+                              return data;
+                            }),
                           );
+
                           await writeTextFile(
                             {
                               path: "data.json",
-                              contents: JSON.stringify(libraryData(), null, 4),
+                              contents: JSON.stringify(libraryData, null, 4),
                             },
                             {
                               dir: BaseDirectory.AppData,
@@ -445,7 +478,9 @@ export function SideBar() {
                         </Show>
                         <button
                           className={` hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[25.25px] rounded-[${
-                            roundedBorders() ? "6px" : "0px"
+                            libraryData.userSettings.roundedBorders
+                              ? "6px"
+                              : "0px"
                           }]`}
                           onClick={() => {
                             document
@@ -489,22 +524,20 @@ export function SideBar() {
                             }}
                             onClick={async (e) => {
                               await setSelectedGame(
-                                libraryData().games[gameName],
+                                libraryData.games[gameName],
                               );
                               document.querySelector("[data-gamePopup]").show();
 
                               if (e.ctrlKey) {
-                                openGame(
-                                  libraryData().games[gameName].location,
-                                );
+                                openGame(libraryData.games[gameName].location);
                               }
                             }}>
-                            <Show when={libraryData().games[gameName].icon}>
+                            <Show when={libraryData.games[gameName].icon}>
                               <img
                                 src={convertFileSrc(
                                   appDataDirPath() +
                                     "icons\\" +
-                                    libraryData().games[gameName].icon,
+                                    libraryData.games[gameName].icon,
                                 )}
                                 alt=""
                                 className="h-[16px] aspect-square"
@@ -546,19 +579,33 @@ export function SideBar() {
                           e.dataTransfer.getData("oldFolderName");
                         if (oldFolderName != "uncategorized") {
                           const index =
-                            libraryData().folders[oldFolderName].games.indexOf(
+                            libraryData.folders[oldFolderName].games.indexOf(
                               gameName,
                             );
-                          libraryData().folders[oldFolderName].games.splice(
-                            index,
-                            1,
+
+                          setLibraryData(
+                            produce((data) => {
+                              data.folders[oldFolderName].games.splice(
+                                index,
+                                1,
+                              );
+
+                              return data;
+                            }),
                           );
                         }
-                        libraryData().folders[folder.name].games.push(gameName);
+
+                        setLibraryData(
+                          produce((data) => {
+                            data.folders[folder.name].games.push(gameName);
+
+                            return data;
+                          }),
+                        );
                         await writeTextFile(
                           {
                             path: "data.json",
-                            contents: JSON.stringify(libraryData(), null, 4),
+                            contents: JSON.stringify(libraryData, null, 4),
                           },
                           {
                             dir: BaseDirectory.AppData,
@@ -576,7 +623,9 @@ export function SideBar() {
                         </Show>
                         <button
                           className={` hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[25.25px] rounded-[${
-                            roundedBorders() ? "6px" : "0px"
+                            libraryData.userSettings.roundedBorders
+                              ? "6px"
+                              : "0px"
                           }]`}
                           onClick={() => {
                             document
@@ -608,14 +657,20 @@ export function SideBar() {
                 let oldFolderName = e.dataTransfer.getData("oldFolderName");
 
                 const index =
-                  libraryData().folders[oldFolderName].games.indexOf(gameName);
+                  libraryData.folders[oldFolderName].games.indexOf(gameName);
 
-                libraryData().folders[oldFolderName].games.splice(index, 1);
+                setLibraryData(
+                  produce((data) => {
+                    data.folders[oldFolderName].games.splice(index, 1);
+
+                    return data;
+                  }),
+                );
 
                 await writeTextFile(
                   {
                     path: "data.json",
-                    contents: JSON.stringify(libraryData(), null, 4),
+                    contents: JSON.stringify(libraryData, null, 4),
                   },
                   {
                     dir: BaseDirectory.AppData,
@@ -635,16 +690,16 @@ export function SideBar() {
 
                   for (
                     let x = 0;
-                    x < Object.values(libraryData().folders).length;
+                    x < Object.values(libraryData.folders).length;
                     x++
                   ) {
                     for (
                       let y = 0;
-                      y < Object.values(libraryData().folders)[x].games.length;
+                      y < Object.values(libraryData.folders)[x].games.length;
                       y++
                     ) {
                       gamesInFolders.push(
-                        Object.values(libraryData().folders)[x].games[y],
+                        Object.values(libraryData.folders)[x].games[y],
                       );
                     }
                   }
@@ -665,21 +720,19 @@ export function SideBar() {
                         }  sideBarGame cursor-grab p-0`}
                         aria-label={translateText("play")}
                         onClick={async (e) => {
-                          await setSelectedGame(
-                            libraryData().games[currentGame],
-                          );
+                          setSelectedGame(libraryData.games[currentGame]);
                           document.querySelector("[data-gamePopup]").show();
 
                           if (e.ctrlKey) {
-                            openGame(libraryData().games[currentGame].location);
+                            openGame(libraryData.games[currentGame].location);
                           }
                         }}>
-                        <Show when={libraryData().games[currentGame].icon}>
+                        <Show when={libraryData.games[currentGame].icon}>
                           <img
                             src={convertFileSrc(
                               appDataDirPath() +
                                 "icons\\" +
-                                libraryData().games[currentGame].icon,
+                                libraryData.games[currentGame].icon,
                             )}
                             alt=""
                             className="h-[16px] aspect-square"
@@ -725,7 +778,7 @@ export function SideBar() {
 
           <div
             className={`flex ${
-              language() == "fr"
+              libraryData.userSettings.language == "fr"
                 ? "medium:flex-col flex-col large:flex-row gap-0 medium:gap-0 large:gap-3"
                 : "gap-3"
             }`}>

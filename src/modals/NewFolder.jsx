@@ -6,10 +6,8 @@ import {
   hideFolder,
   setHideFolder,
   currentFolders,
-  roundedBorders,
   setShowToast,
   setToastMessage,
-  language,
 } from "../Signals";
 
 import { Show } from "solid-js";
@@ -17,6 +15,7 @@ import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
 import { getData, translateText } from "../App";
 import { Close, SaveDisk } from "../components/Icons";
+import { produce } from "solid-js/store";
 
 export function NewFolder() {
   async function addFolder() {
@@ -29,8 +28,8 @@ export function NewFolder() {
       return;
     }
 
-    for (let x = 0; x < Object.keys(libraryData().folders).length; x++) {
-      if (folderName() == Object.keys(libraryData().folders)[x]) {
+    for (let x = 0; x < Object.keys(libraryData.folders).length; x++) {
+      if (folderName() == Object.keys(libraryData.folders)[x]) {
         setShowToast(true);
         setToastMessage(
           folderName() + " " + translateText("is already in your library"),
@@ -42,17 +41,23 @@ export function NewFolder() {
       }
     }
 
-    libraryData().folders[folderName()] = {
-      name: folderName(),
-      hide: hideFolder(),
-      games: [],
-      index: currentFolders().length,
-    };
-    setLibraryData(libraryData());
+    setLibraryData(
+      produce((data) => {
+        data.folders[folderName()] = {
+          name: folderName(),
+          hide: hideFolder(),
+          games: [],
+          index: currentFolders().length,
+        };
+
+        return data;
+      }),
+    );
+
     await writeTextFile(
       {
         path: "data.json",
-        contents: JSON.stringify(libraryData(), null, 4),
+        contents: JSON.stringify(libraryData, null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -104,11 +109,13 @@ export function NewFolder() {
       <div className="flex items-center justify-center w-screen h-screen align-middle ">
         <div
           className={`border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
-            roundedBorders() ? "6px" : "0px"
+            libraryData.userSettings.roundedBorders ? "6px" : "0px"
           }] w-[50%] p-6 `}>
           <div
             className={`flex justify-between ${
-              language() != "en" ? "flex-col large:flex-row" : ""
+              libraryData.userSettings.language != "en"
+                ? "flex-col large:flex-row"
+                : ""
             } `}>
             <div>
               <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">

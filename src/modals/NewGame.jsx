@@ -13,7 +13,6 @@ import {
   setLocatedLogo,
   locatedGame,
   setlocatedGame,
-  roundedBorders,
   setShowToast,
   setToastMessage,
   setLocatedIcon,
@@ -38,7 +37,6 @@ import {
   setFoundLogoImageIndex,
   foundIconImageIndex,
   setFoundIconImageIndex,
-  language,
   windowWidth,
   appDataDirPath,
 } from "../Signals";
@@ -57,6 +55,7 @@ import {
 
 import { open } from "@tauri-apps/api/dialog";
 import { ChevronArrow, Close, Loading, SaveDisk } from "../components/Icons";
+import { produce } from "solid-js/store";
 
 export function NewGame() {
   const [showGridImageLoading, setShowGridImageLoading] = createSignal(false);
@@ -74,8 +73,8 @@ export function NewGame() {
       return;
     }
 
-    for (let x = 0; x < Object.keys(libraryData().games).length; x++) {
-      if (gameName() == Object.keys(libraryData().games)[x]) {
+    for (let x = 0; x < Object.keys(libraryData.games).length; x++) {
+      if (gameName() == Object.keys(libraryData.games)[x]) {
         setShowToast(true);
         setToastMessage(
           gameName() + " " + translateText("is already in your library"),
@@ -93,11 +92,6 @@ export function NewGame() {
     let iconFileName;
 
     document.querySelector("[data-loadingModal]").show();
-
-    console.log(foundGridImage()[foundGridImageIndex()]);
-    console.log(foundHeroImage()[foundHeroImageIndex()]);
-    console.log(foundLogoImage()[foundLogoImageIndex()]);
-    console.log(foundIconImage()[foundIconImageIndex()]);
 
     if (foundGridImage()) {
       gridImageFileName = generateRandomString() + ".png";
@@ -182,23 +176,28 @@ export function NewGame() {
       }
     }
 
-    libraryData().games[gameName()] = {
-      location: locatedGame(),
-      name: gameName(),
-      heroImage: heroImageFileName,
-      gridImage: gridImageFileName,
-      logo: logoFileName,
-      icon: iconFileName,
-      favourite: favouriteGame(),
-    };
-    setLibraryData(libraryData());
+    setLibraryData(
+      produce((data) => {
+        data.games[gameName()] = {
+          location: locatedGame(),
+          name: gameName(),
+          heroImage: heroImageFileName,
+          gridImage: gridImageFileName,
+          logo: logoFileName,
+          icon: iconFileName,
+          favourite: favouriteGame(),
+        };
+
+        return data;
+      }),
+    );
 
     document.querySelector("[data-loadingModal]").close();
 
     await writeTextFile(
       {
         path: "data.json",
-        contents: JSON.stringify(libraryData(), null, 4),
+        contents: JSON.stringify(libraryData, null, 4),
       },
       {
         dir: BaseDirectory.AppData,
@@ -764,7 +763,7 @@ export function NewGame() {
                   <Show when={showIconImageLeading()}>
                     <div
                       className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]  rounded-[${
-                        roundedBorders() ? "6px" : "0px"
+                        libraryData.userSettings.roundedBorders ? "6px" : "0px"
                       }]`}>
                       <div className="animate-spin-slow absolute top-[24%] left-[27%]">
                         <Loading />
@@ -788,7 +787,7 @@ export function NewGame() {
                   <Show when={!locatedIcon()}>
                     <div
                       className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                        roundedBorders() ? "6px" : "0px"
+                        libraryData.userSettings.roundedBorders ? "6px" : "0px"
                       }]`}
                     />
                   </Show>
@@ -823,7 +822,7 @@ export function NewGame() {
                 />
                 <button
                   className={`standardButton  !text-black dark:!text-white  hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80] rounded-[${
-                    roundedBorders() ? "6px" : "0px"
+                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
                   }] `}
                   onClick={async () => {
                     if (gameName() == "" || gameName() == undefined) {
@@ -843,23 +842,31 @@ export function NewGame() {
                     setFoundLogoImage(undefined);
                     setFoundIconImage(undefined);
                   }}>
-                  <Show when={language() == "fr" && windowWidth() >= 1500}>
+                  <Show
+                    when={
+                      libraryData.userSettings.language == "fr" &&
+                      windowWidth() >= 1500
+                    }>
                     {translateText("auto find assets")}
                   </Show>
 
-                  <Show when={language() == "fr" && windowWidth() <= 1500}>
+                  <Show
+                    when={
+                      libraryData.userSettings.language == "fr" &&
+                      windowWidth() <= 1500
+                    }>
                     <p className="text-[10px] text-clip w-[70px]">
                       {translateText("auto find assets")}
                     </p>
                   </Show>
 
-                  <Show when={language() != "fr"}>
+                  <Show when={libraryData.userSettings.language != "fr"}>
                     {translateText("auto find assets")}
                   </Show>
                 </button>
                 <button
                   className={`standardButton  !text-black dark:!text-white  hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0 bg-[#f1f1f1] dark:bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80] rounded-[${
-                    roundedBorders() ? "6px" : "0px"
+                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
                   }] `}
                   onClick={async () => {
                     gameName() == undefined
@@ -876,17 +883,25 @@ export function NewGame() {
                             gameName(),
                         });
                   }}>
-                  <Show when={language() == "fr" && windowWidth() >= 1500}>
+                  <Show
+                    when={
+                      libraryData.userSettings.language == "fr" &&
+                      windowWidth() >= 1500
+                    }>
                     {translateText("find assets")}
                   </Show>
 
-                  <Show when={language() == "fr" && windowWidth() <= 1500}>
+                  <Show
+                    when={
+                      libraryData.userSettings.language == "fr" &&
+                      windowWidth() <= 1500
+                    }>
                     <p className="text-[10px] text-clip w-[100px]">
                       {translateText("find assets")}
                     </p>
                   </Show>
 
-                  <Show when={language() != "fr"}>
+                  <Show when={libraryData.userSettings.language != "fr"}>
                     {translateText("find assets")}
                   </Show>
                 </button>
