@@ -170,13 +170,13 @@ Function .onInit
 
 FunctionEnd
 
-Function .onGUIInit
-  FindWindow $0 "" "clear"
-  StrCmp $0 0 notRunning
-      MessageBox MB_OK|MB_ICONEXCLAMATION "$(clearRunning)" /SD IDOK
-      Abort
-  notRunning:
-FunctionEnd
+; Function .onGUIInit
+;   FindWindow $0 "" "clear"
+;   StrCmp $0 0 notRunning
+;       MessageBox MB_OK|MB_ICONEXCLAMATION "$(clearRunning)" /SD IDOK
+;       Abort
+;   notRunning:
+; FunctionEnd
 ;--------------------------------
 
 
