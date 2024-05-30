@@ -72,15 +72,7 @@ async function createEmptyLibrary() {
     recursive: true,
   });
 
-  await writeTextFile(
-    {
-      path: "data.json",
-      contents: JSON.stringify(libraryData, null, 4),
-    },
-    {
-      dir: BaseDirectory.AppData,
-    },
-  );
+  updateData();
 
   getData();
 }
@@ -181,15 +173,9 @@ export function generateRandomString() {
 export async function changeLanguage(lang) {
   setLibraryData("userSettings", "language", lang);
 
-  await writeTextFile(
-    {
-      path: "data.json",
-      contents: JSON.stringify(libraryData, null, 4),
-    },
-    {
-      dir: BaseDirectory.AppData,
-    },
-  ).then(getData());
+  await updateData();
+
+  getData();
 
   setShowLanguageSelector(false);
   setShowSettingsLanguageSelector(false);
@@ -341,15 +327,7 @@ export async function importSteamGames() {
           return data;
         });
 
-        await writeTextFile(
-          {
-            path: "data.json",
-            contents: JSON.stringify(libraryData, null, 4),
-          },
-          {
-            dir: BaseDirectory.AppData,
-          },
-        )
+        await updateData()
           .then(async () => {
             getData();
 
@@ -412,15 +390,7 @@ export async function importSteamGames() {
                           return;
                         });
 
-                        await writeTextFile(
-                          {
-                            path: "data.json",
-                            contents: JSON.stringify(libraryData, null, 4),
-                          },
-                          {
-                            dir: BaseDirectory.AppData,
-                          },
-                        );
+                        await updateData();
 
                         setTotalImportedSteamGames((x) => x + 1);
                       }),
@@ -444,15 +414,7 @@ export async function importSteamGames() {
               return data;
             });
 
-            await writeTextFile(
-              {
-                path: "data.json",
-                contents: JSON.stringify(libraryData, null, 4),
-              },
-              {
-                dir: BaseDirectory.AppData,
-              },
-            ).then(() => {
+            await updateData().then(() => {
               document.querySelector("[data-loadingModal]").close();
               document.querySelector("[data-settingsModal]").close();
 
@@ -489,7 +451,7 @@ export function translateText(text) {
     : textLanguages[text][libraryData.userSettings.language];
 }
 
-async function updateData() {
+export async function updateData() {
   await writeTextFile(
     {
       path: "data.json",
@@ -634,17 +596,8 @@ function App() {
 
     setLibraryData("userSettings", "showSideBar", (x) => !x);
 
-    await writeTextFile(
-      {
-        path: "data.json",
-        contents: JSON.stringify(libraryData, null, 4),
-      },
-      {
-        dir: BaseDirectory.AppData,
-      },
-    ).then(() => {
-      getData();
-    });
+    await updateData();
+    getData();
   }
 
   function addEventListeners() {

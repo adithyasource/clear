@@ -34,7 +34,7 @@ import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
 import { For, Show, onMount } from "solid-js";
 import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
-import { getData, openGame, translateText } from "./App";
+import { getData, openGame, translateText, updateData } from "./App";
 import { produce, unwrap } from "solid-js/store";
 
 export function SideBar() {
@@ -50,15 +50,8 @@ export function SideBar() {
   async function toggleSideBar() {
     setLibraryData("userSettings", "showSideBar", (x) => !x);
 
-    await writeTextFile(
-      {
-        path: "data.json",
-        contents: JSON.stringify(libraryData, null, 4),
-      },
-      {
-        dir: BaseDirectory.AppData,
-      },
-    ).then(getData());
+    await updateData();
+    getData();
   }
 
   async function moveFolder(folderName, toPosition) {
@@ -90,15 +83,7 @@ export function SideBar() {
       }
     }
 
-    await writeTextFile(
-      {
-        path: "data.json",
-        contents: JSON.stringify(libraryData, null, 4),
-      },
-      {
-        dir: BaseDirectory.AppData,
-      },
-    ).then(() => {});
+    await updateData();
   }
 
   async function moveGameInCurrentFolder(
@@ -147,15 +132,7 @@ export function SideBar() {
       }
     }
 
-    await writeTextFile(
-      {
-        path: "data.json",
-        contents: JSON.stringify(libraryData, null, 4),
-      },
-      {
-        dir: BaseDirectory.AppData,
-      },
-    ).then(() => {});
+    await updateData();
   }
 
   return (
@@ -299,17 +276,8 @@ export function SideBar() {
                   return data;
                 });
 
-                await writeTextFile(
-                  {
-                    path: "data.json",
-                    contents: JSON.stringify(libraryData, null, 4),
-                  },
-                  {
-                    dir: BaseDirectory.AppData,
-                  },
-                ).then(() => {
-                  getData();
-                });
+                await updateData();
+                getData();
               }
             }}
             class={` ${
@@ -456,17 +424,8 @@ export function SideBar() {
                             }),
                           );
 
-                          await writeTextFile(
-                            {
-                              path: "data.json",
-                              contents: JSON.stringify(libraryData, null, 4),
-                            },
-                            {
-                              dir: BaseDirectory.AppData,
-                            },
-                          ).then(() => {
-                            getData();
-                          });
+                          await updateData();
+                          getData();
                         }
                       }}>
                       <div className="flex gap-[10px] items-center cursor-move  ">
@@ -602,17 +561,8 @@ export function SideBar() {
                             return data;
                           }),
                         );
-                        await writeTextFile(
-                          {
-                            path: "data.json",
-                            contents: JSON.stringify(libraryData, null, 4),
-                          },
-                          {
-                            dir: BaseDirectory.AppData,
-                          },
-                        ).then(() => {
-                          getData();
-                        });
+                        await updateData();
+                        getData();
                       }}>
                       <div className="flex gap-[10px] items-center cursor-move my-[-4px]">
                         <s className="text-black cursor-move dark:text-white break-all">
@@ -667,17 +617,9 @@ export function SideBar() {
                   }),
                 );
 
-                await writeTextFile(
-                  {
-                    path: "data.json",
-                    contents: JSON.stringify(libraryData, null, 4),
-                  },
-                  {
-                    dir: BaseDirectory.AppData,
-                  },
-                ).then(() => {
-                  getData();
-                });
+                await updateData();
+
+                getData();
               }}>
               <div className=" flex gap-[10px] items-center cursor-default">
                 <p className="pd-3 text-[#00000080] dark:text-[#ffffff80] ">

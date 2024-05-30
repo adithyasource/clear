@@ -13,7 +13,7 @@ import {
 import { Show } from "solid-js";
 import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
-import { getData, translateText } from "../App";
+import { getData, translateText, updateData } from "../App";
 import { Close, SaveDisk } from "../components/Icons";
 import { produce } from "solid-js/store";
 
@@ -54,18 +54,9 @@ export function NewFolder() {
       }),
     );
 
-    await writeTextFile(
-      {
-        path: "data.json",
-        contents: JSON.stringify(libraryData, null, 4),
-      },
-      {
-        dir: BaseDirectory.AppData,
-      },
-    ).then(() => {
-      getData();
-      document.querySelector("[data-newFolderModal]").close();
-    });
+    await updateData();
+    getData();
+    document.querySelector("[data-newFolderModal]").close();
   }
 
   return (

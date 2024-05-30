@@ -51,6 +51,7 @@ import {
   generateRandomString,
   downloadImage,
   translateText,
+  updateData,
 } from "../App";
 
 import { open } from "@tauri-apps/api/dialog";
@@ -194,17 +195,9 @@ export function NewGame() {
 
     document.querySelector("[data-loadingModal]").close();
 
-    await writeTextFile(
-      {
-        path: "data.json",
-        contents: JSON.stringify(libraryData, null, 4),
-      },
-      {
-        dir: BaseDirectory.AppData,
-      },
-    ).then(() => {
-      getData();
-    });
+    await updateData();
+
+    getData();
   }
 
   async function locateGame() {

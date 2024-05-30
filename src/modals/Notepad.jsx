@@ -7,7 +7,7 @@ import {
   setLibraryData,
 } from "../Signals";
 
-import { getData, translateText } from "../App";
+import { getData, translateText, updateData } from "../App";
 import { Close } from "../components/Icons";
 import { produce } from "solid-js/store";
 
@@ -15,15 +15,7 @@ export function Notepad() {
   async function saveNotepad() {
     setLibraryData("notepad", notepadValue());
 
-    await writeTextFile(
-      {
-        path: "data.json",
-        contents: JSON.stringify(libraryData, null, 4),
-      },
-      {
-        dir: BaseDirectory.AppData,
-      },
-    ).then(() => {});
+    await updateData();
   }
 
   setTimeout(() => {

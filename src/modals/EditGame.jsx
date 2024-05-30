@@ -28,7 +28,13 @@ import { Show } from "solid-js";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { writeTextFile, BaseDirectory, copyFile } from "@tauri-apps/api/fs";
 
-import { getData, generateRandomString, openGame, translateText } from "../App";
+import {
+  getData,
+  generateRandomString,
+  openGame,
+  translateText,
+  updateData,
+} from "../App";
 
 import { open } from "@tauri-apps/api/dialog";
 import { invoke } from "@tauri-apps/api";
@@ -312,19 +318,10 @@ export function EditGame() {
       }
     }
 
-    await writeTextFile(
-      {
-        path: "data.json",
-        contents: JSON.stringify(libraryData, null, 4),
-      },
-      {
-        dir: BaseDirectory.AppData,
-      },
-    ).then(() => {
-      setSelectedGame({});
-      getData();
-      document.querySelector("[data-editGameModal]").close();
-    });
+    await updateData();
+    setSelectedGame({});
+    getData();
+    document.querySelector("[data-editGameModal]").close();
   }
 
   async function deleteGame() {
@@ -348,17 +345,9 @@ export function EditGame() {
       }
     }
 
-    await writeTextFile(
-      {
-        path: "data.json",
-        contents: JSON.stringify(libraryData, null, 4),
-      },
-      {
-        dir: BaseDirectory.AppData,
-      },
-    ).then(() => {
-      getData();
-    });
+    await updateData();
+
+    getData();
   }
 
   return (

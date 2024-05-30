@@ -21,6 +21,7 @@ import {
   importSteamGames,
   translateText,
   changeLanguage,
+  updateData,
 } from "../App";
 
 import { appDataDir } from "@tauri-apps/api/path";
@@ -103,15 +104,8 @@ export function Settings() {
                 onClick={async () => {
                   setLibraryData("userSettings", "roundedBorders", (x) => !x);
 
-                  await writeTextFile(
-                    {
-                      path: "data.json",
-                      contents: JSON.stringify(libraryData, null, 4),
-                    },
-                    {
-                      dir: BaseDirectory.AppData,
-                    },
-                  ).then(getData());
+                  await updateData();
+                  getData();
                 }}
                 className="relative cursor-pointer p-0 text-left">
                 <Show when={libraryData.userSettings.roundedBorders}>
@@ -130,15 +124,9 @@ export function Settings() {
                 onClick={async () => {
                   setLibraryData("userSettings", "gameTitle", (x) => !x);
 
-                  await writeTextFile(
-                    {
-                      path: "data.json",
-                      contents: JSON.stringify(libraryData, null, 4),
-                    },
-                    {
-                      dir: BaseDirectory.AppData,
-                    },
-                  ).then(getData());
+                  await updateData();
+
+                  getData();
                 }}
                 className="relative cursor-pointer p-0 text-left">
                 <Show when={libraryData.userSettings.gameTitle}>
@@ -157,15 +145,9 @@ export function Settings() {
                 onClick={async () => {
                   setLibraryData("userSettings", "folderTitle", (x) => !x);
 
-                  await writeTextFile(
-                    {
-                      path: "data.json",
-                      contents: JSON.stringify(libraryData, null, 4),
-                    },
-                    {
-                      dir: BaseDirectory.AppData,
-                    },
-                  ).then(getData());
+                  await updateData();
+
+                  getData();
                 }}
                 className="relative cursor-pointer p-0 text-left">
                 <Show when={libraryData.userSettings.folderTitle}>
@@ -184,15 +166,9 @@ export function Settings() {
                 onClick={async () => {
                   setLibraryData("userSettings", "quitAfterOpen", (x) => !x);
 
-                  await writeTextFile(
-                    {
-                      path: "data.json",
-                      contents: JSON.stringify(libraryData, null, 4),
-                    },
-                    {
-                      dir: BaseDirectory.AppData,
-                    },
-                  ).then(getData());
+                  await updateData();
+
+                  getData();
                 }}
                 className="relative cursor-pointer p-0 text-left">
                 <Show when={libraryData.userSettings.quitAfterOpen}>
@@ -230,15 +206,9 @@ export function Settings() {
                     }
                   }
 
-                  await writeTextFile(
-                    {
-                      path: "data.json",
-                      contents: JSON.stringify(libraryData, null, 4),
-                    },
-                    {
-                      dir: BaseDirectory.AppData,
-                    },
-                  ).then(getData());
+                  await updateData();
+
+                  getData();
                 }}
                 className="flex gap-2 cursor-pointer p-0 text-left">
                 <span className="dark:text-[#ffffff80] text-[#12121280]">
@@ -255,15 +225,9 @@ export function Settings() {
                     ? setLibraryData("userSettings", "currentTheme", "light")
                     : setLibraryData("userSettings", "currentTheme", "dark");
 
-                  await writeTextFile(
-                    {
-                      path: "data.json",
-                      contents: JSON.stringify(libraryData, null, 4),
-                    },
-                    {
-                      dir: BaseDirectory.AppData,
-                    },
-                  ).then(getData());
+                  await updateData();
+
+                  getData();
                 }}
                 className="flex gap-2 cursor-pointer p-0 text-left">
                 <span className="dark:text-[#ffffff80] text-[#12121280]">

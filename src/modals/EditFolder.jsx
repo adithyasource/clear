@@ -13,7 +13,7 @@ import {
 } from "../Signals";
 import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
-import { getData, translateText } from "../App";
+import { getData, translateText, updateData } from "../App";
 import { Close, SaveDisk, TrashDelete } from "../components/Icons";
 import { produce } from "solid-js/store";
 
@@ -71,18 +71,11 @@ export function EditFolder() {
       }),
     );
 
-    await writeTextFile(
-      {
-        path: "data.json",
-        contents: JSON.stringify(libraryData, null, 4),
-      },
-      {
-        dir: BaseDirectory.AppData,
-      },
-    ).then(() => {
-      getData();
-      document.querySelector("[data-editFolderModal]").close();
-    });
+    await updateData();
+
+    getData();
+
+    document.querySelector("[data-editFolderModal]").close();
   }
 
   async function deleteFolder() {
@@ -106,17 +99,9 @@ export function EditFolder() {
       }),
     );
 
-    await writeTextFile(
-      {
-        path: "data.json",
-        contents: JSON.stringify(libraryData, null, 4),
-      },
-      {
-        dir: BaseDirectory.AppData,
-      },
-    ).then(() => {
-      getData();
-    });
+    await updateData();
+
+    getData();
   }
 
   return (
