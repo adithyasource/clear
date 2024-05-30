@@ -539,6 +539,13 @@ export let textLanguages = {
     ru: "Язык",
     fr: "Langue",
   },
+  "skip to games": {
+    jp: "",
+    es: "",
+    hi: "",
+    ru: "",
+    fr: "",
+  },
   "": {
     jp: "",
     es: "",
@@ -546,11 +553,11 @@ export let textLanguages = {
     ru: "",
     fr: "",
   },
-  "skip to games": {
-    jp: "",
-    es: "",
-    hi: "",
-    ru: "",
-    fr: "",
+  undefined: {
+    jp: "undefined",
+    es: "undefined",
+    hi: "undefined",
+    ru: "undefined",
+    fr: "undefined",
   },
 };
