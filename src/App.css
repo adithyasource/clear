@@ -118,12 +118,6 @@ select:focus {
   outline: none;
 }
 
-body.user-is-tabbing button:focus,
-body.user-is-tabbing input:focus,
-body.user-is-tabbing select:focus {
-  outline: 1px solid white;
-}
-
 img {
   object-fit: cover !important;
 }

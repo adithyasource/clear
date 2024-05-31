@@ -309,6 +309,15 @@ function App() {
             ? "6px"
             : "0px"};
         }
+
+        body.user-is-tabbing button:focus,
+        body.user-is-tabbing input:focus,
+        body.user-is-tabbing select:focus {
+          outline: 1px solid
+            ${globalContext.libraryData.userSettings.currentTheme == "light"
+              ? "#000000"
+              : "#ffffff"};
+        }
       `}</style>
 
       <Toast />
@@ -637,24 +646,22 @@ function App() {
                       </Show>
                       <div
                         className={`grid gap-5 mt-4 foldersDiv
-                        ${
-                          globalContext.libraryData.userSettings.zoomLevel == 0
-                            ? globalContext.libraryData.userSettings.showSideBar
-                              ? "medium:grid-cols-5 grid-cols-4 large:grid-cols-7"
-                              : "medium:grid-cols-6 grid-cols-4 large:grid-cols-8"
-                            : globalContext.libraryData.userSettings
-                                .zoomLevel == 1
-                            ? globalContext.libraryData.userSettings.showSideBar
-                              ? "medium:grid-cols-4 grid-cols-3 large:grid-cols-6"
-                              : "medium:grid-cols-5 grid-cols-3 large:grid-cols-7"
-                            : globalContext.libraryData.userSettings
-                                .zoomLevel == 2
-                            ? globalContext.libraryData.userSettings.showSideBar
-                              ? "medium:grid-cols-3 grid-cols-2 large:grid-cols-5"
-                              : "medium:grid-cols-4 grid-cols-2 large:grid-cols-6"
-                            : ""
-                        }
-                        `}>
+    ${
+      globalContext.libraryData.userSettings.zoomLevel == 0
+        ? globalContext.libraryData.userSettings.showSideBar
+          ? "medium:grid-cols-5 grid-cols-4 large:grid-cols-7"
+          : "medium:grid-cols-6 grid-cols-4 large:grid-cols-8"
+        : globalContext.libraryData.userSettings.zoomLevel == 1
+        ? globalContext.libraryData.userSettings.showSideBar
+          ? "medium:grid-cols-4 grid-cols-3 large:grid-cols-6"
+          : "medium:grid-cols-5 grid-cols-3 large:grid-cols-7"
+        : globalContext.libraryData.userSettings.zoomLevel == 2
+        ? globalContext.libraryData.userSettings.showSideBar
+          ? "medium:grid-cols-3 grid-cols-2 large:grid-cols-5"
+          : "medium:grid-cols-4 grid-cols-2 large:grid-cols-6"
+        : ""
+    }
+    `}>
                         <For each={folder.games}>
                           {(gameName, index) => {
                             return (
@@ -948,21 +955,21 @@ function App() {
                 <div>
                   <div
                     className={`grid gap-5 mt-4 foldersDiv 
-                    ${
-                      globalContext.libraryData.userSettings.zoomLevel == 0
-                        ? globalContext.libraryData.userSettings.showSideBar
-                          ? "medium:grid-cols-5 grid-cols-4 large:grid-cols-7"
-                          : "medium:grid-cols-6 grid-cols-4 large:grid-cols-8"
-                        : globalContext.libraryData.userSettings.zoomLevel == 1
-                        ? globalContext.libraryData.userSettings.showSideBar
-                          ? "medium:grid-cols-4 grid-cols-3 large:grid-cols-6"
-                          : "medium:grid-cols-5 grid-cols-3 large:grid-cols-7"
-                        : globalContext.libraryData.userSettings.zoomLevel == 2
-                        ? globalContext.libraryData.userSettings.showSideBar
-                          ? "medium:grid-cols-3 grid-cols-2 large:grid-cols-5"
-                          : "medium:grid-cols-4 grid-cols-2 large:grid-cols-6"
-                        : ""
-                    }`}>
+${
+  globalContext.libraryData.userSettings.zoomLevel == 0
+    ? globalContext.libraryData.userSettings.showSideBar
+      ? "medium:grid-cols-5 grid-cols-4 large:grid-cols-7"
+      : "medium:grid-cols-6 grid-cols-4 large:grid-cols-8"
+    : globalContext.libraryData.userSettings.zoomLevel == 1
+    ? globalContext.libraryData.userSettings.showSideBar
+      ? "medium:grid-cols-4 grid-cols-3 large:grid-cols-6"
+      : "medium:grid-cols-5 grid-cols-3 large:grid-cols-7"
+    : globalContext.libraryData.userSettings.zoomLevel == 2
+    ? globalContext.libraryData.userSettings.showSideBar
+      ? "medium:grid-cols-3 grid-cols-2 large:grid-cols-5"
+      : "medium:grid-cols-4 grid-cols-2 large:grid-cols-6"
+    : ""
+}`}>
                     <For each={searchResults}>
                       {(gameName, index) => {
                         return (

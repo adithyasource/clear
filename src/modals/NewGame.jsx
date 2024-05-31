@@ -1,7 +1,6 @@
 import { Show, createSignal, useContext } from "solid-js";
 import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
 import { BaseDirectory, copyFile } from "@tauri-apps/api/fs";
-import * as fs from "@tauri-apps/api/fs";
 
 import {
   getData,
@@ -21,6 +20,7 @@ import {
   DataEntryContext,
   UIContext,
 } from "../Globals";
+import { triggerToast } from "../Globals";
 
 export function NewGame() {
   const globalContext = useContext(GlobalContext);
@@ -39,11 +39,7 @@ export function NewGame() {
       dataEntryContext.gameName() == "" ||
       dataEntryContext.gameName() == undefined
     ) {
-      uiContext.setShowToast(true);
-      applicationStateContext.setToastMessage(translateText("no game name"));
-      setTimeout(() => {
-        uiContext.setShowToast(false);
-      }, 1500);
+      triggerToast(translateText("no game name"));
       return;
     }
 
@@ -390,13 +386,13 @@ export function NewGame() {
         e.preventDefault();
       }}
       ref={(ref) => {
-        const focusableElements = ref.querySelectorAll(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-        );
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
-
         function handleTab(e) {
+          const focusableElements = ref.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+          );
+          const firstElement = focusableElements[0];
+          const lastElement = focusableElements[focusableElements.length - 1];
+
           if (e.key === "Tab") {
             if (e.shiftKey) {
               if (document.activeElement === firstElement) {
@@ -504,6 +500,27 @@ export function NewGame() {
                 }
               }
             }}
+            onKeyDown={(e) => {
+              if (applicationStateContext.SGDBGames()) {
+                if (e.key === "ArrowRight") {
+                  dataEntryContext.setFoundGridImageIndex((i) =>
+                    i == dataEntryContext.foundGridImage().length - 1
+                      ? 0
+                      : i + 1,
+                  );
+                  setShowGridImageLoading(true);
+                }
+
+                if (e.key === "ArrowLeft") {
+                  if (dataEntryContext.foundGridImageIndex() != 0) {
+                    dataEntryContext.setFoundGridImageIndex((i) => i - 1);
+                    setShowGridImageLoading(true);
+                  } else {
+                    setShowGridImageLoading(false);
+                  }
+                }
+              }
+            }}
             onContextMenu={() => {
               dataEntryContext.setLocatedGridImage(undefined);
               dataEntryContext.setFoundGridImage(undefined);
@@ -577,6 +594,27 @@ export function NewGame() {
                   }
 
                   if (e.deltaY >= 0) {
+                    if (dataEntryContext.foundHeroImageIndex() != 0) {
+                      dataEntryContext.setFoundHeroImageIndex((i) => i - 1);
+                      setShowHeroImageLoading(true);
+                    } else {
+                      setShowHeroImageLoading(false);
+                    }
+                  }
+                }
+              }}
+              onKeyDown={(e) => {
+                if (applicationStateContext.SGDBGames()) {
+                  if (e.key === "ArrowRight") {
+                    dataEntryContext.setFoundHeroImageIndex((i) =>
+                      i == dataEntryContext.foundHeroImage().length - 1
+                        ? 0
+                        : i + 1,
+                    );
+                    setShowHeroImageLoading(true);
+                  }
+
+                  if (e.key === "ArrowLeft") {
                     if (dataEntryContext.foundHeroImageIndex() != 0) {
                       dataEntryContext.setFoundHeroImageIndex((i) => i - 1);
                       setShowHeroImageLoading(true);
@@ -681,6 +719,27 @@ export function NewGame() {
                     }
                   }
                 }}
+                onKeyDown={(e) => {
+                  if (applicationStateContext.SGDBGames()) {
+                    if (e.key === "ArrowRight") {
+                      dataEntryContext.setFoundLogoImageIndex((i) =>
+                        i == dataEntryContext.foundLogoImage().length - 1
+                          ? 0
+                          : i + 1,
+                      );
+                      setShowLogoImageLoading(true);
+                    }
+
+                    if (e.key === "ArrowLeft") {
+                      if (dataEntryContext.foundLogoImageIndex() != 0) {
+                        dataEntryContext.setFoundLogoImageIndex((i) => i - 1);
+                        setShowLogoImageLoading(true);
+                      } else {
+                        setShowLogoImageLoading(false);
+                      }
+                    }
+                  }
+                }}
                 onContextMenu={() => {
                   dataEntryContext.setLocatedLogo(undefined);
                   dataEntryContext.setFoundLogoImage(undefined);
@@ -776,6 +835,27 @@ export function NewGame() {
                       }
 
                       if (e.deltaY >= 0) {
+                        if (dataEntryContext.foundIconImageIndex() != 0) {
+                          dataEntryContext.setFoundIconImageIndex((i) => i - 1);
+                          setShowIconImageLoading(true);
+                        } else {
+                          setShowIconImageLoading(false);
+                        }
+                      }
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    if (applicationStateContext.SGDBGames()) {
+                      if (e.key === "ArrowRight") {
+                        dataEntryContext.setFoundIconImageIndex((i) =>
+                          i == dataEntryContext.foundIconImage().length - 1
+                            ? 0
+                            : i + 1,
+                        );
+                        setShowIconImageLoading(true);
+                      }
+
+                      if (e.key === "ArrowLeft") {
                         if (dataEntryContext.foundIconImageIndex() != 0) {
                           dataEntryContext.setFoundIconImageIndex((i) => i - 1);
                           setShowIconImageLoading(true);
@@ -1049,6 +1129,7 @@ export function NewGame() {
                         onClick={() => {
                           selectedDataContext.setSelectedGameId(undefined);
                           selectedDataContext.setSelectedGameId(foundGame.id);
+                          document.querySelector("[data-newGameModal]").focus();
                           getGameAssets();
                         }}>
                         {foundGame.name}

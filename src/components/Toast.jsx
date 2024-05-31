@@ -1,5 +1,10 @@
 import { useContext } from "solid-js";
-import { GlobalContext, ApplicationStateContext, UIContext } from "../Globals";
+import {
+  GlobalContext,
+  ApplicationStateContext,
+  UIContext,
+  closeToast,
+} from "../Globals";
 
 export function Toast() {
   let globalContext = useContext(GlobalContext);
@@ -11,9 +16,9 @@ export function Toast() {
       <Show when={uiContext.showToast()}>
         <div
           onClick={() => {
-            uiContext.setShowToast(false);
+            closeToast();
           }}
-          className="  absolute bottom-[20px] w-screen justify-center self-center content-center flex items-center">
+          className="absolute bottom-[20px] w-screen justify-center self-center content-center flex items-center">
           <div
             className={`border-0 p-[10px] rounded-[${
               globalContext.libraryData.userSettings.roundedBorders

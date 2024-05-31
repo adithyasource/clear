@@ -38,13 +38,13 @@ export function Settings() {
           uiContext.setShowSettingsLanguageSelector(false);
         }}
         ref={(ref) => {
-          const focusableElements = ref.querySelectorAll(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-          );
-          const firstElement = focusableElements[0];
-          const lastElement = focusableElements[focusableElements.length - 1];
-
           function handleTab(e) {
+            const focusableElements = ref.querySelectorAll(
+              'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+            );
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+
             if (e.key === "Tab") {
               if (e.shiftKey) {
                 if (document.activeElement === firstElement) {

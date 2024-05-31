@@ -688,3 +688,21 @@ export async function updateData() {
     },
   ).then(getData());
 }
+
+let toastTimeout = setTimeout(() => {}, 0);
+
+export function triggerToast(message) {
+  setShowToast(false);
+  setShowToast(true);
+  setToastMessage(message);
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => {
+    setShowToast(false);
+  }, 1500);
+}
+
+export function closeToast() {
+  setShowToast(false);
+  setToastMessage(undefined);
+  clearTimeout(toastTimeout);
+}
