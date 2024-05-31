@@ -24,6 +24,7 @@ import {
   DataUpdateContext,
   UIContext,
 } from "../Globals";
+import { triggerToast } from "../Globals";
 
 export function EditGame() {
   const globalContext = useContext(GlobalContext);
@@ -106,11 +107,7 @@ export function EditGame() {
     let previousIndex;
 
     if (dataUpdateContext.editedGameName() == "") {
-      uiContext.setShowToast(true);
-      applicationStateContext.setToastMessage(translateText("no game name"));
-      setTimeout(() => {
-        uiContext.setShowToast(false);
-      }, 1500);
+      triggerToast(translateText("no game name"));
       return;
     }
 
@@ -134,15 +131,11 @@ export function EditGame() {
       }
 
       if (gameOccurances == 1) {
-        uiContext.setShowToast(true);
-        applicationStateContext.setToastMessage(
+        triggerToast(
           dataUpdateContext.editedGameName() +
             " " +
             translateText("is already in your library"),
         );
-        setTimeout(() => {
-          uiContext.setShowToast(false);
-        }, 1500);
         return;
       }
     }

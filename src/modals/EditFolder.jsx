@@ -10,6 +10,7 @@ import {
   DataUpdateContext,
   UIContext,
 } from "../Globals";
+import { triggerToast } from "../Globals";
 
 export function EditFolder() {
   const globalContext = useContext(GlobalContext);
@@ -20,11 +21,7 @@ export function EditFolder() {
 
   async function editFolder() {
     if (dataUpdateContext.editedFolderName() == "") {
-      uiContext.setShowToast(true);
-      applicationStateContext.setToastMessage(translateText("no folder name"));
-      setTimeout(() => {
-        uiContext.setShowToast(false);
-      }, 1500);
+      triggerToast(translateText("no folder name"));
       return;
     }
 
@@ -48,15 +45,11 @@ export function EditFolder() {
       }
 
       if (folderOccurances == 1) {
-        uiContext.setShowToast(true);
-        applicationStateContext.setToastMessage(
+        triggerToast(
           dataUpdateContext.editedFolderName() +
             " " +
             translateText("is already in your library"),
         );
-        setTimeout(() => {
-          uiContext.setShowToast(false);
-        }, 1500);
         return;
       }
     }

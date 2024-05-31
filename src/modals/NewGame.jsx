@@ -52,15 +52,11 @@ export function NewGame() {
         dataEntryContext.gameName() ==
         Object.keys(globalContext.libraryData.games)[x]
       ) {
-        uiContext.setShowToast(true);
-        applicationStateContext.setToastMessage(
+        triggerToast(
           dataEntryContext.gameName() +
             " " +
             translateText("is already in your library"),
         );
-        setTimeout(() => {
-          uiContext.setShowToast(false);
-        }, 1500);
         return;
       }
     }
@@ -293,26 +289,14 @@ export function NewGame() {
       .then((res) =>
         res.json().then(async (jsonres) => {
           if (jsonres.data.length == 0) {
-            uiContext.setShowToast(true);
-            applicationStateContext.setToastMessage(
-              translateText("couldn't find that game :("),
-            );
-            setTimeout(() => {
-              uiContext.setShowToast(false);
-            }, 2500);
+            triggerToast(translateText("couldn't find that game :("));
           } else {
             applicationStateContext.setSGDBGames(jsonres.data);
           }
         }),
       )
       .catch((err) => {
-        uiContext.setShowToast(true);
-        applicationStateContext.setToastMessage(
-          translateText("you're not connected to the internet :("),
-        );
-        setTimeout(() => {
-          uiContext.setShowToast(false);
-        }, 2500);
+        triggerToast(translateText("you're not connected to the internet :("));
       });
   }
 
@@ -343,37 +327,23 @@ export function NewGame() {
 
         if (missingAssets.length != 0) {
           if (missingAssets.length == 4) {
-            uiContext.setShowToast(true);
-            applicationStateContext.setToastMessage(
-              translateText("couldn't find any assets :("),
-            );
-            setTimeout(() => {
-              uiContext.setShowToast(false);
-            }, 2500);
+            triggerToast(translateText("couldn't find any assets :("));
             return;
           }
 
           if (missingAssets.length >= 2) {
             let lastAssetType = missingAssets.splice(-1);
-            uiContext.setShowToast(true);
-            applicationStateContext.setToastMessage(
+            triggerToast(
               `${translateText("couldn't find")} ${missingAssets.join(
                 ", ",
               )} & ${lastAssetType} :(`,
             );
-            setTimeout(() => {
-              uiContext.setShowToast(false);
-            }, 2500);
             return;
           }
 
-          uiContext.setShowToast(true);
-          applicationStateContext.setToastMessage(
+          triggerToast(
             `${translateText("couldn't find")} ${missingAssets[0]} :(`,
           );
-          setTimeout(() => {
-            uiContext.setShowToast(false);
-          }, 2500);
         }
       }),
     );
@@ -960,13 +930,7 @@ export function NewGame() {
                       dataEntryContext.gameName() == "" ||
                       dataEntryContext.gameName() == undefined
                     ) {
-                      uiContext.setShowToast(true);
-                      applicationStateContext.setToastMessage(
-                        translateText("no game name"),
-                      );
-                      setTimeout(() => {
-                        uiContext.setShowToast(false);
-                      }, 1500);
+                      triggerToast(translateText("no game name"));
                       return;
                     }
 
