@@ -1,53 +1,63 @@
-import {
-  libraryData,
-  setLibraryData,
-  folderName,
-  setFolderName,
-  hideFolder,
-  setHideFolder,
-  currentFolders,
-  setShowToast,
-  setToastMessage,
-} from "../Signals";
-
-import { Show } from "solid-js";
-import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
-
-import { getData, translateText, updateData } from "../App";
-import { Close, SaveDisk } from "../components/Icons";
+import { Show, useContext } from "solid-js";
 import { produce } from "solid-js/store";
+import { getData, translateText, updateData } from "../Globals";
+import { Close, SaveDisk } from "../components/Icons";
+
+import {
+  GlobalContext,
+  ApplicationStateContext,
+  DataEntryContext,
+  UIContext,
+} from "../Globals";
 
 export function NewFolder() {
+  const globalContext = useContext(GlobalContext);
+  const uiContext = useContext(UIContext);
+  const applicationStateContext = useContext(ApplicationStateContext);
+  const dataEntryContext = useContext(DataEntryContext);
+
   async function addFolder() {
-    if (folderName() == "" || folderName() == undefined) {
-      setShowToast(true);
-      setToastMessage(translateText("no folder name"));
+    if (
+      dataEntryContext.folderName() == "" ||
+      dataEntryContext.folderName() == undefined
+    ) {
+      uiContext.setShowToast(true);
+      applicationStateContext.setToastMessage(translateText("no folder name"));
       setTimeout(() => {
-        setShowToast(false);
+        uiContext.setShowToast(false);
       }, 1500);
       return;
     }
 
-    for (let x = 0; x < Object.keys(libraryData.folders).length; x++) {
-      if (folderName() == Object.keys(libraryData.folders)[x]) {
-        setShowToast(true);
-        setToastMessage(
-          folderName() + " " + translateText("is already in your library"),
+    for (
+      let x = 0;
+      x < Object.keys(globalContext.libraryData.folders).length;
+      x++
+    ) {
+      if (
+        dataEntryContext.folderName() ==
+        Object.keys(globalContext.libraryData.folders)[x]
+      ) {
+        uiContext.setShowToast(true);
+        applicationStateContext.setToastMessage(
+          dataEntryContext.folderName() +
+            " " +
+            translateText("is already in your library"),
         );
         setTimeout(() => {
-          setShowToast(false);
+          uiContext.setShowToast(false);
         }, 1500);
         return;
       }
     }
 
-    setLibraryData(
+    globalContext.setLibraryData(
       produce((data) => {
-        data.folders[folderName()] = {
-          name: folderName(),
-          hide: hideFolder(),
+        data.folders[dataEntryContext.folderName()] = {
+          name: dataEntryContext.folderName(),
+          hide: dataEntryContext.hideFolder(),
           games: [],
-          index: currentFolders().length,
+          index: applicationStateContext.currentFolders().length,
         };
 
         return data;
@@ -63,8 +73,8 @@ export function NewFolder() {
     <dialog
       data-newFolderModal
       onClose={() => {
-        setFolderName(undefined);
-        setHideFolder(undefined);
+        dataEntryContext.setFolderName(undefined);
+        dataEntryContext.setHideFolder(undefined);
         getData();
       }}
       ref={(ref) => {
@@ -100,11 +110,13 @@ export function NewFolder() {
       <div className="flex items-center justify-center w-screen h-screen align-middle ">
         <div
           className={`border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
-            libraryData.userSettings.roundedBorders ? "6px" : "0px"
+            globalContext.libraryData.userSettings.roundedBorders
+              ? "6px"
+              : "0px"
           }] w-[50%] p-6 `}>
           <div
             className={`flex justify-between ${
-              libraryData.userSettings.language != "en"
+              globalContext.libraryData.userSettings.language != "en"
                 ? "flex-col large:flex-row"
                 : ""
             } `}>
@@ -116,10 +128,10 @@ export function NewFolder() {
             <div className="flex items-center gap-5">
               <button
                 onClick={() => {
-                  setHideFolder((hideFolder) => !hideFolder);
+                  dataEntryContext.setHideFolder((x) => !x);
                 }}
                 className="relative cursor-pointer">
-                <Show when={hideFolder()}>
+                <Show when={dataEntryContext.hideFolder()}>
                   <div className="relative">
                     <div className="">
                       {translateText("hide in expanded view")}
@@ -129,7 +141,7 @@ export function NewFolder() {
                     </div>
                   </div>
                 </Show>
-                <Show when={!hideFolder()}>
+                <Show when={!dataEntryContext.hideFolder()}>
                   <div className="">
                     {translateText("hide in expanded view")}
                   </div>
@@ -160,9 +172,9 @@ export function NewFolder() {
               id=""
               className="w-full dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b]"
               onInput={(e) => {
-                setFolderName(e.currentTarget.value);
+                dataEntryContext.setFolderName(e.currentTarget.value);
               }}
-              value={folderName() || ""}
+              value={dataEntryContext.folderName() || ""}
               placeholder={translateText("name of folder")}
             />
           </div>

@@ -1,13 +1,19 @@
-import { appDataDirPath, selectedGame } from "../Signals";
-
-import { Show } from "solid-js";
+import { Show, useContext } from "solid-js";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
-
-import { openGame, translateText } from "../App";
+import { openGame, translateText } from "../Globals";
 import { Close, Play, Settings } from "../components/Icons";
-import { libraryData } from "../Signals";
+
+import {
+  GlobalContext,
+  SelectedDataContext,
+  ApplicationStateContext,
+} from "../Globals";
 
 export function GamePopUp() {
+  const globalContext = useContext(GlobalContext);
+  const selectedDataContext = useContext(SelectedDataContext);
+  const applicationStateContext = useContext(ApplicationStateContext);
+
   return (
     <dialog
       data-gamePopup
@@ -15,15 +21,19 @@ export function GamePopUp() {
       onDragStart={(e) => {
         e.preventDefault();
       }}>
-      <Show when={selectedGame()}>
+      <Show when={selectedDataContext.selectedGame()}>
         <div className="flex flex-col items-center justify-center w-screen h-screen px-[40px]">
           <img
             src={convertFileSrc(
-              appDataDirPath() + "heroes\\" + selectedGame().heroImage,
+              applicationStateContext.appDataDirPath() +
+                "heroes\\" +
+                selectedDataContext.selectedGame().heroImage,
             )}
             alt=""
             className={`max-large:h-[270px] h-[350px] rounded-[${
-              libraryData.userSettings.roundedBorders ? "6px" : "0px"
+              globalContext.libraryData.userSettings.roundedBorders
+                ? "6px"
+                : "0px"
             }] absolute blur-[80px] opacity-[0.4] -z-10`}
           />
           <div
@@ -62,7 +72,7 @@ export function GamePopUp() {
               <button
                 className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !bg-opacity-80 hover:backdrop-blur-[5px]  !backdrop-blur-[10px]"
                 onClick={() => {
-                  openGame(selectedGame().location);
+                  openGame(selectedDataContext.selectedGame().location);
                 }}>
                 <div className="!w-max">{translateText("play")}</div>
                 <Play />
@@ -83,39 +93,49 @@ export function GamePopUp() {
                 <Close />
               </button>
             </div>
-            <Show when={selectedGame().heroImage}>
+            <Show when={selectedDataContext.selectedGame().heroImage}>
               <img
                 src={convertFileSrc(
-                  appDataDirPath() + "heroes\\" + selectedGame().heroImage,
+                  applicationStateContext.appDataDirPath() +
+                    "heroes\\" +
+                    selectedDataContext.selectedGame().heroImage,
                 )}
                 alt=""
                 className={`max-large:h-[270px] h-[350px] aspect-[96/31]  rounded-[${
-                  libraryData.userSettings.roundedBorders ? "6px" : "0px"
+                  globalContext.libraryData.userSettings.roundedBorders
+                    ? "6px"
+                    : "0px"
                 }]`}
               />
             </Show>
-            <Show when={!selectedGame().heroImage}>
+            <Show when={!selectedDataContext.selectedGame().heroImage}>
               <div
                 className={`max-large:h-[270px] h-[350px] aspect-[96/31] bg-[#f1f1f1] dark:bg-[#1c1c1c]  rounded-[${
-                  libraryData.userSettings.roundedBorders ? "6px" : "0px"
+                  globalContext.libraryData.userSettings.roundedBorders
+                    ? "6px"
+                    : "0px"
                 }]`}
               />
             </Show>
 
             <div className="absolute max-large:bottom-[15px] bottom-[30px] left-[25px] h-[70px] w-[300px] items-center flex align-middle">
-              <Show when={selectedGame().logo}>
+              <Show when={selectedDataContext.selectedGame().logo}>
                 <img
                   src={convertFileSrc(
-                    appDataDirPath() + "logos\\" + selectedGame().logo,
+                    applicationStateContext.appDataDirPath() +
+                      "logos\\" +
+                      selectedDataContext.selectedGame().logo,
                   )}
                   alt=""
                   className=" relative aspect-auto max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
                 />
               </Show>
-              <Show when={!selectedGame().logo}>
+              <Show when={!selectedDataContext.selectedGame().logo}>
                 <div
                   className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] absolute bottom-[5px] bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
+                    globalContext.libraryData.userSettings.roundedBorders
+                      ? "6px"
+                      : "0px"
                   }]`}
                 />
               </Show>

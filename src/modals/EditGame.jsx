@@ -1,54 +1,39 @@
-import {
-  appDataDirPath,
-  libraryData,
-  setLibraryData,
-  selectedGame,
-  editedGameName,
-  setEditedGameName,
-  editedFavouriteGame,
-  setEditedFavouriteGame,
-  editedLocatedHeroImage,
-  setEditedLocatedHeroImage,
-  editedLocatedGridImage,
-  setEditedLocatedGridImage,
-  editedLocatedLogo,
-  setEditedLocatedLogo,
-  editedLocatedGame,
-  setEditedlocatedGame,
-  setSelectedGame,
-  editedLocatedIcon,
-  setEditedLocatedIcon,
-  setShowToast,
-  setToastMessage,
-  setShowDeleteConfirm,
-  showDeleteConfirm,
-} from "../Signals";
-
-import { Show } from "solid-js";
+import { Show, useContext } from "solid-js";
+import { produce } from "solid-js/store";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
-import { writeTextFile, BaseDirectory, copyFile } from "@tauri-apps/api/fs";
-
+import { BaseDirectory, copyFile } from "@tauri-apps/api/fs";
+import { open } from "@tauri-apps/api/dialog";
+import { invoke } from "@tauri-apps/api";
 import {
   getData,
   generateRandomString,
-  openGame,
   translateText,
   updateData,
-} from "../App";
-
-import { open } from "@tauri-apps/api/dialog";
-import { invoke } from "@tauri-apps/api";
+} from "../Globals";
 import {
   Close,
   OpenExternal,
   SaveDisk,
   TrashDelete,
 } from "../components/Icons";
-import { produce } from "solid-js/store";
+
+import {
+  GlobalContext,
+  SelectedDataContext,
+  ApplicationStateContext,
+  DataUpdateContext,
+  UIContext,
+} from "../Globals";
 
 export function EditGame() {
+  const globalContext = useContext(GlobalContext);
+  const uiContext = useContext(UIContext);
+  const selectedDataContext = useContext(SelectedDataContext);
+  const applicationStateContext = useContext(ApplicationStateContext);
+  const dataUpdateContext = useContext(DataUpdateContext);
+
   async function locateEditedGame() {
-    setEditedlocatedGame(
+    dataUpdateContext.setEditedlocatedGame(
       await open({
         multiple: false,
         filters: [
@@ -62,7 +47,7 @@ export function EditGame() {
   }
 
   async function locateEditedHeroImage() {
-    setEditedLocatedHeroImage(
+    dataUpdateContext.setEditedLocatedHeroImage(
       await open({
         multiple: false,
         filters: [
@@ -76,7 +61,7 @@ export function EditGame() {
   }
 
   async function locateEditedGridImage() {
-    setEditedLocatedGridImage(
+    dataUpdateContext.setEditedLocatedGridImage(
       await open({
         multiple: false,
         filters: [
@@ -90,7 +75,7 @@ export function EditGame() {
   }
 
   async function locateEditedLogo() {
-    setEditedLocatedLogo(
+    dataUpdateContext.setEditedLocatedLogo(
       await open({
         multiple: false,
         filters: [
@@ -104,7 +89,7 @@ export function EditGame() {
   }
 
   async function locateEditedIcon() {
-    setEditedLocatedIcon(
+    dataUpdateContext.setEditedLocatedIcon(
       await open({
         multiple: false,
         filters: [
@@ -120,178 +105,217 @@ export function EditGame() {
   async function updateGame() {
     let previousIndex;
 
-    if (editedGameName() == "") {
-      setShowToast(true);
-      setToastMessage(translateText("no game name"));
+    if (dataUpdateContext.editedGameName() == "") {
+      uiContext.setShowToast(true);
+      applicationStateContext.setToastMessage(translateText("no game name"));
       setTimeout(() => {
-        setShowToast(false);
+        uiContext.setShowToast(false);
       }, 1500);
       return;
     }
 
-    if (selectedGame().name != editedGameName()) {
+    if (
+      selectedDataContext.selectedGame().name !=
+      dataUpdateContext.editedGameName()
+    ) {
       let gameOccurances = 0;
 
-      for (let x = 0; x < Object.keys(libraryData.games).length; x++) {
-        if (editedGameName() == Object.keys(libraryData.games)[x]) {
+      for (
+        let x = 0;
+        x < Object.keys(globalContext.libraryData.games).length;
+        x++
+      ) {
+        if (
+          dataUpdateContext.editedGameName() ==
+          Object.keys(globalContext.libraryData.games)[x]
+        ) {
           gameOccurances += 1;
         }
       }
 
       if (gameOccurances == 1) {
-        setShowToast(true);
-        setToastMessage(
-          editedGameName() + " " + translateText("is already in your library"),
+        uiContext.setShowToast(true);
+        applicationStateContext.setToastMessage(
+          dataUpdateContext.editedGameName() +
+            " " +
+            translateText("is already in your library"),
         );
         setTimeout(() => {
-          setShowToast(false);
+          uiContext.setShowToast(false);
         }, 1500);
         return;
       }
     }
 
-    for (let i = 0; i < Object.values(libraryData.folders).length; i++) {
+    for (
+      let i = 0;
+      i < Object.values(globalContext.libraryData.folders).length;
+      i++
+    ) {
       for (
         let j = 0;
-        j < Object.values(libraryData.folders)[i].games.length;
+        j < Object.values(globalContext.libraryData.folders)[i].games.length;
         j++
       ) {
         if (
-          Object.values(libraryData.folders)[i].games[j] == selectedGame().name
+          Object.values(globalContext.libraryData.folders)[i].games[j] ==
+          selectedDataContext.selectedGame().name
         ) {
           previousIndex = j;
         }
       }
     }
 
-    setLibraryData((data) => {
-      delete data.games[selectedGame().name];
+    globalContext.setLibraryData((data) => {
+      delete data.games[selectedDataContext.selectedGame().name];
       return data;
     });
 
-    if (!editedGameName()) {
-      setEditedGameName(selectedGame().name);
+    if (!dataUpdateContext.editedGameName()) {
+      dataUpdateContext.setEditedGameName(
+        selectedDataContext.selectedGame().name,
+      );
     }
 
-    if (editedFavouriteGame() == undefined) {
-      setEditedFavouriteGame(selectedGame().favourite);
+    if (dataUpdateContext.editedFavouriteGame() == undefined) {
+      dataUpdateContext.setEditedFavouriteGame(
+        selectedDataContext.selectedGame().favourite,
+      );
     }
 
-    if (editedLocatedGame() === undefined) {
-      setEditedlocatedGame(selectedGame().location);
+    if (dataUpdateContext.editedLocatedGame() === undefined) {
+      dataUpdateContext.setEditedlocatedGame(
+        selectedDataContext.selectedGame().location,
+      );
     } else {
-      if (editedLocatedGame() === null) {
-        setEditedlocatedGame(undefined);
+      if (dataUpdateContext.editedLocatedGame() === null) {
+        dataUpdateContext.setEditedlocatedGame(undefined);
       }
     }
 
-    if (editedLocatedGridImage() === undefined) {
-      setEditedLocatedGridImage(selectedGame().gridImage);
+    if (dataUpdateContext.editedLocatedGridImage() === undefined) {
+      dataUpdateContext.setEditedLocatedGridImage(
+        selectedDataContext.selectedGame().gridImage,
+      );
     } else {
-      if (editedLocatedGridImage() === null) {
-        setEditedLocatedGridImage(undefined);
+      if (dataUpdateContext.editedLocatedGridImage() === null) {
+        dataUpdateContext.setEditedLocatedGridImage(undefined);
       } else {
         let gridImageFileName =
           generateRandomString() +
           "." +
-          editedLocatedGridImage().split(".")[
-            editedLocatedGridImage().split(".").length - 1
+          dataUpdateContext.editedLocatedGridImage().split(".")[
+            dataUpdateContext.editedLocatedGridImage().split(".").length - 1
           ];
         await copyFile(
-          editedLocatedGridImage(),
+          dataUpdateContext.editedLocatedGridImage(),
           "grids\\" + gridImageFileName,
           {
             dir: BaseDirectory.AppData,
           },
         ).then(() => {
-          setEditedLocatedGridImage(gridImageFileName);
+          dataUpdateContext.setEditedLocatedGridImage(gridImageFileName);
         });
       }
     }
 
-    if (editedLocatedHeroImage() === undefined) {
-      setEditedLocatedHeroImage(selectedGame().heroImage);
+    if (dataUpdateContext.editedLocatedHeroImage() === undefined) {
+      dataUpdateContext.setEditedLocatedHeroImage(
+        selectedDataContext.selectedGame().heroImage,
+      );
     } else {
-      if (editedLocatedHeroImage() === null) {
-        setEditedLocatedHeroImage(undefined);
+      if (dataUpdateContext.editedLocatedHeroImage() === null) {
+        dataUpdateContext.setEditedLocatedHeroImage(undefined);
       } else {
         let heroImageFileName =
           generateRandomString() +
           "." +
-          editedLocatedHeroImage().split(".")[
-            editedLocatedHeroImage().split(".").length - 1
+          dataUpdateContext.editedLocatedHeroImage().split(".")[
+            dataUpdateContext.editedLocatedHeroImage().split(".").length - 1
           ];
         await copyFile(
-          editedLocatedHeroImage(),
+          dataUpdateContext.editedLocatedHeroImage(),
           "heroes\\" + heroImageFileName,
           {
             dir: BaseDirectory.AppData,
           },
         ).then(() => {
-          setEditedLocatedHeroImage(heroImageFileName);
+          dataUpdateContext.setEditedLocatedHeroImage(heroImageFileName);
         });
       }
     }
 
-    if (editedLocatedLogo() === undefined) {
-      setEditedLocatedLogo(selectedGame().logo);
+    if (dataUpdateContext.editedLocatedLogo() === undefined) {
+      dataUpdateContext.setEditedLocatedLogo(
+        selectedDataContext.selectedGame().logo,
+      );
     } else {
-      if (editedLocatedLogo() === null) {
-        setEditedLocatedLogo(undefined);
+      if (dataUpdateContext.editedLocatedLogo() === null) {
+        dataUpdateContext.setEditedLocatedLogo(undefined);
       } else {
         let logoFileName =
           generateRandomString() +
           "." +
-          editedLocatedLogo().split(".")[
-            editedLocatedLogo().split(".").length - 1
+          dataUpdateContext.editedLocatedLogo().split(".")[
+            dataUpdateContext.editedLocatedLogo().split(".").length - 1
           ];
 
-        await copyFile(editedLocatedLogo(), "logos\\" + logoFileName, {
-          dir: BaseDirectory.AppData,
-        }).then(() => {
-          setEditedLocatedLogo(logoFileName);
+        await copyFile(
+          dataUpdateContext.editedLocatedLogo(),
+          "logos\\" + logoFileName,
+          {
+            dir: BaseDirectory.AppData,
+          },
+        ).then(() => {
+          dataUpdateContext.setEditedLocatedLogo(logoFileName);
         });
       }
     }
 
-    if (editedLocatedIcon() === undefined) {
-      setEditedLocatedIcon(selectedGame().icon);
+    if (dataUpdateContext.editedLocatedIcon() === undefined) {
+      dataUpdateContext.setEditedLocatedIcon(
+        selectedDataContext.selectedGame().icon,
+      );
     } else {
-      if (editedLocatedIcon() === null) {
-        setEditedLocatedIcon(undefined);
+      if (dataUpdateContext.editedLocatedIcon() === null) {
+        dataUpdateContext.setEditedLocatedIcon(undefined);
       } else {
         let iconFileName =
           generateRandomString() +
           "." +
-          editedLocatedIcon().split(".")[
-            editedLocatedIcon().split(".").length - 1
+          dataUpdateContext.editedLocatedIcon().split(".")[
+            dataUpdateContext.editedLocatedIcon().split(".").length - 1
           ];
 
-        await copyFile(editedLocatedIcon(), "icons\\" + iconFileName, {
-          dir: BaseDirectory.AppData,
-        }).then(() => {
-          setEditedLocatedIcon(iconFileName);
+        await copyFile(
+          dataUpdateContext.editedLocatedIcon(),
+          "icons\\" + iconFileName,
+          {
+            dir: BaseDirectory.AppData,
+          },
+        ).then(() => {
+          dataUpdateContext.setEditedLocatedIcon(iconFileName);
         });
       }
     }
 
-    setLibraryData("games", editedGameName(), {
-      location: editedLocatedGame(),
-      name: editedGameName(),
-      heroImage: editedLocatedHeroImage(),
-      gridImage: editedLocatedGridImage(),
-      logo: editedLocatedLogo(),
-      icon: editedLocatedIcon(),
-      favourite: editedFavouriteGame(),
+    globalContext.setLibraryData("games", dataUpdateContext.editedGameName(), {
+      location: dataUpdateContext.editedLocatedGame(),
+      name: dataUpdateContext.editedGameName(),
+      heroImage: dataUpdateContext.editedLocatedHeroImage(),
+      gridImage: dataUpdateContext.editedLocatedGridImage(),
+      logo: dataUpdateContext.editedLocatedLogo(),
+      icon: dataUpdateContext.editedLocatedIcon(),
+      favourite: dataUpdateContext.editedFavouriteGame(),
     });
 
     function getCurrentFolder() {
-      let folders = Object.values(libraryData.folders);
+      let folders = Object.values(globalContext.libraryData.folders);
 
       for (let i = 0; i < folders.length; i++) {
         let games = folders[i].games;
         for (let j = 0; j < games.length; j++) {
-          if (games[j] == selectedGame().name) {
+          if (games[j] == selectedDataContext.selectedGame().name) {
             let currentFolder = folders[i].name;
             return currentFolder;
           }
@@ -301,15 +325,22 @@ export function EditGame() {
 
     let currentFolder = getCurrentFolder();
 
-    for (let j = 0; j < libraryData.folders[currentFolder].games.length; j++) {
-      if (libraryData.folders[currentFolder].games[j] == selectedGame().name) {
-        setLibraryData(
+    for (
+      let j = 0;
+      j < globalContext.libraryData.folders[currentFolder].games.length;
+      j++
+    ) {
+      if (
+        globalContext.libraryData.folders[currentFolder].games[j] ==
+        selectedDataContext.selectedGame().name
+      ) {
+        globalContext.setLibraryData(
           produce((data) => {
             data.folders[currentFolder].games.splice(j, 1);
             data.folders[currentFolder].games.splice(
               previousIndex,
               0,
-              editedGameName(),
+              dataUpdateContext.editedGameName(),
             );
 
             return data;
@@ -319,23 +350,23 @@ export function EditGame() {
     }
 
     await updateData();
-    setSelectedGame({});
+    selectedDataContext.setSelectedGame({});
     getData();
     document.querySelector("[data-editGameModal]").close();
   }
 
   async function deleteGame() {
-    setLibraryData((data) => {
-      delete data.games[selectedGame().name];
+    globalContext.setLibraryData((data) => {
+      delete data.games[selectedDataContext.selectedGame().name];
       return data;
     });
 
-    let folders = Object.values(libraryData.folders);
+    let folders = Object.values(globalContext.libraryData.folders);
 
     for (let i = 0; i < folders.length; i++) {
       for (let j = 0; j < folders[i].games.length; j++) {
-        if (folders[i].games[j] == selectedGame().name) {
-          setLibraryData(
+        if (folders[i].games[j] == selectedDataContext.selectedGame().name) {
+          globalContext.setLibraryData(
             produce((data) => {
               Object.values(data.folders)[i].games.splice(j, 1);
               return data;
@@ -386,14 +417,14 @@ export function EditGame() {
         });
       }}
       onClose={() => {
-        setEditedFavouriteGame();
-        setEditedGameName(undefined);
-        setEditedLocatedGridImage(undefined);
-        setEditedLocatedHeroImage(undefined);
-        setEditedLocatedLogo(undefined);
-        setEditedLocatedIcon(undefined);
-        setShowDeleteConfirm(false);
-        setEditedlocatedGame(undefined);
+        dataUpdateContext.setEditedFavouriteGame();
+        dataUpdateContext.setEditedGameName(undefined);
+        dataUpdateContext.setEditedLocatedGridImage(undefined);
+        dataUpdateContext.setEditedLocatedHeroImage(undefined);
+        dataUpdateContext.setEditedLocatedLogo(undefined);
+        dataUpdateContext.setEditedLocatedIcon(undefined);
+        uiContext.setShowDeleteConfirm(false);
+        dataUpdateContext.setEditedlocatedGame(undefined);
         getData();
       }}
       className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#121212cc] bg-[#d1d1d1cc]">
@@ -401,21 +432,23 @@ export function EditGame() {
         <div className="flex justify-between max-large:w-[61rem] w-[84rem]">
           <div>
             <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
-              {translateText("edit")} {selectedGame().name}
+              {translateText("edit")} {selectedDataContext.selectedGame().name}
             </p>
           </div>
           <div className="flex items-center gap-4">
             <button
               className="cursor-pointer"
               onClick={() => {
-                if (editedFavouriteGame() == undefined) {
-                  setEditedFavouriteGame(!selectedGame().favourite);
+                if (dataUpdateContext.editedFavouriteGame() == undefined) {
+                  dataUpdateContext.setEditedFavouriteGame(
+                    !selectedDataContext.selectedGame().favourite,
+                  );
                 } else {
-                  setEditedFavouriteGame(!editedFavouriteGame());
+                  dataUpdateContext.setEditedFavouriteGame((x) => !x);
                 }
               }}>
-              <Show when={editedFavouriteGame() == undefined}>
-                <Show when={selectedGame().favourite}>
+              <Show when={dataUpdateContext.editedFavouriteGame() == undefined}>
+                <Show when={selectedDataContext.selectedGame().favourite}>
                   <div className="relative">
                     <div className="!w-max"> {translateText("favourite")}</div>
                     <div className="absolute blur-[5px] opacity-70 -z-10 inset-0 !w-max">
@@ -423,12 +456,12 @@ export function EditGame() {
                     </div>
                   </div>
                 </Show>
-                <Show when={!selectedGame().favourite}>
+                <Show when={!selectedDataContext.selectedGame().favourite}>
                   <div className="!w-max"> {translateText("favourite")}</div>
                 </Show>
               </Show>
 
-              <Show when={editedFavouriteGame() == true}>
+              <Show when={dataUpdateContext.editedFavouriteGame() == true}>
                 <div className="relative">
                   <div className="!w-max"> {translateText("favourite")}</div>
                   <div className="absolute blur-[5px] opacity-70 -z-10 inset-0 !w-max">
@@ -437,7 +470,7 @@ export function EditGame() {
                 </div>
               </Show>
 
-              <Show when={editedFavouriteGame() == false}>
+              <Show when={dataUpdateContext.editedFavouriteGame() == false}>
                 <div className="!w-max">favourite</div>
               </Show>
             </button>
@@ -449,15 +482,17 @@ export function EditGame() {
             </button>
             <button
               onClick={() => {
-                showDeleteConfirm() ? deleteGame() : setShowDeleteConfirm(true);
+                uiContext.showDeleteConfirm()
+                  ? deleteGame()
+                  : uiContext.setShowDeleteConfirm(true);
 
                 setTimeout(() => {
-                  setShowDeleteConfirm(false);
+                  uiContext.setShowDeleteConfirm(false);
                 }, 1500);
               }}
               className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] ">
               <span className="text-[#FF3636] w-max">
-                {showDeleteConfirm()
+                {uiContext.showDeleteConfirm()
                   ? translateText("confirm?")
                   : translateText("delete")}
               </span>
@@ -478,15 +513,18 @@ export function EditGame() {
           <button
             onClick={locateEditedGridImage}
             onContextMenu={() => {
-              setEditedLocatedGridImage(null);
+              dataUpdateContext.setEditedLocatedGridImage(null);
             }}
             className="panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] locatingGridImg h-full aspect-[2/3] group relative overflow-hidden"
             aria-label="grid/cover">
-            <Show when={editedLocatedGridImage() === undefined}>
+            <Show
+              when={dataUpdateContext.editedLocatedGridImage() === undefined}>
               <img
                 className="absolute inset-0 aspect-[2/3]"
                 src={convertFileSrc(
-                  appDataDirPath() + "grids\\" + selectedGame().gridImage,
+                  applicationStateContext.appDataDirPath() +
+                    "grids\\" +
+                    selectedDataContext.selectedGame().gridImage,
                 )}
                 alt=""
               />
@@ -494,17 +532,17 @@ export function EditGame() {
                 {translateText("grid/cover")}
               </span>
             </Show>
-            <Show when={editedLocatedGridImage()}>
+            <Show when={dataUpdateContext.editedLocatedGridImage()}>
               <img
                 className="absolute inset-0 aspect-[2/3]"
-                src={convertFileSrc(editedLocatedGridImage())}
+                src={convertFileSrc(dataUpdateContext.editedLocatedGridImage())}
                 alt=""
               />
               <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
                 {translateText("grid/cover")}
               </span>
             </Show>
-            <Show when={editedLocatedGridImage() === null}>
+            <Show when={dataUpdateContext.editedLocatedGridImage() === null}>
               <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
                 {translateText("grid/cover")}
               </span>
@@ -515,45 +553,53 @@ export function EditGame() {
             <button
               onClick={locateEditedHeroImage}
               onContextMenu={() => {
-                setEditedLocatedHeroImage(null);
+                dataUpdateContext.setEditedLocatedHeroImage(null);
               }}
               className="max-large:h-[250px] h-[350px] aspect-[67/26] group relative p-0 m-0 panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
               aria-label="hero">
               <Show
-                when={editedLocatedHeroImage() === null}
+                when={dataUpdateContext.editedLocatedHeroImage() === null}
                 className="absolute inset-0 overflow-hidden">
                 <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
                   {translateText("hero")}
                 </span>
               </Show>
               <Show
-                when={editedLocatedHeroImage() === undefined}
+                when={dataUpdateContext.editedLocatedHeroImage() === undefined}
                 className="absolute inset-0 overflow-hidden">
                 <img
                   src={convertFileSrc(
-                    appDataDirPath() + "heroes\\" + selectedGame().heroImage,
+                    applicationStateContext.appDataDirPath() +
+                      "heroes\\" +
+                      selectedDataContext.selectedGame().heroImage,
                   )}
                   alt=""
                   className="absolute inset-0  aspect-[96/31]  h-full  rounded-[6px]"
                 />
                 <img
                   src={convertFileSrc(
-                    appDataDirPath() + "heroes\\" + selectedGame().heroImage,
+                    applicationStateContext.appDataDirPath() +
+                      "heroes\\" +
+                      selectedDataContext.selectedGame().heroImage,
                   )}
                   alt=""
                   className="absolute inset-0 aspect-[96/31]  -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.6]"
                 />
               </Show>
               <Show
-                when={editedLocatedHeroImage()}
+                when={dataUpdateContext.editedLocatedHeroImage()}
                 className="absolute inset-0 overflow-hidden">
                 <img
-                  src={convertFileSrc(editedLocatedHeroImage())}
+                  src={convertFileSrc(
+                    dataUpdateContext.editedLocatedHeroImage(),
+                  )}
                   alt=""
                   className="absolute inset-0  aspect-[96/31] h-full rounded-[6px]"
                 />
                 <img
-                  src={convertFileSrc(editedLocatedHeroImage())}
+                  src={convertFileSrc(
+                    dataUpdateContext.editedLocatedHeroImage(),
+                  )}
                   alt=""
                   className="absolute inset-0 -z-10 aspect-[96/31]  h-full rounded-[6px] blur-[80px] opacity-[0.6]"
                 />
@@ -564,36 +610,43 @@ export function EditGame() {
               </span>
             </button>
 
-            <Show when={selectedGame().logo}>
+            <Show when={selectedDataContext.selectedGame().logo}>
               <button
                 onClick={locateEditedLogo}
                 onContextMenu={() => {
-                  setEditedLocatedLogo(null);
+                  dataUpdateContext.setEditedLocatedLogo(null);
                 }}
                 className={`panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] !bg-[#27272700] group  absolute bottom-[70px] left-[20px] ${
-                  selectedGame().logo ? "" : "!w-[200px] !h-[65px]"
+                  selectedDataContext.selectedGame().logo
+                    ? ""
+                    : "!w-[200px] !h-[65px]"
                 } `}
                 aria-label="logo">
-                <Show when={editedLocatedLogo() === undefined}>
+                <Show
+                  when={dataUpdateContext.editedLocatedLogo() === undefined}>
                   <img
                     src={convertFileSrc(
-                      appDataDirPath() + "logos\\" + selectedGame().logo,
+                      applicationStateContext.appDataDirPath() +
+                        "logos\\" +
+                        selectedDataContext.selectedGame().logo,
                     )}
                     alt=""
                     className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
                   />
                 </Show>
-                <Show when={editedLocatedLogo()}>
+                <Show when={dataUpdateContext.editedLocatedLogo()}>
                   <img
-                    src={convertFileSrc(editedLocatedLogo())}
+                    src={convertFileSrc(dataUpdateContext.editedLocatedLogo())}
                     alt=""
                     className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
                   />
                 </Show>
-                <Show when={editedLocatedLogo() === null}>
+                <Show when={dataUpdateContext.editedLocatedLogo() === null}>
                   <div
                     className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] relative bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                      libraryData.userSettings.roundedBorders ? "6px" : "0px"
+                      globalContext.libraryData.userSettings.roundedBorders
+                        ? "6px"
+                        : "0px"
                     }]`}
                   />
                 </Show>
@@ -603,27 +656,31 @@ export function EditGame() {
                 </span>
               </button>
             </Show>
-            <Show when={!selectedGame().logo}>
+            <Show when={!selectedDataContext.selectedGame().logo}>
               <button
                 onClick={locateEditedLogo}
                 onContextMenu={() => {
-                  setEditedLocatedLogo(null);
+                  dataUpdateContext.setEditedLocatedLogo(null);
                 }}
                 className={`panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] !bg-[#27272700] group  absolute bottom-[60px] left-[20px] max-large:bottom-[40px] ${
-                  selectedGame().logo ? "" : "!w-[200px] !h-[65px]"
+                  selectedDataContext.selectedGame().logo
+                    ? ""
+                    : "!w-[200px] !h-[65px]"
                 } `}
                 aria-label="logo">
-                <Show when={editedLocatedLogo()}>
+                <Show when={dataUpdateContext.editedLocatedLogo()}>
                   <img
-                    src={convertFileSrc(editedLocatedLogo())}
+                    src={convertFileSrc(dataUpdateContext.editedLocatedLogo())}
                     alt=""
                     className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
                   />
                 </Show>
-                <Show when={!editedLocatedLogo()}>
+                <Show when={!dataUpdateContext.editedLocatedLogo()}>
                   <div
                     className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] relative bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                      libraryData.userSettings.roundedBorders ? "6px" : "0px"
+                      globalContext.libraryData.userSettings.roundedBorders
+                        ? "6px"
+                        : "0px"
                     }]`}
                   />
                 </Show>
@@ -638,39 +695,46 @@ export function EditGame() {
               <button
                 onClick={locateEditedIcon}
                 onContextMenu={() => {
-                  setEditedLocatedIcon(null);
+                  dataUpdateContext.setEditedLocatedIcon(null);
                 }}
                 className="relative !bg-[#27272700] group p-0"
                 aria-label="logo">
-                <Show when={editedLocatedIcon() === undefined}>
-                  <Show when={selectedGame().icon}>
+                <Show
+                  when={dataUpdateContext.editedLocatedIcon() === undefined}>
+                  <Show when={selectedDataContext.selectedGame().icon}>
                     <img
                       src={convertFileSrc(
-                        appDataDirPath() + "icons\\" + selectedGame().icon,
+                        applicationStateContext.appDataDirPath() +
+                          "icons\\" +
+                          selectedDataContext.selectedGame().icon,
                       )}
                       alt=""
                       className="w-[40px] h-[40px] "
                     />
                   </Show>
-                  <Show when={!selectedGame().icon}>
+                  <Show when={!selectedDataContext.selectedGame().icon}>
                     <div
                       className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                        libraryData.userSettings.roundedBorders ? "6px" : "0px"
+                        globalContext.libraryData.userSettings.roundedBorders
+                          ? "6px"
+                          : "0px"
                       }]`}
                     />
                   </Show>
                 </Show>
-                <Show when={editedLocatedIcon()}>
+                <Show when={dataUpdateContext.editedLocatedIcon()}>
                   <img
-                    src={convertFileSrc(editedLocatedIcon())}
+                    src={convertFileSrc(dataUpdateContext.editedLocatedIcon())}
                     alt=""
                     className="w-[40px] h-[40px] "
                   />
                 </Show>
-                <Show when={editedLocatedIcon() === null}>
+                <Show when={dataUpdateContext.editedLocatedIcon() === null}>
                   <div
                     className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                      libraryData.userSettings.roundedBorders ? "6px" : "0px"
+                      globalContext.libraryData.userSettings.roundedBorders
+                        ? "6px"
+                        : "0px"
                     }]`}
                   />
                 </Show>
@@ -686,66 +750,76 @@ export function EditGame() {
                 name=""
                 id=""
                 onInput={(e) => {
-                  setEditedGameName(e.currentTarget.value);
+                  dataUpdateContext.setEditedGameName(e.currentTarget.value);
                 }}
                 className="dark:bg-[#272727cc] bg-[#E8E8E8cc] backdrop-blur-[10px]"
                 placeholder={translateText("name of game")}
-                value={selectedGame().name}
+                value={selectedDataContext.selectedGame().name}
               />
               <button
                 onClick={locateEditedGame}
                 onContextMenu={() => {
-                  setEditedlocatedGame(null);
+                  dataUpdateContext.setEditedlocatedGame(null);
                 }}
                 className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0">
-                <Show when={editedLocatedGame() === undefined}>
-                  <Show when={selectedGame().location}>
-                    {selectedGame()
+                <Show
+                  when={dataUpdateContext.editedLocatedGame() === undefined}>
+                  <Show when={selectedDataContext.selectedGame().location}>
+                    {selectedDataContext
+                      .selectedGame()
                       ["location"].toString()
                       .split("\\")
                       .slice(-1)
                       .toString().length > 17
                       ? "..." +
-                        selectedGame()
+                        selectedDataContext
+                          .selectedGame()
                           ["location"].toString()
                           .split("\\")
                           .slice(-1)
                           .toString()
                           .slice(0, 7) +
                         "..." +
-                        selectedGame()["location"].toString().slice(-7)
+                        selectedDataContext
+                          .selectedGame()
+                          ["location"].toString()
+                          .slice(-7)
                       : "..." +
-                        selectedGame()
+                        selectedDataContext
+                          .selectedGame()
                           ["location"].toString()
                           .split("\\")
                           .slice(-1)
                           .toString()}
                   </Show>
-                  <Show when={!selectedGame().location}>
+                  <Show when={!selectedDataContext.selectedGame().location}>
                     {" "}
                     {translateText("locate game")}
                   </Show>
                 </Show>
-                <Show when={editedLocatedGame() === null}>
+                <Show when={dataUpdateContext.editedLocatedGame() === null}>
                   {translateText("locate game")}
                 </Show>
-                <Show when={editedLocatedGame()}>
-                  {editedLocatedGame()
+                <Show when={dataUpdateContext.editedLocatedGame()}>
+                  {dataUpdateContext
+                    .editedLocatedGame()
                     .toString()
                     .split("\\")
                     .slice(-1)
                     .toString().length > 17
                     ? "..." +
-                      editedLocatedGame()
+                      dataUpdateContext
+                        .editedLocatedGame()
                         .toString()
                         .split("\\")
                         .slice(-1)
                         .toString()
                         .slice(0, 7) +
                       "..." +
-                      editedLocatedGame().toString().slice(-7)
+                      dataUpdateContext.editedLocatedGame().toString().slice(-7)
                     : "..." +
-                      editedLocatedGame()
+                      dataUpdateContext
+                        .editedLocatedGame()
                         .toString()
                         .split("\\")
                         .slice(-1)
@@ -753,12 +827,18 @@ export function EditGame() {
                 </Show>
               </button>
 
-              <Show when={selectedGame().location}>
-                <Show when={selectedGame().location.split("//")[0] != "steam:"}>
+              <Show when={selectedDataContext.selectedGame().location}>
+                <Show
+                  when={
+                    selectedDataContext
+                      .selectedGame()
+                      .location.split("//")[0] != "steam:"
+                  }>
                   <button
                     onClick={() => {
                       invoke("open_location", {
-                        location: selectedGame()
+                        location: selectedDataContext
+                          .selectedGame()
                           .location.split("\\")
                           .slice(0, -1)
                           .join("\\"),

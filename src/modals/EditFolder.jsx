@@ -1,70 +1,80 @@
-import {
-  libraryData,
-  selectedFolder,
-  editedFolderName,
-  setEditedFolderName,
-  editedHideFolder,
-  setEditedHideFolder,
-  showDeleteConfirm,
-  setShowDeleteConfirm,
-  setShowToast,
-  setToastMessage,
-  setLibraryData,
-} from "../Signals";
-import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
-
-import { getData, translateText, updateData } from "../App";
-import { Close, SaveDisk, TrashDelete } from "../components/Icons";
 import { produce } from "solid-js/store";
+import { useContext } from "solid-js";
+import { getData, translateText, updateData } from "../Globals";
+import { Close, SaveDisk, TrashDelete } from "../components/Icons";
+
+import {
+  GlobalContext,
+  SelectedDataContext,
+  ApplicationStateContext,
+  DataUpdateContext,
+  UIContext,
+} from "../Globals";
 
 export function EditFolder() {
+  const globalContext = useContext(GlobalContext);
+  const uiContext = useContext(UIContext);
+  const selectedDataContext = useContext(SelectedDataContext);
+  const applicationStateContext = useContext(ApplicationStateContext);
+  const dataUpdateContext = useContext(DataUpdateContext);
+
   async function editFolder() {
-    if (editedFolderName() == "") {
-      setShowToast(true);
-      setToastMessage(translateText("no folder name"));
+    if (dataUpdateContext.editedFolderName() == "") {
+      uiContext.setShowToast(true);
+      applicationStateContext.setToastMessage(translateText("no folder name"));
       setTimeout(() => {
-        setShowToast(false);
+        uiContext.setShowToast(false);
       }, 1500);
       return;
     }
 
-    if (selectedFolder().name != editedFolderName()) {
+    if (
+      selectedDataContext.selectedFolder().name !=
+      dataUpdateContext.editedFolderName()
+    ) {
       let folderOccurances = 0;
 
-      for (let x = 0; x < Object.keys(libraryData.folders).length; x++) {
-        if (editedFolderName() == Object.keys(libraryData.folders)[x]) {
+      for (
+        let x = 0;
+        x < Object.keys(globalContext.libraryData.folders).length;
+        x++
+      ) {
+        if (
+          dataUpdateContext.editedFolderName() ==
+          Object.keys(globalContext.libraryData.folders)[x]
+        ) {
           folderOccurances += 1;
         }
       }
 
       if (folderOccurances == 1) {
-        setShowToast(true);
-        setToastMessage(
-          editedFolderName() +
+        uiContext.setShowToast(true);
+        applicationStateContext.setToastMessage(
+          dataUpdateContext.editedFolderName() +
             " " +
             translateText("is already in your library"),
         );
         setTimeout(() => {
-          setShowToast(false);
+          uiContext.setShowToast(false);
         }, 1500);
         return;
       }
     }
 
-    setLibraryData(
+    globalContext.setLibraryData(
       produce((data) => {
-        delete data.folders[selectedFolder().name];
+        delete data.folders[selectedDataContext.selectedFolder().name];
 
         return data;
       }),
     );
 
-    setLibraryData(
+    globalContext.setLibraryData(
       produce((data) => {
-        data.folders[editedFolderName()] = {
-          ...selectedFolder(),
-          name: editedFolderName(),
-          hide: editedHideFolder(),
+        data.folders[dataUpdateContext.editedFolderName()] = {
+          ...selectedDataContext.selectedFolder(),
+          name: dataUpdateContext.editedFolderName(),
+          hide: dataUpdateContext.editedHideFolder(),
         };
 
         return data;
@@ -79,9 +89,18 @@ export function EditFolder() {
   }
 
   async function deleteFolder() {
-    for (let x = 0; x < Object.keys(libraryData.folders).length; x++) {
-      if (x > libraryData.folders[selectedFolder().name].index) {
-        setLibraryData(
+    for (
+      let x = 0;
+      x < Object.keys(globalContext.libraryData.folders).length;
+      x++
+    ) {
+      if (
+        x >
+        globalContext.libraryData.folders[
+          selectedDataContext.selectedFolder().name
+        ].index
+      ) {
+        globalContext.setLibraryData(
           produce((data) => {
             Object.values(data.folders)[x].index -= 1;
 
@@ -91,9 +110,9 @@ export function EditFolder() {
       }
     }
 
-    setLibraryData(
+    globalContext.setLibraryData(
       produce((data) => {
-        delete data.folders[selectedFolder().name];
+        delete data.folders[selectedDataContext.selectedFolder().name];
 
         return data;
       }),
@@ -143,32 +162,37 @@ export function EditFolder() {
       <div className="flex items-center justify-center w-screen h-screen align-middle ">
         <div
           className={`border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
-            libraryData.userSettings.roundedBorders ? "6px" : "0px"
+            globalContext.libraryData.userSettings.roundedBorders
+              ? "6px"
+              : "0px"
           }] w-[50%] p-6 `}>
           <div
             className={`flex justify-between ${
-              libraryData.userSettings.language != "en"
+              globalContext.libraryData.userSettings.language != "en"
                 ? "flex-col large:flex-row"
                 : ""
             } `}>
             <div>
               <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
-                {translateText("edit")} {selectedFolder().name}
+                {translateText("edit")}{" "}
+                {selectedDataContext.selectedFolder().name}
               </p>
             </div>
 
             <div className="flex items-center gap-5">
               <button
                 onClick={() => {
-                  if (editedHideFolder() == undefined) {
-                    setEditedHideFolder(!selectedGame().hide);
+                  if (dataUpdateContext.editedHideFolder() == undefined) {
+                    dataUpdateContext.setEditedHideFolder(!selectedGame().hide);
                   } else {
-                    setEditedHideFolder(!editedHideFolder());
+                    dataUpdateContext.setEditedHideFolder(
+                      !dataUpdateContext.editedHideFolder(),
+                    );
                   }
                 }}
                 className="relative cursor-pointer">
-                <Show when={editedHideFolder() == undefined}>
-                  <Show when={selectedFolder().hide}>
+                <Show when={dataUpdateContext.editedHideFolder() == undefined}>
+                  <Show when={selectedDataContext.selectedFolder().hide}>
                     <div className="relative">
                       <div className="">
                         {translateText("hide in expanded view")}
@@ -178,14 +202,14 @@ export function EditFolder() {
                       </div>
                     </div>
                   </Show>
-                  <Show when={!selectedFolder().hide}>
+                  <Show when={!selectedDataContext.selectedFolder().hide}>
                     <div className="">
                       {translateText("hide in expanded view")}
                     </div>
                   </Show>
                 </Show>
 
-                <Show when={editedHideFolder() == true}>
+                <Show when={dataUpdateContext.editedHideFolder() == true}>
                   <div className="relative">
                     <div className="">
                       {translateText("hide in expanded view")}
@@ -196,7 +220,7 @@ export function EditFolder() {
                   </div>
                 </Show>
 
-                <Show when={editedHideFolder() == false}>
+                <Show when={dataUpdateContext.editedHideFolder() == false}>
                   <div className="">
                     {translateText("hide in expanded view")}
                   </div>
@@ -212,17 +236,17 @@ export function EditFolder() {
 
               <button
                 onClick={() => {
-                  showDeleteConfirm()
+                  uiContext.showDeleteConfirm()
                     ? deleteFolder()
-                    : setShowDeleteConfirm(true);
+                    : uiContext.setShowDeleteConfirm(true);
 
                   setTimeout(() => {
-                    setShowDeleteConfirm(false);
+                    uiContext.setShowDeleteConfirm(false);
                   }, 1500);
                 }}
                 className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max">
                 <span className="text-[#FF3636]">
-                  {showDeleteConfirm()
+                  {uiContext.showDeleteConfirm()
                     ? translateText("confirm?")
                     : translateText("delete")}
                 </span>
@@ -249,10 +273,10 @@ export function EditFolder() {
               id=""
               className="w-full dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b]"
               onInput={(e) => {
-                setEditedFolderName(e.currentTarget.value);
+                dataUpdateContext.setEditedFolderName(e.currentTarget.value);
               }}
               placeholder={translateText("name of folder")}
-              value={selectedFolder().name}
+              value={selectedDataContext.selectedFolder().name}
             />
           </div>
         </div>

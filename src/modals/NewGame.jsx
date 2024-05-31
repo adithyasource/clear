@@ -1,87 +1,69 @@
-import {
-  libraryData,
-  setLibraryData,
-  gameName,
-  setGameName,
-  favouriteGame,
-  setFavouriteGame,
-  locatedHeroImage,
-  setLocatedHeroImage,
-  locatedGridImage,
-  setLocatedGridImage,
-  locatedLogo,
-  setLocatedLogo,
-  locatedGame,
-  setlocatedGame,
-  setShowToast,
-  setToastMessage,
-  setLocatedIcon,
-  locatedIcon,
-  foundGridImage,
-  setFoundGridImage,
-  foundHeroImage,
-  setFoundHeroImage,
-  foundLogoImage,
-  setFoundLogoImage,
-  foundIconImage,
-  setFoundIconImage,
-  setSGDBGames,
-  SGDBGames,
-  selectedGameId,
-  setSelectedGameId,
-  foundGridImageIndex,
-  setFoundGridImageIndex,
-  foundHeroImageIndex,
-  setFoundHeroImageIndex,
-  foundLogoImageIndex,
-  setFoundLogoImageIndex,
-  foundIconImageIndex,
-  setFoundIconImageIndex,
-  windowWidth,
-  appDataDirPath,
-} from "../Signals";
-
-import { Show, createSignal } from "solid-js";
+import { Show, createSignal, useContext } from "solid-js";
 import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
-import { writeTextFile, BaseDirectory, copyFile } from "@tauri-apps/api/fs";
+import { BaseDirectory, copyFile } from "@tauri-apps/api/fs";
 import * as fs from "@tauri-apps/api/fs";
 
 import {
   getData,
   generateRandomString,
-  downloadImage,
   translateText,
   updateData,
-} from "../App";
+} from "../Globals";
 
 import { open } from "@tauri-apps/api/dialog";
 import { ChevronArrow, Close, Loading, SaveDisk } from "../components/Icons";
 import { produce } from "solid-js/store";
 
+import {
+  GlobalContext,
+  SelectedDataContext,
+  ApplicationStateContext,
+  DataEntryContext,
+  UIContext,
+} from "../Globals";
+
 export function NewGame() {
+  const globalContext = useContext(GlobalContext);
+  const uiContext = useContext(UIContext);
+  const selectedDataContext = useContext(SelectedDataContext);
+  const applicationStateContext = useContext(ApplicationStateContext);
+  const dataEntryContext = useContext(DataEntryContext);
+
   const [showGridImageLoading, setShowGridImageLoading] = createSignal(false);
   const [showHeroImageLoading, setShowHeroImageLoading] = createSignal(false);
   const [showLogoImageLoading, setShowLogoImageLoading] = createSignal(false);
   const [showIconImageLeading, setShowIconImageLoading] = createSignal(false);
 
   async function addGame() {
-    if (gameName() == "" || gameName() == undefined) {
-      setShowToast(true);
-      setToastMessage(translateText("no game name"));
+    if (
+      dataEntryContext.gameName() == "" ||
+      dataEntryContext.gameName() == undefined
+    ) {
+      uiContext.setShowToast(true);
+      applicationStateContext.setToastMessage(translateText("no game name"));
       setTimeout(() => {
-        setShowToast(false);
+        uiContext.setShowToast(false);
       }, 1500);
       return;
     }
 
-    for (let x = 0; x < Object.keys(libraryData.games).length; x++) {
-      if (gameName() == Object.keys(libraryData.games)[x]) {
-        setShowToast(true);
-        setToastMessage(
-          gameName() + " " + translateText("is already in your library"),
+    for (
+      let x = 0;
+      x < Object.keys(globalContext.libraryData.games).length;
+      x++
+    ) {
+      if (
+        dataEntryContext.gameName() ==
+        Object.keys(globalContext.libraryData.games)[x]
+      ) {
+        uiContext.setShowToast(true);
+        applicationStateContext.setToastMessage(
+          dataEntryContext.gameName() +
+            " " +
+            translateText("is already in your library"),
         );
         setTimeout(() => {
-          setShowToast(false);
+          uiContext.setShowToast(false);
         }, 1500);
         return;
       }
@@ -94,99 +76,135 @@ export function NewGame() {
 
     document.querySelector("[data-loadingModal]").show();
 
-    if (foundGridImage()) {
+    if (dataEntryContext.foundGridImage()) {
       gridImageFileName = generateRandomString() + ".png";
       invoke("download_image", {
-        link: foundGridImage()[foundGridImageIndex()],
-        location: appDataDirPath() + "grids\\" + gridImageFileName,
+        link: dataEntryContext.foundGridImage()[
+          dataEntryContext.foundGridImageIndex()
+        ],
+        location:
+          applicationStateContext.appDataDirPath() +
+          "grids\\" +
+          gridImageFileName,
       });
     } else {
-      if (locatedGridImage()) {
+      if (dataEntryContext.locatedGridImage()) {
         gridImageFileName =
           generateRandomString() +
           "." +
-          locatedGridImage().split(".")[
-            locatedGridImage().split(".").length - 1
+          dataEntryContext.locatedGridImage().split(".")[
+            dataEntryContext.locatedGridImage().split(".").length - 1
           ];
 
-        await copyFile(locatedGridImage(), "grids\\" + gridImageFileName, {
-          dir: BaseDirectory.AppData,
-        });
+        await copyFile(
+          dataEntryContext.locatedGridImage(),
+          "grids\\" + gridImageFileName,
+          {
+            dir: BaseDirectory.AppData,
+          },
+        );
       }
     }
 
-    if (foundHeroImage()) {
+    if (dataEntryContext.foundHeroImage()) {
       heroImageFileName = generateRandomString() + ".png";
 
       invoke("download_image", {
-        link: foundHeroImage()[foundHeroImageIndex()],
-        location: appDataDirPath() + "heroes\\" + heroImageFileName,
+        link: dataEntryContext.foundHeroImage()[
+          dataEntryContext.foundHeroImageIndex()
+        ],
+        location:
+          applicationStateContext.appDataDirPath() +
+          "heroes\\" +
+          heroImageFileName,
       });
     } else {
-      if (locatedHeroImage()) {
+      if (dataEntryContext.locatedHeroImage()) {
         heroImageFileName =
           generateRandomString() +
           "." +
-          locatedHeroImage().split(".")[
-            locatedHeroImage().split(".").length - 1
+          dataEntryContext.locatedHeroImage().split(".")[
+            dataEntryContext.locatedHeroImage().split(".").length - 1
           ];
 
-        await copyFile(locatedHeroImage(), "heroes\\" + heroImageFileName, {
-          dir: BaseDirectory.AppData,
-        });
+        await copyFile(
+          dataEntryContext.locatedHeroImage(),
+          "heroes\\" + heroImageFileName,
+          {
+            dir: BaseDirectory.AppData,
+          },
+        );
       }
     }
 
-    if (foundLogoImage()) {
+    if (dataEntryContext.foundLogoImage()) {
       logoFileName = generateRandomString() + ".png";
 
       invoke("download_image", {
-        link: foundLogoImage()[foundLogoImageIndex()],
-        location: appDataDirPath() + "logos\\" + logoFileName,
+        link: dataEntryContext.foundLogoImage()[
+          dataEntryContext.foundLogoImageIndex()
+        ],
+        location:
+          applicationStateContext.appDataDirPath() + "logos\\" + logoFileName,
       });
     } else {
-      if (locatedLogo()) {
+      if (dataEntryContext.locatedLogo()) {
         logoFileName =
           generateRandomString() +
           "." +
-          locatedLogo().split(".")[locatedLogo().split(".").length - 1];
+          dataEntryContext.locatedLogo().split(".")[
+            dataEntryContext.locatedLogo().split(".").length - 1
+          ];
 
-        await copyFile(locatedLogo(), "logos\\" + logoFileName, {
-          dir: BaseDirectory.AppData,
-        });
+        await copyFile(
+          dataEntryContext.locatedLogo(),
+          "logos\\" + logoFileName,
+          {
+            dir: BaseDirectory.AppData,
+          },
+        );
       }
     }
 
-    if (foundIconImage()) {
+    if (dataEntryContext.foundIconImage()) {
       iconFileName = generateRandomString() + ".png";
 
       invoke("download_image", {
-        link: foundIconImage()[foundIconImageIndex()],
-        location: appDataDirPath() + "icons\\" + iconFileName,
+        link: dataEntryContext.foundIconImage()[
+          dataEntryContext.foundIconImageIndex()
+        ],
+        location:
+          applicationStateContext.appDataDirPath() + "icons\\" + iconFileName,
       });
     } else {
-      if (locatedIcon()) {
+      if (dataEntryContext.locatedIcon()) {
         iconFileName =
           generateRandomString() +
           "." +
-          locatedIcon().split(".")[locatedIcon().split(".").length - 1];
+          dataEntryContext.locatedIcon().split(".")[
+            dataEntryContext.locatedIcon().split(".").length - 1
+          ];
 
-        await copyFile(locatedIcon(), "icons\\" + iconFileName, {
-          dir: BaseDirectory.AppData,
-        });
+        await copyFile(
+          dataEntryContext.locatedIcon(),
+          "icons\\" + iconFileName,
+          {
+            dir: BaseDirectory.AppData,
+          },
+        );
       }
     }
 
-    setLibraryData(
+    globalContext.setLibraryData(
       produce((data) => {
-        data.games[gameName()] = {
-          location: locatedGame(),
-          name: gameName(),
+        data.games[dataEntryContext.gameName()] = {
+          location: dataEntryContext.locatedGame(),
+          name: dataEntryContext.gameName(),
           heroImage: heroImageFileName,
           gridImage: gridImageFileName,
           logo: logoFileName,
           icon: iconFileName,
-          favourite: favouriteGame(),
+          favourite: dataEntryContext.favouriteGame(),
         };
 
         return data;
@@ -201,7 +219,7 @@ export function NewGame() {
   }
 
   async function locateGame() {
-    setlocatedGame(
+    dataEntryContext.setlocatedGame(
       await open({
         multiple: false,
         filters: [
@@ -214,8 +232,8 @@ export function NewGame() {
     );
   }
   async function locateGridImage() {
-    setFoundGridImage(undefined);
-    setLocatedGridImage(
+    dataEntryContext.setFoundGridImage(undefined);
+    dataEntryContext.setLocatedGridImage(
       await open({
         multiple: false,
         filters: [
@@ -228,8 +246,8 @@ export function NewGame() {
     );
   }
   async function locateHeroImage() {
-    setFoundHeroImage(undefined);
-    setLocatedHeroImage(
+    dataEntryContext.setFoundHeroImage(undefined);
+    dataEntryContext.setLocatedHeroImage(
       await open({
         multiple: false,
         filters: [
@@ -242,8 +260,8 @@ export function NewGame() {
     );
   }
   async function locateLogo() {
-    setFoundLogoImage(undefined);
-    setLocatedLogo(
+    dataEntryContext.setFoundLogoImage(undefined);
+    dataEntryContext.setLocatedLogo(
       await open({
         multiple: false,
         filters: [
@@ -257,8 +275,8 @@ export function NewGame() {
   }
 
   async function locateIcon() {
-    setFoundIconImage(undefined);
-    setLocatedIcon(
+    dataEntryContext.setFoundIconImage(undefined);
+    dataEntryContext.setLocatedIcon(
       await open({
         multiple: false,
         filters: [
@@ -272,87 +290,93 @@ export function NewGame() {
   }
 
   async function searchGameName() {
-    setSGDBGames(undefined);
-    await fetch(`https://clear-api.adithya.zip/?gameName=${gameName()}`)
+    applicationStateContext.setSGDBGames(undefined);
+    await fetch(
+      `https://clear-api.adithya.zip/?gameName=${dataEntryContext.gameName()}`,
+    )
       .then((res) =>
         res.json().then(async (jsonres) => {
           if (jsonres.data.length == 0) {
-            setShowToast(true);
-            setToastMessage(translateText("couldn't find that game :("));
+            uiContext.setShowToast(true);
+            applicationStateContext.setToastMessage(
+              translateText("couldn't find that game :("),
+            );
             setTimeout(() => {
-              setShowToast(false);
+              uiContext.setShowToast(false);
             }, 2500);
           } else {
-            setSGDBGames(jsonres.data);
+            applicationStateContext.setSGDBGames(jsonres.data);
           }
         }),
       )
       .catch((err) => {
-        setShowToast(true);
-        setToastMessage(
+        uiContext.setShowToast(true);
+        applicationStateContext.setToastMessage(
           translateText("you're not connected to the internet :("),
         );
         setTimeout(() => {
-          setShowToast(false);
+          uiContext.setShowToast(false);
         }, 2500);
       });
   }
 
   async function getGameAssets() {
-    setFoundGridImage(undefined);
-    setFoundHeroImage(undefined);
-    setFoundLogoImage(undefined);
-    setFoundIconImage(undefined);
+    dataEntryContext.setFoundGridImage(undefined);
+    dataEntryContext.setFoundHeroImage(undefined);
+    dataEntryContext.setFoundLogoImage(undefined);
+    dataEntryContext.setFoundIconImage(undefined);
 
     await fetch(
-      `https://clear-api.adithya.zip/?assets=${selectedGameId()}`,
+      `https://clear-api.adithya.zip/?assets=${selectedDataContext.selectedGameId()}`,
     ).then((res) =>
       res.json().then(async (jsonres) => {
         let missingAssets = [];
 
         jsonres.grids.length != 0
-          ? setFoundGridImage(jsonres.grids)
+          ? dataEntryContext.setFoundGridImage(jsonres.grids)
           : missingAssets.push("grids");
         jsonres.heroes.length != 0
-          ? setFoundHeroImage(jsonres.heroes)
+          ? dataEntryContext.setFoundHeroImage(jsonres.heroes)
           : missingAssets.push("heroes");
         jsonres.logos.length != 0
-          ? setFoundLogoImage(jsonres.logos)
+          ? dataEntryContext.setFoundLogoImage(jsonres.logos)
           : missingAssets.push("logos");
         jsonres.icons.length != 0
-          ? setFoundIconImage(jsonres.icons)
+          ? dataEntryContext.setFoundIconImage(jsonres.icons)
           : missingAssets.push("icons");
 
         if (missingAssets.length != 0) {
           if (missingAssets.length == 4) {
-            setShowToast(true);
-            setToastMessage(translateText("couldn't find any assets :("));
+            uiContext.setShowToast(true);
+            applicationStateContext.setToastMessage(
+              translateText("couldn't find any assets :("),
+            );
             setTimeout(() => {
-              setShowToast(false);
+              uiContext.setShowToast(false);
             }, 2500);
             return;
           }
 
           if (missingAssets.length >= 2) {
             let lastAssetType = missingAssets.splice(-1);
-            setShowToast(true);
-            setToastMessage(
+            uiContext.setShowToast(true);
+            applicationStateContext.setToastMessage(
               `${translateText("couldn't find")} ${missingAssets.join(
                 ", ",
               )} & ${lastAssetType} :(`,
             );
             setTimeout(() => {
-              setShowToast(false);
+              uiContext.setShowToast(false);
             }, 2500);
             return;
           }
 
-          setShowToast(true);
-          setToastMessage(
+          uiContext.setShowToast(true);
+          applicationStateContext.setToastMessage(
             `${translateText("couldn't find")} ${missingAssets[0]} :(`,
           );
           setTimeout(() => {
-            setShowToast(false);
+            uiContext.setShowToast(false);
           }, 2500);
         }
       }),
@@ -395,19 +419,19 @@ export function NewGame() {
         });
       }}
       onClose={() => {
-        setFavouriteGame();
-        setGameName("");
-        setLocatedGridImage("");
-        setLocatedHeroImage("");
-        setLocatedLogo("");
-        setlocatedGame(undefined);
-        setLocatedIcon("");
-        setFoundGridImage(undefined);
-        setFoundHeroImage(undefined);
-        setFoundLogoImage(undefined);
-        setFoundIconImage(undefined);
-        setSelectedGameId(undefined);
-        setSGDBGames(undefined);
+        dataEntryContext.setFavouriteGame();
+        dataEntryContext.setGameName("");
+        dataEntryContext.setLocatedGridImage("");
+        dataEntryContext.setLocatedHeroImage("");
+        dataEntryContext.setLocatedLogo("");
+        dataEntryContext.setlocatedGame(undefined);
+        dataEntryContext.setLocatedIcon("");
+        dataEntryContext.setFoundGridImage(undefined);
+        dataEntryContext.setFoundHeroImage(undefined);
+        dataEntryContext.setFoundLogoImage(undefined);
+        dataEntryContext.setFoundIconImage(undefined);
+        selectedDataContext.setSelectedGameId(undefined);
+        applicationStateContext.setSGDBGames(undefined);
       }}
       className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#121212cc] bg-[#d1d1d1cc]">
       <div className="flex flex-col  justify-center items-center  w-screen h-screen gap-3">
@@ -421,9 +445,9 @@ export function NewGame() {
             <button
               className="cursor-pointer"
               onClick={() => {
-                setFavouriteGame(!favouriteGame());
+                dataEntryContext.setFavouriteGame((x) => !x);
               }}>
-              <Show when={favouriteGame()}>
+              <Show when={dataEntryContext.favouriteGame()}>
                 <div className="relative">
                   <div className="!w-max">{translateText("favourite")}</div>
                   <div className="absolute blur-[5px] opacity-70 -z-10 inset-0 !w-max">
@@ -432,7 +456,7 @@ export function NewGame() {
                 </div>
               </Show>
 
-              <Show when={!favouriteGame()}>
+              <Show when={!dataEntryContext.favouriteGame()}>
                 <div className="!w-max">{translateText("favourite")}</div>
               </Show>
             </button>
@@ -460,17 +484,19 @@ export function NewGame() {
             onClick={locateGridImage}
             onScroll={() => {}}
             onWheel={(e) => {
-              if (SGDBGames()) {
+              if (applicationStateContext.SGDBGames()) {
                 if (e.deltaY <= 0) {
-                  setFoundGridImageIndex((i) =>
-                    i == foundGridImage().length - 1 ? 0 : i + 1,
+                  dataEntryContext.setFoundGridImageIndex((i) =>
+                    i == dataEntryContext.foundGridImage().length - 1
+                      ? 0
+                      : i + 1,
                   );
                   setShowGridImageLoading(true);
                 }
 
                 if (e.deltaY >= 0) {
-                  if (foundGridImageIndex() != 0) {
-                    setFoundGridImageIndex((i) => i - 1);
+                  if (dataEntryContext.foundGridImageIndex() != 0) {
+                    dataEntryContext.setFoundGridImageIndex((i) => i - 1);
                     setShowGridImageLoading(true);
                   } else {
                     setShowGridImageLoading(false);
@@ -479,15 +505,19 @@ export function NewGame() {
               }
             }}
             onContextMenu={() => {
-              setLocatedGridImage(undefined);
-              setFoundGridImage(undefined);
+              dataEntryContext.setLocatedGridImage(undefined);
+              dataEntryContext.setFoundGridImage(undefined);
             }}
             className="panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] locatingGridImg h-full aspect-[2/3] group relative overflow-hidden">
-            <Show when={foundGridImage()}>
+            <Show when={dataEntryContext.foundGridImage()}>
               <Show when={showGridImageLoading() == false}>
                 <img
                   className="absolute inset-0 aspect-[2/3]"
-                  src={foundGridImage()[foundGridImageIndex()]}
+                  src={
+                    dataEntryContext.foundGridImage()[
+                      dataEntryContext.foundGridImageIndex()
+                    ]
+                  }
                   alt=""
                   onLoad={() => {
                     setShowGridImageLoading(false);
@@ -511,19 +541,19 @@ export function NewGame() {
                 {translateText("grid/cover")}
               </span>
             </Show>
-            <Show when={!foundGridImage()}>
+            <Show when={!dataEntryContext.foundGridImage()}>
               {" "}
-              <Show when={locatedGridImage()}>
+              <Show when={dataEntryContext.locatedGridImage()}>
                 <img
                   className="absolute inset-0 aspect-[2/3]"
-                  src={convertFileSrc(locatedGridImage())}
+                  src={convertFileSrc(dataEntryContext.locatedGridImage())}
                   alt=""
                 />
                 <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0 ">
                   {translateText("grid/cover")} <br />
                 </span>
               </Show>
-              <Show when={!locatedGridImage()}>
+              <Show when={!dataEntryContext.locatedGridImage()}>
                 <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
                   {translateText("grid/cover")} <br />
                 </span>
@@ -536,17 +566,19 @@ export function NewGame() {
               onClick={locateHeroImage}
               onScroll={() => {}}
               onWheel={(e) => {
-                if (SGDBGames()) {
+                if (applicationStateContext.SGDBGames()) {
                   if (e.deltaY <= 0) {
-                    setFoundHeroImageIndex((i) =>
-                      i == foundHeroImage().length - 1 ? 0 : i + 1,
+                    dataEntryContext.setFoundHeroImageIndex((i) =>
+                      i == dataEntryContext.foundHeroImage().length - 1
+                        ? 0
+                        : i + 1,
                     );
                     setShowHeroImageLoading(true);
                   }
 
                   if (e.deltaY >= 0) {
-                    if (foundHeroImageIndex() != 0) {
-                      setFoundHeroImageIndex((i) => i - 1);
+                    if (dataEntryContext.foundHeroImageIndex() != 0) {
+                      dataEntryContext.setFoundHeroImageIndex((i) => i - 1);
                       setShowHeroImageLoading(true);
                     } else {
                       setShowHeroImageLoading(false);
@@ -555,17 +587,21 @@ export function NewGame() {
                 }
               }}
               onContextMenu={() => {
-                setLocatedHeroImage(undefined);
-                setFoundHeroImage(undefined);
+                dataEntryContext.setLocatedHeroImage(undefined);
+                dataEntryContext.setFoundHeroImage(undefined);
               }}
               className="max-large:h-[250px] h-[350px] aspect-[67/26] group relative p-0 m-0 panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
               aria-label="hero">
               <Show
-                when={foundHeroImage()}
+                when={dataEntryContext.foundHeroImage()}
                 className="absolute inset-0 overflow-hidden">
                 <Show when={showHeroImageLoading() == false}>
                   <img
-                    src={foundHeroImage()[foundHeroImageIndex()]}
+                    src={
+                      dataEntryContext.foundHeroImage()[
+                        dataEntryContext.foundHeroImageIndex()
+                      ]
+                    }
                     onLoad={() => {
                       setShowHeroImageLoading(false);
                     }}
@@ -573,7 +609,11 @@ export function NewGame() {
                     className="absolute inset-0 h-full rounded-[6px] aspect-[96/31]"
                   />
                   <img
-                    src={foundHeroImage()[foundHeroImageIndex()]}
+                    src={
+                      dataEntryContext.foundHeroImage()[
+                        dataEntryContext.foundHeroImageIndex()
+                      ]
+                    }
                     onLoad={() => {
                       setShowHeroImageLoading(false);
                     }}
@@ -590,17 +630,17 @@ export function NewGame() {
                   {translateText("hero")}
                 </span>
               </Show>
-              <Show when={!foundHeroImage()}>
+              <Show when={!dataEntryContext.foundHeroImage()}>
                 <Show
-                  when={locatedHeroImage()}
+                  when={dataEntryContext.locatedHeroImage()}
                   className="absolute inset-0 overflow-hidden">
                   <img
-                    src={convertFileSrc(locatedHeroImage())}
+                    src={convertFileSrc(dataEntryContext.locatedHeroImage())}
                     alt=""
                     className="absolute inset-0 h-full rounded-[6px] aspect-[96/31]"
                   />
                   <img
-                    src={convertFileSrc(locatedHeroImage())}
+                    src={convertFileSrc(dataEntryContext.locatedHeroImage())}
                     alt=""
                     className="absolute inset-0 -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.4] aspect-[96/31]"
                   />
@@ -608,7 +648,7 @@ export function NewGame() {
                     {translateText("hero")}
                   </span>
                 </Show>
-                <Show when={!locatedHeroImage()}>
+                <Show when={!dataEntryContext.locatedHeroImage()}>
                   <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
                     {translateText("hero")}
                   </span>
@@ -616,22 +656,24 @@ export function NewGame() {
               </Show>
             </button>
 
-            <Show when={foundLogoImage()}>
+            <Show when={dataEntryContext.foundLogoImage()}>
               <button
                 onClick={locateLogo}
                 onScroll={() => {}}
                 onWheel={(e) => {
-                  if (SGDBGames()) {
+                  if (applicationStateContext.SGDBGames()) {
                     if (e.deltaY <= 0) {
-                      setFoundLogoImageIndex((i) =>
-                        i == foundLogoImage().length - 1 ? 0 : i + 1,
+                      dataEntryContext.setFoundLogoImageIndex((i) =>
+                        i == dataEntryContext.foundLogoImage().length - 1
+                          ? 0
+                          : i + 1,
                       );
                       setShowLogoImageLoading(true);
                     }
 
                     if (e.deltaY >= 0) {
-                      if (foundLogoImageIndex() != 0) {
-                        setFoundLogoImageIndex((i) => i - 1);
+                      if (dataEntryContext.foundLogoImageIndex() != 0) {
+                        dataEntryContext.setFoundLogoImageIndex((i) => i - 1);
                         setShowLogoImageLoading(true);
                       } else {
                         setShowLogoImageLoading(false);
@@ -640,14 +682,18 @@ export function NewGame() {
                   }
                 }}
                 onContextMenu={() => {
-                  setLocatedLogo(undefined);
-                  setFoundLogoImage(undefined);
+                  dataEntryContext.setLocatedLogo(undefined);
+                  dataEntryContext.setFoundLogoImage(undefined);
                 }}
                 className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[70px] left-[20px] panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
                 aria-label="logo">
                 <Show when={showLogoImageLoading() == false}>
                   <img
-                    src={foundLogoImage()[foundLogoImageIndex()]}
+                    src={
+                      dataEntryContext.foundLogoImage()[
+                        dataEntryContext.foundLogoImageIndex()
+                      ]
+                    }
                     alt=""
                     className="relative aspect-auto max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
                     onLoad={() => {
@@ -659,8 +705,8 @@ export function NewGame() {
                   <button
                     onClick={locateLogo}
                     onContextMenu={() => {
-                      setLocatedLogo(undefined);
-                      setFoundLogoImage(undefined);
+                      dataEntryContext.setLocatedLogo(undefined);
+                      dataEntryContext.setFoundLogoImage(undefined);
                     }}
                     className="panelButton cursor-pointer   bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[20px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] ">
                     <div className="animate-spin-slow absolute">
@@ -676,18 +722,18 @@ export function NewGame() {
               </button>
             </Show>
 
-            <Show when={!foundLogoImage()}>
-              <Show when={locatedLogo()}>
+            <Show when={!dataEntryContext.foundLogoImage()}>
+              <Show when={dataEntryContext.locatedLogo()}>
                 <button
                   onClick={locateLogo}
                   onContextMenu={() => {
-                    setLocatedLogo(undefined);
-                    setFoundLogoImage(undefined);
+                    dataEntryContext.setLocatedLogo(undefined);
+                    dataEntryContext.setFoundLogoImage(undefined);
                   }}
                   className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[70px] left-[20px] panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
                   aria-label="logo">
                   <img
-                    src={convertFileSrc(locatedLogo())}
+                    src={convertFileSrc(dataEntryContext.locatedLogo())}
                     alt=""
                     className="relative aspect-auto max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
                   />
@@ -697,12 +743,12 @@ export function NewGame() {
                 </button>
               </Show>
 
-              <Show when={!locatedLogo()}>
+              <Show when={!dataEntryContext.locatedLogo()}>
                 <button
                   onClick={locateLogo}
                   onContextMenu={() => {
-                    setLocatedLogo(undefined);
-                    setFoundLogoImage(undefined);
+                    dataEntryContext.setLocatedLogo(undefined);
+                    dataEntryContext.setFoundLogoImage(undefined);
                   }}
                   className="panelButton cursor-pointer  bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[70px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] "
                   aria-label="logo">
@@ -714,22 +760,24 @@ export function NewGame() {
             </Show>
 
             <div className="flex gap-3 items-center cursor-pointer ">
-              <Show when={foundIconImage()}>
+              <Show when={dataEntryContext.foundIconImage()}>
                 <button
                   onClick={locateIcon}
                   onScroll={() => {}}
                   onWheel={(e) => {
-                    if (SGDBGames()) {
+                    if (applicationStateContext.SGDBGames()) {
                       if (e.deltaY <= 0) {
-                        setFoundIconImageIndex((i) =>
-                          i == foundIconImage().length - 1 ? 0 : i + 1,
+                        dataEntryContext.setFoundIconImageIndex((i) =>
+                          i == dataEntryContext.foundIconImage().length - 1
+                            ? 0
+                            : i + 1,
                         );
                         setShowIconImageLoading(true);
                       }
 
                       if (e.deltaY >= 0) {
-                        if (foundIconImageIndex() != 0) {
-                          setFoundIconImageIndex((i) => i - 1);
+                        if (dataEntryContext.foundIconImageIndex() != 0) {
+                          dataEntryContext.setFoundIconImageIndex((i) => i - 1);
                           setShowIconImageLoading(true);
                         } else {
                           setShowIconImageLoading(false);
@@ -738,14 +786,18 @@ export function NewGame() {
                     }
                   }}
                   onContextMenu={() => {
-                    setLocatedIcon(undefined);
-                    setFoundIconImage(undefined);
+                    dataEntryContext.setLocatedIcon(undefined);
+                    dataEntryContext.setFoundIconImage(undefined);
                   }}
                   className="relative group p-0"
                   aria-label="logo">
                   <Show when={showIconImageLeading() == false}>
                     <img
-                      src={foundIconImage()[foundIconImageIndex()]}
+                      src={
+                        dataEntryContext.foundIconImage()[
+                          dataEntryContext.foundIconImageIndex()
+                        ]
+                      }
                       alt=""
                       onLoad={() => {
                         setShowIconImageLoading(false);
@@ -756,7 +808,9 @@ export function NewGame() {
                   <Show when={showIconImageLeading()}>
                     <div
                       className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]  rounded-[${
-                        libraryData.userSettings.roundedBorders ? "6px" : "0px"
+                        globalContext.libraryData.userSettings.roundedBorders
+                          ? "6px"
+                          : "0px"
                       }]`}>
                       <div className="animate-spin-slow absolute top-[24%] left-[27%]">
                         <Loading />
@@ -768,25 +822,27 @@ export function NewGame() {
                   </span>
                 </button>
               </Show>
-              <Show when={!foundIconImage()}>
+              <Show when={!dataEntryContext.foundIconImage()}>
                 <button
                   onClick={locateIcon}
                   onContextMenu={() => {
-                    setLocatedIcon(undefined);
-                    setFoundIconImage(undefined);
+                    dataEntryContext.setLocatedIcon(undefined);
+                    dataEntryContext.setFoundIconImage(undefined);
                   }}
                   className="relative !bg-[#27272700] group p-0"
                   aria-label="logo">
-                  <Show when={!locatedIcon()}>
+                  <Show when={!dataEntryContext.locatedIcon()}>
                     <div
                       className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                        libraryData.userSettings.roundedBorders ? "6px" : "0px"
+                        globalContext.libraryData.userSettings.roundedBorders
+                          ? "6px"
+                          : "0px"
                       }]`}
                     />
                   </Show>
-                  <Show when={locatedIcon()}>
+                  <Show when={dataEntryContext.locatedIcon()}>
                     <img
-                      src={convertFileSrc(locatedIcon())}
+                      src={convertFileSrc(dataEntryContext.locatedIcon())}
                       alt=""
                       className="w-[40px] h-[40px]"
                     />
@@ -807,94 +863,109 @@ export function NewGame() {
                   style="flex-grow: 1;"
                   id=""
                   onInput={(e) => {
-                    setGameName(e.currentTarget.value);
+                    dataEntryContext.setGameName(e.currentTarget.value);
                   }}
-                  value={gameName()}
+                  value={dataEntryContext.gameName()}
                   className="!bg-transparent"
                   placeholder={translateText("name of game")}
                 />
                 <button
                   className={`standardButton  !text-black dark:!text-white  hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80] rounded-[${
-                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
+                    globalContext.libraryData.userSettings.roundedBorders
+                      ? "6px"
+                      : "0px"
                   }] `}
                   onClick={async () => {
-                    if (gameName() == "" || gameName() == undefined) {
-                      setShowToast(true);
-                      setToastMessage(translateText("no game name"));
+                    if (
+                      dataEntryContext.gameName() == "" ||
+                      dataEntryContext.gameName() == undefined
+                    ) {
+                      uiContext.setShowToast(true);
+                      applicationStateContext.setToastMessage(
+                        translateText("no game name"),
+                      );
                       setTimeout(() => {
-                        setShowToast(false);
+                        uiContext.setShowToast(false);
                       }, 1500);
                       return;
                     }
 
                     searchGameName();
-                    setSelectedGameId(undefined);
-                    setSGDBGames(undefined);
-                    setFoundGridImage(undefined);
-                    setFoundHeroImage(undefined);
-                    setFoundLogoImage(undefined);
-                    setFoundIconImage(undefined);
+                    selectedDataContext.setSelectedGameId(undefined);
+                    applicationStateContext.setSGDBGames(undefined);
+                    dataEntryContext.setFoundGridImage(undefined);
+                    dataEntryContext.setFoundHeroImage(undefined);
+                    dataEntryContext.setFoundLogoImage(undefined);
+                    dataEntryContext.setFoundIconImage(undefined);
                   }}>
                   <Show
                     when={
-                      libraryData.userSettings.language == "fr" &&
-                      windowWidth() >= 1500
+                      globalContext.libraryData.userSettings.language == "fr" &&
+                      applicationStateContext.windowWidth() >= 1500
                     }>
                     {translateText("auto find assets")}
                   </Show>
 
                   <Show
                     when={
-                      libraryData.userSettings.language == "fr" &&
-                      windowWidth() <= 1500
+                      globalContext.libraryData.userSettings.language == "fr" &&
+                      applicationStateContext.windowWidth() <= 1500
                     }>
                     <p className="text-[10px] text-clip w-[70px]">
                       {translateText("auto find assets")}
                     </p>
                   </Show>
 
-                  <Show when={libraryData.userSettings.language != "fr"}>
+                  <Show
+                    when={
+                      globalContext.libraryData.userSettings.language != "fr"
+                    }>
                     {translateText("auto find assets")}
                   </Show>
                 </button>
                 <button
                   className={`standardButton  !text-black dark:!text-white  hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0 bg-[#f1f1f1] dark:bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80] rounded-[${
-                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
+                    globalContext.libraryData.userSettings.roundedBorders
+                      ? "6px"
+                      : "0px"
                   }] `}
                   onClick={async () => {
-                    gameName() == undefined
+                    dataEntryContext.gameName() == undefined
                       ? invoke("open_location", {
                           location: "https://www.steamgriddb.com/",
                         })
-                      : gameName() == ""
+                      : dataEntryContext.gameName() == ""
                       ? invoke("open_location", {
                           location: "https://www.steamgriddb.com/",
                         })
                       : invoke("open_location", {
                           location:
                             "https://www.steamgriddb.com/search/grids?term=" +
-                            gameName(),
+                            dataEntryContext.gameName(),
                         });
                   }}>
                   <Show
                     when={
-                      libraryData.userSettings.language == "fr" &&
-                      windowWidth() >= 1500
+                      globalContext.libraryData.userSettings.language == "fr" &&
+                      applicationStateContext.windowWidth() >= 1500
                     }>
                     {translateText("find assets")}
                   </Show>
 
                   <Show
                     when={
-                      libraryData.userSettings.language == "fr" &&
-                      windowWidth() <= 1500
+                      globalContext.libraryData.userSettings.language == "fr" &&
+                      applicationStateContext.windowWidth() <= 1500
                     }>
                     <p className="text-[10px] text-clip w-[100px]">
                       {translateText("find assets")}
                     </p>
                   </Show>
 
-                  <Show when={libraryData.userSettings.language != "fr"}>
+                  <Show
+                    when={
+                      globalContext.libraryData.userSettings.language != "fr"
+                    }>
                     {translateText("find assets")}
                   </Show>
                 </button>
@@ -903,24 +974,34 @@ export function NewGame() {
               <button
                 onClick={locateGame}
                 onContextMenu={() => {
-                  setlocatedGame(undefined);
+                  dataEntryContext.setlocatedGame(undefined);
                 }}
                 className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0">
-                {locatedGame() == undefined
+                {dataEntryContext.locatedGame() == undefined
                   ? translateText("locate game")
-                  : locatedGame().toString().split("\\").slice(-1).toString()
-                      .length > 17
+                  : dataEntryContext
+                      .locatedGame()
+                      .toString()
+                      .split("\\")
+                      .slice(-1)
+                      .toString().length > 17
                   ? "..." +
-                    locatedGame()
+                    dataEntryContext
+                      .locatedGame()
                       .toString()
                       .split("\\")
                       .slice(-1)
                       .toString()
                       .slice(0, 7) +
                     "..." +
-                    locatedGame().toString().slice(-7)
+                    dataEntryContext.locatedGame().toString().slice(-7)
                   : "..." +
-                    locatedGame().toString().split("\\").slice(-1).toString()}
+                    dataEntryContext
+                      .locatedGame()
+                      .toString()
+                      .split("\\")
+                      .slice(-1)
+                      .toString()}
               </button>
             </div>
           </div>
@@ -930,13 +1011,13 @@ export function NewGame() {
           <span className="opacity-50">
             {translateText("right click to empty image selection")}
           </span>
-          <Show when={SGDBGames()}>
-            <Show when={selectedGameId() == undefined}>
+          <Show when={applicationStateContext.SGDBGames()}>
+            <Show when={selectedDataContext.selectedGameId() == undefined}>
               <span className="opacity-80">
                 {translateText("select the official name of your game")}
               </span>
             </Show>
-            <Show when={selectedGameId()}>
+            <Show when={selectedDataContext.selectedGameId()}>
               <span className="opacity-80">
                 {translateText(
                   "scroll on the image to select a different asset",
@@ -946,8 +1027,8 @@ export function NewGame() {
           </Show>
         </div>
 
-        <Show when={SGDBGames()}>
-          <Show when={selectedGameId() == undefined}>
+        <Show when={applicationStateContext.SGDBGames()}>
+          <Show when={selectedDataContext.selectedGameId() == undefined}>
             <div className="dark:bg-[#272727cc] bg-[#E8E8E8cc] gameInput flex backdrop-blur-[10px] max-large:w-[61rem] w-[84rem]">
               <button
                 onClick={() => {
@@ -960,14 +1041,14 @@ export function NewGame() {
               <div
                 id="SGDBGamesContainer"
                 className="flex gap-[5px] overflow-x-auto SGDBGamesContainer scroll-smooth">
-                <For each={SGDBGames()}>
+                <For each={applicationStateContext.SGDBGames()}>
                   {(foundGame) => {
                     return (
                       <button
                         className="flex-shrink-0"
                         onClick={() => {
-                          setSelectedGameId(undefined);
-                          setSelectedGameId(foundGame.id);
+                          selectedDataContext.setSelectedGameId(undefined);
+                          selectedDataContext.setSelectedGameId(foundGame.id);
                           getGameAssets();
                         }}>
                         {foundGame.name}

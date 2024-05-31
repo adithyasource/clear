@@ -1,25 +1,20 @@
-import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
-
-import {
-  libraryData,
-  setNotepadValue,
-  notepadValue,
-  setLibraryData,
-} from "../Signals";
-
-import { getData, translateText, updateData } from "../App";
+import { useContext } from "solid-js";
+import { getData, translateText, updateData } from "../Globals";
 import { Close } from "../components/Icons";
-import { produce } from "solid-js/store";
+
+import { GlobalContext, DataEntryContext } from "../Globals";
 
 export function Notepad() {
-  async function saveNotepad() {
-    setLibraryData("notepad", notepadValue());
+  const globalContext = useContext(GlobalContext);
+  const dataEntryContext = useContext(DataEntryContext);
 
+  async function saveNotepad() {
+    globalContext.setLibraryData("notepad", dataEntryContext.notepadValue());
     await updateData();
   }
 
   setTimeout(() => {
-    setNotepadValue(libraryData.notepad || "");
+    dataEntryContext.setNotepadValue(globalContext.libraryData.notepad || "");
   }, 50);
 
   return (
@@ -27,7 +22,9 @@ export function Notepad() {
       <dialog
         data-notepadModal
         onClose={() => {
-          setNotepadValue(libraryData.notepad || "");
+          dataEntryContext.setNotepadValue(
+            globalContext.libraryData.notepad || "",
+          );
         }}
         ref={(ref) => {
           const focusableElements = ref.querySelectorAll(
@@ -62,7 +59,9 @@ export function Notepad() {
         <div className="flex items-center justify-center w-screen h-screen align-middle ">
           <div
             className={`border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
-              libraryData.userSettings.roundedBorders ? "6px" : "0px"
+              globalContext.libraryData.userSettings.roundedBorders
+                ? "6px"
+                : "0px"
             }] w-[50%] p-6`}>
             <div className="flex justify-between">
               <div>
@@ -83,13 +82,13 @@ export function Notepad() {
             </div>
             <textarea
               onInput={(e) => {
-                setNotepadValue(e.target.value);
+                dataEntryContext.setNotepadValue(e.target.value);
                 saveNotepad();
               }}
               className="w-full h-[40vh] mt-6 bg-transparent rounded-[6px] focus:outline-none resize-none"
               placeholder={translateText("write anything you want over here!")}
               spellcheck="false"
-              value={notepadValue()}></textarea>
+              value={dataEntryContext.notepadValue()}></textarea>
           </div>
         </div>
       </dialog>

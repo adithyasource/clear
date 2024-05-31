@@ -1,23 +1,7 @@
-import {
-  libraryData,
-  selectedFolder,
-  setSelectedFolder,
-  currentGames,
-  currentFolders,
-  setSearchValue,
-  gameName,
-  setEditedFolderName,
-  setEditedHideFolder,
-  setSelectedGame,
-  appDataDirPath,
-  newVersionAvailable,
-  showContentSkipButton,
-  setShowContentSkipButton,
-  focusGames,
-  focusSearchedGames,
-  setLibraryData,
-} from "./Signals";
-
+import { For, Show, onMount, useContext } from "solid-js";
+import { produce } from "solid-js/store";
+import { convertFileSrc } from "@tauri-apps/api/tauri";
+import { getData, openGame, translateText, updateData } from "./Globals";
 import {
   ChevronArrows,
   Edit,
@@ -29,15 +13,21 @@ import {
   Settings,
 } from "./components/Icons";
 
-import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
-
-import { For, Show, onMount } from "solid-js";
-import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
-
-import { getData, openGame, translateText, updateData } from "./App";
-import { produce, unwrap } from "solid-js/store";
+import {
+  GlobalContext,
+  SelectedDataContext,
+  ApplicationStateContext,
+  DataUpdateContext,
+  UIContext,
+} from "./Globals";
 
 export function SideBar() {
+  const globalContext = useContext(GlobalContext);
+  const uiContext = useContext(UIContext);
+  const selectedDataContext = useContext(SelectedDataContext);
+  const applicationStateContext = useContext(ApplicationStateContext);
+  const dataUpdateContext = useContext(DataUpdateContext);
+
   let scrollY = " ";
   onMount(() => {
     document
@@ -48,31 +38,44 @@ export function SideBar() {
   });
 
   async function toggleSideBar() {
-    setLibraryData("userSettings", "showSideBar", (x) => !x);
+    globalContext.setLibraryData("userSettings", "showSideBar", (x) => !x);
 
     await updateData();
     getData();
   }
 
   async function moveFolder(folderName, toPosition) {
-    let pastPositionOfFolder = currentFolders().indexOf(folderName);
+    let pastPositionOfFolder = applicationStateContext
+      .currentFolders()
+      .indexOf(folderName);
 
-    currentFolders().splice(pastPositionOfFolder, 1);
+    applicationStateContext.currentFolders().splice(pastPositionOfFolder, 1);
 
     if (toPosition == -1) {
-      currentFolders().push(folderName);
+      applicationStateContext.currentFolders().push(folderName);
     } else {
       if (toPosition > pastPositionOfFolder) {
-        currentFolders().splice(toPosition - 1, 0, folderName);
+        applicationStateContext
+          .currentFolders()
+          .splice(toPosition - 1, 0, folderName);
       } else {
-        currentFolders().splice(toPosition, 0, folderName);
+        applicationStateContext
+          .currentFolders()
+          .splice(toPosition, 0, folderName);
       }
     }
 
-    for (let x = 0; x < currentFolders().length; x++) {
-      for (let y = 0; y < Object.keys(libraryData["folders"]).length; y++) {
-        if (currentFolders()[x] == Object.keys(libraryData["folders"])[y]) {
-          setLibraryData(
+    for (let x = 0; x < applicationStateContext.currentFolders().length; x++) {
+      for (
+        let y = 0;
+        y < Object.keys(globalContext.libraryData["folders"]).length;
+        y++
+      ) {
+        if (
+          applicationStateContext.currentFolders()[x] ==
+          Object.keys(globalContext.libraryData["folders"])[y]
+        ) {
+          globalContext.setLibraryData(
             produce((data) => {
               Object.values(data["folders"])[y].index = x;
 
@@ -92,9 +95,11 @@ export function SideBar() {
     currentFolderName,
   ) {
     let pastPositionOfGame =
-      libraryData.folders[currentFolderName]["games"].indexOf(gameName);
+      globalContext.libraryData.folders[currentFolderName]["games"].indexOf(
+        gameName,
+      );
 
-    setLibraryData(
+    globalContext.setLibraryData(
       produce((data) => {
         data.folders[currentFolderName]["games"].splice(
           data.folders[currentFolderName]["games"].indexOf(gameName),
@@ -105,10 +110,15 @@ export function SideBar() {
     );
 
     if (toPosition == -1) {
-      libraryData.folders[currentFolderName]["games"].push(gameName);
+      globalContext.setLibraryData(
+        produce((data) => {
+          data.folders[currentFolderName]["games"].push(gameName);
+          return data;
+        }),
+      );
     } else {
       if (toPosition > pastPositionOfGame) {
-        setLibraryData(
+        globalContext.setLibraryData(
           produce((data) => {
             data.folders[currentFolderName]["games"].splice(
               toPosition - 1,
@@ -119,7 +129,7 @@ export function SideBar() {
           }),
         );
       } else {
-        setLibraryData(
+        globalContext.setLibraryData(
           produce((data) => {
             data.folders[currentFolderName]["games"].splice(
               toPosition,
@@ -148,7 +158,7 @@ export function SideBar() {
               className="dark:bg-[#232323] bg-[#E8E8E8] dark:text-white text-black w-full hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b]"
               placeholder={translateText("search")}
               onInput={(e) => {
-                setSearchValue(e.currentTarget.value);
+                applicationStateContext.setSearchValue(e.currentTarget.value);
               }}
               onKeyUp={(e) => {
                 if (e.key === "Enter") {
@@ -160,33 +170,35 @@ export function SideBar() {
             />
             <button
               className={`cursor-pointer hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[28px] rounded-[${
-                libraryData.userSettings.roundedBorders ? "6px" : "0px"
+                globalContext.libraryData.userSettings.roundedBorders
+                  ? "6px"
+                  : "0px"
               }]`}
               onClick={() => {
                 toggleSideBar();
               }}
               onKeyDown={(e) => {
                 if (e.key === "Tab" && e.shiftKey === false) {
-                  setShowContentSkipButton(true);
+                  uiContext.setShowContentSkipButton(true);
                 }
               }}>
               <ChevronArrows />
             </button>
           </div>
-          <Show when={showContentSkipButton()}>
+          <Show when={uiContext.showContentSkipButton()}>
             <button
               className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] mt-[12px]"
               onClick={() => {
-                setShowContentSkipButton(false);
+                uiContext.setShowContentSkipButton(false);
                 document.getElementById("firstGameCard").focus();
               }}
               onKeyDown={(e) => {
                 if (e.key === "Tab") {
-                  setShowContentSkipButton(false);
+                  uiContext.setShowContentSkipButton(false);
                 }
               }}
               onBlur={() => {
-                setShowContentSkipButton(false);
+                uiContext.setShowContentSkipButton(false);
               }}>
               {translateText("skip to games")}
             </button>
@@ -255,9 +267,9 @@ export function SideBar() {
                 try {
                   moveFolder(
                     folderName,
-                    currentFolders().indexOf(
-                      nextSibling.firstChild.textContent,
-                    ),
+                    applicationStateContext
+                      .currentFolders()
+                      .indexOf(nextSibling.firstChild.textContent),
                   );
 
                   document
@@ -271,7 +283,7 @@ export function SideBar() {
                   getData();
                 }
 
-                setLibraryData((data) => {
+                globalContext.setLibraryData((data) => {
                   data.folders[folderName].games.push(gameName);
                   return data;
                 });
@@ -281,16 +293,18 @@ export function SideBar() {
               }
             }}
             class={` ${
-              libraryData.userSettings.language == "fr"
+              globalContext.libraryData.userSettings.language == "fr"
                 ? "medium:h-[calc(100vh-330px)] large:h-[calc(100vh-275px)]"
                 : "h-[calc(100vh-275px)]"
             } overflow-auto  rounded-[${
-              libraryData.userSettings.roundedBorders ? "6px" : "0px"
+              globalContext.libraryData.userSettings.roundedBorders
+                ? "6px"
+                : "0px"
             }]`}>
             <p className="mt-[5px]"></p>
-            <For each={currentFolders()}>
+            <For each={applicationStateContext.currentFolders()}>
               {(folderName, index) => {
-                let folder = libraryData.folders[folderName];
+                let folder = globalContext.libraryData.folders[folderName];
 
                 if (folder.games.length > 0) {
                   return (
@@ -383,7 +397,7 @@ export function SideBar() {
 
                               moveGameInCurrentFolder(
                                 currentDraggingItem,
-                                libraryData.folders[folderName][
+                                globalContext.libraryData.folders[folderName][
                                   "games"
                                 ].indexOf(nextSiblingItem),
                                 folderName,
@@ -400,13 +414,13 @@ export function SideBar() {
 
                           if (oldFolderName != "uncategorized") {
                             const index =
-                              libraryData.folders[oldFolderName].games.indexOf(
-                                gameName,
-                              );
+                              globalContext.libraryData.folders[
+                                oldFolderName
+                              ].games.indexOf(gameName);
 
                             // ! [test this]
 
-                            setLibraryData(
+                            globalContext.setLibraryData(
                               produce((data) => {
                                 data.folders[oldFolderName].games.splice(
                                   index,
@@ -417,7 +431,7 @@ export function SideBar() {
                             );
                           }
 
-                          setLibraryData(
+                          globalContext.setLibraryData(
                             produce((data) => {
                               data.folders[folder.name].games.push(gameName);
                               return data;
@@ -437,7 +451,8 @@ export function SideBar() {
                         </Show>
                         <button
                           className={` hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[25.25px] rounded-[${
-                            libraryData.userSettings.roundedBorders
+                            globalContext.libraryData.userSettings
+                              .roundedBorders
                               ? "6px"
                               : "0px"
                           }]`}
@@ -445,14 +460,18 @@ export function SideBar() {
                             document
                               .querySelector("[data-editFolderModal]")
                               .show();
-                            setSelectedFolder(folder);
-                            setEditedFolderName(selectedFolder().name);
-                            setEditedHideFolder(selectedFolder().hide);
+                            selectedDataContext.setSelectedFolder(folder);
+                            dataUpdateContext.setEditedFolderName(
+                              selectedDataContext.selectedFolder().name,
+                            );
+                            dataUpdateContext.setEditedHideFolder(
+                              selectedDataContext.selectedFolder().hide,
+                            );
                           }}
                           onKeyDown={(e) => {
                             if (index() === 0) {
                               if (e.key === "Tab" && e.shiftKey === true) {
-                                setShowContentSkipButton(true);
+                                uiContext.setShowContentSkipButton(true);
                               }
                             }
                           }}>
@@ -482,21 +501,28 @@ export function SideBar() {
                               e.srcElement.classList.remove("dragging");
                             }}
                             onClick={async (e) => {
-                              await setSelectedGame(
-                                libraryData.games[gameName],
+                              await selectedDataContext.setSelectedGame(
+                                globalContext.libraryData.games[gameName],
                               );
                               document.querySelector("[data-gamePopup]").show();
 
                               if (e.ctrlKey) {
-                                openGame(libraryData.games[gameName].location);
+                                openGame(
+                                  globalContext.libraryData.games[gameName]
+                                    .location,
+                                );
                               }
                             }}>
-                            <Show when={libraryData.games[gameName].icon}>
+                            <Show
+                              when={
+                                globalContext.libraryData.games[gameName].icon
+                              }>
                               <img
                                 src={convertFileSrc(
-                                  appDataDirPath() +
+                                  applicationStateContext.appDataDirPath() +
                                     "icons\\" +
-                                    libraryData.games[gameName].icon,
+                                    globalContext.libraryData.games[gameName]
+                                      .icon,
                                 )}
                                 alt=""
                                 className="h-[16px] aspect-square"
@@ -538,11 +564,11 @@ export function SideBar() {
                           e.dataTransfer.getData("oldFolderName");
                         if (oldFolderName != "uncategorized") {
                           const index =
-                            libraryData.folders[oldFolderName].games.indexOf(
-                              gameName,
-                            );
+                            globalContext.libraryData.folders[
+                              oldFolderName
+                            ].games.indexOf(gameName);
 
-                          setLibraryData(
+                          globalContext.setLibraryData(
                             produce((data) => {
                               data.folders[oldFolderName].games.splice(
                                 index,
@@ -554,7 +580,7 @@ export function SideBar() {
                           );
                         }
 
-                        setLibraryData(
+                        globalContext.setLibraryData(
                           produce((data) => {
                             data.folders[folder.name].games.push(gameName);
 
@@ -573,7 +599,8 @@ export function SideBar() {
                         </Show>
                         <button
                           className={` hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[25.25px] rounded-[${
-                            libraryData.userSettings.roundedBorders
+                            globalContext.libraryData.userSettings
+                              .roundedBorders
                               ? "6px"
                               : "0px"
                           }]`}
@@ -581,10 +608,14 @@ export function SideBar() {
                             document
                               .querySelector("[data-editFolderModal]")
                               .show();
-                            setSelectedFolder(folder);
+                            selectedDataContext.setSelectedFolder(folder);
 
-                            setEditedFolderName(selectedFolder().name);
-                            setEditedHideFolder(selectedFolder().hide);
+                            dataUpdateContext.setEditedFolderName(
+                              selectedDataContext.selectedFolder().name,
+                            );
+                            dataUpdateContext.setEditedHideFolder(
+                              selectedDataContext.selectedFolder().hide,
+                            );
                           }}>
                           <Edit />
                         </button>
@@ -607,9 +638,11 @@ export function SideBar() {
                 let oldFolderName = e.dataTransfer.getData("oldFolderName");
 
                 const index =
-                  libraryData.folders[oldFolderName].games.indexOf(gameName);
+                  globalContext.libraryData.folders[
+                    oldFolderName
+                  ].games.indexOf(gameName);
 
-                setLibraryData(
+                globalContext.setLibraryData(
                   produce((data) => {
                     data.folders[oldFolderName].games.splice(index, 1);
 
@@ -626,22 +659,25 @@ export function SideBar() {
                   {translateText("uncategorized")}
                 </p>
               </div>
-              <For each={currentGames()}>
+              <For each={applicationStateContext.currentGames()}>
                 {(currentGame, i) => {
                   let gamesInFolders = [];
 
                   for (
                     let x = 0;
-                    x < Object.values(libraryData.folders).length;
+                    x < Object.values(globalContext.libraryData.folders).length;
                     x++
                   ) {
                     for (
                       let y = 0;
-                      y < Object.values(libraryData.folders)[x].games.length;
+                      y <
+                      Object.values(globalContext.libraryData.folders)[x].games
+                        .length;
                       y++
                     ) {
                       gamesInFolders.push(
-                        Object.values(libraryData.folders)[x].games[y],
+                        Object.values(globalContext.libraryData.folders)[x]
+                          .games[y],
                       );
                     }
                   }
@@ -662,19 +698,28 @@ export function SideBar() {
                         }  sideBarGame cursor-grab p-0`}
                         aria-label={translateText("play")}
                         onClick={async (e) => {
-                          setSelectedGame(libraryData.games[currentGame]);
+                          selectedDataContext.setSelectedGame(
+                            globalContext.libraryData.games[currentGame],
+                          );
                           document.querySelector("[data-gamePopup]").show();
 
                           if (e.ctrlKey) {
-                            openGame(libraryData.games[currentGame].location);
+                            openGame(
+                              globalContext.libraryData.games[currentGame]
+                                .location,
+                            );
                           }
                         }}>
-                        <Show when={libraryData.games[currentGame].icon}>
+                        <Show
+                          when={
+                            globalContext.libraryData.games[currentGame].icon
+                          }>
                           <img
                             src={convertFileSrc(
-                              appDataDirPath() +
+                              applicationStateContext.appDataDirPath() +
                                 "icons\\" +
-                                libraryData.games[currentGame].icon,
+                                globalContext.libraryData.games[currentGame]
+                                  .icon,
                             )}
                             alt=""
                             className="h-[16px] aspect-square"
@@ -720,13 +765,13 @@ export function SideBar() {
 
           <div
             className={`flex ${
-              libraryData.userSettings.language == "fr"
+              globalContext.libraryData.userSettings.language == "fr"
                 ? "medium:flex-col flex-col large:flex-row gap-0 medium:gap-0 large:gap-3"
                 : "gap-3"
             }`}>
             <button
               className={`standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] mt-[12px] ${
-                newVersionAvailable() ? "!w-[80%]" : ""
+                uiContext.showNewVersionAvailable() ? "!w-[80%]" : ""
               } whitespace-nowrap`}
               onClick={() => {
                 document.querySelector("[data-notepadModal]").show();
@@ -742,7 +787,7 @@ export function SideBar() {
                 document.querySelector("[data-settingsModal]").show();
               }}>
               {translateText("settings")}
-              <Show when={newVersionAvailable()}>
+              <Show when={uiContext.showNewVersionAvailable()}>
                 <div className="opacity-50">
                   <UpdateDownload />
                 </div>

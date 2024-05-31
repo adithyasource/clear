@@ -1,40 +1,31 @@
-import { Show, onMount } from "solid-js";
+import { Show, onMount, useContext } from "solid-js";
 import { invoke } from "@tauri-apps/api/tauri";
-import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
-
-import {
-  libraryData,
-  appVersion,
-  latestVersion,
-  setLatestVersion,
-  newVersionAvailable,
-  setNewVersionAvailable,
-  showImportAndOverwriteConfirm,
-  setShowImportAndOverwriteConfirm,
-  setShowSettingsLanguageSelector,
-  showSettingsLanguageSelector,
-  setLibraryData,
-} from "../Signals";
-
 import {
   getData,
   importSteamGames,
   translateText,
   changeLanguage,
   updateData,
-} from "../App";
+} from "../Globals";
 
 import { appDataDir } from "@tauri-apps/api/path";
 import { Close, Steam } from "../components/Icons";
 
+import { GlobalContext, ApplicationStateContext, UIContext } from "../Globals";
+
 export function Settings() {
+  const globalContext = useContext(GlobalContext);
+  const uiContext = useContext(UIContext);
+  const applicationStateContext = useContext(ApplicationStateContext);
+
   onMount(() => {
     fetch("https://clear-api.adithya.zip/?version=a").then((res) =>
       res.json().then((jsonres) => {
-        setLatestVersion(jsonres.clearVersion);
-        latestVersion().replaceAll(".", "") > appVersion().replaceAll(".", "")
-          ? setNewVersionAvailable(true)
-          : setNewVersionAvailable(false);
+        applicationStateContext.setLatestVersion(jsonres.clearVersion);
+        applicationStateContext.latestVersion().replaceAll(".", "") >
+        applicationStateContext.appVersion().replaceAll(".", "")
+          ? uiContext.setShowNewVersionAvailable(true)
+          : uiContext.setShowNewVersionAvailable(false);
       }),
     );
   });
@@ -44,7 +35,7 @@ export function Settings() {
       <dialog
         data-settingsModal
         onClose={() => {
-          setShowSettingsLanguageSelector(false);
+          uiContext.setShowSettingsLanguageSelector(false);
         }}
         ref={(ref) => {
           const focusableElements = ref.querySelectorAll(
@@ -79,7 +70,9 @@ export function Settings() {
         <div className="flex items-center justify-center w-screen h-screen align-middle ">
           <div
             className={`border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
-              libraryData.userSettings.roundedBorders ? "6px" : "0px"
+              globalContext.libraryData.userSettings.roundedBorders
+                ? "6px"
+                : "0px"
             }] w-[70%] p-6`}>
             <div className="flex justify-between">
               <div>
@@ -102,13 +95,18 @@ export function Settings() {
             <div className="grid grid-cols-3 mt-[25px] gap-y-4">
               <button
                 onClick={async () => {
-                  setLibraryData("userSettings", "roundedBorders", (x) => !x);
+                  globalContext.setLibraryData(
+                    "userSettings",
+                    "roundedBorders",
+                    (x) => !x,
+                  );
 
                   await updateData();
                   getData();
                 }}
                 className="relative cursor-pointer p-0 text-left">
-                <Show when={libraryData.userSettings.roundedBorders}>
+                <Show
+                  when={globalContext.libraryData.userSettings.roundedBorders}>
                   <div className="relative ">
                     <div className="">{translateText("rounded borders")}</div>
                     <div className="absolute blur-[5px] opacity-70 inset-0">
@@ -116,20 +114,25 @@ export function Settings() {
                     </div>
                   </div>
                 </Show>
-                <Show when={!libraryData.userSettings.roundedBorders}>
+                <Show
+                  when={!globalContext.libraryData.userSettings.roundedBorders}>
                   <div className="">{translateText("rounded borders")}</div>
                 </Show>
               </button>
               <button
                 onClick={async () => {
-                  setLibraryData("userSettings", "gameTitle", (x) => !x);
+                  globalContext.setLibraryData(
+                    "userSettings",
+                    "gameTitle",
+                    (x) => !x,
+                  );
 
                   await updateData();
 
                   getData();
                 }}
                 className="relative cursor-pointer p-0 text-left">
-                <Show when={libraryData.userSettings.gameTitle}>
+                <Show when={globalContext.libraryData.userSettings.gameTitle}>
                   <div className="relative">
                     <div className="">{translateText("game title")}</div>
                     <div className="absolute blur-[5px] opacity-70 inset-0  ">
@@ -137,20 +140,24 @@ export function Settings() {
                     </div>
                   </div>
                 </Show>
-                <Show when={!libraryData.userSettings.gameTitle}>
+                <Show when={!globalContext.libraryData.userSettings.gameTitle}>
                   <div className="">{translateText("game title")}</div>
                 </Show>
               </button>
               <button
                 onClick={async () => {
-                  setLibraryData("userSettings", "folderTitle", (x) => !x);
+                  globalContext.setLibraryData(
+                    "userSettings",
+                    "folderTitle",
+                    (x) => !x,
+                  );
 
                   await updateData();
 
                   getData();
                 }}
                 className="relative cursor-pointer p-0 text-left">
-                <Show when={libraryData.userSettings.folderTitle}>
+                <Show when={globalContext.libraryData.userSettings.folderTitle}>
                   <div className="relative">
                     <div className="">{translateText("folder title")}</div>
                     <div className="absolute blur-[5px] opacity-70 inset-0  ">
@@ -158,20 +165,26 @@ export function Settings() {
                     </div>
                   </div>
                 </Show>
-                <Show when={!libraryData.userSettings.folderTitle}>
+                <Show
+                  when={!globalContext.libraryData.userSettings.folderTitle}>
                   <div className="">{translateText("folder title")}</div>
                 </Show>
               </button>
               <button
                 onClick={async () => {
-                  setLibraryData("userSettings", "quitAfterOpen", (x) => !x);
+                  globalContext.setLibraryData(
+                    "userSettings",
+                    "quitAfterOpen",
+                    (x) => !x,
+                  );
 
                   await updateData();
 
                   getData();
                 }}
                 className="relative cursor-pointer p-0 text-left">
-                <Show when={libraryData.userSettings.quitAfterOpen}>
+                <Show
+                  when={globalContext.libraryData.userSettings.quitAfterOpen}>
                   <div className="relative">
                     <div className="">
                       {translateText("quit after opening game")}
@@ -181,7 +194,8 @@ export function Settings() {
                     </div>
                   </div>
                 </Show>
-                <Show when={!libraryData.userSettings.quitAfterOpen}>
+                <Show
+                  when={!globalContext.libraryData.userSettings.quitAfterOpen}>
                   <div className="">
                     {translateText("quit after opening game")}
                   </div>
@@ -190,14 +204,30 @@ export function Settings() {
 
               <button
                 onClick={async () => {
-                  if (libraryData.userSettings.fontName == "sans serif") {
-                    setLibraryData("userSettings", "fontName", "serif");
+                  if (
+                    globalContext.libraryData.userSettings.fontName ==
+                    "sans serif"
+                  ) {
+                    globalContext.setLibraryData(
+                      "userSettings",
+                      "fontName",
+                      "serif",
+                    );
                   } else {
-                    if (libraryData.userSettings.fontName == "serif") {
-                      setLibraryData("userSettings", "fontName", "mono");
+                    if (
+                      globalContext.libraryData.userSettings.fontName == "serif"
+                    ) {
+                      globalContext.setLibraryData(
+                        "userSettings",
+                        "fontName",
+                        "mono",
+                      );
                     } else {
-                      if (libraryData.userSettings.fontName == "mono") {
-                        setLibraryData(
+                      if (
+                        globalContext.libraryData.userSettings.fontName ==
+                        "mono"
+                      ) {
+                        globalContext.setLibraryData(
                           "userSettings",
                           "fontName",
                           "sans serif",
@@ -215,15 +245,24 @@ export function Settings() {
                   [{translateText("font")}]
                 </span>
                 <div className="">
-                  {translateText(libraryData.userSettings.fontName) ||
-                    translateText("sans serif")}
+                  {translateText(
+                    globalContext.libraryData.userSettings.fontName,
+                  ) || translateText("sans serif")}
                 </div>
               </button>
               <button
                 onClick={async () => {
-                  libraryData.userSettings.currentTheme == "dark"
-                    ? setLibraryData("userSettings", "currentTheme", "light")
-                    : setLibraryData("userSettings", "currentTheme", "dark");
+                  globalContext.libraryData.userSettings.currentTheme == "dark"
+                    ? globalContext.setLibraryData(
+                        "userSettings",
+                        "currentTheme",
+                        "light",
+                      )
+                    : globalContext.setLibraryData(
+                        "userSettings",
+                        "currentTheme",
+                        "dark",
+                      );
 
                   await updateData();
 
@@ -234,14 +273,15 @@ export function Settings() {
                   [{translateText("theme")}]
                 </span>
                 <div className="">
-                  {translateText(libraryData.userSettings.currentTheme) ||
-                    translateText("dark")}
+                  {translateText(
+                    globalContext.libraryData.userSettings.currentTheme,
+                  ) || translateText("dark")}
                 </div>
               </button>
               <div className="flex gap-2 cursor-pointer relative">
                 <button
                   onClick={() => {
-                    setShowSettingsLanguageSelector((x) => !x);
+                    uiContext.setShowSettingsLanguageSelector((x) => !x);
                     document.getElementById("firstDropdownItem").focus();
                   }}
                   className="w-full p-0 text-left">
@@ -249,26 +289,28 @@ export function Settings() {
                     [{translateText("language")}]
                   </span>
                   &nbsp;{" "}
-                  {libraryData.userSettings.language == "en"
+                  {globalContext.libraryData.userSettings.language == "en"
                     ? "english"
-                    : libraryData.userSettings.language == "jp"
+                    : globalContext.libraryData.userSettings.language == "jp"
                     ? "日本語"
-                    : libraryData.userSettings.language == "es"
+                    : globalContext.libraryData.userSettings.language == "es"
                     ? "Español"
-                    : libraryData.userSettings.language == "hi"
+                    : globalContext.libraryData.userSettings.language == "hi"
                     ? "हिंदी"
-                    : libraryData.userSettings.language == "ru"
+                    : globalContext.libraryData.userSettings.language == "ru"
                     ? "русский"
-                    : libraryData.userSettings.language == "fr"
+                    : globalContext.libraryData.userSettings.language == "fr"
                     ? "Français"
                     : "english"}
-                  <Show when={showSettingsLanguageSelector()}>
+                  <Show when={uiContext.showSettingsLanguageSelector()}>
                     <div
                       className={`flex flex-col gap-4 absolute border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
-                        libraryData.userSettings.roundedBorders ? "6px" : "0px"
+                        globalContext.libraryData.userSettings.roundedBorders
+                          ? "6px"
+                          : "0px"
                       }] p-3 z-[100000] top-[150%]`}
                       onMouseLeave={() => {
-                        setShowSettingsLanguageSelector(false);
+                        uiContext.setShowSettingsLanguageSelector(false);
                       }}>
                       <button
                         className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150 p-0 text-left"
@@ -309,7 +351,7 @@ export function Settings() {
                       <button
                         onKeyDown={(e) => {
                           if (e.key === "Tab") {
-                            setShowSettingsLanguageSelector(false);
+                            uiContext.setShowSettingsLanguageSelector(false);
                           }
                         }}
                         className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150 p-0 text-left"
@@ -324,7 +366,7 @@ export function Settings() {
               </div>
             </div>
 
-            <Show when={newVersionAvailable()}>
+            <Show when={uiContext.showNewVersionAvailable()}>
               <div className="flex gap-3 items-start mt-[35px]">
                 <button
                   className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !m-0"
@@ -335,7 +377,7 @@ export function Settings() {
                   }}>
                   {translateText("new update available!")}
                   <span className="dark:text-[#ffffff80] text-[#12121280]">
-                    v{latestVersion()}
+                    v{applicationStateContext.latestVersion()}
                   </span>
                 </button>
               </div>
@@ -347,31 +389,35 @@ export function Settings() {
                   className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] hint--bottom !flex !w-max !gap-3 "
                   aria-label={translateText("might not work perfectly!")}
                   onClick={() => {
-                    if (libraryData.folders.steam != undefined) {
-                      showImportAndOverwriteConfirm()
+                    if (globalContext.libraryData.folders.steam != undefined) {
+                      uiContext.showImportAndOverwriteConfirm()
                         ? importSteamGames()
-                        : setShowImportAndOverwriteConfirm(true);
+                        : uiContext.setShowImportAndOverwriteConfirm(true);
 
                       setTimeout(() => {
-                        setShowImportAndOverwriteConfirm(false);
+                        uiContext.setShowImportAndOverwriteConfirm(false);
                       }, 2500);
                     } else {
                       importSteamGames();
                     }
                   }}>
-                  <Show when={libraryData.folders.steam != undefined}>
-                    <Show when={showImportAndOverwriteConfirm() == true}>
+                  <Show
+                    when={globalContext.libraryData.folders.steam != undefined}>
+                    <Show
+                      when={uiContext.showImportAndOverwriteConfirm() == true}>
                       <span className="text-[#FF3636]">
                         {translateText(
                           "current 'steam' folder will be overwritten. confirm?",
                         )}
                       </span>
                     </Show>
-                    <Show when={showImportAndOverwriteConfirm() == false}>
+                    <Show
+                      when={uiContext.showImportAndOverwriteConfirm() == false}>
                       {translateText("import Steam games")}
                     </Show>
                   </Show>
-                  <Show when={libraryData.folders.steam == undefined}>
+                  <Show
+                    when={globalContext.libraryData.folders.steam == undefined}>
                     {translateText("import Steam games")}
                   </Show>
 
@@ -403,7 +449,9 @@ export function Settings() {
               <div className="flex items-center gap-3">
                 <div
                   className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
+                    globalContext.libraryData.userSettings.roundedBorders
+                      ? "6px"
+                      : "0px"
                   }] `}>
                   ctrl + n
                 </div>
@@ -414,7 +462,9 @@ export function Settings() {
               <div className="flex items-center gap-3">
                 <div
                   className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
+                    globalContext.libraryData.userSettings.roundedBorders
+                      ? "6px"
+                      : "0px"
                   }] `}>
                   ctrl + .
                 </div>
@@ -424,7 +474,9 @@ export function Settings() {
               <div className="flex items-center gap-3">
                 <div
                   className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
+                    globalContext.libraryData.userSettings.roundedBorders
+                      ? "6px"
+                      : "0px"
                   }] `}>
                   ctrl + f
                 </div>
@@ -434,7 +486,9 @@ export function Settings() {
               <div className="flex items-center gap-3">
                 <div
                   className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
+                    globalContext.libraryData.userSettings.roundedBorders
+                      ? "6px"
+                      : "0px"
                   }] `}>
                   ctrl + m
                 </div>
@@ -444,7 +498,9 @@ export function Settings() {
               <div className="flex items-center gap-3">
                 <div
                   className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
+                    globalContext.libraryData.userSettings.roundedBorders
+                      ? "6px"
+                      : "0px"
                   }] `}>
                   ctrl + l
                 </div>
@@ -454,7 +510,9 @@ export function Settings() {
               <div className="flex items-center gap-3">
                 <div
                   className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
+                    globalContext.libraryData.userSettings.roundedBorders
+                      ? "6px"
+                      : "0px"
                   }] `}>
                   ctrl + \\
                 </div>
@@ -464,7 +522,9 @@ export function Settings() {
               <div className="flex items-center gap-3">
                 <div
                   className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
+                    globalContext.libraryData.userSettings.roundedBorders
+                      ? "6px"
+                      : "0px"
                   }] `}>
                   ctrl + w
                 </div>
@@ -474,7 +534,9 @@ export function Settings() {
               <div className="flex items-center gap-3">
                 <div
                   className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
+                    globalContext.libraryData.userSettings.roundedBorders
+                      ? "6px"
+                      : "0px"
                   }] `}>
                   ctrl - / =
                 </div>
@@ -485,7 +547,9 @@ export function Settings() {
               <div className="flex items-center gap-3">
                 <div
                   className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    libraryData.userSettings.roundedBorders ? "6px" : "0px"
+                    globalContext.libraryData.userSettings.roundedBorders
+                      ? "6px"
+                      : "0px"
                   }] `}>
                   ctrl + click
                 </div>
@@ -498,7 +562,7 @@ export function Settings() {
               <div>
                 clear{" "}
                 <span className="dark:text-[#ffffff80] text-[#12121280]">
-                  v{appVersion()}
+                  v{applicationStateContext.appVersion()}
                 </span>
               </div>
               <button
