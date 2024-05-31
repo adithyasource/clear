@@ -10,6 +10,7 @@ import {
   changeLanguage,
   importSteamGames,
   translateText,
+  updateData,
 } from "./Globals";
 
 import "./App.css";
@@ -395,23 +396,17 @@ function App() {
                     }
                   }}>
                   <Show
-                    when={globalContext.libraryData.folders.steam != undefined}>
+                    when={globalContext.libraryData.folders.steam != undefined}
+                    fallback={<>{translateText("import Steam games")}</>}>
                     <Show
-                      when={uiContext.showImportAndOverwriteConfirm() == true}>
+                      when={uiContext.showImportAndOverwriteConfirm() == true}
+                      fallback={<>{translateText("import Steam games")}</>}>
                       <span className="text-[#FF3636]">
                         {translateText(
                           "current 'steam' folder will be overwritten. confirm?",
                         )}
                       </span>
                     </Show>
-                    <Show
-                      when={uiContext.showImportAndOverwriteConfirm() == false}>
-                      {translateText("import Steam games")}
-                    </Show>
-                  </Show>
-                  <Show
-                    when={globalContext.libraryData.folders.steam == undefined}>
-                    {translateText("import Steam games")}
                   </Show>
 
                   <Steam />
@@ -690,97 +685,88 @@ function App() {
                                 }}>
                                 <Show
                                   when={
-                                    !globalContext.libraryData.games[gameName]
-                                      .favourite
-                                  }>
-                                  <div className="relative w-full">
-                                    <Show
-                                      when={
-                                        globalContext.libraryData.games[
-                                          gameName
-                                        ].gridImage
-                                      }>
-                                      <div className="relative flex items-center justify-center">
-                                        <Show
-                                          when={
-                                            !globalContext.libraryData
-                                              .userSettings.gameTitle
-                                          }>
-                                          <Show
-                                            when={
-                                              !globalContext.libraryData.games[
-                                                gameName
-                                              ].location
-                                            }>
-                                            <span class="absolute tooltip z-[100] bottom-[30px]">
-                                              {translateText("no game file")}
-                                            </span>
-                                          </Show>
-                                        </Show>
-
-                                        <img
-                                          className={`z-10 mb-[7px] rounded-[${
-                                            globalContext.libraryData
-                                              .userSettings.roundedBorders
-                                              ? "6px"
-                                              : "0px"
-                                          }] group-hover:outline-[#0000001f] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
-                                          src={convertFileSrc(
-                                            applicationStateContext.appDataDirPath() +
-                                              "grids\\" +
-                                              globalContext.libraryData.games[
-                                                gameName
-                                              ].gridImage,
-                                          )}
-                                          alt=""
-                                        />
-                                      </div>
-                                    </Show>
-                                    <Show
-                                      when={
-                                        !globalContext.libraryData.games[
-                                          gameName
-                                        ].gridImage
-                                      }>
-                                      <div className="relative flex items-center justify-center">
-                                        <Show
-                                          when={
-                                            !globalContext.libraryData
-                                              .userSettings.gameTitle
-                                          }>
-                                          <span className="!max-w-[50%] absolute z-[100]">
-                                            {gameName}
-                                          </span>
-
-                                          <Show
-                                            when={
-                                              !globalContext.libraryData.games[
-                                                gameName
-                                              ].location
-                                            }>
-                                            <span class="absolute tooltip z-[100] bottom-[30px]">
-                                              {translateText("no game file")}
-                                            </span>
-                                          </Show>
-                                        </Show>
-
-                                        <div
-                                          className={`z-10 mb-[7px] rounded-[${
-                                            globalContext.libraryData
-                                              .userSettings.roundedBorders
-                                              ? "6px"
-                                              : "0px"
-                                          }] group-hover:outline-[#0000001f] dark:bg-[#1C1C1C] bg-[#F1F1F1]  w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
-                                          alt=""
-                                        />
-                                      </div>
-                                    </Show>
-                                  </div>
-                                </Show>
-                                <Show
-                                  when={
                                     globalContext.libraryData.games[gameName]
                                       .favourite
+                                  }
+                                  fallback={
+                                    <div className="relative w-full">
+                                      <Show
+                                        when={
+                                          globalContext.libraryData.games[
+                                            gameName
+                                          ].gridImage
+                                        }
+                                        fallback={
+                                          <div className="relative flex items-center justify-center">
+                                            <Show
+                                              when={
+                                                !globalContext.libraryData
+                                                  .userSettings.gameTitle
+                                              }>
+                                              <span className="!max-w-[50%] absolute z-[100]">
+                                                {gameName}
+                                              </span>
+
+                                              <Show
+                                                when={
+                                                  !globalContext.libraryData
+                                                    .games[gameName].location
+                                                }>
+                                                <span class="absolute tooltip z-[100] bottom-[30px]">
+                                                  {translateText(
+                                                    "no game file",
+                                                  )}
+                                                </span>
+                                              </Show>
+                                            </Show>
+
+                                            <div
+                                              className={`z-10 mb-[7px] rounded-[${
+                                                globalContext.libraryData
+                                                  .userSettings.roundedBorders
+                                                  ? "6px"
+                                                  : "0px"
+                                              }] group-hover:outline-[#0000001f] dark:bg-[#1C1C1C] bg-[#F1F1F1]  w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
+                                              alt=""
+                                            />
+                                          </div>
+                                        }>
+                                        <div className="relative flex items-center justify-center">
+                                          <Show
+                                            when={
+                                              !globalContext.libraryData
+                                                .userSettings.gameTitle
+                                            }>
+                                            <Show
+                                              when={
+                                                !globalContext.libraryData
+                                                  .games[gameName].location
+                                              }>
+                                              <span class="absolute tooltip z-[100] bottom-[30px]">
+                                                {translateText("no game file")}
+                                              </span>
+                                            </Show>
+                                          </Show>
+
+                                          <img
+                                            className={`z-10 mb-[7px] rounded-[${
+                                              globalContext.libraryData
+                                                .userSettings.roundedBorders
+                                                ? "6px"
+                                                : "0px"
+                                            }] group-hover:outline-[#0000001f] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
+                                            src={convertFileSrc(
+                                              applicationStateContext.appDataDirPath() +
+                                                "grids\\" +
+                                                globalContext.libraryData.games[
+                                                  gameName
+                                                ].gridImage,
+                                            )}
+                                            alt=""
+                                          />
+                                        </div>
+                                      </Show>
+                                    </div>
                                   }>
                                   <div className="relative w-full">
                                     <Show
@@ -788,6 +774,37 @@ function App() {
                                         globalContext.libraryData.games[
                                           gameName
                                         ].gridImage
+                                      }
+                                      fallback={
+                                        <div className="relative flex items-center justify-center">
+                                          <Show
+                                            when={
+                                              !globalContext.libraryData
+                                                .userSettings.gameTitle
+                                            }>
+                                            <span className="absolute z-[100] !max-w-[50%]">
+                                              {gameName}
+                                            </span>
+
+                                            <Show
+                                              when={
+                                                !globalContext.libraryData
+                                                  .games[gameName].location
+                                              }>
+                                              <span class="absolute tooltip z-[100] bottom-[30px]">
+                                                {translateText("no game file")}
+                                              </span>
+                                            </Show>
+                                          </Show>
+                                          <div
+                                            className={`relative z-10 mb-[7px] rounded-[${
+                                              globalContext.libraryData
+                                                .userSettings.roundedBorders
+                                                ? "6px"
+                                                : "0px"
+                                            }] outline-[#0000001c] w-full aspect-[2/3] dark:bg-[#1C1C1C] bg-[#F1F1F1]  hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
+                                          />
+                                        </div>
                                       }>
                                       <img
                                         className={`relative z-10 mb-[7px] rounded-[${
@@ -807,43 +824,7 @@ function App() {
                                         width="100%"
                                       />
                                     </Show>
-                                    <Show
-                                      when={
-                                        !globalContext.libraryData.games[
-                                          gameName
-                                        ].gridImage
-                                      }>
-                                      <div className="relative flex items-center justify-center">
-                                        <Show
-                                          when={
-                                            !globalContext.libraryData
-                                              .userSettings.gameTitle
-                                          }>
-                                          <span className="absolute z-[100] !max-w-[50%]">
-                                            {gameName}
-                                          </span>
 
-                                          <Show
-                                            when={
-                                              !globalContext.libraryData.games[
-                                                gameName
-                                              ].location
-                                            }>
-                                            <span class="absolute tooltip z-[100] bottom-[30px]">
-                                              {translateText("no game file")}
-                                            </span>
-                                          </Show>
-                                        </Show>
-                                        <div
-                                          className={`relative z-10 mb-[7px] rounded-[${
-                                            globalContext.libraryData
-                                              .userSettings.roundedBorders
-                                              ? "6px"
-                                              : "0px"
-                                          }] outline-[#0000001c] w-full aspect-[2/3] dark:bg-[#1C1C1C] bg-[#F1F1F1]  hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
-                                        />
-                                      </div>
-                                    </Show>
                                     <div className="absolute inset-0 dark:blur-[30px]  dark:group-hover:blur-[50px] duration-500 dark:bg-blend-screen ">
                                       <img
                                         className="absolute inset-0 duration-500 opacity-0 dark:opacity-[40%] dark:group-hover:opacity-60"
@@ -874,24 +855,20 @@ function App() {
                                         globalContext.libraryData.games[
                                           gameName
                                         ].location
+                                      }
+                                      fallback={
+                                        <>
+                                          <span className="text-[#000000] dark:text-white !max-w-[50%]">
+                                            {gameName}
+                                          </span>
+
+                                          <span class=" tooltip z-[100]">
+                                            {translateText("no game file")}
+                                          </span>
+                                        </>
                                       }>
                                       <span className="text-[#000000] dark:text-white">
                                         {gameName}
-                                      </span>
-                                    </Show>
-
-                                    <Show
-                                      when={
-                                        !globalContext.libraryData.games[
-                                          gameName
-                                        ].location
-                                      }>
-                                      <span className="text-[#000000] dark:text-white !max-w-[50%]">
-                                        {gameName}
-                                      </span>
-
-                                      <span class=" tooltip z-[100]">
-                                        {translateText("no game file")}
                                       </span>
                                     </Show>
                                   </div>
@@ -955,22 +932,21 @@ function App() {
               return (
                 <div>
                   <div
-                    className={`grid gap-5 mt-4 foldersDiv 
-${
-  globalContext.libraryData.userSettings.zoomLevel == 0
-    ? globalContext.libraryData.userSettings.showSideBar
-      ? "medium:grid-cols-5 grid-cols-4 large:grid-cols-7"
-      : "medium:grid-cols-6 grid-cols-4 large:grid-cols-8"
-    : globalContext.libraryData.userSettings.zoomLevel == 1
-    ? globalContext.libraryData.userSettings.showSideBar
-      ? "medium:grid-cols-4 grid-cols-3 large:grid-cols-6"
-      : "medium:grid-cols-5 grid-cols-3 large:grid-cols-7"
-    : globalContext.libraryData.userSettings.zoomLevel == 2
-    ? globalContext.libraryData.userSettings.showSideBar
-      ? "medium:grid-cols-3 grid-cols-2 large:grid-cols-5"
-      : "medium:grid-cols-4 grid-cols-2 large:grid-cols-6"
-    : ""
-}`}>
+                    className={`grid gap-5 mt-4 foldersDiv ${
+                      globalContext.libraryData.userSettings.zoomLevel == 0
+                        ? globalContext.libraryData.userSettings.showSideBar
+                          ? "medium:grid-cols-5 grid-cols-4 large:grid-cols-7"
+                          : "medium:grid-cols-6 grid-cols-4 large:grid-cols-8"
+                        : globalContext.libraryData.userSettings.zoomLevel == 1
+                        ? globalContext.libraryData.userSettings.showSideBar
+                          ? "medium:grid-cols-4 grid-cols-3 large:grid-cols-6"
+                          : "medium:grid-cols-5 grid-cols-3 large:grid-cols-7"
+                        : globalContext.libraryData.userSettings.zoomLevel == 2
+                        ? globalContext.libraryData.userSettings.showSideBar
+                          ? "medium:grid-cols-3 grid-cols-2 large:grid-cols-5"
+                          : "medium:grid-cols-4 grid-cols-2 large:grid-cols-6"
+                        : ""
+                    }`}>
                     <For each={searchResults}>
                       {(gameName, index) => {
                         return (
@@ -996,37 +972,75 @@ ${
                             }}>
                             <Show
                               when={
-                                !globalContext.libraryData.games[gameName]
+                                globalContext.libraryData.games[gameName]
                                   .favourite
+                              }
+                              fallback={
+                                <div className="relative w-full">
+                                  <Show
+                                    when={
+                                      globalContext.libraryData.games[gameName]
+                                        .gridImage
+                                    }
+                                    fallback={
+                                      <div className="relative flex items-center justify-center">
+                                        <Show
+                                          when={
+                                            !globalContext.libraryData
+                                              .userSettings.gameTitle
+                                          }>
+                                          <span className="absolute z-[100] !max-w-[50%]">
+                                            {gameName}
+                                          </span>
+
+                                          <Show
+                                            when={
+                                              !globalContext.libraryData.games[
+                                                gameName
+                                              ].location
+                                            }>
+                                            <span class="absolute tooltip z-[100] bottom-[30px]">
+                                              {translateText("no game file")}
+                                            </span>
+                                          </Show>
+                                        </Show>
+
+                                        <div
+                                          className={`z-10 mb-[7px] rounded-[${
+                                            globalContext.libraryData
+                                              .userSettings.roundedBorders
+                                              ? "6px"
+                                              : "0px"
+                                          }] group-hover:outline-[#0000001f] dark:bg-[#1C1C1C] bg-[#F1F1F1]  w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
+                                          alt=""
+                                        />
+                                      </div>
+                                    }>
+                                    <img
+                                      className={`z-10 mb-[7px] rounded-[${
+                                        globalContext.libraryData.userSettings
+                                          .roundedBorders
+                                          ? "6px"
+                                          : "0px"
+                                      }] group-hover:outline-[#0000001f] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
+                                      src={convertFileSrc(
+                                        applicationStateContext.appDataDirPath() +
+                                          "grids\\" +
+                                          globalContext.libraryData.games[
+                                            gameName
+                                          ].gridImage,
+                                      )}
+                                      alt=""
+                                    />{" "}
+                                  </Show>
+                                </div>
                               }>
-                              <div className="relative w-full">
-                                <Show
-                                  when={
-                                    globalContext.libraryData.games[gameName]
-                                      .gridImage
-                                  }>
-                                  <img
-                                    className={`z-10 mb-[7px] rounded-[${
-                                      globalContext.libraryData.userSettings
-                                        .roundedBorders
-                                        ? "6px"
-                                        : "0px"
-                                    }] group-hover:outline-[#0000001f] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
-                                    src={convertFileSrc(
-                                      applicationStateContext.appDataDirPath() +
-                                        "grids\\" +
-                                        globalContext.libraryData.games[
-                                          gameName
-                                        ].gridImage,
-                                    )}
-                                    alt=""
-                                  />{" "}
-                                </Show>
-                                <Show
-                                  when={
-                                    !globalContext.libraryData.games[gameName]
-                                      .gridImage
-                                  }>
+                              <Show
+                                when={
+                                  globalContext.libraryData.games[gameName]
+                                    .gridImage
+                                }
+                                fallback={
                                   <div className="relative flex items-center justify-center">
                                     <Show
                                       when={
@@ -1048,29 +1062,15 @@ ${
                                         </span>
                                       </Show>
                                     </Show>
-
                                     <div
-                                      className={`z-10 mb-[7px] rounded-[${
+                                      className={`relative z-10 mb-[7px] rounded-[${
                                         globalContext.libraryData.userSettings
                                           .roundedBorders
                                           ? "6px"
                                           : "0px"
-                                      }] group-hover:outline-[#0000001f] dark:bg-[#1C1C1C] bg-[#F1F1F1]  w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
-                                      alt=""
+                                      }] outline-[#0000001c] w-full aspect-[2/3] dark:bg-[#1C1C1C] bg-[#F1F1F1]  hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
                                     />
                                   </div>
-                                </Show>
-                              </div>
-                            </Show>
-                            <Show
-                              when={
-                                globalContext.libraryData.games[gameName]
-                                  .favourite
-                              }>
-                              <Show
-                                when={
-                                  globalContext.libraryData.games[gameName]
-                                    .gridImage
                                 }>
                                 <img
                                   className={`relative z-10 mb-[7px] rounded-[${
@@ -1090,42 +1090,6 @@ ${
                                 />
                               </Show>
 
-                              <Show
-                                when={
-                                  !globalContext.libraryData.games[gameName]
-                                    .gridImage
-                                }>
-                                <div className="relative flex items-center justify-center">
-                                  <Show
-                                    when={
-                                      !globalContext.libraryData.userSettings
-                                        .gameTitle
-                                    }>
-                                    <span className="absolute z-[100] !max-w-[50%]">
-                                      {gameName}
-                                    </span>
-
-                                    <Show
-                                      when={
-                                        !globalContext.libraryData.games[
-                                          gameName
-                                        ].location
-                                      }>
-                                      <span class="absolute tooltip z-[100] bottom-[30px]">
-                                        {translateText("no game file")}
-                                      </span>
-                                    </Show>
-                                  </Show>
-                                  <div
-                                    className={`relative z-10 mb-[7px] rounded-[${
-                                      globalContext.libraryData.userSettings
-                                        .roundedBorders
-                                        ? "6px"
-                                        : "0px"
-                                    }] outline-[#0000001c] w-full aspect-[2/3] dark:bg-[#1C1C1C] bg-[#F1F1F1]  hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
-                                  />
-                                </div>
-                              </Show>
                               <div className="absolute inset-0 dark:blur-[30px]  dark:group-hover:blur-[50px] duration-500 dark:bg-blend-screen ">
                                 <img
                                   className="absolute inset-0 duration-500 opacity-0 dark:opacity-[40%] dark:group-hover:opacity-60"

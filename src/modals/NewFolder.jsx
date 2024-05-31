@@ -124,7 +124,13 @@ export function NewFolder() {
                   dataEntryContext.setHideFolder((x) => !x);
                 }}
                 className="relative cursor-pointer">
-                <Show when={dataEntryContext.hideFolder()}>
+                <Show
+                  when={dataEntryContext.hideFolder()}
+                  fallback={
+                    <div className="">
+                      {translateText("hide in expanded view")}
+                    </div>
+                  }>
                   <div className="relative">
                     <div className="">
                       {translateText("hide in expanded view")}
@@ -132,11 +138,6 @@ export function NewFolder() {
                     <div className="absolute blur-[5px] opacity-70 inset-0">
                       {translateText("hide in expanded view")}
                     </div>
-                  </div>
-                </Show>
-                <Show when={!dataEntryContext.hideFolder()}>
-                  <div className="">
-                    {translateText("hide in expanded view")}
                   </div>
                 </Show>
               </button>

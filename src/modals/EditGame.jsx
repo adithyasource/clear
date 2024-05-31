@@ -1,4 +1,4 @@
-import { Show, useContext } from "solid-js";
+import { Match, Show, Switch, useContext } from "solid-js";
 import { produce } from "solid-js/store";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { BaseDirectory, copyFile } from "@tauri-apps/api/fs";
@@ -440,32 +440,36 @@ export function EditGame() {
                   dataUpdateContext.setEditedFavouriteGame((x) => !x);
                 }
               }}>
-              <Show when={dataUpdateContext.editedFavouriteGame() == undefined}>
-                <Show when={selectedDataContext.selectedGame().favourite}>
+              <Switch>
+                <Match
+                  when={dataUpdateContext.editedFavouriteGame() == undefined}>
+                  <Show
+                    when={selectedDataContext.selectedGame().favourite}
+                    fallback={
+                      <div className="!w-max">{translateText("favourite")}</div>
+                    }>
+                    <div className="relative">
+                      <div className="!w-max">{translateText("favourite")}</div>
+                      <div className="absolute blur-[5px] opacity-70 -z-10 inset-0 !w-max">
+                        {translateText("favourite")}
+                      </div>
+                    </div>
+                  </Show>
+                </Match>
+
+                <Match when={dataUpdateContext.editedFavouriteGame() == true}>
                   <div className="relative">
                     <div className="!w-max"> {translateText("favourite")}</div>
                     <div className="absolute blur-[5px] opacity-70 -z-10 inset-0 !w-max">
                       {translateText("favourite")}
                     </div>
                   </div>
-                </Show>
-                <Show when={!selectedDataContext.selectedGame().favourite}>
-                  <div className="!w-max"> {translateText("favourite")}</div>
-                </Show>
-              </Show>
+                </Match>
 
-              <Show when={dataUpdateContext.editedFavouriteGame() == true}>
-                <div className="relative">
-                  <div className="!w-max"> {translateText("favourite")}</div>
-                  <div className="absolute blur-[5px] opacity-70 -z-10 inset-0 !w-max">
-                    {translateText("favourite")}
-                  </div>
-                </div>
-              </Show>
-
-              <Show when={dataUpdateContext.editedFavouriteGame() == false}>
-                <div className="!w-max">favourite</div>
-              </Show>
+                <Match when={dataUpdateContext.editedFavouriteGame() == false}>
+                  <div className="!w-max">favourite</div>
+                </Match>
+              </Switch>
             </button>
             <button
               onClick={updateGame}
@@ -510,36 +514,40 @@ export function EditGame() {
             }}
             className="panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] locatingGridImg h-full aspect-[2/3] group relative overflow-hidden"
             aria-label="grid/cover">
-            <Show
-              when={dataUpdateContext.editedLocatedGridImage() === undefined}>
-              <img
-                className="absolute inset-0 aspect-[2/3]"
-                src={convertFileSrc(
-                  applicationStateContext.appDataDirPath() +
-                    "grids\\" +
-                    selectedDataContext.selectedGame().gridImage,
-                )}
-                alt=""
-              />
-              <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
-                {translateText("grid/cover")}
-              </span>
-            </Show>
-            <Show when={dataUpdateContext.editedLocatedGridImage()}>
-              <img
-                className="absolute inset-0 aspect-[2/3]"
-                src={convertFileSrc(dataUpdateContext.editedLocatedGridImage())}
-                alt=""
-              />
-              <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
-                {translateText("grid/cover")}
-              </span>
-            </Show>
-            <Show when={dataUpdateContext.editedLocatedGridImage() === null}>
-              <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
-                {translateText("grid/cover")}
-              </span>
-            </Show>
+            <Switch>
+              <Match
+                when={dataUpdateContext.editedLocatedGridImage() === undefined}>
+                <img
+                  className="absolute inset-0 aspect-[2/3]"
+                  src={convertFileSrc(
+                    applicationStateContext.appDataDirPath() +
+                      "grids\\" +
+                      selectedDataContext.selectedGame().gridImage,
+                  )}
+                  alt=""
+                />
+                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
+                  {translateText("grid/cover")}
+                </span>
+              </Match>
+              <Match when={dataUpdateContext.editedLocatedGridImage()}>
+                <img
+                  className="absolute inset-0 aspect-[2/3]"
+                  src={convertFileSrc(
+                    dataUpdateContext.editedLocatedGridImage(),
+                  )}
+                  alt=""
+                />
+                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
+                  {translateText("grid/cover")}
+                </span>
+              </Match>
+              <Match when={dataUpdateContext.editedLocatedGridImage() === null}>
+                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
+                  {translateText("grid/cover")}
+                </span>
+              </Match>
+            </Switch>
           </button>
 
           <div className="flex flex-col gap-3 relative">
@@ -550,60 +558,102 @@ export function EditGame() {
               }}
               className="max-large:h-[250px] h-[350px] aspect-[67/26] group relative p-0 m-0 panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
               aria-label="hero">
-              <Show
-                when={dataUpdateContext.editedLocatedHeroImage() === null}
-                className="absolute inset-0 overflow-hidden">
-                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
-                  {translateText("hero")}
-                </span>
-              </Show>
-              <Show
-                when={dataUpdateContext.editedLocatedHeroImage() === undefined}
-                className="absolute inset-0 overflow-hidden">
-                <img
-                  src={convertFileSrc(
-                    applicationStateContext.appDataDirPath() +
-                      "heroes\\" +
-                      selectedDataContext.selectedGame().heroImage,
-                  )}
-                  alt=""
-                  className="absolute inset-0  aspect-[96/31]  h-full  rounded-[6px]"
-                />
-                <img
-                  src={convertFileSrc(
-                    applicationStateContext.appDataDirPath() +
-                      "heroes\\" +
-                      selectedDataContext.selectedGame().heroImage,
-                  )}
-                  alt=""
-                  className="absolute inset-0 aspect-[96/31]  -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.6]"
-                />
-              </Show>
-              <Show
-                when={dataUpdateContext.editedLocatedHeroImage()}
-                className="absolute inset-0 overflow-hidden">
-                <img
-                  src={convertFileSrc(
-                    dataUpdateContext.editedLocatedHeroImage(),
-                  )}
-                  alt=""
-                  className="absolute inset-0  aspect-[96/31] h-full rounded-[6px]"
-                />
-                <img
-                  src={convertFileSrc(
-                    dataUpdateContext.editedLocatedHeroImage(),
-                  )}
-                  alt=""
-                  className="absolute inset-0 -z-10 aspect-[96/31]  h-full rounded-[6px] blur-[80px] opacity-[0.6]"
-                />
-              </Show>
+              <Switch>
+                <Match
+                  when={dataUpdateContext.editedLocatedHeroImage() === null}
+                  className="absolute inset-0 overflow-hidden">
+                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
+                    {translateText("hero")}
+                  </span>
+                </Match>
+                <Match
+                  when={
+                    dataUpdateContext.editedLocatedHeroImage() === undefined
+                  }
+                  className="absolute inset-0 overflow-hidden">
+                  <img
+                    src={convertFileSrc(
+                      applicationStateContext.appDataDirPath() +
+                        "heroes\\" +
+                        selectedDataContext.selectedGame().heroImage,
+                    )}
+                    alt=""
+                    className="absolute inset-0  aspect-[96/31]  h-full  rounded-[6px]"
+                  />
+                  <img
+                    src={convertFileSrc(
+                      applicationStateContext.appDataDirPath() +
+                        "heroes\\" +
+                        selectedDataContext.selectedGame().heroImage,
+                    )}
+                    alt=""
+                    className="absolute inset-0 aspect-[96/31]  -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.6]"
+                  />
+                </Match>
+                <Match
+                  when={dataUpdateContext.editedLocatedHeroImage()}
+                  className="absolute inset-0 overflow-hidden">
+                  <img
+                    src={convertFileSrc(
+                      dataUpdateContext.editedLocatedHeroImage(),
+                    )}
+                    alt=""
+                    className="absolute inset-0  aspect-[96/31] h-full rounded-[6px]"
+                  />
+                  <img
+                    src={convertFileSrc(
+                      dataUpdateContext.editedLocatedHeroImage(),
+                    )}
+                    alt=""
+                    className="absolute inset-0 -z-10 aspect-[96/31]  h-full rounded-[6px] blur-[80px] opacity-[0.6]"
+                  />
+                </Match>
+              </Switch>
 
               <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
                 {translateText("hero")}
               </span>
             </button>
 
-            <Show when={selectedDataContext.selectedGame().logo}>
+            <Show
+              when={selectedDataContext.selectedGame().logo}
+              fallback={
+                <button
+                  onClick={locateEditedLogo}
+                  onContextMenu={() => {
+                    dataUpdateContext.setEditedLocatedLogo(null);
+                  }}
+                  className={`panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] !bg-[#27272700] group  absolute bottom-[60px] left-[20px] max-large:bottom-[40px] ${
+                    selectedDataContext.selectedGame().logo
+                      ? ""
+                      : "!w-[200px] !h-[65px]"
+                  } `}
+                  aria-label="logo">
+                  <Show
+                    when={dataUpdateContext.editedLocatedLogo()}
+                    fallback={
+                      <div
+                        className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] relative bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
+                          globalContext.libraryData.userSettings.roundedBorders
+                            ? "6px"
+                            : "0px"
+                        }]`}
+                      />
+                    }>
+                    <img
+                      src={convertFileSrc(
+                        dataUpdateContext.editedLocatedLogo(),
+                      )}
+                      alt=""
+                      className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
+                    />
+                  </Show>
+
+                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[45%] left-[55%] top-[65%] opacity-0">
+                    {translateText("logo")}
+                  </span>
+                </button>
+              }>
               <button
                 onClick={locateEditedLogo}
                 onContextMenu={() => {
@@ -615,70 +665,40 @@ export function EditGame() {
                     : "!w-[200px] !h-[65px]"
                 } `}
                 aria-label="logo">
-                <Show
-                  when={dataUpdateContext.editedLocatedLogo() === undefined}>
-                  <img
-                    src={convertFileSrc(
-                      applicationStateContext.appDataDirPath() +
-                        "logos\\" +
-                        selectedDataContext.selectedGame().logo,
-                    )}
-                    alt=""
-                    className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
-                  />
-                </Show>
-                <Show when={dataUpdateContext.editedLocatedLogo()}>
-                  <img
-                    src={convertFileSrc(dataUpdateContext.editedLocatedLogo())}
-                    alt=""
-                    className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
-                  />
-                </Show>
-                <Show when={dataUpdateContext.editedLocatedLogo() === null}>
-                  <div
-                    className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] relative bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                      globalContext.libraryData.userSettings.roundedBorders
-                        ? "6px"
-                        : "0px"
-                    }]`}
-                  />
-                </Show>
+                <Switch>
+                  <Match
+                    when={dataUpdateContext.editedLocatedLogo() === undefined}>
+                    <img
+                      src={convertFileSrc(
+                        applicationStateContext.appDataDirPath() +
+                          "logos\\" +
+                          selectedDataContext.selectedGame().logo,
+                      )}
+                      alt=""
+                      className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
+                    />
+                  </Match>
+                  <Match when={dataUpdateContext.editedLocatedLogo()}>
+                    <img
+                      src={convertFileSrc(
+                        dataUpdateContext.editedLocatedLogo(),
+                      )}
+                      alt=""
+                      className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
+                    />
+                  </Match>
+                  <Match when={dataUpdateContext.editedLocatedLogo() === null}>
+                    <div
+                      className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] relative bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
+                        globalContext.libraryData.userSettings.roundedBorders
+                          ? "6px"
+                          : "0px"
+                      }]`}
+                    />
+                  </Match>
+                </Switch>
 
                 <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
-                  {translateText("logo")}
-                </span>
-              </button>
-            </Show>
-            <Show when={!selectedDataContext.selectedGame().logo}>
-              <button
-                onClick={locateEditedLogo}
-                onContextMenu={() => {
-                  dataUpdateContext.setEditedLocatedLogo(null);
-                }}
-                className={`panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] !bg-[#27272700] group  absolute bottom-[60px] left-[20px] max-large:bottom-[40px] ${
-                  selectedDataContext.selectedGame().logo
-                    ? ""
-                    : "!w-[200px] !h-[65px]"
-                } `}
-                aria-label="logo">
-                <Show when={dataUpdateContext.editedLocatedLogo()}>
-                  <img
-                    src={convertFileSrc(dataUpdateContext.editedLocatedLogo())}
-                    alt=""
-                    className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
-                  />
-                </Show>
-                <Show when={!dataUpdateContext.editedLocatedLogo()}>
-                  <div
-                    className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] relative bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                      globalContext.libraryData.userSettings.roundedBorders
-                        ? "6px"
-                        : "0px"
-                    }]`}
-                  />
-                </Show>
-
-                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[45%] left-[55%] top-[65%] opacity-0">
                   {translateText("logo")}
                 </span>
               </button>
@@ -692,20 +712,42 @@ export function EditGame() {
                 }}
                 className="relative !bg-[#27272700] group p-0"
                 aria-label="logo">
-                <Show
-                  when={dataUpdateContext.editedLocatedIcon() === undefined}>
-                  <Show when={selectedDataContext.selectedGame().icon}>
+                <Switch>
+                  <Match
+                    when={dataUpdateContext.editedLocatedIcon() === undefined}>
+                    <Show
+                      when={selectedDataContext.selectedGame().icon}
+                      fallback={
+                        <div
+                          className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
+                            globalContext.libraryData.userSettings
+                              .roundedBorders
+                              ? "6px"
+                              : "0px"
+                          }]`}
+                        />
+                      }>
+                      <img
+                        src={convertFileSrc(
+                          applicationStateContext.appDataDirPath() +
+                            "icons\\" +
+                            selectedDataContext.selectedGame().icon,
+                        )}
+                        alt=""
+                        className="w-[40px] h-[40px] "
+                      />
+                    </Show>
+                  </Match>
+                  <Match when={dataUpdateContext.editedLocatedIcon()}>
                     <img
                       src={convertFileSrc(
-                        applicationStateContext.appDataDirPath() +
-                          "icons\\" +
-                          selectedDataContext.selectedGame().icon,
+                        dataUpdateContext.editedLocatedIcon(),
                       )}
                       alt=""
                       className="w-[40px] h-[40px] "
                     />
-                  </Show>
-                  <Show when={!selectedDataContext.selectedGame().icon}>
+                  </Match>
+                  <Match when={dataUpdateContext.editedLocatedIcon() === null}>
                     <div
                       className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
                         globalContext.libraryData.userSettings.roundedBorders
@@ -713,24 +755,8 @@ export function EditGame() {
                           : "0px"
                       }]`}
                     />
-                  </Show>
-                </Show>
-                <Show when={dataUpdateContext.editedLocatedIcon()}>
-                  <img
-                    src={convertFileSrc(dataUpdateContext.editedLocatedIcon())}
-                    alt=""
-                    className="w-[40px] h-[40px] "
-                  />
-                </Show>
-                <Show when={dataUpdateContext.editedLocatedIcon() === null}>
-                  <div
-                    className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                      globalContext.libraryData.userSettings.roundedBorders
-                        ? "6px"
-                        : "0px"
-                    }]`}
-                  />
-                </Show>
+                  </Match>
+                </Switch>
                 <span class="absolute tooltip z-[10000] group-hover:opacity-100 left-[-10%] top-[120%] opacity-0">
                   {translateText("icon")}
                 </span>
@@ -755,97 +781,98 @@ export function EditGame() {
                   dataUpdateContext.setEditedlocatedGame(null);
                 }}
                 className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0">
-                <Show
-                  when={dataUpdateContext.editedLocatedGame() === undefined}>
-                  <Show when={selectedDataContext.selectedGame().location}>
-                    {selectedDataContext
-                      .selectedGame()
-                      ["location"].toString()
+                <Switch>
+                  <Match
+                    when={dataUpdateContext.editedLocatedGame() === undefined}>
+                    <Show
+                      when={selectedDataContext.selectedGame().location}
+                      fallback={<>{translateText("locate game")}</>}>
+                      {selectedDataContext
+                        .selectedGame()
+                        ["location"].toString()
+                        .split("\\")
+                        .slice(-1)
+                        .toString().length > 17
+                        ? "..." +
+                          selectedDataContext
+                            .selectedGame()
+                            ["location"].toString()
+                            .split("\\")
+                            .slice(-1)
+                            .toString()
+                            .slice(0, 7) +
+                          "..." +
+                          selectedDataContext
+                            .selectedGame()
+                            ["location"].toString()
+                            .slice(-7)
+                        : "..." +
+                          selectedDataContext
+                            .selectedGame()
+                            ["location"].toString()
+                            .split("\\")
+                            .slice(-1)
+                            .toString()}
+                    </Show>
+                  </Match>
+                  <Match when={dataUpdateContext.editedLocatedGame() === null}>
+                    {translateText("locate game")}
+                  </Match>
+                  <Match when={dataUpdateContext.editedLocatedGame()}>
+                    {dataUpdateContext
+                      .editedLocatedGame()
+                      .toString()
                       .split("\\")
                       .slice(-1)
                       .toString().length > 17
                       ? "..." +
-                        selectedDataContext
-                          .selectedGame()
-                          ["location"].toString()
+                        dataUpdateContext
+                          .editedLocatedGame()
+                          .toString()
                           .split("\\")
                           .slice(-1)
                           .toString()
                           .slice(0, 7) +
                         "..." +
-                        selectedDataContext
-                          .selectedGame()
-                          ["location"].toString()
+                        dataUpdateContext
+                          .editedLocatedGame()
+                          .toString()
                           .slice(-7)
                       : "..." +
-                        selectedDataContext
-                          .selectedGame()
-                          ["location"].toString()
+                        dataUpdateContext
+                          .editedLocatedGame()
+                          .toString()
                           .split("\\")
                           .slice(-1)
                           .toString()}
-                  </Show>
-                  <Show when={!selectedDataContext.selectedGame().location}>
-                    {" "}
-                    {translateText("locate game")}
-                  </Show>
-                </Show>
-                <Show when={dataUpdateContext.editedLocatedGame() === null}>
-                  {translateText("locate game")}
-                </Show>
-                <Show when={dataUpdateContext.editedLocatedGame()}>
-                  {dataUpdateContext
-                    .editedLocatedGame()
-                    .toString()
-                    .split("\\")
-                    .slice(-1)
-                    .toString().length > 17
-                    ? "..." +
-                      dataUpdateContext
-                        .editedLocatedGame()
-                        .toString()
-                        .split("\\")
-                        .slice(-1)
-                        .toString()
-                        .slice(0, 7) +
-                      "..." +
-                      dataUpdateContext.editedLocatedGame().toString().slice(-7)
-                    : "..." +
-                      dataUpdateContext
-                        .editedLocatedGame()
-                        .toString()
-                        .split("\\")
-                        .slice(-1)
-                        .toString()}
-                </Show>
+                  </Match>
+                </Switch>
               </button>
 
-              <Show when={selectedDataContext.selectedGame().location}>
-                <Show
-                  when={
-                    selectedDataContext
-                      .selectedGame()
-                      .location.split("//")[0] != "steam:"
-                  }>
-                  <button
-                    onClick={() => {
-                      invoke("open_location", {
-                        location: selectedDataContext
-                          .selectedGame()
-                          .location.split("\\")
-                          .slice(0, -1)
-                          .join("\\"),
-                      });
-                    }}
-                    className="relative group standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max"
-                    aria-label="logo">
-                    <OpenExternal />
+              <Show
+                when={
+                  selectedDataContext.selectedGame().location &&
+                  selectedDataContext.selectedGame().location.split("//")[0] !=
+                    "steam:"
+                }>
+                <button
+                  onClick={() => {
+                    invoke("open_location", {
+                      location: selectedDataContext
+                        .selectedGame()
+                        .location.split("\\")
+                        .slice(0, -1)
+                        .join("\\"),
+                    });
+                  }}
+                  className="relative group standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max"
+                  aria-label="logo">
+                  <OpenExternal />
 
-                    <span class="absolute tooltip group-hover:opacity-100 left-[-150%] top-[120%] opacity-0">
-                      {translateText("open containing folder")}
-                    </span>
-                  </button>
-                </Show>
+                  <span class="absolute tooltip group-hover:opacity-100 left-[-150%] top-[120%] opacity-0">
+                    {translateText("open containing folder")}
+                  </span>
+                </button>
               </Show>
             </div>
           </div>

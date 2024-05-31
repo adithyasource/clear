@@ -106,17 +106,16 @@ export function Settings() {
                 }}
                 className="relative cursor-pointer p-0 text-left">
                 <Show
-                  when={globalContext.libraryData.userSettings.roundedBorders}>
+                  when={globalContext.libraryData.userSettings.roundedBorders}
+                  fallback={
+                    <div className="">{translateText("rounded borders")}</div>
+                  }>
                   <div className="relative ">
                     <div className="">{translateText("rounded borders")}</div>
                     <div className="absolute blur-[5px] opacity-70 inset-0">
                       {translateText("rounded borders")}
                     </div>
                   </div>
-                </Show>
-                <Show
-                  when={!globalContext.libraryData.userSettings.roundedBorders}>
-                  <div className="">{translateText("rounded borders")}</div>
                 </Show>
               </button>
               <button
@@ -132,16 +131,17 @@ export function Settings() {
                   getData();
                 }}
                 className="relative cursor-pointer p-0 text-left">
-                <Show when={globalContext.libraryData.userSettings.gameTitle}>
+                <Show
+                  when={globalContext.libraryData.userSettings.gameTitle}
+                  fallback={
+                    <div className="">{translateText("game title")}</div>
+                  }>
                   <div className="relative">
                     <div className="">{translateText("game title")}</div>
                     <div className="absolute blur-[5px] opacity-70 inset-0  ">
                       {translateText("game title")}
                     </div>
                   </div>
-                </Show>
-                <Show when={!globalContext.libraryData.userSettings.gameTitle}>
-                  <div className="">{translateText("game title")}</div>
                 </Show>
               </button>
               <button
@@ -157,17 +157,17 @@ export function Settings() {
                   getData();
                 }}
                 className="relative cursor-pointer p-0 text-left">
-                <Show when={globalContext.libraryData.userSettings.folderTitle}>
+                <Show
+                  when={globalContext.libraryData.userSettings.folderTitle}
+                  fallback={
+                    <div className="">{translateText("folder title")}</div>
+                  }>
                   <div className="relative">
                     <div className="">{translateText("folder title")}</div>
                     <div className="absolute blur-[5px] opacity-70 inset-0  ">
                       {translateText("folder title")}
                     </div>
                   </div>
-                </Show>
-                <Show
-                  when={!globalContext.libraryData.userSettings.folderTitle}>
-                  <div className="">{translateText("folder title")}</div>
                 </Show>
               </button>
               <button
@@ -184,7 +184,12 @@ export function Settings() {
                 }}
                 className="relative cursor-pointer p-0 text-left">
                 <Show
-                  when={globalContext.libraryData.userSettings.quitAfterOpen}>
+                  when={globalContext.libraryData.userSettings.quitAfterOpen}
+                  fallback={
+                    <div className="">
+                      {translateText("quit after opening game")}
+                    </div>
+                  }>
                   <div className="relative">
                     <div className="">
                       {translateText("quit after opening game")}
@@ -192,12 +197,6 @@ export function Settings() {
                     <div className="absolute blur-[5px] opacity-70 inset-0  ">
                       {translateText("quit after opening game")}
                     </div>
-                  </div>
-                </Show>
-                <Show
-                  when={!globalContext.libraryData.userSettings.quitAfterOpen}>
-                  <div className="">
-                    {translateText("quit after opening game")}
                   </div>
                 </Show>
               </button>
@@ -402,23 +401,17 @@ export function Settings() {
                     }
                   }}>
                   <Show
-                    when={globalContext.libraryData.folders.steam != undefined}>
+                    when={globalContext.libraryData.folders.steam != undefined}
+                    fallback={<>{translateText("import Steam games")}</>}>
                     <Show
-                      when={uiContext.showImportAndOverwriteConfirm() == true}>
+                      when={uiContext.showImportAndOverwriteConfirm() == true}
+                      fallback={<>{translateText("import Steam games")}</>}>
                       <span className="text-[#FF3636]">
                         {translateText(
                           "current 'steam' folder will be overwritten. confirm?",
                         )}
                       </span>
                     </Show>
-                    <Show
-                      when={uiContext.showImportAndOverwriteConfirm() == false}>
-                      {translateText("import Steam games")}
-                    </Show>
-                  </Show>
-                  <Show
-                    when={globalContext.libraryData.folders.steam == undefined}>
-                    {translateText("import Steam games")}
                   </Show>
 
                   <Steam />

@@ -1,5 +1,5 @@
 import { produce } from "solid-js/store";
-import { useContext } from "solid-js";
+import { Switch, useContext } from "solid-js";
 import { getData, translateText, updateData } from "../Globals";
 import { Close, SaveDisk, TrashDelete } from "../components/Icons";
 
@@ -184,8 +184,28 @@ export function EditFolder() {
                   }
                 }}
                 className="relative cursor-pointer">
-                <Show when={dataUpdateContext.editedHideFolder() == undefined}>
-                  <Show when={selectedDataContext.selectedFolder().hide}>
+                <Switch>
+                  <Match
+                    when={dataUpdateContext.editedHideFolder() == undefined}>
+                    <Show
+                      when={selectedDataContext.selectedFolder().hide}
+                      fallback={
+                        <div className="">
+                          {translateText("hide in expanded view")}
+                        </div>
+                      }>
+                      <div className="relative">
+                        <div className="">
+                          {translateText("hide in expanded view")}
+                        </div>
+                        <div className="absolute blur-[5px] opacity-70 inset-0">
+                          {translateText("hide in expanded view")}
+                        </div>
+                      </div>
+                    </Show>
+                  </Match>
+
+                  <Match when={dataUpdateContext.editedHideFolder() == true}>
                     <div className="relative">
                       <div className="">
                         {translateText("hide in expanded view")}
@@ -194,30 +214,14 @@ export function EditFolder() {
                         {translateText("hide in expanded view")}
                       </div>
                     </div>
-                  </Show>
-                  <Show when={!selectedDataContext.selectedFolder().hide}>
+                  </Match>
+
+                  <Match when={dataUpdateContext.editedHideFolder() == false}>
                     <div className="">
                       {translateText("hide in expanded view")}
                     </div>
-                  </Show>
-                </Show>
-
-                <Show when={dataUpdateContext.editedHideFolder() == true}>
-                  <div className="relative">
-                    <div className="">
-                      {translateText("hide in expanded view")}
-                    </div>
-                    <div className="absolute blur-[5px] opacity-70 inset-0">
-                      {translateText("hide in expanded view")}
-                    </div>
-                  </div>
-                </Show>
-
-                <Show when={dataUpdateContext.editedHideFolder() == false}>
-                  <div className="">
-                    {translateText("hide in expanded view")}
-                  </div>
-                </Show>
+                  </Match>
+                </Switch>
               </button>
 
               <button

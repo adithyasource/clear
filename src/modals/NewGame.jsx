@@ -1,4 +1,4 @@
-import { Show, createSignal, useContext } from "solid-js";
+import { Match, Show, Switch, createSignal, useContext } from "solid-js";
 import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
 import { BaseDirectory, copyFile } from "@tauri-apps/api/fs";
 
@@ -32,7 +32,7 @@ export function NewGame() {
   const [showGridImageLoading, setShowGridImageLoading] = createSignal(false);
   const [showHeroImageLoading, setShowHeroImageLoading] = createSignal(false);
   const [showLogoImageLoading, setShowLogoImageLoading] = createSignal(false);
-  const [showIconImageLeading, setShowIconImageLoading] = createSignal(false);
+  const [showIconImageLoading, setShowIconImageLoading] = createSignal(false);
 
   async function addGame() {
     if (
@@ -413,17 +413,17 @@ export function NewGame() {
               onClick={() => {
                 dataEntryContext.setFavouriteGame((x) => !x);
               }}>
-              <Show when={dataEntryContext.favouriteGame()}>
+              <Show
+                when={dataEntryContext.favouriteGame()}
+                fallback={
+                  <div className="!w-max">{translateText("favourite")}</div>
+                }>
                 <div className="relative">
                   <div className="!w-max">{translateText("favourite")}</div>
                   <div className="absolute blur-[5px] opacity-70 -z-10 inset-0 !w-max">
                     {translateText("favourite")}
                   </div>
                 </div>
-              </Show>
-
-              <Show when={!dataEntryContext.favouriteGame()}>
-                <div className="!w-max">{translateText("favourite")}</div>
               </Show>
             </button>
             <button
@@ -496,25 +496,49 @@ export function NewGame() {
               dataEntryContext.setFoundGridImage(undefined);
             }}
             className="panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] locatingGridImg h-full aspect-[2/3] group relative overflow-hidden">
-            <Show when={dataEntryContext.foundGridImage()}>
-              <Show when={showGridImageLoading() == false}>
-                <img
-                  className="absolute inset-0 aspect-[2/3]"
-                  src={
-                    dataEntryContext.foundGridImage()[
-                      dataEntryContext.foundGridImageIndex()
-                    ]
-                  }
-                  alt=""
-                  onLoad={() => {
-                    setShowGridImageLoading(false);
-                  }}
-                />
-                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
-                  {translateText("grid/cover")} <br />
-                </span>
-              </Show>
-              <Show when={showGridImageLoading() == true}>
+            <Show
+              when={dataEntryContext.foundGridImage()}
+              fallback={
+                <>
+                  <Show
+                    when={dataEntryContext.locatedGridImage()}
+                    fallback={
+                      <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
+                        {translateText("grid/cover")} <br />
+                      </span>
+                    }>
+                    <img
+                      className="absolute inset-0 aspect-[2/3]"
+                      src={convertFileSrc(dataEntryContext.locatedGridImage())}
+                      alt=""
+                    />
+                    <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0 ">
+                      {translateText("grid/cover")} <br />
+                    </span>
+                  </Show>
+                </>
+              }>
+              <Show
+                when={showGridImageLoading() == true}
+                fallback={
+                  <>
+                    <img
+                      className="absolute inset-0 aspect-[2/3]"
+                      src={
+                        dataEntryContext.foundGridImage()[
+                          dataEntryContext.foundGridImageIndex()
+                        ]
+                      }
+                      alt=""
+                      onLoad={() => {
+                        setShowGridImageLoading(false);
+                      }}
+                    />
+                    <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
+                      {translateText("grid/cover")} <br />
+                    </span>
+                  </>
+                }>
                 <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
                   {translateText("grid/cover")} <br />
                 </span>
@@ -527,24 +551,6 @@ export function NewGame() {
               <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
                 {translateText("grid/cover")}
               </span>
-            </Show>
-            <Show when={!dataEntryContext.foundGridImage()}>
-              {" "}
-              <Show when={dataEntryContext.locatedGridImage()}>
-                <img
-                  className="absolute inset-0 aspect-[2/3]"
-                  src={convertFileSrc(dataEntryContext.locatedGridImage())}
-                  alt=""
-                />
-                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0 ">
-                  {translateText("grid/cover")} <br />
-                </span>
-              </Show>
-              <Show when={!dataEntryContext.locatedGridImage()}>
-                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
-                  {translateText("grid/cover")} <br />
-                </span>
-              </Show>
             </Show>
           </button>
 
@@ -602,8 +608,44 @@ export function NewGame() {
               aria-label="hero">
               <Show
                 when={dataEntryContext.foundHeroImage()}
-                className="absolute inset-0 overflow-hidden">
-                <Show when={showHeroImageLoading() == false}>
+                className="absolute inset-0 overflow-hidden"
+                fallback={
+                  <>
+                    <Show
+                      when={dataEntryContext.locatedHeroImage()}
+                      className="absolute inset-0 overflow-hidden"
+                      fallback={
+                        <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
+                          {translateText("hero")}
+                        </span>
+                      }>
+                      <img
+                        src={convertFileSrc(
+                          dataEntryContext.locatedHeroImage(),
+                        )}
+                        alt=""
+                        className="absolute inset-0 h-full rounded-[6px] aspect-[96/31]"
+                      />
+                      <img
+                        src={convertFileSrc(
+                          dataEntryContext.locatedHeroImage(),
+                        )}
+                        alt=""
+                        className="absolute inset-0 -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.4] aspect-[96/31]"
+                      />
+                      <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
+                        {translateText("hero")}
+                      </span>
+                    </Show>
+                  </>
+                }>
+                <Show
+                  when={showHeroImageLoading() == false}
+                  fallback={
+                    <div className="animate-spin-slow absolute">
+                      <Loading />
+                    </div>
+                  }>
                   <img
                     src={
                       dataEntryContext.foundHeroImage()[
@@ -629,42 +671,52 @@ export function NewGame() {
                     className="absolute inset-0 -z-10 h-full aspect-[96/31] rounded-[6px] blur-[80px] opacity-[0.4]"
                   />
                 </Show>
-                <Show when={showHeroImageLoading()}>
-                  <div className="animate-spin-slow absolute">
-                    <Loading />
-                  </div>
-                </Show>
                 <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
                   {translateText("hero")}
                 </span>
               </Show>
-              <Show when={!dataEntryContext.foundHeroImage()}>
-                <Show
-                  when={dataEntryContext.locatedHeroImage()}
-                  className="absolute inset-0 overflow-hidden">
-                  <img
-                    src={convertFileSrc(dataEntryContext.locatedHeroImage())}
-                    alt=""
-                    className="absolute inset-0 h-full rounded-[6px] aspect-[96/31]"
-                  />
-                  <img
-                    src={convertFileSrc(dataEntryContext.locatedHeroImage())}
-                    alt=""
-                    className="absolute inset-0 -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.4] aspect-[96/31]"
-                  />
-                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
-                    {translateText("hero")}
-                  </span>
-                </Show>
-                <Show when={!dataEntryContext.locatedHeroImage()}>
-                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
-                    {translateText("hero")}
-                  </span>
-                </Show>
-              </Show>
             </button>
 
-            <Show when={dataEntryContext.foundLogoImage()}>
+            <Show
+              when={dataEntryContext.foundLogoImage()}
+              fallback={
+                <>
+                  <Show
+                    when={dataEntryContext.locatedLogo()}
+                    fallback={
+                      <button
+                        onClick={locateLogo}
+                        onContextMenu={() => {
+                          dataEntryContext.setLocatedLogo(undefined);
+                          dataEntryContext.setFoundLogoImage(undefined);
+                        }}
+                        className="panelButton cursor-pointer  bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[70px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] "
+                        aria-label="logo">
+                        <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
+                          {translateText("logo")}
+                        </span>
+                      </button>
+                    }>
+                    <button
+                      onClick={locateLogo}
+                      onContextMenu={() => {
+                        dataEntryContext.setLocatedLogo(undefined);
+                        dataEntryContext.setFoundLogoImage(undefined);
+                      }}
+                      className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[70px] left-[20px] panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
+                      aria-label="logo">
+                      <img
+                        src={convertFileSrc(dataEntryContext.locatedLogo())}
+                        alt=""
+                        className="relative aspect-auto max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
+                      />
+                      <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
+                        {translateText("logo")}
+                      </span>
+                    </button>
+                  </Show>
+                </>
+              }>
               <button
                 onClick={locateLogo}
                 onScroll={() => {}}
@@ -716,7 +768,21 @@ export function NewGame() {
                 }}
                 className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[70px] left-[20px] panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
                 aria-label="logo">
-                <Show when={showLogoImageLoading() == false}>
+                <Show
+                  when={showLogoImageLoading() == false}
+                  fallback={
+                    <button
+                      onClick={locateLogo}
+                      onContextMenu={() => {
+                        dataEntryContext.setLocatedLogo(undefined);
+                        dataEntryContext.setFoundLogoImage(undefined);
+                      }}
+                      className="panelButton cursor-pointer   bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[20px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] ">
+                      <div className="animate-spin-slow absolute">
+                        <Loading />
+                      </div>
+                    </button>
+                  }>
                   <img
                     src={
                       dataEntryContext.foundLogoImage()[
@@ -729,21 +795,6 @@ export function NewGame() {
                       setShowLogoImageLoading(false);
                     }}
                   />
-                </Show>
-                <Show when={showLogoImageLoading()}>
-                  <button
-                    onClick={locateLogo}
-                    onContextMenu={() => {
-                      dataEntryContext.setLocatedLogo(undefined);
-                      dataEntryContext.setFoundLogoImage(undefined);
-                    }}
-                    className="panelButton cursor-pointer   bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[20px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] ">
-                    <div className="animate-spin-slow absolute">
-                      <Loading />
-                    </div>
-                  </button>
-                </Show>
-                <Show when={showLogoImageLoading() == false}>
                   <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
                     {translateText("logo")}
                   </span>
@@ -751,45 +802,41 @@ export function NewGame() {
               </button>
             </Show>
 
-            <Show when={!dataEntryContext.foundLogoImage()}>
-              <Show when={dataEntryContext.locatedLogo()}>
-                <button
-                  onClick={locateLogo}
-                  onContextMenu={() => {
-                    dataEntryContext.setLocatedLogo(undefined);
-                    dataEntryContext.setFoundLogoImage(undefined);
-                  }}
-                  className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[70px] left-[20px] panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
-                  aria-label="logo">
-                  <img
-                    src={convertFileSrc(dataEntryContext.locatedLogo())}
-                    alt=""
-                    className="relative aspect-auto max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
-                  />
-                  <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
-                    {translateText("logo")}
-                  </span>
-                </button>
-              </Show>
-
-              <Show when={!dataEntryContext.locatedLogo()}>
-                <button
-                  onClick={locateLogo}
-                  onContextMenu={() => {
-                    dataEntryContext.setLocatedLogo(undefined);
-                    dataEntryContext.setFoundLogoImage(undefined);
-                  }}
-                  className="panelButton cursor-pointer  bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[70px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] "
-                  aria-label="logo">
-                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
-                    {translateText("logo")}
-                  </span>
-                </button>
-              </Show>
-            </Show>
-
             <div className="flex gap-3 items-center cursor-pointer ">
-              <Show when={dataEntryContext.foundIconImage()}>
+              <Show
+                when={dataEntryContext.foundIconImage()}
+                fallback={
+                  <button
+                    onClick={locateIcon}
+                    onContextMenu={() => {
+                      dataEntryContext.setLocatedIcon(undefined);
+                      dataEntryContext.setFoundIconImage(undefined);
+                    }}
+                    className="relative !bg-[#27272700] group p-0"
+                    aria-label="logo">
+                    <Show
+                      when={dataEntryContext.locatedIcon()}
+                      fallback={
+                        <div
+                          className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
+                            globalContext.libraryData.userSettings
+                              .roundedBorders
+                              ? "6px"
+                              : "0px"
+                          }]`}
+                        />
+                      }>
+                      <img
+                        src={convertFileSrc(dataEntryContext.locatedIcon())}
+                        alt=""
+                        className="w-[40px] h-[40px]"
+                      />
+                    </Show>
+                    <span class="absolute tooltip z-[10000] group-hover:opacity-100 left-[-10%] top-[120%] opacity-0 ">
+                      {translateText("icon")}
+                    </span>
+                  </button>
+                }>
                 <button
                   onClick={locateIcon}
                   onScroll={() => {}}
@@ -841,7 +888,20 @@ export function NewGame() {
                   }}
                   className="relative group p-0"
                   aria-label="logo">
-                  <Show when={showIconImageLeading() == false}>
+                  <Show
+                    when={showIconImageLoading() == false}
+                    fallback={
+                      <div
+                        className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]  rounded-[${
+                          globalContext.libraryData.userSettings.roundedBorders
+                            ? "6px"
+                            : "0px"
+                        }]`}>
+                        <div className="animate-spin-slow absolute top-[24%] left-[27%]">
+                          <Loading />
+                        </div>
+                      </div>
+                    }>
                     <img
                       src={
                         dataEntryContext.foundIconImage()[
@@ -855,48 +915,7 @@ export function NewGame() {
                       className="w-[40px] h-[40px]"
                     />
                   </Show>
-                  <Show when={showIconImageLeading()}>
-                    <div
-                      className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]  rounded-[${
-                        globalContext.libraryData.userSettings.roundedBorders
-                          ? "6px"
-                          : "0px"
-                      }]`}>
-                      <div className="animate-spin-slow absolute top-[24%] left-[27%]">
-                        <Loading />
-                      </div>
-                    </div>
-                  </Show>
-                  <span class="absolute tooltip z-[10000] group-hover:opacity-100 left-[-10%] top-[120%] opacity-0 ">
-                    {translateText("icon")}
-                  </span>
-                </button>
-              </Show>
-              <Show when={!dataEntryContext.foundIconImage()}>
-                <button
-                  onClick={locateIcon}
-                  onContextMenu={() => {
-                    dataEntryContext.setLocatedIcon(undefined);
-                    dataEntryContext.setFoundIconImage(undefined);
-                  }}
-                  className="relative !bg-[#27272700] group p-0"
-                  aria-label="logo">
-                  <Show when={!dataEntryContext.locatedIcon()}>
-                    <div
-                      className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                        globalContext.libraryData.userSettings.roundedBorders
-                          ? "6px"
-                          : "0px"
-                      }]`}
-                    />
-                  </Show>
-                  <Show when={dataEntryContext.locatedIcon()}>
-                    <img
-                      src={convertFileSrc(dataEntryContext.locatedIcon())}
-                      alt=""
-                      className="w-[40px] h-[40px]"
-                    />
-                  </Show>
+
                   <span class="absolute tooltip z-[10000] group-hover:opacity-100 left-[-10%] top-[120%] opacity-0 ">
                     {translateText("icon")}
                   </span>
@@ -942,30 +961,32 @@ export function NewGame() {
                     dataEntryContext.setFoundLogoImage(undefined);
                     dataEntryContext.setFoundIconImage(undefined);
                   }}>
-                  <Show
-                    when={
-                      globalContext.libraryData.userSettings.language == "fr" &&
-                      applicationStateContext.windowWidth() >= 1500
-                    }>
-                    {translateText("auto find assets")}
-                  </Show>
-
-                  <Show
-                    when={
-                      globalContext.libraryData.userSettings.language == "fr" &&
-                      applicationStateContext.windowWidth() <= 1500
-                    }>
-                    <p className="text-[10px] text-clip w-[70px]">
+                  <Switch>
+                    <Match
+                      when={
+                        globalContext.libraryData.userSettings.language ==
+                          "fr" && applicationStateContext.windowWidth() >= 1500
+                      }>
                       {translateText("auto find assets")}
-                    </p>
-                  </Show>
+                    </Match>
 
-                  <Show
-                    when={
-                      globalContext.libraryData.userSettings.language != "fr"
-                    }>
-                    {translateText("auto find assets")}
-                  </Show>
+                    <Match
+                      when={
+                        globalContext.libraryData.userSettings.language ==
+                          "fr" && applicationStateContext.windowWidth() <= 1500
+                      }>
+                      <p className="text-[10px] text-clip w-[70px]">
+                        {translateText("auto find assets")}
+                      </p>
+                    </Match>
+
+                    <Match
+                      when={
+                        globalContext.libraryData.userSettings.language != "fr"
+                      }>
+                      {translateText("auto find assets")}
+                    </Match>
+                  </Switch>
                 </button>
                 <button
                   className={`standardButton  !text-black dark:!text-white  hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0 bg-[#f1f1f1] dark:bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80] rounded-[${
@@ -988,30 +1009,32 @@ export function NewGame() {
                             dataEntryContext.gameName(),
                         });
                   }}>
-                  <Show
-                    when={
-                      globalContext.libraryData.userSettings.language == "fr" &&
-                      applicationStateContext.windowWidth() >= 1500
-                    }>
-                    {translateText("find assets")}
-                  </Show>
-
-                  <Show
-                    when={
-                      globalContext.libraryData.userSettings.language == "fr" &&
-                      applicationStateContext.windowWidth() <= 1500
-                    }>
-                    <p className="text-[10px] text-clip w-[100px]">
+                  <Switch>
+                    <Match
+                      when={
+                        globalContext.libraryData.userSettings.language ==
+                          "fr" && applicationStateContext.windowWidth() >= 1500
+                      }>
                       {translateText("find assets")}
-                    </p>
-                  </Show>
+                    </Match>
 
-                  <Show
-                    when={
-                      globalContext.libraryData.userSettings.language != "fr"
-                    }>
-                    {translateText("find assets")}
-                  </Show>
+                    <Match
+                      when={
+                        globalContext.libraryData.userSettings.language ==
+                          "fr" && applicationStateContext.windowWidth() <= 1500
+                      }>
+                      <p className="text-[10px] text-clip w-[100px]">
+                        {translateText("find assets")}
+                      </p>
+                    </Match>
+
+                    <Match
+                      when={
+                        globalContext.libraryData.userSettings.language != "fr"
+                      }>
+                      {translateText("find assets")}
+                    </Match>
+                  </Switch>
                 </button>
               </div>
 
@@ -1056,18 +1079,20 @@ export function NewGame() {
             {translateText("right click to empty image selection")}
           </span>
           <Show when={applicationStateContext.SGDBGames()}>
-            <Show when={selectedDataContext.selectedGameId() == undefined}>
-              <span className="opacity-80">
-                {translateText("select the official name of your game")}
-              </span>
-            </Show>
-            <Show when={selectedDataContext.selectedGameId()}>
-              <span className="opacity-80">
-                {translateText(
-                  "scroll on the image to select a different asset",
-                )}
-              </span>
-            </Show>
+            <Switch>
+              <Match when={selectedDataContext.selectedGameId() == undefined}>
+                <span className="opacity-80">
+                  {translateText("select the official name of your game")}
+                </span>
+              </Match>
+              <Match when={selectedDataContext.selectedGameId()}>
+                <span className="opacity-80">
+                  {translateText(
+                    "scroll on the image to select a different asset",
+                  )}
+                </span>
+              </Match>
+            </Switch>
           </Show>
         </div>
 
