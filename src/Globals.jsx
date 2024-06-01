@@ -399,12 +399,6 @@ export async function changeLanguage(lang) {
   setShowSettingsLanguageSelector(false);
 }
 
-export async function downloadImage(name, integerBytesList) {
-  await writeBinaryFile(name, integerBytesList, {
-    dir: BaseDirectory.AppData,
-  });
-}
-
 export async function importSteamGames() {
   document.querySelector("[data-loadingModal]").show();
 
