@@ -284,7 +284,7 @@ export function NewGame() {
   async function searchGameName() {
     applicationStateContext.setSGDBGames(undefined);
     await fetch(
-      `https://clear-api.adithya.zip/?gameName=${dataEntryContext.gameName()}`,
+      `http://127.0.0.1:1337/?gameName=${dataEntryContext.gameName()}`,
     )
       .then((res) =>
         res.json().then(async (jsonres) => {
@@ -307,7 +307,7 @@ export function NewGame() {
     dataEntryContext.setFoundIconImage(undefined);
 
     await fetch(
-      `https://clear-api.adithya.zip/?assets=${selectedDataContext.selectedGameId()}`,
+      `http://127.0.0.1:1337/?assets=${selectedDataContext.selectedGameId()}`,
     ).then((res) =>
       res.json().then(async (jsonres) => {
         let missingAssets = [];

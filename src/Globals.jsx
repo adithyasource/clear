@@ -1,5 +1,5 @@
 import { createContext, createSignal } from "solid-js";
-import { createStore } from "solid-js/store";
+import { createStore, produce } from "solid-js/store";
 
 import { invoke } from "@tauri-apps/api/tauri";
 import {
@@ -355,12 +355,7 @@ export async function getData() {
 
 export async function openGame(gameLocation) {
   if (gameLocation == undefined) {
-    setShowToast(true);
-    setToastMessage(translateText("no game file provided!"));
-    setTimeout(() => {
-      setShowToast(false);
-    }, 1500);
-
+    triggerToast(translateText("no game file provided!"));
     return;
   }
 
@@ -376,11 +371,7 @@ export async function openGame(gameLocation) {
       invoke("close_app");
     }, 500);
   } else {
-    setShowToast(true);
-    setToastMessage(translateText("game launched! enjoy your session!"));
-    setTimeout(() => {
-      setShowToast(false);
-    }, 1500);
+    triggerToast(translateText("game launched! enjoy your session!"));
   }
 }
 
@@ -417,21 +408,17 @@ export async function downloadImage(name, integerBytesList) {
 export async function importSteamGames() {
   document.querySelector("[data-loadingModal]").show();
 
-  await fetch("https://clear-api.adithya.zip/?version=a")
+  await fetch("http://127.0.0.1:1337/?version=a")
     .then(() => {
       invoke("read_steam_vdf").then(async (data) => {
         if (data == "error") {
           document.querySelector("[data-loadingModal]").close();
 
-          setShowToast(true);
-          setToastMessage(
+          triggerToast(
             translateText(
               "sorry but there was an error \n reading your Steam library :(",
             ),
           );
-          setTimeout(() => {
-            setShowToast(false);
-          }, 2500);
 
           return;
         }
@@ -457,14 +444,12 @@ export async function importSteamGames() {
           return data;
         });
 
-        await updateData()
-          .then(async () => {
-            getData();
+        await updateData().then(async () => {
+          getData();
 
-            for (const steamId of steamGameIds) {
-              await fetch(
-                `https://clear-api.adithya.zip/?steamID=${steamId}`,
-              ).then((res) =>
+          for (const steamId of steamGameIds) {
+            await fetch(`http://127.0.0.1:1337/?steamID=${steamId}`).then(
+              (res) =>
                 res.json().then(async (jsonres) => {
                   let gameId = jsonres.data.id;
                   let name = jsonres.data.name;
@@ -477,33 +462,45 @@ export async function importSteamGames() {
                   let iconImageFileName = generateRandomString() + ".png";
 
                   await fetch(
-                    `https://clear-api.adithya.zip/?limitedAssets=${gameId}`,
+                    `http://127.0.0.1:1337/?assets=${gameId}&length=1`,
                   )
                     .then((res) =>
                       res.json().then(async (jsonres) => {
-                        jsonres.grid.length != 0
-                          ? downloadImage(
-                              "grids\\" + gridImageFileName,
-                              jsonres.grid,
-                            )
+                        jsonres.grids.length != 0
+                          ? await invoke("download_image", {
+                              link: jsonres.grids[0],
+                              location:
+                                appDataDirPath() +
+                                "grids\\" +
+                                gridImageFileName,
+                            })
                           : (gridImageFileName = undefined);
-                        jsonres.hero.length != 0
-                          ? downloadImage(
-                              "heroes\\" + heroImageFileName,
-                              jsonres.hero,
-                            )
+                        jsonres.heroes.length != 0
+                          ? await invoke("download_image", {
+                              link: jsonres.heroes[0],
+                              location:
+                                appDataDirPath() +
+                                "heroes\\" +
+                                heroImageFileName,
+                            })
                           : (heroImageFileName = undefined);
-                        jsonres.logo.length != 0
-                          ? downloadImage(
-                              "logos\\" + logoImageFileName,
-                              jsonres.logo,
-                            )
+                        jsonres.logos.length != 0
+                          ? await invoke("download_image", {
+                              link: jsonres.logos[0],
+                              location:
+                                appDataDirPath() +
+                                "logos\\" +
+                                logoImageFileName,
+                            })
                           : (logoImageFileName = undefined);
-                        jsonres.icon.length != 0
-                          ? downloadImage(
-                              "icons\\" + iconImageFileName,
-                              jsonres.icon,
-                            )
+                        jsonres.icons.length != 0
+                          ? await invoke("download_image", {
+                              link: jsonres.icons[0],
+                              location:
+                                appDataDirPath() +
+                                "icons\\" +
+                                iconImageFileName,
+                            })
                           : (iconImageFileName = undefined);
 
                         setLibraryData((data) => {
@@ -517,7 +514,7 @@ export async function importSteamGames() {
                             favourite: false,
                           };
 
-                          return;
+                          return data;
                         });
 
                         await updateData();
@@ -529,42 +526,34 @@ export async function importSteamGames() {
                       // no assets found at all for this game
                     });
                 }),
-              );
-            }
-          })
-          .then(async () => {
-            setLibraryData((data) => {
+            );
+          }
+
+          setLibraryData(
+            produce((data) => {
               data.folders["steam"] = {
                 name: "steam",
                 hide: false,
                 games: allGameNames,
                 index: currentFolders().length,
               };
-
               return data;
-            });
+            }),
+          );
 
-            await updateData().then(() => {
-              document.querySelector("[data-loadingModal]").close();
-              document.querySelector("[data-settingsModal]").close();
-
-              getData();
-
-              setTotalImportedSteamGames(0);
-              setTotalSteamGames(0);
-            });
+          await updateData().then(() => {
+            document.querySelector("[data-loadingModal]").close();
+            document.querySelector("[data-settingsModal]").close();
+            setTotalImportedSteamGames(0);
+            setTotalSteamGames(0);
+            getData();
           });
+        });
       });
     })
     .catch((err) => {
       document.querySelector("[data-loadingModal]").close();
-
-      setShowToast(true);
-      setToastMessage(translateText("you're not connected to the internet :("));
-      setTimeout(() => {
-        setShowToast(false);
-      }, 2500);
-      return;
+      triggerToast(translateText("you're not connected to the internet :("));
     });
 }
 
