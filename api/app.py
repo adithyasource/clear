@@ -9,7 +9,9 @@ app = Flask(__name__)
 
 load_dotenv()
 
-authToken = os.getenv("SGDB_AUTH_TOKEN")
+authToken = os.getenv("AUTH_TOKEN")
+
+print(authToken)
 
 
 @app.route("/", methods=["GET", "POST"])
