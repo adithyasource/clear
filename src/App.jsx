@@ -284,20 +284,6 @@ function App() {
       </div>
 
       <style jsx>{`
-        button,
-        input,
-        .panelButton {
-          border-radius: ${globalContext.libraryData.userSettings.roundedBorders
-            ? "6px"
-            : "0px"};
-        }
-
-        .sideBarFolder {
-          border-radius: ${globalContext.libraryData.userSettings.roundedBorders
-            ? "6px"
-            : "0px"};
-        }
-
         .titleBarText {
           font-family: ${globalContext.libraryData.userSettings.fontName ==
           "sans serif"
@@ -320,19 +306,8 @@ function App() {
             : "#ffffff"};
         }
 
-        ::-webkit-scrollbar-thumb {
-          border-radius: ${globalContext.libraryData.userSettings.roundedBorders
-            ? "10px"
-            : "0px"};
-        }
-
-        .gameInput {
-          border-radius: ${globalContext.libraryData.userSettings.roundedBorders
-            ? "6px"
-            : "0px"};
-        }
-
-        .tooltip {
+        *:not(body, svg),
+        [class*="hint--"]:after {
           border-radius: ${globalContext.libraryData.userSettings.roundedBorders
             ? "6px"
             : "0px"};
@@ -342,12 +317,6 @@ function App() {
           box-shadow: 0 -3px 0 0 #646464;
           border-top-left-radius: 0;
           border-top-right-radius: 0;
-        }
-
-        [class*="hint--"]:after {
-          border-radius: ${globalContext.libraryData.userSettings.roundedBorders
-            ? "6px"
-            : "0px"};
         }
 
         body.user-is-tabbing button:focus,
@@ -369,11 +338,7 @@ function App() {
             applicationStateContext.windowWidth() >= 1000
           }>
           <button
-            className={`absolute right-[31px] top-[32px] z-20 rotate-180 cursor-pointer hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[25.25px] rounded-[${
-              globalContext.libraryData.userSettings.roundedBorders
-                ? "6px"
-                : "0px"
-            }]`}
+            className={`absolute right-[31px] top-[32px] z-20 rotate-180 cursor-pointer hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[25.25px]`}
             onClick={toggleSideBar}>
             <ChevronArrows />
           </button>
@@ -451,11 +416,7 @@ function App() {
                 </button>
 
                 <div
-                  className={`standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] flex !justify-between items-center cursor-pointer relative !w-max !p-4 rounded-[${
-                    globalContext.libraryData.userSettings.roundedBorders
-                      ? "6px"
-                      : "0px"
-                  }]`}
+                  className={`standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] flex !justify-between items-center cursor-pointer relative !w-max !p-4`}
                   onClick={() => {
                     uiContext.setShowLanguageSelector((x) => !x);
                   }}>
@@ -481,11 +442,7 @@ function App() {
 
                   <Show when={uiContext.showLanguageSelector()}>
                     <div
-                      className={`flex flex-col gap-4 absolute border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
-                        globalContext.libraryData.userSettings.roundedBorders
-                          ? "6px"
-                          : "0px"
-                      }] p-3 z-[100000] top-[120%] left-0`}>
+                      className={`flex flex-col gap-4 absolute border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] p-3 z-[100000] top-[120%] left-0`}>
                       <div
                         className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
                         onClick={() => {
@@ -536,11 +493,7 @@ function App() {
               <div className="grid grid-cols-2 mt-[35px] gap-y-4">
                 <div className="flex items-center gap-3">
                   <div
-                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                      globalContext.libraryData.userSettings.roundedBorders
-                        ? "6px"
-                        : "0px"
-                    }] `}>
+                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]`}>
                     ctrl + n
                   </div>
 
@@ -549,11 +502,7 @@ function App() {
 
                 <div className="flex items-center gap-3">
                   <div
-                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                      globalContext.libraryData.userSettings.roundedBorders
-                        ? "6px"
-                        : "0px"
-                    }] `}>
+                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]`}>
                     ctrl + .
                   </div>
                   {translateText("open settings")}
@@ -561,11 +510,7 @@ function App() {
 
                 <div className="flex items-center gap-3">
                   <div
-                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                      globalContext.libraryData.userSettings.roundedBorders
-                        ? "6px"
-                        : "0px"
-                    }] `}>
+                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]`}>
                     ctrl + m
                   </div>
 
@@ -573,11 +518,7 @@ function App() {
                 </div>
                 <div className="flex items-center gap-3">
                   <div
-                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                      globalContext.libraryData.userSettings.roundedBorders
-                        ? "6px"
-                        : "0px"
-                    }] `}>
+                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]`}>
                     ctrl + l
                   </div>
 
@@ -586,11 +527,7 @@ function App() {
 
                 <div className="flex items-center gap-3">
                   <div
-                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                      globalContext.libraryData.userSettings.roundedBorders
-                        ? "6px"
-                        : "0px"
-                    }] `}>
+                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]`}>
                     ctrl + w
                   </div>
 
@@ -598,11 +535,7 @@ function App() {
                 </div>
                 <div className="flex items-center gap-3">
                   <div
-                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                      globalContext.libraryData.userSettings.roundedBorders
-                        ? "6px"
-                        : "0px"
-                    }] `}>
+                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]`}>
                     ctrl - / =
                   </div>
 
@@ -613,11 +546,7 @@ function App() {
               <div className="grid mt-[35px] gap-y-4">
                 <div className="flex items-center gap-3">
                   <div
-                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                      globalContext.libraryData.userSettings.roundedBorders
-                        ? "6px"
-                        : "0px"
-                    }] `}>
+                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]`}>
                     ctrl + f
                   </div>
 
@@ -625,11 +554,7 @@ function App() {
                 </div>
                 <div className="flex items-center gap-3">
                   <div
-                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                      globalContext.libraryData.userSettings.roundedBorders
-                        ? "6px"
-                        : "0px"
-                    }] `}>
+                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]`}>
                     ctrl + \\
                   </div>
 
@@ -637,11 +562,7 @@ function App() {
                 </div>
                 <div className="flex items-center gap-3">
                   <div
-                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                      globalContext.libraryData.userSettings.roundedBorders
-                        ? "6px"
-                        : "0px"
-                    }] `}>
+                    className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]`}>
                     ctrl + click
                   </div>
 
@@ -652,7 +573,7 @@ function App() {
           </div>
         </Show>
         <div
-          className={`w-full absolute h-[100vh] overflow-y-scroll py-[20px] pr-[30px]  ${
+          className={`w-full absolute h-[100vh] overflow-y-scroll py-[20px] pr-[30px] !rounded-[0px] ${
             globalContext.libraryData.userSettings.showSideBar &&
             applicationStateContext.windowWidth() >= 1000
               ? "pl-[23%] large:pl-[17%]"
@@ -758,12 +679,7 @@ function App() {
                                             </Show>
 
                                             <div
-                                              className={`z-10 mb-[7px] rounded-[${
-                                                globalContext.libraryData
-                                                  .userSettings.roundedBorders
-                                                  ? "6px"
-                                                  : "0px"
-                                              }] group-hover:outline-[#0000001f] dark:bg-[#1C1C1C] bg-[#F1F1F1]  w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
+                                              className={`z-10 mb-[7px] group-hover:outline-[#0000001f] dark:bg-[#1C1C1C] bg-[#F1F1F1]  w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
                                               alt=""
                                             />
                                           </div>
@@ -786,12 +702,7 @@ function App() {
                                           </Show>
 
                                           <img
-                                            className={`z-10 mb-[7px] rounded-[${
-                                              globalContext.libraryData
-                                                .userSettings.roundedBorders
-                                                ? "6px"
-                                                : "0px"
-                                            }] group-hover:outline-[#0000001f] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
+                                            className={`z-10 mb-[7px] group-hover:outline-[#0000001f] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
                                             src={convertFileSrc(
                                               applicationStateContext.appDataDirPath() +
                                                 "grids\\" +
@@ -834,22 +745,12 @@ function App() {
                                             </Show>
                                           </Show>
                                           <div
-                                            className={`relative z-10 mb-[7px] rounded-[${
-                                              globalContext.libraryData
-                                                .userSettings.roundedBorders
-                                                ? "6px"
-                                                : "0px"
-                                            }] outline-[#0000001c] w-full aspect-[2/3] dark:bg-[#1C1C1C] bg-[#F1F1F1]  hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
+                                            className={`relative z-10 mb-[7px] outline-[#0000001c] w-full aspect-[2/3] dark:bg-[#1C1C1C] bg-[#F1F1F1]  hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
                                           />
                                         </div>
                                       }>
                                       <img
-                                        className={`relative z-10 mb-[7px] rounded-[${
-                                          globalContext.libraryData.userSettings
-                                            .roundedBorders
-                                            ? "6px"
-                                            : "0px"
-                                        }] outline-[#0000001c] hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
+                                        className={`relative z-10 mb-[7px] outline-[#0000001c] hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
                                         src={convertFileSrc(
                                           applicationStateContext.appDataDirPath() +
                                             "grids\\" +
@@ -1043,23 +944,13 @@ function App() {
                                         </Show>
 
                                         <div
-                                          className={`z-10 mb-[7px] rounded-[${
-                                            globalContext.libraryData
-                                              .userSettings.roundedBorders
-                                              ? "6px"
-                                              : "0px"
-                                          }] group-hover:outline-[#0000001f] dark:bg-[#1C1C1C] bg-[#F1F1F1]  w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
+                                          className={`z-10 mb-[7px] group-hover:outline-[#0000001f] dark:bg-[#1C1C1C] bg-[#F1F1F1]  w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
                                           alt=""
                                         />
                                       </div>
                                     }>
                                     <img
-                                      className={`z-10 mb-[7px] rounded-[${
-                                        globalContext.libraryData.userSettings
-                                          .roundedBorders
-                                          ? "6px"
-                                          : "0px"
-                                      }] group-hover:outline-[#0000001f] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
+                                      className={`z-10 mb-[7px] group-hover:outline-[#0000001f] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none`}
                                       src={convertFileSrc(
                                         applicationStateContext.appDataDirPath() +
                                           "grids\\" +
@@ -1100,22 +991,12 @@ function App() {
                                       </Show>
                                     </Show>
                                     <div
-                                      className={`relative z-10 mb-[7px] rounded-[${
-                                        globalContext.libraryData.userSettings
-                                          .roundedBorders
-                                          ? "6px"
-                                          : "0px"
-                                      }] outline-[#0000001c] w-full aspect-[2/3] dark:bg-[#1C1C1C] bg-[#F1F1F1]  hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
+                                      className={`relative z-10 mb-[7px] outline-[#0000001c] w-full aspect-[2/3] dark:bg-[#1C1C1C] bg-[#F1F1F1]  hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
                                     />
                                   </div>
                                 }>
                                 <img
-                                  className={`relative z-10 mb-[7px] rounded-[${
-                                    globalContext.libraryData.userSettings
-                                      .roundedBorders
-                                      ? "6px"
-                                      : "0px"
-                                  }] outline-[#0000001c] w-full aspect-[2/3] hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
+                                  className={`relative z-10 mb-[7px] outline-[#0000001c] w-full aspect-[2/3] hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200`}
                                   src={convertFileSrc(
                                     applicationStateContext.appDataDirPath() +
                                       "grids\\" +

@@ -175,11 +175,7 @@ export function SideBar() {
               }}
             />
             <button
-              className={`cursor-pointer hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[28px] rounded-[${
-                globalContext.libraryData.userSettings.roundedBorders
-                  ? "6px"
-                  : "0px"
-              }]`}
+              className={`cursor-pointer hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[28px] `}
               onClick={() => {
                 toggleSideBar();
               }}
@@ -302,11 +298,7 @@ export function SideBar() {
               globalContext.libraryData.userSettings.language == "fr"
                 ? "medium:h-[calc(100vh-330px)] large:h-[calc(100vh-275px)]"
                 : "h-[calc(100vh-275px)]"
-            } overflow-auto  rounded-[${
-              globalContext.libraryData.userSettings.roundedBorders
-                ? "6px"
-                : "0px"
-            }]`}>
+            } overflow-auto`}>
             <p className="mt-[5px]"></p>
             <For each={applicationStateContext.currentFolders()}>
               {(folderName, index) => {
@@ -456,12 +448,7 @@ export function SideBar() {
                           <EyeClosed />
                         </Show>
                         <button
-                          className={` hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[25.25px] rounded-[${
-                            globalContext.libraryData.userSettings
-                              .roundedBorders
-                              ? "6px"
-                              : "0px"
-                          }]`}
+                          className={` hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[25.25px]`}
                           onClick={() => {
                             openDialog("editFolderModal");
                             selectedDataContext.setSelectedFolder(folder);
@@ -602,12 +589,7 @@ export function SideBar() {
                           <EyeClosed />
                         </Show>
                         <button
-                          className={` hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[25.25px] rounded-[${
-                            globalContext.libraryData.userSettings
-                              .roundedBorders
-                              ? "6px"
-                              : "0px"
-                          }]`}
+                          className={` hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[25.25px]`}
                           onClick={() => {
                             openDialog("editFolderModal");
                             selectedDataContext.setSelectedFolder(folder);

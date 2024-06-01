@@ -636,11 +636,7 @@ export function EditGame() {
                     when={dataUpdateContext.editedLocatedLogo()}
                     fallback={
                       <div
-                        className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] relative bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                          globalContext.libraryData.userSettings.roundedBorders
-                            ? "6px"
-                            : "0px"
-                        }]`}
+                        className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] relative bg-[#E8E8E8] dark:!bg-[#272727]`}
                       />
                     }>
                     <img
@@ -692,11 +688,7 @@ export function EditGame() {
                   </Match>
                   <Match when={dataUpdateContext.editedLocatedLogo() === null}>
                     <div
-                      className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] relative bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                        globalContext.libraryData.userSettings.roundedBorders
-                          ? "6px"
-                          : "0px"
-                      }]`}
+                      className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] relative bg-[#E8E8E8] dark:!bg-[#272727]`}
                     />
                   </Match>
                 </Switch>
@@ -722,12 +714,7 @@ export function EditGame() {
                       when={selectedDataContext.selectedGame().icon}
                       fallback={
                         <div
-                          className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                            globalContext.libraryData.userSettings
-                              .roundedBorders
-                              ? "6px"
-                              : "0px"
-                          }]`}
+                          className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]`}
                         />
                       }>
                       <img
@@ -752,11 +739,7 @@ export function EditGame() {
                   </Match>
                   <Match when={dataUpdateContext.editedLocatedIcon() === null}>
                     <div
-                      className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727] rounded-[${
-                        globalContext.libraryData.userSettings.roundedBorders
-                          ? "6px"
-                          : "0px"
-                      }]`}
+                      className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]`}
                     />
                   </Match>
                 </Switch>

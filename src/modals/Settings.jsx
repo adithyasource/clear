@@ -72,11 +72,7 @@ export function Settings() {
         className="outline-none absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#d1d1d166]">
         <div className="flex items-center justify-center w-screen h-screen align-middle ">
           <div
-            className={`border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
-              globalContext.libraryData.userSettings.roundedBorders
-                ? "6px"
-                : "0px"
-            }] w-[70%] p-6`}>
+            className={`border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] w-[70%] p-6`}>
             <div className="flex justify-between">
               <div>
                 <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
@@ -306,11 +302,7 @@ export function Settings() {
                     : "english"}
                   <Show when={uiContext.showSettingsLanguageSelector()}>
                     <div
-                      className={`flex flex-col gap-4 absolute border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] rounded-[${
-                        globalContext.libraryData.userSettings.roundedBorders
-                          ? "6px"
-                          : "0px"
-                      }] p-3 z-[100000] top-[150%]`}
+                      className={`flex flex-col gap-4 absolute border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] p-3 z-[100000] top-[150%]`}
                       onMouseLeave={() => {
                         uiContext.setShowSettingsLanguageSelector(false);
                       }}>
@@ -444,11 +436,7 @@ export function Settings() {
             <div className="grid grid-cols-3 mt-[35px] gap-y-4">
               <div className="flex items-center gap-3">
                 <div
-                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    globalContext.libraryData.userSettings.roundedBorders
-                      ? "6px"
-                      : "0px"
-                  }] `}>
+                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]`}>
                   ctrl + n
                 </div>
 
@@ -457,11 +445,7 @@ export function Settings() {
 
               <div className="flex items-center gap-3">
                 <div
-                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    globalContext.libraryData.userSettings.roundedBorders
-                      ? "6px"
-                      : "0px"
-                  }] `}>
+                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]`}>
                   ctrl + .
                 </div>
 
@@ -469,11 +453,7 @@ export function Settings() {
               </div>
               <div className="flex items-center gap-3">
                 <div
-                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    globalContext.libraryData.userSettings.roundedBorders
-                      ? "6px"
-                      : "0px"
-                  }] `}>
+                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]`}>
                   ctrl + f
                 </div>
 
@@ -481,11 +461,7 @@ export function Settings() {
               </div>
               <div className="flex items-center gap-3">
                 <div
-                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    globalContext.libraryData.userSettings.roundedBorders
-                      ? "6px"
-                      : "0px"
-                  }] `}>
+                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]`}>
                   ctrl + m
                 </div>
 
@@ -493,11 +469,7 @@ export function Settings() {
               </div>
               <div className="flex items-center gap-3">
                 <div
-                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    globalContext.libraryData.userSettings.roundedBorders
-                      ? "6px"
-                      : "0px"
-                  }] `}>
+                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]`}>
                   ctrl + l
                 </div>
 
@@ -505,11 +477,7 @@ export function Settings() {
               </div>
               <div className="flex items-center gap-3">
                 <div
-                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    globalContext.libraryData.userSettings.roundedBorders
-                      ? "6px"
-                      : "0px"
-                  }] `}>
+                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]`}>
                   ctrl + \\
                 </div>
 
@@ -517,11 +485,7 @@ export function Settings() {
               </div>
               <div className="flex items-center gap-3">
                 <div
-                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    globalContext.libraryData.userSettings.roundedBorders
-                      ? "6px"
-                      : "0px"
-                  }] `}>
+                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]`}>
                   ctrl + w
                 </div>
 
@@ -529,11 +493,7 @@ export function Settings() {
               </div>
               <div className="flex items-center gap-3">
                 <div
-                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    globalContext.libraryData.userSettings.roundedBorders
-                      ? "6px"
-                      : "0px"
-                  }] `}>
+                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]`}>
                   ctrl - / =
                 </div>
 
@@ -542,11 +502,7 @@ export function Settings() {
 
               <div className="flex items-center gap-3">
                 <div
-                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280] rounded-[${
-                    globalContext.libraryData.userSettings.roundedBorders
-                      ? "6px"
-                      : "0px"
-                  }] `}>
+                  className={`dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]`}>
                   ctrl + click
                 </div>
 
