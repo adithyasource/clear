@@ -9,15 +9,15 @@ app = Flask(__name__)
 
 load_dotenv()
 
-authToken = os.getenv("AUTH_TOKEN")
-
-print(authToken)
+authToken = os.getenv("SGDB_AUTH_TOKEN")
 
 
 @app.route("/", methods=["GET", "POST"])
 def handleRequest():
     if not any(request.args.values()):
         return "hey there, how'd you end up here? this is the main website: https://clear.adithya.zip"
+
+    # ? Get the current latest version of 'clear'
 
     if request.args.get("version"):
         response = jsonify({"clearVersion": "1.0.0"})
@@ -26,6 +26,8 @@ def handleRequest():
             "*",
         )
         return response
+
+    # ? Get a game's SGDB ID using the game's name
 
     if request.args.get("gameName"):
         gameName = str(request.args.get("gameName"))
@@ -43,6 +45,8 @@ def handleRequest():
         )
         return response
 
+    # ? Get a game's SGDB ID using the game's Steam ID
+
     if request.args.get("steamID"):
         steamID = str(request.args.get("steamID"))
 
@@ -59,25 +63,11 @@ def handleRequest():
         )
         return response
 
-    if request.args.get("image"):
-        link = str(request.args.get("image"))
-
-        imageFile = requests.get(
-            link,
-            timeout=30,
-        )
-
-        imageFileBytes = list(imageFile.content)
-
-        response = jsonify({"image": imageFileBytes})
-        response.headers.add(
-            "Access-Control-Allow-Origin",
-            "*",
-        )
-        return response
+    # ? Get links to a game's grids, heros, logos and icons using the game's SGDB ID
 
     if request.args.get("assets"):
         gameID = str(request.args.get("assets"))
+        length = str(request.args.get("length"))
 
         gridImageLinks = []
         heroImageLinks = []
@@ -92,8 +82,11 @@ def handleRequest():
             ).content
         )
 
-        for x in gridImageData["data"]:
-            gridImageLinks.append(x["thumb"])
+        if length == "1":
+            gridImageLinks.append(gridImageData["data"][0]["thumb"])
+        else:
+            for x in gridImageData["data"]:
+                gridImageLinks.append(x["thumb"])
 
         heroImageData = json.loads(
             requests.get(
@@ -103,8 +96,11 @@ def handleRequest():
             ).content
         )
 
-        for x in heroImageData["data"]:
-            heroImageLinks.append(x["thumb"])
+        if length == "1":
+            heroImageLinks.append(heroImageData["data"][0]["thumb"])
+        else:
+            for x in heroImageData["data"]:
+                heroImageLinks.append(x["thumb"])
 
         logoImageData = json.loads(
             requests.get(
@@ -114,8 +110,11 @@ def handleRequest():
             ).content
         )
 
-        for x in logoImageData["data"]:
-            logoImageLinks.append(x["thumb"])
+        if length == "1":
+            logoImageLinks.append(logoImageData["data"][0]["thumb"])
+        else:
+            for x in logoImageData["data"]:
+                logoImageLinks.append(x["thumb"])
 
         iconImageData = json.loads(
             requests.get(
@@ -125,8 +124,11 @@ def handleRequest():
             ).content
         )
 
-        for x in iconImageData["data"]:
-            iconImageLinks.append(x["thumb"])
+        if length == "1":
+            iconImageLinks.append(iconImageData["data"][0]["thumb"])
+        else:
+            for x in iconImageData["data"]:
+                iconImageLinks.append(x["thumb"])
 
         allImages = {
             "grids": gridImageLinks,
@@ -141,6 +143,9 @@ def handleRequest():
             "*",
         )
         return response
+
+    # ? Get a binary integer list for one grid, hero, logo and icon of a game using the game's SGDB ID
+    # * Used only in v1.0.0
 
     if request.args.get("limitedAssets"):
         gameID = str(request.args.get("limitedAssets"))
@@ -238,7 +243,27 @@ def handleRequest():
         )
         return response
 
+    # ? Get a binary integer list for the any given image link
+    # * Used only in v1.0.0
+
+    if request.args.get("image"):
+        link = str(request.args.get("image"))
+
+        imageFile = requests.get(
+            link,
+            timeout=30,
+        )
+
+        imageFileBytes = list(imageFile.content)
+
+        response = jsonify({"image": imageFileBytes})
+        response.headers.add(
+            "Access-Control-Allow-Origin",
+            "*",
+        )
+        return response
+
     return "hey there, how'd you end up here? this is the main website: https://clear.adithya.zip"
 
 
-# command to run python -m flask run --debug --port 5002
+# command to run python -m flask run --debug --port 1337
