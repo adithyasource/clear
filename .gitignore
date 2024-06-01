@@ -2,3 +2,5 @@ node_modules
 dist
 z
 *.exe
+.env
+.env*

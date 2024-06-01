@@ -284,7 +284,9 @@ export function NewGame() {
   async function searchGameName() {
     applicationStateContext.setSGDBGames(undefined);
     await fetch(
-      `http://127.0.0.1:1337/?gameName=${dataEntryContext.gameName()}`,
+      `${
+        import.meta.env.VITE_CLEAR_API_URL
+      }/?gameName=${dataEntryContext.gameName()}`,
     )
       .then((res) =>
         res.json().then(async (jsonres) => {
@@ -307,7 +309,9 @@ export function NewGame() {
     dataEntryContext.setFoundIconImage(undefined);
 
     await fetch(
-      `http://127.0.0.1:1337/?assets=${selectedDataContext.selectedGameId()}`,
+      `${
+        import.meta.env.VITE_CLEAR_API_URL
+      }/?assets=${selectedDataContext.selectedGameId()}`,
     ).then((res) =>
       res.json().then(async (jsonres) => {
         let missingAssets = [];

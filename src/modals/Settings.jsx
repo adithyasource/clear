@@ -19,7 +19,7 @@ export function Settings() {
   const applicationStateContext = useContext(ApplicationStateContext);
 
   onMount(() => {
-    fetch("http://127.0.0.1:1337/?version=a").then((res) =>
+    fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?version=a`).then((res) =>
       res.json().then((jsonres) => {
         applicationStateContext.setLatestVersion(jsonres.clearVersion);
         applicationStateContext.latestVersion().replaceAll(".", "") >

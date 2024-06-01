@@ -402,7 +402,7 @@ export async function changeLanguage(lang) {
 export async function importSteamGames() {
   document.querySelector("[data-loadingModal]").show();
 
-  await fetch("http://127.0.0.1:1337/?version=a")
+  await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?version=a`)
     .then(() => {
       invoke("read_steam_vdf").then(async (data) => {
         if (data == "error") {
@@ -442,84 +442,79 @@ export async function importSteamGames() {
           getData();
 
           for (const steamId of steamGameIds) {
-            await fetch(`http://127.0.0.1:1337/?steamID=${steamId}`).then(
-              (res) =>
-                res.json().then(async (jsonres) => {
-                  let gameId = jsonres.data.id;
-                  let name = jsonres.data.name;
+            await fetch(
+              `${import.meta.env.VITE_CLEAR_API_URL}/?steamID=${steamId}`,
+            ).then((res) =>
+              res.json().then(async (jsonres) => {
+                let gameId = jsonres.data.id;
+                let name = jsonres.data.name;
 
-                  allGameNames.push(name);
+                allGameNames.push(name);
 
-                  let gridImageFileName = generateRandomString() + ".png";
-                  let heroImageFileName = generateRandomString() + ".png";
-                  let logoImageFileName = generateRandomString() + ".png";
-                  let iconImageFileName = generateRandomString() + ".png";
+                let gridImageFileName = generateRandomString() + ".png";
+                let heroImageFileName = generateRandomString() + ".png";
+                let logoImageFileName = generateRandomString() + ".png";
+                let iconImageFileName = generateRandomString() + ".png";
 
-                  await fetch(
-                    `http://127.0.0.1:1337/?assets=${gameId}&length=1`,
+                await fetch(
+                  `${
+                    import.meta.env.VITE_CLEAR_API_URL
+                  }/?assets=${gameId}&length=1`,
+                )
+                  .then((res) =>
+                    res.json().then(async (jsonres) => {
+                      jsonres.grids.length != 0
+                        ? await invoke("download_image", {
+                            link: jsonres.grids[0],
+                            location:
+                              appDataDirPath() + "grids\\" + gridImageFileName,
+                          })
+                        : (gridImageFileName = undefined);
+                      jsonres.heroes.length != 0
+                        ? await invoke("download_image", {
+                            link: jsonres.heroes[0],
+                            location:
+                              appDataDirPath() + "heroes\\" + heroImageFileName,
+                          })
+                        : (heroImageFileName = undefined);
+                      jsonres.logos.length != 0
+                        ? await invoke("download_image", {
+                            link: jsonres.logos[0],
+                            location:
+                              appDataDirPath() + "logos\\" + logoImageFileName,
+                          })
+                        : (logoImageFileName = undefined);
+                      jsonres.icons.length != 0
+                        ? await invoke("download_image", {
+                            link: jsonres.icons[0],
+                            location:
+                              appDataDirPath() + "icons\\" + iconImageFileName,
+                          })
+                        : (iconImageFileName = undefined);
+
+                      setLibraryData((data) => {
+                        data.games[name] = {
+                          location: `steam://rungameid/${steamId}`,
+                          name: name,
+                          heroImage: heroImageFileName,
+                          gridImage: gridImageFileName,
+                          logo: logoImageFileName,
+                          icon: iconImageFileName,
+                          favourite: false,
+                        };
+
+                        return data;
+                      });
+
+                      await updateData();
+
+                      setTotalImportedSteamGames((x) => x + 1);
+                    }),
                   )
-                    .then((res) =>
-                      res.json().then(async (jsonres) => {
-                        jsonres.grids.length != 0
-                          ? await invoke("download_image", {
-                              link: jsonres.grids[0],
-                              location:
-                                appDataDirPath() +
-                                "grids\\" +
-                                gridImageFileName,
-                            })
-                          : (gridImageFileName = undefined);
-                        jsonres.heroes.length != 0
-                          ? await invoke("download_image", {
-                              link: jsonres.heroes[0],
-                              location:
-                                appDataDirPath() +
-                                "heroes\\" +
-                                heroImageFileName,
-                            })
-                          : (heroImageFileName = undefined);
-                        jsonres.logos.length != 0
-                          ? await invoke("download_image", {
-                              link: jsonres.logos[0],
-                              location:
-                                appDataDirPath() +
-                                "logos\\" +
-                                logoImageFileName,
-                            })
-                          : (logoImageFileName = undefined);
-                        jsonres.icons.length != 0
-                          ? await invoke("download_image", {
-                              link: jsonres.icons[0],
-                              location:
-                                appDataDirPath() +
-                                "icons\\" +
-                                iconImageFileName,
-                            })
-                          : (iconImageFileName = undefined);
-
-                        setLibraryData((data) => {
-                          data.games[name] = {
-                            location: `steam://rungameid/${steamId}`,
-                            name: name,
-                            heroImage: heroImageFileName,
-                            gridImage: gridImageFileName,
-                            logo: logoImageFileName,
-                            icon: iconImageFileName,
-                            favourite: false,
-                          };
-
-                          return data;
-                        });
-
-                        await updateData();
-
-                        setTotalImportedSteamGames((x) => x + 1);
-                      }),
-                    )
-                    .catch((err) => {
-                      // no assets found at all for this game
-                    });
-                }),
+                  .catch((err) => {
+                    // no assets found at all for this game
+                  });
+              }),
             );
           }
 
