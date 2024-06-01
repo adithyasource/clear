@@ -12,6 +12,9 @@ export function Loading() {
     <dialog
       data-loadingModal
       onClose={() => {}}
+      ref={() => {
+        // we dont want to close the loading modal through user input, so theres no closeDialog("loadingModal", ref);
+      }}
       className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#d1d1d166]">
       <div className="flex items-center justify-center w-screen h-screen align-middle ">
         <div

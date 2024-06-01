@@ -11,6 +11,9 @@ import {
   importSteamGames,
   translateText,
   updateData,
+  openDialog,
+  closeDialog,
+  triggerToast,
 } from "./Globals";
 
 import "./App.css";
@@ -71,71 +74,104 @@ function App() {
       updateData();
     }
 
-    if (e.ctrlKey && e.code == "KeyF") {
-      e.preventDefault();
-      document.querySelector("#searchInput").focus();
-    }
-
     if (e.ctrlKey && e.code == "KeyW") {
       e.preventDefault();
       closeApp();
     }
 
+    let allDialogs = [];
+
+    allDialogs = document.querySelectorAll("dialog");
+
+    let anyDialogOpen = false;
+
+    allDialogs.forEach((dialog) => {
+      if (dialog.open) {
+        anyDialogOpen = true;
+      }
+    });
+
+    if (e.ctrlKey && e.code == "KeyF") {
+      if (!anyDialogOpen) {
+        e.preventDefault();
+        document.querySelector("#searchInput").focus();
+      } else {
+        triggerToast(
+          translateText("close current dialog before opening another"),
+        );
+      }
+    }
     if (e.ctrlKey && e.code == "KeyN") {
-      e.preventDefault();
-      if (document.querySelector("[data-newGameModal]").open) {
-        document.querySelector("[data-newGameModal]").close();
+      if (!anyDialogOpen) {
+        e.preventDefault();
+        if (document.querySelector("[data-newGameModal]").open) {
+          closeDialog("newGameModal");
+        } else {
+          openDialog("newGameModal");
+        }
       } else {
-        document.querySelector("[data-newGameModal]").show();
+        triggerToast(
+          translateText("close current dialog before opening another"),
+        );
       }
     }
-
     if (e.ctrlKey && e.code == "KeyM") {
-      e.preventDefault();
-      if (document.querySelector("[data-newFolderModal]").open) {
-        document.querySelector("[data-newFolderModal]").close();
+      if (!anyDialogOpen) {
+        e.preventDefault();
+        if (document.querySelector("[data-newFolderModal]").open) {
+          closeDialog("newFolderModal");
+        } else {
+          openDialog("newFolderModal");
+        }
       } else {
-        document.querySelector("[data-newFolderModal]").show();
+        triggerToast(
+          translateText("close current dialog before opening another"),
+        );
+      }
+    }
+    if (e.ctrlKey && e.code == "KeyL") {
+      if (!anyDialogOpen) {
+        e.preventDefault();
+        if (document.querySelector("[data-notepadModal]").open) {
+          closeDialog("notepadModal");
+        } else {
+          openDialog("notepadModal");
+        }
+      } else {
+        triggerToast(
+          translateText("close current dialog before opening another"),
+        );
+      }
+    }
+    if (e.ctrlKey && e.code == "Period") {
+      if (!anyDialogOpen) {
+        e.preventDefault();
+        if (document.querySelector("[data-settingsModal]").open) {
+          closeDialog("settingsModal");
+        } else {
+          openDialog("settingsModal");
+        }
+      } else {
+        triggerToast(
+          translateText("close current dialog before opening another"),
+        );
       }
     }
 
-    if (e.ctrlKey && e.code == "KeyL") {
-      e.preventDefault();
-      if (document.querySelector("[data-notepadModal]").open) {
-        document.querySelector("[data-notepadModal]").close();
+    if (e.ctrlKey && e.code == "Backslash") {
+      if (!anyDialogOpen) {
+        e.preventDefault();
+        toggleSideBar();
+        document.querySelector("#searchInput").blur();
       } else {
-        document.querySelector("[data-notepadModal]").show();
+        triggerToast(
+          translateText("close current dialog before toggling sidebar"),
+        );
       }
     }
 
     if (e.ctrlKey && e.code == "KeyR") {
       e.preventDefault();
-    }
-
-    if (e.ctrlKey && e.code == "Period") {
-      e.preventDefault();
-      if (document.querySelector("[data-settingsModal]").open) {
-        document.querySelector("[data-settingsModal]").close();
-      } else {
-        document.querySelector("[data-settingsModal]").show();
-      }
-    }
-
-    if (e.code == "Escape") {
-      document.querySelector("[data-settingsModal]").close();
-      document.querySelector("[data-newGameModal]").close();
-      document.querySelector("[data-newFolderModal]").close();
-      document.querySelector("[data-notepadModal]").close();
-      document.querySelector("[data-gamePopup]").close();
-      document.querySelector("[data-editGameModal]").close();
-      document.querySelector("[data-editFolderModal]").close();
-      document.querySelector("#searchInput").blur();
-    }
-
-    if (e.ctrlKey && e.code == "Backslash") {
-      e.preventDefault();
-      toggleSideBar();
-      document.querySelector("#searchInput").blur();
     }
 
     // ? Disabling Misc WebView Shortcuts
@@ -679,9 +715,8 @@ function App() {
                                   await selectedDataContext.setSelectedGame(
                                     globalContext.libraryData.games[gameName],
                                   );
-                                  document
-                                    .querySelector("[data-gamePopup]")
-                                    .show();
+
+                                  openDialog("gamePopup");
                                 }}>
                                 <Show
                                   when={
@@ -968,7 +1003,7 @@ function App() {
                               await selectedDataContext.setSelectedGame(
                                 globalContext.libraryData.games[gameName],
                               );
-                              document.querySelector("[data-gamePopup]").show();
+                              openDialog("gamePopup");
                             }}>
                             <Show
                               when={

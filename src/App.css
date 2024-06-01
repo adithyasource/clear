@@ -65,6 +65,17 @@
   }
 }
 
+@keyframes dialogFadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.99);
+  }
+}
+
 @keyframes dialogFadeInShorter {
   from {
     opacity: 0.6;
@@ -73,15 +84,6 @@
   to {
     opacity: 1;
     transform: scale(1);
-  }
-}
-
-@keyframes dialogFadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
   }
 }
 
@@ -190,28 +192,18 @@ body {
   transition: 0.2s;
 }
 
-/* button:active,
-input:active,
-.gameCard:active,
-.sideBarGame:active {
-  scale: 99%;
-  transition: 0.08s;
-} */
-
 input,
 #searchInput {
   transition: 0.2s;
 }
 
-dialog[open] {
-  opacity: 1;
-  animation: dialogFadeIn 0.3s ease normal;
+dialog.showDialog {
+  animation: dialogFadeIn 0.3s ease forwards;
 }
 
-/* .gameCard {
-  opacity: 1;
-  animation: dialogFadeInShorter 0.3s ease normal;
-} */
+dialog.hideDialog {
+  animation: dialogFadeOut 0.2s ease forwards;
+}
 
 dialog {
   box-shadow: 0 0 0.5rem 100vw rgba(0, 0, 0, 0.2);
@@ -222,7 +214,7 @@ dialog {
   opacity: 1;
   animation:
     dialogFadeIn 0.2s,
-    dialogFadeOut 0.3s 1.3s;
+    dialogFadeOut 0.3s 2.3s;
 }
 
 .loading {

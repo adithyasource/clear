@@ -342,11 +342,11 @@ export async function getData() {
         document.documentElement.classList.add("dark");
       }
 
-      document.querySelector("[data-newGameModal]").close();
-      document.querySelector("[data-newFolderModal]").close();
-      document.querySelector("[data-gamePopup]").close();
-      document.querySelector("[data-editGameModal]").close();
-      document.querySelector("[data-editFolderModal]").close();
+      closeDialog("newGameModal");
+      closeDialog("newFolderModal");
+      closeDialog("gamePopup");
+      closeDialog("editGameModal");
+      closeDialog("editFolderModal");
     } else createEmptyLibrary();
   } else {
     createEmptyLibrary();
@@ -400,13 +400,13 @@ export async function changeLanguage(lang) {
 }
 
 export async function importSteamGames() {
-  document.querySelector("[data-loadingModal]").show();
+  openDialog("loadingModal");
 
   await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?version=a`)
     .then(() => {
       invoke("read_steam_vdf").then(async (data) => {
         if (data == "error") {
-          document.querySelector("[data-loadingModal]").close();
+          closeDialog("loadingModal");
 
           triggerToast(
             translateText(
@@ -531,8 +531,8 @@ export async function importSteamGames() {
           );
 
           await updateData().then(() => {
-            document.querySelector("[data-loadingModal]").close();
-            document.querySelector("[data-settingsModal]").close();
+            closeDialog("loadingModal");
+            closeDialog("settingsModal");
             setTotalImportedSteamGames(0);
             setTotalSteamGames(0);
             getData();
@@ -541,7 +541,7 @@ export async function importSteamGames() {
       });
     })
     .catch((err) => {
-      document.querySelector("[data-loadingModal]").close();
+      closeDialog("loadingModal");
       triggerToast(translateText("you're not connected to the internet :("));
     });
 }
@@ -580,11 +580,43 @@ export function triggerToast(message) {
   clearTimeout(toastTimeout);
   toastTimeout = setTimeout(() => {
     setShowToast(false);
-  }, 1500);
+  }, 2500);
 }
 
 export function closeToast() {
   setShowToast(false);
   setToastMessage(undefined);
   clearTimeout(toastTimeout);
+}
+
+export function openDialog(dialogData) {
+  let dialogRef = document.querySelector(`[data-${dialogData}]`);
+
+  dialogRef.classList.remove("hideDialog");
+  dialogRef.show();
+  dialogRef.classList.add("showDialog");
+}
+
+export function closeDialog(dialogData, ref) {
+  if (ref != undefined) {
+    ref.addEventListener("keydown", (e) => {
+      if (e.key == "Escape") {
+        e.stopPropagation();
+
+        ref.classList.remove("showDialog");
+        ref.classList.add("hideDialog");
+        setTimeout(() => {
+          ref.close();
+        }, 200);
+      }
+    });
+  } else {
+    let dialogRef = document.querySelector(`[data-${dialogData}]`);
+
+    dialogRef.classList.remove("showDialog");
+    dialogRef.classList.add("hideDialog");
+    setTimeout(() => {
+      dialogRef.close();
+    }, 200);
+  }
 }

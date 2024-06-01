@@ -9,6 +9,7 @@ import {
   generateRandomString,
   translateText,
   updateData,
+  closeDialog,
 } from "../Globals";
 import {
   Close,
@@ -345,7 +346,7 @@ export function EditGame() {
     await updateData();
     selectedDataContext.setSelectedGame({});
     getData();
-    document.querySelector("[data-editGameModal]").close();
+    closeDialog("editGameModal");
   }
 
   async function deleteGame() {
@@ -381,6 +382,8 @@ export function EditGame() {
         e.preventDefault();
       }}
       ref={(ref) => {
+        closeDialog("editGameModal", ref);
+
         function handleTab(e) {
           const focusableElements = ref.querySelectorAll(
             'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
@@ -498,7 +501,7 @@ export function EditGame() {
             <button
               className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !gap-0 "
               onClick={() => {
-                document.querySelector("[data-editGameModal]").close();
+                closeDialog("editGameModal");
                 getData();
               }}>
               ​

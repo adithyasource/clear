@@ -1,6 +1,6 @@
 import { Show, useContext } from "solid-js";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
-import { openGame, translateText } from "../Globals";
+import { closeDialog, openDialog, openGame, translateText } from "../Globals";
 import { Close, Play, Settings } from "../components/Icons";
 
 import {
@@ -20,6 +20,14 @@ export function GamePopUp() {
       className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266]  bg-[#d1d1d166]"
       onDragStart={(e) => {
         e.preventDefault();
+      }}
+      onKeyDown={(e) => {
+        if (e.key == "Escape") {
+          e.stopPropagation();
+        }
+      }}
+      ref={(ref) => {
+        closeDialog("gamePopup", ref);
       }}>
       <div className="flex flex-col items-center justify-center w-screen h-screen px-[40px]">
         <img
@@ -79,15 +87,15 @@ export function GamePopUp() {
             <button
               className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !bg-opacity-80 hover:backdrop-blur-[5px]  !backdrop-blur-[10px]"
               onClick={() => {
-                document.querySelector("[data-gamePopup]").close();
-                document.querySelector("[data-editGameModal]").show();
+                closeDialog("gamePopup");
+                openDialog("editGameModal");
               }}>
               <Settings />
             </button>
             <button
               className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !bg-opacity-80 hover:backdrop-blur-[5px]  !backdrop-blur-[10px]"
               onClick={() => {
-                document.querySelector("[data-gamePopup]").close();
+                closeDialog("gamePopup");
               }}>
               <Close />
             </button>

@@ -1,6 +1,6 @@
 import { produce } from "solid-js/store";
 import { Switch, useContext } from "solid-js";
-import { getData, translateText, updateData } from "../Globals";
+import { closeDialog, getData, translateText, updateData } from "../Globals";
 import { Close, SaveDisk, TrashDelete } from "../components/Icons";
 
 import {
@@ -78,7 +78,7 @@ export function EditFolder() {
 
     getData();
 
-    document.querySelector("[data-editFolderModal]").close();
+    closeDialog("editFolderModal");
   }
 
   async function deleteFolder() {
@@ -123,6 +123,8 @@ export function EditFolder() {
         getData();
       }}
       ref={(ref) => {
+        closeDialog("editFolderModal", ref);
+
         function handleTab(e) {
           const focusableElements = ref.querySelectorAll(
             'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
@@ -253,7 +255,7 @@ export function EditFolder() {
               <button
                 className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !gap-0"
                 onClick={() => {
-                  document.querySelector("[data-editFolderModal]").close();
+                  closeDialog("editFolderModal");
                   getData();
                 }}>
                 ​

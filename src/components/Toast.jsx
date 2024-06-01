@@ -18,7 +18,8 @@ export function Toast() {
           onClick={() => {
             closeToast();
           }}
-          className="absolute bottom-[20px] w-screen justify-center self-center content-center flex items-center">
+          id="toast"
+          className="absolute bottom-[20px] w-screen justify-center self-center content-center flex items-center ">
           <div
             className={`border-0 p-[10px] rounded-[${
               globalContext.libraryData.userSettings.roundedBorders

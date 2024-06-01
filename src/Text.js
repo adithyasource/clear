@@ -552,6 +552,20 @@ export let textLanguages = {
     ru: "",
     fr: "",
   },
+  "close current dialog before opening another": {
+    jp: "",
+    es: "",
+    hi: "",
+    ru: "",
+    fr: "",
+  },
+  "close current dialog before toggling sidebar": {
+    jp: "",
+    es: "",
+    hi: "",
+    ru: "",
+    fr: "",
+  },
   "": {
     jp: "",
     es: "",

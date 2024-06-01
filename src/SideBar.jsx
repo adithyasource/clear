@@ -1,7 +1,13 @@
 import { For, Show, onMount, useContext } from "solid-js";
 import { produce } from "solid-js/store";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
-import { getData, openGame, translateText, updateData } from "./Globals";
+import {
+  getData,
+  openDialog,
+  openGame,
+  translateText,
+  updateData,
+} from "./Globals";
 import {
   ChevronArrows,
   Edit,
@@ -457,9 +463,7 @@ export function SideBar() {
                               : "0px"
                           }]`}
                           onClick={() => {
-                            document
-                              .querySelector("[data-editFolderModal]")
-                              .show();
+                            openDialog("editFolderModal");
                             selectedDataContext.setSelectedFolder(folder);
                             dataUpdateContext.setEditedFolderName(
                               selectedDataContext.selectedFolder().name,
@@ -504,7 +508,7 @@ export function SideBar() {
                               await selectedDataContext.setSelectedGame(
                                 globalContext.libraryData.games[gameName],
                               );
-                              document.querySelector("[data-gamePopup]").show();
+                              openDialog("gamePopup");
 
                               if (e.ctrlKey) {
                                 openGame(
@@ -605,9 +609,7 @@ export function SideBar() {
                               : "0px"
                           }]`}
                           onClick={() => {
-                            document
-                              .querySelector("[data-editFolderModal]")
-                              .show();
+                            openDialog("editFolderModal");
                             selectedDataContext.setSelectedFolder(folder);
 
                             dataUpdateContext.setEditedFolderName(
@@ -701,7 +703,7 @@ export function SideBar() {
                           selectedDataContext.setSelectedGame(
                             globalContext.libraryData.games[currentGame],
                           );
-                          document.querySelector("[data-gamePopup]").show();
+                          openDialog("gamePopup");
 
                           if (e.ctrlKey) {
                             openGame(
@@ -744,7 +746,7 @@ export function SideBar() {
             <button
               className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] mt-[12px]"
               onClick={() => {
-                document.querySelector("[data-newGameModal]").show();
+                openDialog("newGameModal");
               }}>
               {translateText("add game")}
               <div className="opacity-50">
@@ -754,7 +756,7 @@ export function SideBar() {
             <button
               className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] mt-[12px]"
               onClick={() => {
-                document.querySelector("[data-newFolderModal]").show();
+                openDialog("newFolderModal");
               }}>
               {translateText("add folder")}
               <div className="opacity-50">
@@ -774,7 +776,7 @@ export function SideBar() {
                 uiContext.showNewVersionAvailable() ? "!w-[80%]" : ""
               } whitespace-nowrap`}
               onClick={() => {
-                document.querySelector("[data-notepadModal]").show();
+                openDialog("notepadModal");
               }}>
               {translateText("notepad")}
               <div className="opacity-50">
@@ -784,7 +786,7 @@ export function SideBar() {
             <button
               className=" standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] mt-[12px]"
               onClick={() => {
-                document.querySelector("[data-settingsModal]").show();
+                openDialog("settingsModal");
               }}>
               {translateText("settings")}
               <Show when={uiContext.showNewVersionAvailable()}>

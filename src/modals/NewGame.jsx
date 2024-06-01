@@ -7,6 +7,7 @@ import {
   generateRandomString,
   translateText,
   updateData,
+  closeDialog,
 } from "../Globals";
 
 import { open } from "@tauri-apps/api/dialog";
@@ -66,7 +67,7 @@ export function NewGame() {
     let logoFileName;
     let iconFileName;
 
-    document.querySelector("[data-loadingModal]").show();
+    openDialog("loadingModal");
 
     if (dataEntryContext.foundGridImage()) {
       gridImageFileName = generateRandomString() + ".png";
@@ -203,7 +204,7 @@ export function NewGame() {
       }),
     );
 
-    document.querySelector("[data-loadingModal]").close();
+    closeDialog("loadingModal");
 
     await updateData();
 
@@ -360,6 +361,8 @@ export function NewGame() {
         e.preventDefault();
       }}
       ref={(ref) => {
+        closeDialog("newGameModal", ref);
+
         function handleTab(e) {
           const focusableElements = ref.querySelectorAll(
             'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
@@ -440,7 +443,7 @@ export function NewGame() {
             <button
               className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !gap-0"
               onClick={() => {
-                document.querySelector("[data-newGameModal]").close();
+                closeDialog("newGameModal");
                 getData();
               }}>
               ​

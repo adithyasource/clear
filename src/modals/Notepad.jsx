@@ -1,5 +1,5 @@
 import { useContext } from "solid-js";
-import { getData, translateText, updateData } from "../Globals";
+import { closeDialog, getData, translateText, updateData } from "../Globals";
 import { Close } from "../components/Icons";
 
 import { GlobalContext, DataEntryContext } from "../Globals";
@@ -27,6 +27,8 @@ export function Notepad() {
           );
         }}
         ref={(ref) => {
+          closeDialog("notepadModal", ref);
+
           function handleTab(e) {
             const focusableElements = ref.querySelectorAll(
               'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
@@ -73,7 +75,7 @@ export function Notepad() {
               <button
                 className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !gap-0"
                 onClick={() => {
-                  document.querySelector("[data-notepadModal]").close();
+                  closeDialog("notepadModal");
                   getData();
                 }}>
                 ​
