@@ -251,14 +251,13 @@ export let textLanguages = {
     ru: "Расположение открытой библиотеки",
     fr: "Ouvrir le dossier de bibliothèque",
   },
-  "these are all the files that the app stores on your pc. you can copy these files to the same location on another pc to get your library there":
-    {
-      jp: "これらはすべて、アプリが PC に保存するファイルです。これらのファイルを別の PC の同じ場所にコピーして、そこにライブラリを取得できます。",
-      es: "Estos son todos los archivos que la aplicación almacena en tu PC. Puedes copiar estos archivos a la misma ubicación en otra PC para llevar tu biblioteca allí.",
-      hi: "ये सभी फ़ाइलें हैं जिन्हें ऐप आपके पीसी पर संग्रहीत करता है। आप अपनी लाइब्रेरी को वहां पहुंचाने के लिए इन फ़ाइलों को दूसरे पीसी पर उसी स्थान पर कॉपी कर सकते हैं",
-      ru: "Это все файлы, которые приложение хранит на вашем компьютере. Вы можете скопировать эти файлы в то же место на другом компьютере, чтобы разместить там свою библиотеку.",
-      fr: "Tous les fichiers de l’application sur le PC. Copiez ces fichiers au même emplacement sur un autre PC pour y placer la bibliothèque",
-    },
+  "these are all the files that the app stores on your pc": {
+    jp: "これらはすべて、アプリが PC に保存するファイルです",
+    es: "Estos son todos los archivos que la aplicación almacena en tu PC",
+    hi: "ये सभी फ़ाइलें हैं जिन्हें ऐप आपके पीसी पर संग्रहीत करता है",
+    ru: "Это все файлы, которые приложение хранит на вашем компьютере",
+    fr: "Tous les fichiers de l’application sur le PC",
+  },
   feedback: {
     jp: "フィードバック",
     es: "comentario",

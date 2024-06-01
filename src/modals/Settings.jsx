@@ -432,7 +432,7 @@ export function Settings() {
                 </button>
                 <span className="dark:text-[#ffffff80] text-[#12121280] w-[50%]">
                   {translateText(
-                    "these are all the files that the app stores on your pc. you can copy these files to the same location on another pc to get your library there",
+                    "these are all the files that the app stores on your pc",
                   )}
                 </span>
               </div>
