@@ -545,6 +545,13 @@ export let textLanguages = {
     ru: "",
     fr: "",
   },
+  scroll: {
+    jp: "",
+    es: "",
+    hi: "",
+    ru: "",
+    fr: "",
+  },
   "": {
     jp: "",
     es: "",

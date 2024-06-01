@@ -522,38 +522,40 @@ export function NewGame() {
                   </Show>
                 </>
               }>
-              <Show
-                when={showGridImageLoading() == true}
-                fallback={
-                  <>
-                    <img
-                      className="absolute inset-0 aspect-[2/3]"
-                      src={
-                        dataEntryContext.foundGridImage()[
-                          dataEntryContext.foundGridImageIndex()
-                        ]
-                      }
-                      alt=""
-                      onLoad={() => {
-                        setShowGridImageLoading(false);
-                      }}
-                    />
-                    <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
-                      {translateText("grid/cover")} <br />
-                    </span>
-                  </>
-                }>
-                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
-                  {translateText("grid/cover")} <br />
-                </span>
-
-                <div className="animate-spin-slow absolute">
-                  <Loading />
-                </div>
+              <Show when={showGridImageLoading() == false}>
+                <img
+                  className="absolute inset-0 aspect-[2/3]"
+                  src={
+                    dataEntryContext.foundGridImage()[
+                      dataEntryContext.foundGridImageIndex()
+                    ]
+                  }
+                  alt=""
+                  onLoad={() => {
+                    setShowGridImageLoading(false);
+                  }}
+                />
               </Show>
 
-              <span class="absolute tooltip group-hover:opacity-100 left-[30%] top-[45%] opacity-0">
-                {translateText("grid/cover")}
+              <span
+                class={`absolute tooltip flex items-center gap-[5px] max-large:left-[25%] max-large:top-[45%] left-[35%] top-[47%] ${
+                  showGridImageLoading() == false
+                    ? "group-hover:opacity-100 opacity-0"
+                    : ""
+                }`}>
+                <span className="opacity-50">
+                  {dataEntryContext.foundGridImageIndex()} /{" "}
+                  {dataEntryContext.foundGridImage().length - 1}
+                </span>
+                <Show
+                  when={showGridImageLoading() == false}
+                  fallback={
+                    <div className="animate-spin-slow w-max h-max">
+                      <Loading />
+                    </div>
+                  }>
+                  {translateText("scroll")}
+                </Show>
               </span>
             </Show>
           </button>
@@ -619,7 +621,7 @@ export function NewGame() {
                       when={dataEntryContext.locatedHeroImage()}
                       className="absolute inset-0 overflow-hidden"
                       fallback={
-                        <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
+                        <span class="absolute tooltip group-hover:opacity-100 left-[45%] top-[47%] opacity-0">
                           {translateText("hero")}
                         </span>
                       }>
@@ -637,19 +639,13 @@ export function NewGame() {
                         alt=""
                         className="absolute inset-0 -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.4] aspect-[96/31]"
                       />
-                      <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
+                      <span class="absolute tooltip group-hover:opacity-100 left-[45%] top-[47%] opacity-0">
                         {translateText("hero")}
                       </span>
                     </Show>
                   </>
                 }>
-                <Show
-                  when={showHeroImageLoading() == false}
-                  fallback={
-                    <div className="animate-spin-slow absolute">
-                      <Loading />
-                    </div>
-                  }>
+                <Show when={showHeroImageLoading() == false}>
                   <img
                     src={
                       dataEntryContext.foundHeroImage()[
@@ -660,7 +656,7 @@ export function NewGame() {
                       setShowHeroImageLoading(false);
                     }}
                     alt=""
-                    className="absolute inset-0 h-full rounded-[6px] aspect-[96/31]"
+                    className="absolute inset-0 h-full rounded-[6px] aspect-[96/31] "
                   />
                   <img
                     src={
@@ -672,11 +668,29 @@ export function NewGame() {
                       setShowHeroImageLoading(false);
                     }}
                     alt=""
-                    className="absolute inset-0 -z-10 h-full aspect-[96/31] rounded-[6px] blur-[80px] opacity-[0.4]"
+                    className="absolute inset-0 -z-10 h-full aspect-[96/31] rounded-[6px] blur-[80px] opacity-[0.4] "
                   />
                 </Show>
-                <span class="absolute tooltip group-hover:opacity-100 left-[42%] top-[45%] opacity-0">
-                  {translateText("hero")}
+
+                <span
+                  class={`absolute tooltip flex items-center gap-[5px] left-[42%] top-[45%] ${
+                    showHeroImageLoading() == false
+                      ? "group-hover:opacity-100 opacity-0"
+                      : ""
+                  }`}>
+                  <span className="opacity-50">
+                    {dataEntryContext.foundHeroImageIndex()} /{" "}
+                    {dataEntryContext.foundHeroImage().length - 1}
+                  </span>
+                  <Show
+                    when={showHeroImageLoading() == false}
+                    fallback={
+                      <div className="animate-spin-slow w-max h-max">
+                        <Loading />
+                      </div>
+                    }>
+                    {translateText("scroll")}
+                  </Show>
                 </span>
               </Show>
             </button>
@@ -694,9 +708,9 @@ export function NewGame() {
                           dataEntryContext.setLocatedLogo(undefined);
                           dataEntryContext.setFoundLogoImage(undefined);
                         }}
-                        className="panelButton cursor-pointer  bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[70px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] "
+                        className="panelButton cursor-pointer bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[70px] left-[20px] max-large:w-[243px] max-large:h-[90px] w-[250px] h-[90px] z-[100] "
                         aria-label="logo">
-                        <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
+                        <span class="absolute tooltip group-hover:opacity-100 max-large:left-[38%] max-large:top-[32%] left-[40%] top-[35%] opacity-0">
                           {translateText("logo")}
                         </span>
                       </button>
@@ -707,7 +721,7 @@ export function NewGame() {
                         dataEntryContext.setLocatedLogo(undefined);
                         dataEntryContext.setFoundLogoImage(undefined);
                       }}
-                      className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[70px] left-[20px] panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
+                      className="bg-[#E8E8E800] dark:bg-[#27272700] group absolute bottom-[70px] left-[20px] panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
                       aria-label="logo">
                       <img
                         src={convertFileSrc(dataEntryContext.locatedLogo())}
@@ -770,39 +784,44 @@ export function NewGame() {
                   dataEntryContext.setLocatedLogo(undefined);
                   dataEntryContext.setFoundLogoImage(undefined);
                 }}
-                className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[70px] left-[20px] panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
+                className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[60px] left-[10px] panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
                 aria-label="logo">
-                <Show
-                  when={showLogoImageLoading() == false}
-                  fallback={
-                    <button
-                      onClick={locateLogo}
-                      onContextMenu={() => {
-                        dataEntryContext.setLocatedLogo(undefined);
-                        dataEntryContext.setFoundLogoImage(undefined);
-                      }}
-                      className="panelButton cursor-pointer   bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[20px] left-[20px] max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] z-[100] ">
-                      <div className="animate-spin-slow absolute">
+                <img
+                  src={
+                    dataEntryContext.foundLogoImage()[
+                      dataEntryContext.foundLogoImageIndex()
+                    ]
+                  }
+                  alt=""
+                  className={`relative max-large:w-[243px] max-large:h-[90px] w-[250px] h-[90px] !object-scale-down ${
+                    showLogoImageLoading() ? "opacity-0" : ""
+                  }`}
+                  onLoad={() => {
+                    setShowLogoImageLoading(false);
+                  }}
+                />
+
+                <span
+                  className={`flex gap-[5px] items-center absolute tooltip  max-large:left-[30%] max-large:top-[35%] left-[33%] top-[35%]  ${
+                    showLogoImageLoading() == false
+                      ? "group-hover:opacity-100 opacity-0"
+                      : ""
+                  }`}>
+                  <span className="opacity-50">
+                    {dataEntryContext.foundLogoImageIndex()} /{" "}
+                    {dataEntryContext.foundLogoImage().length - 1}
+                  </span>
+
+                  <Show
+                    when={showLogoImageLoading() == false}
+                    fallback={
+                      <div className="relative animate-spin-slow w-max h-max">
                         <Loading />
                       </div>
-                    </button>
-                  }>
-                  <img
-                    src={
-                      dataEntryContext.foundLogoImage()[
-                        dataEntryContext.foundLogoImageIndex()
-                      ]
-                    }
-                    alt=""
-                    className="relative aspect-auto max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
-                    onLoad={() => {
-                      setShowLogoImageLoading(false);
-                    }}
-                  />
-                  <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
-                    {translateText("logo")}
-                  </span>
-                </Show>
+                    }>
+                    <span>{translateText("scroll")} </span>
+                  </Show>
+                </span>
               </button>
             </Show>
 
@@ -901,7 +920,7 @@ export function NewGame() {
                             ? "6px"
                             : "0px"
                         }]`}>
-                        <div className="animate-spin-slow absolute top-[24%] left-[27%]">
+                        <div className="animate-spin-slow absolute top-[30%] left-[32%]">
                           <Loading />
                         </div>
                       </div>
@@ -920,8 +939,18 @@ export function NewGame() {
                     />
                   </Show>
 
-                  <span class="absolute tooltip z-[10000] group-hover:opacity-100 left-[-10%] top-[120%] opacity-0 ">
-                    {translateText("icon")}
+                  <span
+                    className={`absolute tooltip z-[10000] group-hover:opacity-100 left-[-55%] top-[120%] opacity-0 flex items-center gap-[5px] ${
+                      showIconImageLoading() == false
+                        ? "group-hover:opacity-100 opacity-0"
+                        : ""
+                    }`}>
+                    <span className="opacity-50">
+                      {dataEntryContext.foundIconImageIndex()} /{" "}
+                      {dataEntryContext.foundIconImage().length - 1}
+                    </span>
+
+                    <span>{translateText("scroll")} </span>
                   </span>
                 </button>
               </Show>
@@ -1082,21 +1111,14 @@ export function NewGame() {
           <span className="opacity-50">
             {translateText("right click to empty image selection")}
           </span>
-          <Show when={applicationStateContext.SGDBGames()}>
-            <Switch>
-              <Match when={selectedDataContext.selectedGameId() == undefined}>
-                <span className="opacity-80">
-                  {translateText("select the official name of your game")}
-                </span>
-              </Match>
-              <Match when={selectedDataContext.selectedGameId()}>
-                <span className="opacity-80">
-                  {translateText(
-                    "scroll on the image to select a different asset",
-                  )}
-                </span>
-              </Match>
-            </Switch>
+          <Show
+            when={
+              applicationStateContext.SGDBGames() &&
+              selectedDataContext.selectedGameId() == undefined
+            }>
+            <span className="opacity-80">
+              {translateText("select the official name of your game")}
+            </span>
           </Show>
         </div>
 
