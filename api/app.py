@@ -9,9 +9,13 @@ app = Flask(__name__)
 
 load_dotenv()
 
-authToken = os.getenv("AUTH_TOKEN")
+AUTH_TOKEN = os.getenv("AUTH_TOKEN")
+FLASK_ENV = os.getenv("FLASK_ENV")
 
-print(authToken)
+if FLASK_ENV == "development":
+    dataAccessURL = "*"
+elif FLASK_ENV == "production":
+    dataAccessURL = "https://tauri.localhost"
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -25,7 +29,7 @@ def handleRequest():
         response = jsonify({"clearVersion": "1.0.0"})
         response.headers.add(
             "Access-Control-Allow-Origin",
-            "*",
+            dataAccessURL,
         )
         return response
 
@@ -36,14 +40,14 @@ def handleRequest():
 
         gameData = requests.get(
             f"https://www.steamgriddb.com/api/v2/search/autocomplete/{gameName}",
-            headers={"Authorization": f"Bearer {authToken}"},
+            headers={"Authorization": f"Bearer {AUTH_TOKEN}"},
             timeout=30,
         ).content
 
         response = jsonify(json.loads(gameData))
         response.headers.add(
             "Access-Control-Allow-Origin",
-            "*",
+            dataAccessURL,
         )
         return response
 
@@ -54,14 +58,14 @@ def handleRequest():
 
         gameData = requests.get(
             f"https://www.steamgriddb.com/api/v2/games/steam/{steamID}",
-            headers={"Authorization": f"Bearer {authToken}"},
+            headers={"Authorization": f"Bearer {AUTH_TOKEN}"},
             timeout=30,
         ).content
 
         response = jsonify(json.loads(gameData))
         response.headers.add(
             "Access-Control-Allow-Origin",
-            "*",
+            dataAccessURL,
         )
         return response
 
@@ -79,7 +83,7 @@ def handleRequest():
         gridImageData = json.loads(
             requests.get(
                 f"https://www.steamgriddb.com/api/v2/grids/game/{gameID}",
-                headers={"Authorization": f"Bearer {authToken}"},
+                headers={"Authorization": f"Bearer {AUTH_TOKEN}"},
                 timeout=30,
             ).content
         )
@@ -93,7 +97,7 @@ def handleRequest():
         heroImageData = json.loads(
             requests.get(
                 f"https://www.steamgriddb.com/api/v2/heroes/game/{gameID}",
-                headers={"Authorization": f"Bearer {authToken}"},
+                headers={"Authorization": f"Bearer {AUTH_TOKEN}"},
                 timeout=30,
             ).content
         )
@@ -107,7 +111,7 @@ def handleRequest():
         logoImageData = json.loads(
             requests.get(
                 f"https://www.steamgriddb.com/api/v2/logos/game/{gameID}",
-                headers={"Authorization": f"Bearer {authToken}"},
+                headers={"Authorization": f"Bearer {AUTH_TOKEN}"},
                 timeout=30,
             ).content
         )
@@ -121,7 +125,7 @@ def handleRequest():
         iconImageData = json.loads(
             requests.get(
                 f"https://www.steamgriddb.com/api/v2/icons/game/{gameID}",
-                headers={"Authorization": f"Bearer {authToken}"},
+                headers={"Authorization": f"Bearer {AUTH_TOKEN}"},
                 timeout=30,
             ).content
         )
@@ -142,7 +146,7 @@ def handleRequest():
         response = jsonify(allImages)
         response.headers.add(
             "Access-Control-Allow-Origin",
-            "*",
+            dataAccessURL,
         )
         return response
 
@@ -165,7 +169,7 @@ def handleRequest():
         gridImageData = json.loads(
             requests.get(
                 f"https://www.steamgriddb.com/api/v2/grids/game/{gameID}",
-                headers={"Authorization": f"Bearer {authToken}"},
+                headers={"Authorization": f"Bearer {AUTH_TOKEN}"},
                 timeout=30,
             ).content
         )
@@ -183,7 +187,7 @@ def handleRequest():
         heroImageData = json.loads(
             requests.get(
                 f"https://www.steamgriddb.com/api/v2/heroes/game/{gameID}",
-                headers={"Authorization": f"Bearer {authToken}"},
+                headers={"Authorization": f"Bearer {AUTH_TOKEN}"},
                 timeout=30,
             ).content
         )
@@ -200,7 +204,7 @@ def handleRequest():
         logoImageData = json.loads(
             requests.get(
                 f"https://www.steamgriddb.com/api/v2/logos/game/{gameID}",
-                headers={"Authorization": f"Bearer {authToken}"},
+                headers={"Authorization": f"Bearer {AUTH_TOKEN}"},
                 timeout=30,
             ).content
         )
@@ -217,7 +221,7 @@ def handleRequest():
         iconImageData = json.loads(
             requests.get(
                 f"https://www.steamgriddb.com/api/v2/icons/game/{gameID}",
-                headers={"Authorization": f"Bearer {authToken}"},
+                headers={"Authorization": f"Bearer {AUTH_TOKEN}"},
                 timeout=30,
             ).content
         )
@@ -241,7 +245,7 @@ def handleRequest():
         response = jsonify(allImages)
         response.headers.add(
             "Access-Control-Allow-Origin",
-            "*",
+            dataAccessURL,
         )
         return response
 
@@ -261,7 +265,7 @@ def handleRequest():
         response = jsonify({"image": imageFileBytes})
         response.headers.add(
             "Access-Control-Allow-Origin",
-            "*",
+            dataAccessURL,
         )
         return response
 
