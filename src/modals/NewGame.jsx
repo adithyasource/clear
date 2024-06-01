@@ -844,9 +844,7 @@ export function NewGame() {
                     <Show
                       when={dataEntryContext.locatedIcon()}
                       fallback={
-                        <div
-                          className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]`}
-                        />
+                        <div className="w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]" />
                       }>
                       <img
                         src={convertFileSrc(dataEntryContext.locatedIcon())}
@@ -913,8 +911,7 @@ export function NewGame() {
                   <Show
                     when={showIconImageLoading() == false}
                     fallback={
-                      <div
-                        className={`w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]`}>
+                      <div className="w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]">
                         <div className="animate-spin-slow absolute top-[30%] left-[32%]">
                           <Loading />
                         </div>
@@ -967,7 +964,7 @@ export function NewGame() {
                   placeholder={translateText("name of game")}
                 />
                 <button
-                  className={`standardButton  !text-black dark:!text-white  hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80]`}
+                  className="standardButton !text-black dark:!text-white  hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80]"
                   onClick={async () => {
                     if (
                       dataEntryContext.gameName() == "" ||
@@ -1013,7 +1010,7 @@ export function NewGame() {
                   </Switch>
                 </button>
                 <button
-                  className={`standardButton  !text-black dark:!text-white  hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0 bg-[#f1f1f1] dark:bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80]`}
+                  className="standardButton  !text-black dark:!text-white  hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0 bg-[#f1f1f1] dark:bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80]"
                   onClick={async () => {
                     dataEntryContext.gameName() == undefined
                       ? invoke("open_location", {

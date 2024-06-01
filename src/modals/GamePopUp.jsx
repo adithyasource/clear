@@ -37,7 +37,7 @@ export function GamePopUp() {
               selectedDataContext.selectedGame().heroImage,
           )}
           alt=""
-          className={`max-large:h-[270px] h-[350px] absolute blur-[80px] opacity-[0.4] -z-10`}
+          className="max-large:h-[270px] h-[350px] absolute blur-[80px] opacity-[0.4] -z-10"
         />
         <div
           className="relative"
@@ -99,9 +99,7 @@ export function GamePopUp() {
           <Show
             when={selectedDataContext.selectedGame().heroImage}
             fallback={
-              <div
-                className={`max-large:h-[270px] h-[350px] aspect-[96/31] bg-[#f1f1f1] dark:bg-[#1c1c1c]`}
-              />
+              <div className="max-large:h-[270px] h-[350px] aspect-[96/31] bg-[#f1f1f1] dark:bg-[#1c1c1c]" />
             }>
             <img
               src={convertFileSrc(
@@ -110,7 +108,7 @@ export function GamePopUp() {
                   selectedDataContext.selectedGame().heroImage,
               )}
               alt=""
-              className={`max-large:h-[270px] h-[350px] aspect-[96/31]`}
+              className="max-large:h-[270px] h-[350px] aspect-[96/31]"
             />
           </Show>
 
@@ -118,9 +116,7 @@ export function GamePopUp() {
             <Show
               when={selectedDataContext.selectedGame().logo}
               fallback={
-                <div
-                  className={`max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] absolute bottom-[5px] bg-[#E8E8E8] dark:!bg-[#272727]`}
-                />
+                <div className="max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] absolute bottom-[5px] bg-[#E8E8E8] dark:!bg-[#272727]" />
               }>
               <img
                 src={convertFileSrc(
