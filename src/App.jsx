@@ -101,60 +101,62 @@ function App() {
         );
       }
     }
+
     if (e.ctrlKey && e.code == "KeyN") {
-      if (!anyDialogOpen) {
-        e.preventDefault();
-        if (document.querySelector("[data-newGameModal]").open) {
-          closeDialog("newGameModal");
-        } else {
-          openDialog("newGameModal");
-        }
+      e.preventDefault();
+      if (document.querySelector("[data-newGameModal]").open) {
+        closeDialog("newGameModal");
       } else {
-        triggerToast(
-          translateText("close current dialog before opening another"),
-        );
+        if (!anyDialogOpen) {
+          openDialog("newGameModal");
+        } else {
+          triggerToast(
+            translateText("close current dialog before opening another"),
+          );
+        }
       }
     }
+
     if (e.ctrlKey && e.code == "KeyM") {
-      if (!anyDialogOpen) {
-        e.preventDefault();
-        if (document.querySelector("[data-newFolderModal]").open) {
-          closeDialog("newFolderModal");
-        } else {
-          openDialog("newFolderModal");
-        }
+      e.preventDefault();
+      if (document.querySelector("[data-newFolderModal]").open) {
+        closeDialog("newFolderModal");
       } else {
-        triggerToast(
-          translateText("close current dialog before opening another"),
-        );
+        if (!anyDialogOpen) {
+          openDialog("newFolderModal");
+        } else {
+          triggerToast(
+            translateText("close current dialog before opening another"),
+          );
+        }
       }
     }
     if (e.ctrlKey && e.code == "KeyL") {
-      if (!anyDialogOpen) {
-        e.preventDefault();
-        if (document.querySelector("[data-notepadModal]").open) {
-          closeDialog("notepadModal");
-        } else {
-          openDialog("notepadModal");
-        }
+      e.preventDefault();
+      if (document.querySelector("[data-notepadModal]").open) {
+        closeDialog("notepadModal");
       } else {
-        triggerToast(
-          translateText("close current dialog before opening another"),
-        );
+        if (!anyDialogOpen) {
+          openDialog("notepadModal");
+        } else {
+          triggerToast(
+            translateText("close current dialog before opening another"),
+          );
+        }
       }
     }
     if (e.ctrlKey && e.code == "Period") {
-      if (!anyDialogOpen) {
-        e.preventDefault();
-        if (document.querySelector("[data-settingsModal]").open) {
-          closeDialog("settingsModal");
-        } else {
-          openDialog("settingsModal");
-        }
+      if (document.querySelector("[data-settingsModal]").open) {
+        closeDialog("settingsModal");
       } else {
-        triggerToast(
-          translateText("close current dialog before opening another"),
-        );
+        if (!anyDialogOpen) {
+          e.preventDefault();
+          openDialog("settingsModal");
+        } else {
+          triggerToast(
+            translateText("close current dialog before opening another"),
+          );
+        }
       }
     }
 

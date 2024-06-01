@@ -8,6 +8,7 @@ import {
   translateText,
   updateData,
   closeDialog,
+  openDialog,
 } from "../Globals";
 
 import { open } from "@tauri-apps/api/dialog";
