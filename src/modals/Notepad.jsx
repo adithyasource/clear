@@ -1,6 +1,6 @@
 import { useContext } from "solid-js";
 import { closeDialog, getData, translateText, updateData } from "../Globals";
-import { Close } from "../components/Icons";
+import { Close } from "../libraries/Icons";
 
 import { GlobalContext, DataEntryContext } from "../Globals";
 

@@ -1,13 +1,11 @@
 import { For, Show, onMount, useContext } from "solid-js";
-import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/tauri";
 import Fuse from "fuse.js";
 import {
   GlobalContext,
-  SelectedDataContext,
   ApplicationStateContext,
   UIContext,
   getData,
-  changeLanguage,
   importSteamGames,
   translateText,
   updateData,
@@ -29,12 +27,15 @@ import { Notepad } from "./modals/Notepad";
 import { Settings } from "./modals/Settings";
 import { Loading } from "./modals/Loading";
 import { Toast } from "./components/Toast";
-import { ChevronArrows, EmptyTray, Steam } from "./components/Icons";
+import { ChevronArrows, EmptyTray, Steam } from "./libraries/Icons";
+import { GameCards } from "./components/GameCards";
+import { LanguageSelector } from "./components/LanguageSelector";
+import { Hotkeys } from "./components/HotKeys";
+import { Style } from "./Style";
 
 function App() {
   const globalContext = useContext(GlobalContext);
   const uiContext = useContext(UIContext);
-  const selectedDataContext = useContext(SelectedDataContext);
   const applicationStateContext = useContext(ApplicationStateContext);
 
   document.addEventListener("keydown", (e) => {
@@ -283,51 +284,7 @@ function App() {
         <p className=""></p>
       </div>
 
-      <style jsx>{`
-        .titleBarText {
-          font-family: ${globalContext.libraryData.userSettings.fontName ==
-          "sans serif"
-            ? "Segoe UI"
-            : globalContext.libraryData.userSettings.fontName == "serif"
-            ? "Times New Roman"
-            : "IBM Plex Mono, Consolas"};
-        }
-
-        * {
-          font-family: ${globalContext.libraryData.userSettings.fontName ==
-          "sans serif"
-            ? "Helvetica, Arial, sans-serif"
-            : globalContext.libraryData.userSettings.fontName == "serif"
-            ? "Times New Roman"
-            : "IBM Plex Mono, Consolas"};
-          color: ${globalContext.libraryData.userSettings.currentTheme ==
-          "light"
-            ? "#000000"
-            : "#ffffff"};
-        }
-
-        *:not(body, svg),
-        [class*="hint--"]:after {
-          border-radius: ${globalContext.libraryData.userSettings.roundedBorders
-            ? "6px"
-            : "0px"};
-        }
-
-        .currentlyDragging {
-          box-shadow: 0 -3px 0 0 #646464;
-          border-top-left-radius: 0;
-          border-top-right-radius: 0;
-        }
-
-        body.user-is-tabbing button:focus,
-        body.user-is-tabbing input:focus,
-        body.user-is-tabbing select:focus {
-          outline: 1px solid
-            ${globalContext.libraryData.userSettings.currentTheme == "light"
-              ? "#000000"
-              : "#ffffff"};
-        }
-      `}</style>
+      <Style />
 
       <Toast />
 
@@ -415,150 +372,10 @@ function App() {
                   <Steam />
                 </button>
 
-                <div
-                  className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] flex !justify-between items-center cursor-pointer relative !w-max !p-4"
-                  onClick={() => {
-                    uiContext.setShowLanguageSelector((x) => !x);
-                  }}>
-                  <div className="w-full">
-                    <span className="dark:text-[#ffffff80] text-[#12121280]">
-                      [{translateText("language")}]
-                    </span>
-                    &nbsp;{" "}
-                    {globalContext.libraryData.userSettings.language == "en"
-                      ? "english"
-                      : globalContext.libraryData.userSettings.language == "jp"
-                      ? "日本語"
-                      : globalContext.libraryData.userSettings.language == "es"
-                      ? "Español"
-                      : globalContext.libraryData.userSettings.language == "hi"
-                      ? "हिंदी"
-                      : globalContext.libraryData.userSettings.language == "ru"
-                      ? "русский"
-                      : globalContext.libraryData.userSettings.language == "fr"
-                      ? "Français"
-                      : "english"}
-                  </div>
-
-                  <Show when={uiContext.showLanguageSelector()}>
-                    <div className="flex flex-col gap-4 absolute border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] p-3 z-[100000] top-[120%] left-0">
-                      <div
-                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
-                        onClick={() => {
-                          changeLanguage("en");
-                        }}>
-                        english
-                      </div>
-                      <div
-                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75"
-                        onClick={() => {
-                          changeLanguage("fr");
-                        }}>
-                        Français [french]
-                      </div>
-                      <div
-                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75"
-                        onClick={() => {
-                          changeLanguage("ru");
-                        }}>
-                        русский [russian]
-                      </div>
-                      <div
-                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
-                        onClick={() => {
-                          changeLanguage("jp");
-                        }}>
-                        日本語 [japanese]
-                      </div>
-                      <div
-                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
-                        onClick={() => {
-                          changeLanguage("es");
-                        }}>
-                        Español [spanish]
-                      </div>
-                      <div
-                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150"
-                        onClick={() => {
-                          changeLanguage("hi");
-                        }}>
-                        हिंदी [hindi]
-                      </div>
-                    </div>
-                  </Show>
-                </div>
+                <LanguageSelector onSettingsPage={false} />
               </div>
 
-              <div className="grid grid-cols-2 mt-[35px] gap-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]">
-                    ctrl + n
-                  </div>
-
-                  {translateText("new game")}
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <div className="dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]">
-                    ctrl + .
-                  </div>
-                  {translateText("open settings")}
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <div className="dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]">
-                    ctrl + m
-                  </div>
-
-                  {translateText("new folder")}
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]">
-                    ctrl + l
-                  </div>
-
-                  {translateText("open notepad")}
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <div className="dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]">
-                    ctrl + w
-                  </div>
-
-                  {translateText("close app")}
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]">
-                    ctrl - / =
-                  </div>
-
-                  {translateText("change zoom")}
-                </div>
-              </div>
-
-              <div className="grid mt-[35px] gap-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]">
-                    ctrl + f
-                  </div>
-
-                  {translateText("search bar")}
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]">
-                    ctrl + \\
-                  </div>
-
-                  {translateText("hide sidebar")}
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]">
-                    ctrl + click
-                  </div>
-
-                  {translateText("quick open game")}
-                </div>
-              </div>
+              <Hotkeys onSettingsPage={false} />
             </div>
           </div>
         </Show>
@@ -607,199 +424,7 @@ function App() {
                               : "medium:grid-cols-4 grid-cols-2 large:grid-cols-6"
                             : ""
                         }`}>
-                        <For each={folder.games}>
-                          {(gameName, index) => {
-                            return (
-                              <button
-                                className="relative w-full bg-transparent cursor-pointer gameCard group p-0"
-                                id={`${index() == 0 ? "firstGameCard" : ""}`}
-                                aria-label={translateText("play")}
-                                onDragStart={(e) => {
-                                  e.preventDefault();
-                                }}
-                                onClick={async (e) => {
-                                  if (e.ctrlKey) {
-                                    openGame(
-                                      globalContext.libraryData.games[gameName]
-                                        .location,
-                                    );
-                                    return;
-                                  }
-                                  await selectedDataContext.setSelectedGame(
-                                    globalContext.libraryData.games[gameName],
-                                  );
-
-                                  openDialog("gamePopup");
-                                }}>
-                                <Show
-                                  when={
-                                    globalContext.libraryData.games[gameName]
-                                      .favourite
-                                  }
-                                  fallback={
-                                    <div className="relative w-full">
-                                      <Show
-                                        when={
-                                          globalContext.libraryData.games[
-                                            gameName
-                                          ].gridImage
-                                        }
-                                        fallback={
-                                          <div className="relative flex items-center justify-center">
-                                            <Show
-                                              when={
-                                                !globalContext.libraryData
-                                                  .userSettings.gameTitle
-                                              }>
-                                              <span className="!max-w-[50%] absolute z-[100]">
-                                                {gameName}
-                                              </span>
-
-                                              <Show
-                                                when={
-                                                  !globalContext.libraryData
-                                                    .games[gameName].location
-                                                }>
-                                                <span class="absolute tooltip z-[100] bottom-[30px]">
-                                                  {translateText(
-                                                    "no game file",
-                                                  )}
-                                                </span>
-                                              </Show>
-                                            </Show>
-
-                                            <div className="z-10 mb-[7px] group-hover:outline-[#0000001f] dark:bg-[#1C1C1C] bg-[#F1F1F1] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none" />
-                                          </div>
-                                        }>
-                                        <div className="relative flex items-center justify-center">
-                                          <Show
-                                            when={
-                                              !globalContext.libraryData
-                                                .userSettings.gameTitle
-                                            }>
-                                            <Show
-                                              when={
-                                                !globalContext.libraryData
-                                                  .games[gameName].location
-                                              }>
-                                              <span class="absolute tooltip z-[100] bottom-[30px]">
-                                                {translateText("no game file")}
-                                              </span>
-                                            </Show>
-                                          </Show>
-
-                                          <img
-                                            className="z-10 mb-[7px] group-hover:outline-[#0000001f] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none"
-                                            src={convertFileSrc(
-                                              applicationStateContext.appDataDirPath() +
-                                                "grids\\" +
-                                                globalContext.libraryData.games[
-                                                  gameName
-                                                ].gridImage,
-                                            )}
-                                            alt=""
-                                          />
-                                        </div>
-                                      </Show>
-                                    </div>
-                                  }>
-                                  <div className="relative w-full">
-                                    <Show
-                                      when={
-                                        globalContext.libraryData.games[
-                                          gameName
-                                        ].gridImage
-                                      }
-                                      fallback={
-                                        <div className="relative flex items-center justify-center">
-                                          <Show
-                                            when={
-                                              !globalContext.libraryData
-                                                .userSettings.gameTitle
-                                            }>
-                                            <span className="absolute z-[100] !max-w-[50%]">
-                                              {gameName}
-                                            </span>
-
-                                            <Show
-                                              when={
-                                                !globalContext.libraryData
-                                                  .games[gameName].location
-                                              }>
-                                              <span class="absolute tooltip z-[100] bottom-[30px]">
-                                                {translateText("no game file")}
-                                              </span>
-                                            </Show>
-                                          </Show>
-                                          <div className="relative z-10 mb-[7px] outline-[#0000001c] w-full aspect-[2/3] dark:bg-[#1C1C1C] bg-[#F1F1F1]  hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200" />
-                                        </div>
-                                      }>
-                                      <img
-                                        className="relative z-10 mb-[7px] outline-[#0000001c] hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200"
-                                        src={convertFileSrc(
-                                          applicationStateContext.appDataDirPath() +
-                                            "grids\\" +
-                                            globalContext.libraryData.games[
-                                              gameName
-                                            ].gridImage,
-                                        )}
-                                        alt=""
-                                        width="100%"
-                                      />
-                                    </Show>
-
-                                    <div className="absolute inset-0 dark:blur-[30px]  dark:group-hover:blur-[50px] duration-500 dark:bg-blend-screen ">
-                                      <img
-                                        className="absolute inset-0 duration-500 opacity-0 dark:opacity-[40%] dark:group-hover:opacity-60"
-                                        src={convertFileSrc(
-                                          applicationStateContext.appDataDirPath() +
-                                            "grids\\" +
-                                            globalContext.libraryData.games[
-                                              gameName
-                                            ].gridImage,
-                                        )}
-                                        alt=""
-                                      />
-                                      <div
-                                        className="dark:bg-[#fff] bg-[#000]  opacity-[0%] dark:opacity-[10%] w-full aspect-[2/3]"
-                                        alt=""
-                                      />
-                                    </div>
-                                  </div>
-                                </Show>
-                                <Show
-                                  when={
-                                    globalContext.libraryData.userSettings
-                                      .gameTitle
-                                  }>
-                                  <div className="flex justify-between items-start">
-                                    <Show
-                                      when={
-                                        globalContext.libraryData.games[
-                                          gameName
-                                        ].location
-                                      }
-                                      fallback={
-                                        <>
-                                          <span className="text-[#000000] dark:text-white !max-w-[50%]">
-                                            {gameName}
-                                          </span>
-
-                                          <span class=" tooltip z-[100]">
-                                            {translateText("no game file")}
-                                          </span>
-                                        </>
-                                      }>
-                                      <span className="text-[#000000] dark:text-white">
-                                        {gameName}
-                                      </span>
-                                    </Show>
-                                  </div>
-                                </Show>
-                              </button>
-                            );
-                          }}
-                        </For>
+                        <GameCards gamesList={folder.games} />
                       </div>
                     </div>
                   </Show>
@@ -870,169 +495,7 @@ function App() {
                           : "medium:grid-cols-4 grid-cols-2 large:grid-cols-6"
                         : ""
                     }`}>
-                    <For each={searchResults}>
-                      {(gameName, index) => {
-                        return (
-                          <button
-                            className="relative w-full bg-transparent cursor-pointer gameCard group p-0"
-                            id={`${index() == 0 ? "firstSearchResult" : ""}`}
-                            aria-label={translateText("play")}
-                            onDragStart={(e) => {
-                              e.preventDefault();
-                            }}
-                            onClick={async (e) => {
-                              if (e.ctrlKey) {
-                                openGame(
-                                  globalContext.libraryData.games[gameName]
-                                    .location,
-                                );
-                                return;
-                              }
-                              await selectedDataContext.setSelectedGame(
-                                globalContext.libraryData.games[gameName],
-                              );
-                              openDialog("gamePopup");
-                            }}>
-                            <Show
-                              when={
-                                globalContext.libraryData.games[gameName]
-                                  .favourite
-                              }
-                              fallback={
-                                <div className="relative w-full">
-                                  <Show
-                                    when={
-                                      globalContext.libraryData.games[gameName]
-                                        .gridImage
-                                    }
-                                    fallback={
-                                      <div className="relative flex items-center justify-center">
-                                        <Show
-                                          when={
-                                            !globalContext.libraryData
-                                              .userSettings.gameTitle
-                                          }>
-                                          <span className="absolute z-[100] !max-w-[50%]">
-                                            {gameName}
-                                          </span>
-
-                                          <Show
-                                            when={
-                                              !globalContext.libraryData.games[
-                                                gameName
-                                              ].location
-                                            }>
-                                            <span class="absolute tooltip z-[100] bottom-[30px]">
-                                              {translateText("no game file")}
-                                            </span>
-                                          </Show>
-                                        </Show>
-
-                                        <div
-                                          className="z-10 mb-[7px] group-hover:outline-[#0000001f] dark:bg-[#1C1C1C] bg-[#F1F1F1]  w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none"
-                                          alt=""
-                                        />
-                                      </div>
-                                    }>
-                                    <img
-                                      className="z-10 mb-[7px] group-hover:outline-[#0000001f] w-full aspect-[2/3] relative dark:group-hover:outline-[#ffffff1f] group-hover:outline-[2px] group-hover:outline-none"
-                                      src={convertFileSrc(
-                                        applicationStateContext.appDataDirPath() +
-                                          "grids\\" +
-                                          globalContext.libraryData.games[
-                                            gameName
-                                          ].gridImage,
-                                      )}
-                                      alt=""
-                                    />{" "}
-                                  </Show>
-                                </div>
-                              }>
-                              <Show
-                                when={
-                                  globalContext.libraryData.games[gameName]
-                                    .gridImage
-                                }
-                                fallback={
-                                  <div className="relative flex items-center justify-center">
-                                    <Show
-                                      when={
-                                        !globalContext.libraryData.userSettings
-                                          .gameTitle
-                                      }>
-                                      <span className="absolute z-[100] !max-w-[50%]">
-                                        {gameName}
-                                      </span>
-
-                                      <Show
-                                        when={
-                                          !globalContext.libraryData.games[
-                                            gameName
-                                          ].location
-                                        }>
-                                        <span class="absolute tooltip z-[100] bottom-[30px]">
-                                          {translateText("no game file")}
-                                        </span>
-                                      </Show>
-                                    </Show>
-                                    <div className="relative z-10 mb-[7px] outline-[#0000001c] w-full aspect-[2/3] dark:bg-[#1C1C1C] bg-[#F1F1F1]  hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200" />
-                                  </div>
-                                }>
-                                <img
-                                  className="relative z-10 mb-[7px] outline-[#0000001c] w-full aspect-[2/3] hover:outline-[#0000003b] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b] dark:outline-[2px] outline-[4px] outline-none duration-200"
-                                  src={convertFileSrc(
-                                    applicationStateContext.appDataDirPath() +
-                                      "grids\\" +
-                                      globalContext.libraryData.games[gameName]
-                                        .gridImage,
-                                  )}
-                                  alt=""
-                                  width="100%"
-                                />
-                              </Show>
-
-                              <div className="absolute inset-0 dark:blur-[30px]  dark:group-hover:blur-[50px] duration-500 dark:bg-blend-screen ">
-                                <img
-                                  className="absolute inset-0 duration-500 opacity-0 dark:opacity-[40%] dark:group-hover:opacity-60"
-                                  src={convertFileSrc(
-                                    applicationStateContext.appDataDirPath() +
-                                      "grids\\" +
-                                      globalContext.libraryData.games[gameName]
-                                        .gridImage,
-                                  )}
-                                  alt=""
-                                />
-                                <div
-                                  className="dark:bg-[#fff] bg-[#000]  opacity-[0%] dark:opacity-[10%] w-full aspect-[2/3]"
-                                  alt=""
-                                />
-                              </div>
-                            </Show>
-
-                            <Show
-                              when={
-                                globalContext.libraryData.userSettings.gameTitle
-                              }>
-                              <div className="flex justify-between items-start">
-                                <span className="text-[#000000] dark:text-white !max-w-[50%]">
-                                  {gameName}
-                                </span>
-
-                                <Show
-                                  when={
-                                    !globalContext.libraryData.games[gameName]
-                                      .location
-                                  }>
-                                  <span class=" tooltip z-[100]">
-                                    {translateText("no game file")}
-                                  </span>
-                                </Show>
-                              </div>
-                            </Show>
-                          </button>
-                        );
-                      }}
-                    </For>
+                    <GameCards gamesList={searchResults} />
                   </div>
                   <div className="items-center">
                     <Show when={searchResults == ""}>

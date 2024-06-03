@@ -1,7 +1,7 @@
 import { Show, useContext } from "solid-js";
 import { produce } from "solid-js/store";
 import { closeDialog, getData, translateText, updateData } from "../Globals";
-import { Close, SaveDisk } from "../components/Icons";
+import { Close, SaveDisk } from "../libraries/Icons";
 
 import {
   GlobalContext,

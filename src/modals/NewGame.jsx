@@ -12,7 +12,7 @@ import {
 } from "../Globals";
 
 import { open } from "@tauri-apps/api/dialog";
-import { ChevronArrow, Close, Loading, SaveDisk } from "../components/Icons";
+import { ChevronArrow, Close, Loading, SaveDisk } from "../libraries/Icons";
 import { produce } from "solid-js/store";
 
 import {

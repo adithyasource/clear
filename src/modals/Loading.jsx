@@ -1,6 +1,6 @@
 import { useContext } from "solid-js";
 import { translateText } from "../Globals";
-import { Loading as LoadingIcon } from "../components/Icons";
+import { Loading as LoadingIcon } from "../libraries/Icons";
 
 import { GlobalContext, SteamDataContext } from "../Globals";
 

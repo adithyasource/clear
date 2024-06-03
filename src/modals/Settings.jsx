@@ -10,9 +10,11 @@ import {
 } from "../Globals";
 
 import { appDataDir } from "@tauri-apps/api/path";
-import { Close, Steam } from "../components/Icons";
+import { Close, Steam } from "../libraries/Icons";
 
 import { GlobalContext, ApplicationStateContext, UIContext } from "../Globals";
+import { LanguageSelector } from "../components/LanguageSelector";
+import { Hotkeys } from "../components/HotKeys";
 
 export function Settings() {
   const globalContext = useContext(GlobalContext);
@@ -276,86 +278,7 @@ export function Settings() {
                 </div>
               </button>
               <div className="flex gap-2 cursor-pointer relative">
-                <button
-                  onClick={() => {
-                    uiContext.setShowSettingsLanguageSelector((x) => !x);
-                    document.getElementById("firstDropdownItem").focus();
-                  }}
-                  className="w-full p-0 text-left">
-                  <span className="dark:text-[#ffffff80] text-[#12121280]">
-                    [{translateText("language")}]
-                  </span>
-                  &nbsp;{" "}
-                  {globalContext.libraryData.userSettings.language == "en"
-                    ? "english"
-                    : globalContext.libraryData.userSettings.language == "jp"
-                    ? "日本語"
-                    : globalContext.libraryData.userSettings.language == "es"
-                    ? "Español"
-                    : globalContext.libraryData.userSettings.language == "hi"
-                    ? "हिंदी"
-                    : globalContext.libraryData.userSettings.language == "ru"
-                    ? "русский"
-                    : globalContext.libraryData.userSettings.language == "fr"
-                    ? "Français"
-                    : "english"}
-                  <Show when={uiContext.showSettingsLanguageSelector()}>
-                    <div
-                      className="flex flex-col gap-4 absolute border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] p-3 z-[100000] top-[150%]"
-                      onMouseLeave={() => {
-                        uiContext.setShowSettingsLanguageSelector(false);
-                      }}>
-                      <button
-                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150 p-0 text-left"
-                        id="firstDropdownItem"
-                        onClick={() => {
-                          changeLanguage("en");
-                        }}>
-                        english
-                      </button>
-                      <button
-                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75 p-0 text-left"
-                        onClick={() => {
-                          changeLanguage("fr");
-                        }}>
-                        Français [french]
-                      </button>
-                      <button
-                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75 p-0 text-left"
-                        onClick={() => {
-                          changeLanguage("ru");
-                        }}>
-                        русский [russian]
-                      </button>
-                      <button
-                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150 p-0 text-left"
-                        onClick={() => {
-                          changeLanguage("jp");
-                        }}>
-                        日本語 [japanese]
-                      </button>
-                      <button
-                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150 p-0 text-left"
-                        onClick={() => {
-                          changeLanguage("es");
-                        }}>
-                        Español [spanish]
-                      </button>
-                      <button
-                        onKeyDown={(e) => {
-                          if (e.key === "Tab") {
-                            uiContext.setShowSettingsLanguageSelector(false);
-                          }
-                        }}
-                        className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150 p-0 text-left"
-                        onClick={() => {
-                          changeLanguage("hi");
-                        }}>
-                        हिंदी [hindi]
-                      </button>
-                    </div>
-                  </Show>
-                </button>
+                <LanguageSelector onSettingsPage={true} />
               </div>
             </div>
 
@@ -432,73 +355,7 @@ export function Settings() {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 mt-[35px] gap-y-4">
-              <div className="flex items-center gap-3">
-                <div className="dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]">
-                  ctrl + n
-                </div>
-
-                {translateText("new game")}
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]">
-                  ctrl + .
-                </div>
-
-                {translateText("open settings")}
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]">
-                  ctrl + f
-                </div>
-
-                {translateText("search bar")}
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]">
-                  ctrl + m
-                </div>
-
-                {translateText("new folder")}
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]">
-                  ctrl + l
-                </div>
-
-                {translateText("open notepad")}
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]">
-                  ctrl + \\
-                </div>
-
-                {translateText("hide sidebar")}
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]">
-                  ctrl + w
-                </div>
-
-                {translateText("close app")}
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]">
-                  ctrl - / =
-                </div>
-
-                {translateText("change zoom")}
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="dark:bg-[#1c1c1c] bg-[#f1f1f1] py-1 px-3 w-[max-content] dark:text-[#ffffff80] text-[#12121280]">
-                  ctrl + click
-                </div>
-
-                {translateText("quick open game")}
-              </div>
-            </div>
+            <Hotkeys onSettingsPage={true} />
 
             <div className="flex justify-between mt-[35px] ">
               <div>

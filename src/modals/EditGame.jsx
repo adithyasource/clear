@@ -11,12 +11,7 @@ import {
   updateData,
   closeDialog,
 } from "../Globals";
-import {
-  Close,
-  OpenExternal,
-  SaveDisk,
-  TrashDelete,
-} from "../components/Icons";
+import { Close, OpenExternal, SaveDisk, TrashDelete } from "../libraries/Icons";
 
 import {
   GlobalContext,

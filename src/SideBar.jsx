@@ -6,6 +6,7 @@ import {
   openDialog,
   openGame,
   translateText,
+  triggerToast,
   updateData,
 } from "./Globals";
 import {
@@ -17,7 +18,7 @@ import {
   Notepad,
   UpdateDownload,
   Settings,
-} from "./components/Icons";
+} from "./libraries/Icons";
 
 import {
   GlobalContext,
@@ -168,7 +169,8 @@ export function SideBar() {
               }}
               onKeyUp={(e) => {
                 if (e.key === "Enter") {
-                  document.getElementById("firstSearchResult").focus();
+                  document.getElementById("firstGameCard").focus();
+                  console.log(document.getElementById("firstGameCard"));
                   let body = document.body;
                   body.classList.add("user-is-tabbing");
                 }
@@ -192,7 +194,14 @@ export function SideBar() {
               className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] mt-[12px]"
               onClick={() => {
                 uiContext.setShowContentSkipButton(false);
-                document.getElementById("firstGameCard").focus();
+
+                let firstGameCard = document.getElementById("firstGameCard");
+
+                if (firstGameCard != undefined) {
+                  firstGameCard.focus();
+                } else {
+                  triggerToast(translateText("no games found"));
+                }
               }}
               onKeyDown={(e) => {
                 if (e.key === "Tab") {
