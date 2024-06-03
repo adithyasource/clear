@@ -52,6 +52,13 @@ export function LanguageSelector(props) {
             props.onSettingsPage
               ? uiContext.setShowSettingsLanguageSelector(false)
               : uiContext.setShowLanguageSelector(false);
+          }}
+          onKeyDown={(e) => {
+            if (e.key == "Escape") {
+              props.onSettingsPage
+                ? uiContext.setShowSettingsLanguageSelector(false)
+                : uiContext.setShowLanguageSelector(false);
+            }
           }}>
           <button
             className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150 p-0 text-left"
