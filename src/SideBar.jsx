@@ -1,10 +1,8 @@
 import { For, Show, onMount, useContext } from "solid-js";
 import { produce } from "solid-js/store";
-import { convertFileSrc } from "@tauri-apps/api/tauri";
 import {
   getData,
   openDialog,
-  openGame,
   translateText,
   triggerToast,
   updateData,

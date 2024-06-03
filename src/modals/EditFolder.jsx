@@ -6,7 +6,6 @@ import { Close, SaveDisk, TrashDelete } from "../libraries/Icons";
 import {
   GlobalContext,
   SelectedDataContext,
-  ApplicationStateContext,
   DataUpdateContext,
   UIContext,
 } from "../Globals";
@@ -16,7 +15,6 @@ export function EditFolder() {
   const globalContext = useContext(GlobalContext);
   const uiContext = useContext(UIContext);
   const selectedDataContext = useContext(SelectedDataContext);
-  const applicationStateContext = useContext(ApplicationStateContext);
   const dataUpdateContext = useContext(DataUpdateContext);
 
   async function editFolder() {

@@ -4,7 +4,6 @@ import {
   getData,
   importSteamGames,
   translateText,
-  changeLanguage,
   updateData,
   closeDialog,
 } from "../Globals";

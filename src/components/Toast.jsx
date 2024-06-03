@@ -1,13 +1,7 @@
 import { useContext } from "solid-js";
-import {
-  GlobalContext,
-  ApplicationStateContext,
-  UIContext,
-  closeToast,
-} from "../Globals";
+import { ApplicationStateContext, UIContext, closeToast } from "../Globals";
 
 export function Toast() {
-  let globalContext = useContext(GlobalContext);
   let uiContext = useContext(UIContext);
   let applicationStateContext = useContext(ApplicationStateContext);
 

@@ -20,13 +20,11 @@ import {
   SelectedDataContext,
   ApplicationStateContext,
   DataEntryContext,
-  UIContext,
 } from "../Globals";
 import { triggerToast } from "../Globals";
 
 export function NewGame() {
   const globalContext = useContext(GlobalContext);
-  const uiContext = useContext(UIContext);
   const selectedDataContext = useContext(SelectedDataContext);
   const applicationStateContext = useContext(ApplicationStateContext);
   const dataEntryContext = useContext(DataEntryContext);

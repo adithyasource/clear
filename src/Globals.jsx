@@ -7,7 +7,6 @@ import {
   createDir,
   exists,
   readTextFile,
-  writeBinaryFile,
   writeTextFile,
 } from "@tauri-apps/api/fs";
 import { appDataDir } from "@tauri-apps/api/path";

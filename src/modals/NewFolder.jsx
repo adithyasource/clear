@@ -7,13 +7,11 @@ import {
   GlobalContext,
   ApplicationStateContext,
   DataEntryContext,
-  UIContext,
 } from "../Globals";
 import { triggerToast } from "../Globals";
 
 export function NewFolder() {
   const globalContext = useContext(GlobalContext);
-  const uiContext = useContext(UIContext);
   const applicationStateContext = useContext(ApplicationStateContext);
   const dataEntryContext = useContext(DataEntryContext);
 
