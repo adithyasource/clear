@@ -27,6 +27,7 @@ import {
   DataUpdateContext,
   UIContext,
 } from "./Globals";
+import { GameCardSideBar } from "./components/GameCardSideBar";
 
 export function SideBar() {
   const globalContext = useContext(GlobalContext);
@@ -479,59 +480,12 @@ export function SideBar() {
                         </button>
                       </div>
                       <For each={folder.games}>
-                        {(gameName, i) => (
-                          <button
-                            className={`!flex gap-[5px] bg-transparent ${
-                              i() == 0 ? "mt-4" : "mt-5"
-                            }  sideBarGame cursor-grab p-0`}
-                            aria-label={translateText("play")}
-                            draggable={true}
-                            onDragStart={(e) => {
-                              setTimeout(() => {
-                                e.srcElement.classList.add("dragging");
-                              }, 10);
-                              e.dataTransfer.setData("gameName", gameName);
-
-                              e.dataTransfer.setData(
-                                "oldFolderName",
-                                folderName,
-                              );
-                            }}
-                            onDragEnd={(e) => {
-                              e.srcElement.classList.remove("dragging");
-                            }}
-                            onClick={async (e) => {
-                              await selectedDataContext.setSelectedGame(
-                                globalContext.libraryData.games[gameName],
-                              );
-                              openDialog("gamePopup");
-
-                              if (e.ctrlKey) {
-                                openGame(
-                                  globalContext.libraryData.games[gameName]
-                                    .location,
-                                );
-                              }
-                            }}>
-                            <Show
-                              when={
-                                globalContext.libraryData.games[gameName].icon
-                              }>
-                              <img
-                                src={convertFileSrc(
-                                  applicationStateContext.appDataDirPath() +
-                                    "icons\\" +
-                                    globalContext.libraryData.games[gameName]
-                                      .icon,
-                                )}
-                                alt=""
-                                className="h-[16px] aspect-square"
-                              />
-                            </Show>
-                            <span className="text-[#00000080] dark:text-[#ffffff80] active:dark:text-[#ffffff3a] active:text-[#0000003a]">
-                              {gameName}
-                            </span>
-                          </button>
+                        {(gameName, index) => (
+                          <GameCardSideBar
+                            gameName={gameName}
+                            index={index()}
+                            folderName={folderName}
+                          />
                         )}
                       </For>
                       <p className="mt-[10px] w-full h-[3px] sideBarGame cursor-grab">
@@ -653,7 +607,7 @@ export function SideBar() {
                 </p>
               </div>
               <For each={applicationStateContext.currentGames()}>
-                {(currentGame, i) => {
+                {(currentGame, index) => {
                   let gamesInFolders = [];
 
                   for (
@@ -676,53 +630,11 @@ export function SideBar() {
                   }
                   return (
                     <Show when={!gamesInFolders.includes(currentGame)}>
-                      <button
-                        draggable={true}
-                        onDragStart={(e) => {
-                          e.dataTransfer.setData("gameName", currentGame);
-
-                          e.dataTransfer.setData(
-                            "oldFolderName",
-                            "uncategorized",
-                          );
-                        }}
-                        className={`!flex gap-[5px] bg-transparent ${
-                          i() == 0 ? "mt-4" : "mt-5"
-                        }  sideBarGame cursor-grab p-0`}
-                        aria-label={translateText("play")}
-                        onClick={async (e) => {
-                          selectedDataContext.setSelectedGame(
-                            globalContext.libraryData.games[currentGame],
-                          );
-                          openDialog("gamePopup");
-
-                          if (e.ctrlKey) {
-                            openGame(
-                              globalContext.libraryData.games[currentGame]
-                                .location,
-                            );
-                          }
-                        }}>
-                        <Show
-                          when={
-                            globalContext.libraryData.games[currentGame].icon
-                          }>
-                          <img
-                            src={convertFileSrc(
-                              applicationStateContext.appDataDirPath() +
-                                "icons\\" +
-                                globalContext.libraryData.games[currentGame]
-                                  .icon,
-                            )}
-                            alt=""
-                            className="h-[16px] aspect-square"
-                          />
-                        </Show>
-
-                        <span className="text-[#00000080] dark:text-[#ffffff80] active:dark:text-[#ffffff3a] active:text-[#0000003a]">
-                          {currentGame}
-                        </span>
-                      </button>
+                      <GameCardSideBar
+                        gameName={currentGame}
+                        index={index()}
+                        folderName="uncategorized"
+                      />
                     </Show>
                   );
                 }}
