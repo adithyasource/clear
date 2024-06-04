@@ -57,18 +57,18 @@ export function Notepad() {
             previouslyFocusedElement.focus();
           });
         }}
-        className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#d1d1d166]">
-        <div className="flex items-center justify-center w-screen h-screen align-middle ">
-          <div className="border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] w-[50%] p-6">
+        className="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d166] dark:bg-[#12121266]">
+        <div className="flex h-screen w-screen items-center justify-center align-middle ">
+          <div className="w-[50%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
             <div className="flex justify-between">
               <div>
-                <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
+                <p className="text-[25px] text-[#000000] dark:text-[#ffffff80]">
                   {translateText("notepad")}
                 </p>
               </div>
 
               <button
-                className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !gap-0"
+                className="standardButton !w-max !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                 onClick={() => {
                   closeDialog("notepadModal");
                   getData();
@@ -82,7 +82,7 @@ export function Notepad() {
                 dataEntryContext.setNotepadValue(e.target.value);
                 saveNotepad();
               }}
-              className="w-full h-[40vh] mt-6 bg-transparent rounded-[6px] focus:outline-none resize-none"
+              className="mt-6 h-[40vh] w-full resize-none rounded-[6px] bg-transparent focus:outline-none"
               placeholder={translateText("write anything you want over here!")}
               spellcheck="false"
               value={dataEntryContext.notepadValue()}></textarea>

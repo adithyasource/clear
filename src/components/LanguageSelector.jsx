@@ -19,9 +19,9 @@ export function LanguageSelector(props) {
       className={
         props.onSettingsPage
           ? "w-full p-0 text-left"
-          : "standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] flex !justify-between items-center cursor-pointer relative !w-max !p-4"
+          : "standardButton relative flex !w-max cursor-pointer items-center !justify-between bg-[#E8E8E8] !p-4 !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
       }>
-      <span className="dark:text-[#ffffff80] text-[#12121280]">
+      <span className="text-[#12121280] dark:text-[#ffffff80]">
         [{translateText("language")}]
       </span>
       &nbsp;
@@ -45,8 +45,8 @@ export function LanguageSelector(props) {
             : uiContext.showLanguageSelector()
         }>
         <div
-          className={`flex flex-col gap-4 absolute border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] p-3 z-[100000] ${
-            props.onSettingsPage ? "top-[150%]" : "top-[120%] left-[1%]"
+          className={`absolute z-[100000] flex flex-col gap-4 border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-3 dark:border-[#ffffff1f] dark:bg-[#121212] ${
+            props.onSettingsPage ? "top-[150%]" : "left-[1%] top-[120%]"
           }`}
           onMouseLeave={() => {
             props.onSettingsPage
@@ -61,7 +61,7 @@ export function LanguageSelector(props) {
             }
           }}>
           <button
-            className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150 p-0 text-left"
+            className="p-0 text-left text-[#12121280] duration-150 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
             id="firstDropdownItem"
             onClick={() => {
               changeLanguage("en");
@@ -69,28 +69,28 @@ export function LanguageSelector(props) {
             english
           </button>
           <button
-            className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75 p-0 text-left"
+            className="p-0 text-left text-[#12121280] duration-75 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
             onClick={() => {
               changeLanguage("fr");
             }}>
             Français [french]
           </button>
           <button
-            className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-75 p-0 text-left"
+            className="p-0 text-left text-[#12121280] duration-75 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
             onClick={() => {
               changeLanguage("ru");
             }}>
             русский [russian]
           </button>
           <button
-            className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150 p-0 text-left"
+            className="p-0 text-left text-[#12121280] duration-150 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
             onClick={() => {
               changeLanguage("jp");
             }}>
             日本語 [japanese]
           </button>
           <button
-            className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150 p-0 text-left"
+            className="p-0 text-left text-[#12121280] duration-150 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
             onClick={() => {
               changeLanguage("es");
             }}>
@@ -104,7 +104,7 @@ export function LanguageSelector(props) {
                   : uiContext.setShowLanguageSelector(false);
               }
             }}
-            className="dark:text-[#ffffff80] text-[#12121280] dark:hover:text-[#ffffffcc] hover:text-[#121212cc] duration-150 p-0 text-left"
+            className="p-0 text-left text-[#12121280] duration-150 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
             onClick={() => {
               changeLanguage("hi");
             }}>

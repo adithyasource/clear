@@ -153,15 +153,15 @@ export function SideBar() {
 
   return (
     <>
-      <div className="flex sideBar flex-col h-[100vh] text-black z-10 py-[20px] pl-[20px] relative overflow-hidden w-[20%] min-[1500px]:w-[15%]">
+      <div className="sideBar relative z-10 flex h-[100vh] w-[20%] flex-col overflow-hidden py-[20px] pl-[20px] text-black min-[1500px]:w-[15%]">
         <div id="sideBarTop">
-          <div className="flex justify-between items-center gap-[15px]">
+          <div className="flex items-center justify-between gap-[15px]">
             <input
               aria-autocomplete="none"
               type="text"
               id="searchInput"
               name=""
-              className="dark:bg-[#232323] bg-[#E8E8E8] dark:text-white text-black w-full hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b]"
+              className="w-full bg-[#E8E8E8] text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:text-white dark:hover:!bg-[#2b2b2b]"
               placeholder={translateText("search")}
               onInput={(e) => {
                 applicationStateContext.setSearchValue(e.currentTarget.value);
@@ -176,7 +176,7 @@ export function SideBar() {
               }}
             />
             <button
-              className="cursor-pointer hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[28px]"
+              className="w-[28px] cursor-pointer p-2 duration-150 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
               onClick={() => {
                 toggleSideBar();
               }}
@@ -190,7 +190,7 @@ export function SideBar() {
           </div>
           <Show when={uiContext.showContentSkipButton()}>
             <button
-              className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] mt-[12px]"
+              className="standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
                 uiContext.setShowContentSkipButton(false);
 
@@ -315,7 +315,7 @@ export function SideBar() {
                 if (folder.games.length > 0) {
                   return (
                     <div
-                      className="!py-2 sideBarFolder bg-[#f1f1f1] dark:bg-[#1c1c1c]"
+                      className="sideBarFolder bg-[#f1f1f1] !py-2 dark:bg-[#1c1c1c]"
                       draggable={true}
                       onDragStart={(e) => {
                         setTimeout(
@@ -448,15 +448,15 @@ export function SideBar() {
                           getData();
                         }
                       }}>
-                      <div className="flex gap-[10px] items-center cursor-move  ">
-                        <span className="text-black dark:text-white break-all">
+                      <div className="flex cursor-move items-center gap-[10px]  ">
+                        <span className="break-all text-black dark:text-white">
                           {folder.name}
                         </span>
                         <Show when={folder.hide == true}>
                           <EyeClosed />
                         </Show>
                         <button
-                          className="hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[25.25px]"
+                          className="w-[25.25px] p-2 duration-150 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
                           onClick={() => {
                             openDialog("editFolderModal");
                             selectedDataContext.setSelectedFolder(folder);
@@ -486,7 +486,7 @@ export function SideBar() {
                           />
                         )}
                       </For>
-                      <p className="mt-[10px] w-full h-[3px] sideBarGame cursor-grab">
+                      <p className="sideBarGame mt-[10px] h-[3px] w-full cursor-grab">
                         &nbsp;
                       </p>
                     </div>
@@ -542,15 +542,15 @@ export function SideBar() {
                         await updateData();
                         getData();
                       }}>
-                      <div className="flex gap-[10px] items-center cursor-move my-[-4px]">
-                        <s className="text-black cursor-move dark:text-white break-all">
+                      <div className="my-[-4px] flex cursor-move items-center gap-[10px]">
+                        <s className="cursor-move break-all text-black dark:text-white">
                           {folder.name}
                         </s>
                         <Show when={folder.hide == true}>
                           <EyeClosed />
                         </Show>
                         <button
-                          className="hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[25.25px]"
+                          className="w-[25.25px] p-2 duration-150 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
                           onClick={() => {
                             openDialog("editFolderModal");
                             selectedDataContext.setSelectedFolder(folder);
@@ -599,7 +599,7 @@ export function SideBar() {
 
                 getData();
               }}>
-              <div className=" flex gap-[10px] items-center cursor-default">
+              <div className=" flex cursor-default items-center gap-[10px]">
                 <p className="pd-3 text-[#00000080] dark:text-[#ffffff80] ">
                   {translateText("uncategorized")}
                 </p>
@@ -645,7 +645,7 @@ export function SideBar() {
           class="absolute bottom-[20px] w-[calc(100%-2px)] pr-[20px]">
           <div className="">
             <button
-              className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] mt-[12px]"
+              className="standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
                 openDialog("newGameModal");
               }}>
@@ -655,7 +655,7 @@ export function SideBar() {
               </div>
             </button>
             <button
-              className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] mt-[12px]"
+              className="standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
                 openDialog("newFolderModal");
               }}>
@@ -669,11 +669,11 @@ export function SideBar() {
           <div
             className={`flex ${
               globalContext.libraryData.userSettings.language == "fr"
-                ? "medium:flex-col flex-col large:flex-row gap-0 medium:gap-0 large:gap-3"
+                ? "flex-col gap-0 medium:flex-col medium:gap-0 large:flex-row large:gap-3"
                 : "gap-3"
             }`}>
             <button
-              className={`standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] mt-[12px] ${
+              className={`standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] ${
                 uiContext.showNewVersionAvailable() ? "!w-[80%]" : ""
               } whitespace-nowrap`}
               onClick={() => {
@@ -685,7 +685,7 @@ export function SideBar() {
               </div>
             </button>
             <button
-              className=" standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] mt-[12px]"
+              className=" standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
                 openDialog("settingsModal");
               }}>

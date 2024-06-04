@@ -281,7 +281,7 @@ function App() {
         // * bit more smoother
       }
 
-      <div className="pointer-events-none items-center justify-center flex loading w-screen h-screen bg-[#121212] absolute z-[1000]">
+      <div className="loading pointer-events-none absolute z-[1000] flex h-screen w-screen items-center justify-center bg-[#121212]">
         <p className=""></p>
       </div>
 
@@ -289,14 +289,14 @@ function App() {
 
       <Toast />
 
-      <div className="h-full flex gap-[30px] overflow-y-hidden">
+      <div className="flex h-full gap-[30px] overflow-y-hidden">
         <Show
           when={
             globalContext.libraryData.userSettings.showSideBar == false &&
             applicationStateContext.windowWidth() >= 1000
           }>
           <button
-            className="absolute right-[31px] top-[32px] z-20 rotate-180 cursor-pointer hover:bg-[#D6D6D6] dark:hover:bg-[#232323] duration-150 p-2 w-[25.25px]"
+            className="absolute right-[31px] top-[32px] z-20 w-[25.25px] rotate-180 cursor-pointer p-2 duration-150 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
             onClick={toggleSideBar}>
             <ChevronArrows />
           </button>
@@ -316,7 +316,7 @@ function App() {
               applicationStateContext.searchValue() == undefined)
           }>
           <div
-            className={` flex items-center justify-center flex-col w-full absolute h-[100vh]
+            className={` absolute flex h-[100vh] w-full flex-col items-center justify-center
             overflow-y-scroll py-[20px] pr-[30px]  ${
               globalContext.libraryData.userSettings.showSideBar &&
               applicationStateContext.windowWidth() >= 1000
@@ -324,7 +324,7 @@ function App() {
                 : "pl-[30px] large:pl-[30px]"
             }`}>
             <div className="!z-50">
-              <p className="dark:text-[#ffffff80] text-[#000000] ">
+              <p className="text-[#000000] dark:text-[#ffffff80] ">
                 {translateText("hey there! thank you so much for using clear")}
                 <br />
                 <br />-{" "}
@@ -341,7 +341,7 @@ function App() {
 
               <div className="mt-[35px] flex gap-6">
                 <button
-                  className="standardButton hint--bottom !flex !w-max !gap-3 dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b]"
+                  className="standardButton hint--bottom !flex !w-max !gap-3 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                   aria-label={translateText("might not work perfectly!")}
                   onClick={() => {
                     if (globalContext.libraryData.folders.steam != undefined) {
@@ -381,7 +381,7 @@ function App() {
           </div>
         </Show>
         <div
-          className={`w-full absolute h-[100vh] overflow-y-scroll py-[20px] pr-[30px] !rounded-[0px] ${
+          className={`absolute h-[100vh] w-full overflow-y-scroll !rounded-[0px] py-[20px] pr-[30px] ${
             globalContext.libraryData.userSettings.showSideBar &&
             applicationStateContext.windowWidth() >= 1000
               ? "pl-[23%] large:pl-[17%]"
@@ -403,26 +403,26 @@ function App() {
                         when={
                           globalContext.libraryData.userSettings.folderTitle
                         }>
-                        <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
+                        <p className="text-[25px] text-[#000000] dark:text-[#ffffff80]">
                           {folder.name}
                         </p>
                       </Show>
                       <div
-                        className={`grid gap-5 mt-4 foldersDiv ${
+                        className={`foldersDiv mt-4 grid gap-5 ${
                           globalContext.libraryData.userSettings.zoomLevel == 0
                             ? globalContext.libraryData.userSettings.showSideBar
-                              ? "medium:grid-cols-5 grid-cols-4 large:grid-cols-7"
-                              : "medium:grid-cols-6 grid-cols-4 large:grid-cols-8"
+                              ? "grid-cols-4 medium:grid-cols-5 large:grid-cols-7"
+                              : "grid-cols-4 medium:grid-cols-6 large:grid-cols-8"
                             : globalContext.libraryData.userSettings
                                 .zoomLevel == 1
                             ? globalContext.libraryData.userSettings.showSideBar
-                              ? "medium:grid-cols-4 grid-cols-3 large:grid-cols-6"
-                              : "medium:grid-cols-5 grid-cols-3 large:grid-cols-7"
+                              ? "grid-cols-3 medium:grid-cols-4 large:grid-cols-6"
+                              : "grid-cols-3 medium:grid-cols-5 large:grid-cols-7"
                             : globalContext.libraryData.userSettings
                                 .zoomLevel == 2
                             ? globalContext.libraryData.userSettings.showSideBar
-                              ? "medium:grid-cols-3 grid-cols-2 large:grid-cols-5"
-                              : "medium:grid-cols-4 grid-cols-2 large:grid-cols-6"
+                              ? "grid-cols-2 medium:grid-cols-3 large:grid-cols-5"
+                              : "grid-cols-2 medium:grid-cols-4 large:grid-cols-6"
                             : ""
                         }`}>
                         <GameCards gamesList={folder.games} />
@@ -473,26 +473,26 @@ function App() {
               return (
                 <div>
                   <div
-                    className={`grid gap-5 mt-4 foldersDiv ${
+                    className={`foldersDiv mt-4 grid gap-5 ${
                       globalContext.libraryData.userSettings.zoomLevel == 0
                         ? globalContext.libraryData.userSettings.showSideBar
-                          ? "medium:grid-cols-5 grid-cols-4 large:grid-cols-7"
-                          : "medium:grid-cols-6 grid-cols-4 large:grid-cols-8"
+                          ? "grid-cols-4 medium:grid-cols-5 large:grid-cols-7"
+                          : "grid-cols-4 medium:grid-cols-6 large:grid-cols-8"
                         : globalContext.libraryData.userSettings.zoomLevel == 1
                         ? globalContext.libraryData.userSettings.showSideBar
-                          ? "medium:grid-cols-4 grid-cols-3 large:grid-cols-6"
-                          : "medium:grid-cols-5 grid-cols-3 large:grid-cols-7"
+                          ? "grid-cols-3 medium:grid-cols-4 large:grid-cols-6"
+                          : "grid-cols-3 medium:grid-cols-5 large:grid-cols-7"
                         : globalContext.libraryData.userSettings.zoomLevel == 2
                         ? globalContext.libraryData.userSettings.showSideBar
-                          ? "medium:grid-cols-3 grid-cols-2 large:grid-cols-5"
-                          : "medium:grid-cols-4 grid-cols-2 large:grid-cols-6"
+                          ? "grid-cols-2 medium:grid-cols-3 large:grid-cols-5"
+                          : "grid-cols-2 medium:grid-cols-4 large:grid-cols-6"
                         : ""
                     }`}>
                     <GameCards gamesList={searchResults} />
                   </div>
                   <div className="items-center">
                     <Show when={searchResults == ""}>
-                      <div className="flex items-center  justify-center w-full h-[calc(100vh-100px)] gap-3 align-middle">
+                      <div className="flex h-[calc(100vh-100px)]  w-full items-center justify-center gap-3 align-middle">
                         <EmptyTray />
                         {translateText("no games found")}
                       </div>

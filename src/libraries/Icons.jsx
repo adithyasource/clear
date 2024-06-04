@@ -323,7 +323,7 @@ export function OpenExternal() {
       xmlns="http://www.w3.org/2000/svg">
       <path
         d="M5.63605 18.364L18.364 5.63603M18.364 5.63603L8.46446 5.63604M18.364 5.63603V15.5355"
-        className="dark:stroke-white stroke-black"
+        className="stroke-black dark:stroke-white"
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"></path>
@@ -341,7 +341,7 @@ export function Play() {
       xmlns="http://www.w3.org/2000/svg">
       <path
         d="M1.69727 14.3947V0.894745L12.1973 7.64474L1.69727 14.3947Z"
-        className="dark:stroke-white stroke-black"
+        className="stroke-black dark:stroke-white"
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"

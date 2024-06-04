@@ -13,9 +13,9 @@ export function Toast() {
             closeToast();
           }}
           id="toast"
-          className="absolute bottom-[20px] w-screen justify-center self-center content-center flex items-center ">
+          className="absolute bottom-[20px] flex w-screen content-center items-center justify-center self-center ">
           <div
-            className={`border-0 p-[10px] relative gap-1 z-[100000000] standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max h-max toast`}>
+            className={`standardButton toast relative z-[100000000] h-max !w-max gap-1 border-0 bg-[#E8E8E8] p-[10px] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]`}>
             {applicationStateContext.toastMessage()}
           </div>
         </div>

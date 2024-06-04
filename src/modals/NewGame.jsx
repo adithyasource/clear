@@ -405,11 +405,11 @@ export function NewGame() {
         selectedDataContext.setSelectedGameId(undefined);
         applicationStateContext.setSGDBGames(undefined);
       }}
-      className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#121212cc] bg-[#d1d1d1cc]">
-      <div className="flex flex-col  justify-center items-center  w-screen h-screen gap-3">
-        <div className="flex justify-between max-large:w-[61rem] w-[84rem]">
+      className="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d1cc] dark:bg-[#121212cc]">
+      <div className="flex h-screen  w-screen flex-col  items-center justify-center gap-3">
+        <div className="flex w-[84rem] justify-between max-large:w-[61rem]">
           <div>
-            <p className="dark:text-[#ffffff80] text-[#00000080] text-[25px]">
+            <p className="text-[25px] text-[#00000080] dark:text-[#ffffff80]">
               {translateText("add new game")}
             </p>
           </div>
@@ -426,7 +426,7 @@ export function NewGame() {
                 }>
                 <div className="relative">
                   <div className="!w-max">{translateText("favourite")}</div>
-                  <div className="absolute blur-[5px] opacity-70 -z-10 inset-0 !w-max">
+                  <div className="absolute inset-0 -z-10 !w-max opacity-70 blur-[5px]">
                     {translateText("favourite")}
                   </div>
                 </div>
@@ -434,13 +434,13 @@ export function NewGame() {
             </button>
             <button
               onClick={addGame}
-              className="flex items-center gap-1 standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] ">
+              className="standardButton flex items-center gap-1 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] ">
               <p className="!w-max">{translateText("save")}</p>
 
               <SaveDisk />
             </button>
             <button
-              className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !gap-0"
+              className="standardButton flex items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
                 closeDialog("newGameModal");
                 getData();
@@ -501,7 +501,7 @@ export function NewGame() {
               dataEntryContext.setLocatedGridImage(undefined);
               dataEntryContext.setFoundGridImage(undefined);
             }}
-            className="panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] locatingGridImg h-full aspect-[2/3] group relative overflow-hidden">
+            className="panelButton locatingGridImg group relative aspect-[2/3] h-full cursor-pointer overflow-hidden bg-[#f1f1f1] dark:bg-[#1c1c1c]">
             <Show
               when={dataEntryContext.foundGridImage()}
               fallback={
@@ -509,7 +509,7 @@ export function NewGame() {
                   <Show
                     when={dataEntryContext.locatedGridImage()}
                     fallback={
-                      <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] left-[35%] top-[47%] opacity-0">
+                      <span class="tooltip absolute left-[35%] top-[47%] opacity-0 group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]">
                         {translateText("grid/cover")} <br />
                       </span>
                     }>
@@ -518,7 +518,7 @@ export function NewGame() {
                       src={convertFileSrc(dataEntryContext.locatedGridImage())}
                       alt=""
                     />
-                    <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0 ">
+                    <span class="tooltip absolute left-[35%] top-[47%] opacity-0  group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] ">
                       {translateText("grid/cover")} <br />
                     </span>
                   </Show>
@@ -540,9 +540,9 @@ export function NewGame() {
               </Show>
 
               <span
-                class={`absolute tooltip flex items-center gap-[5px] max-large:left-[25%] max-large:top-[45%] left-[35%] top-[47%] ${
+                class={`tooltip absolute left-[35%] top-[47%] flex items-center gap-[5px] max-large:left-[25%] max-large:top-[45%] ${
                   showGridImageLoading() == false
-                    ? "group-hover:opacity-100 opacity-0"
+                    ? "opacity-0 group-hover:opacity-100"
                     : ""
                 }`}>
                 <span className="opacity-50">
@@ -552,7 +552,7 @@ export function NewGame() {
                 <Show
                   when={showGridImageLoading() == false}
                   fallback={
-                    <div className="animate-spin-slow w-max h-max">
+                    <div className="h-max w-max animate-spin-slow">
                       <Loading />
                     </div>
                   }>
@@ -562,7 +562,7 @@ export function NewGame() {
             </Show>
           </button>
 
-          <div className="flex flex-col gap-3 relative">
+          <div className="relative flex flex-col gap-3">
             <button
               onClick={locateHeroImage}
               onScroll={() => {}}
@@ -612,7 +612,7 @@ export function NewGame() {
                 dataEntryContext.setLocatedHeroImage(undefined);
                 dataEntryContext.setFoundHeroImage(undefined);
               }}
-              className="max-large:h-[250px] h-[350px] aspect-[67/26] group relative p-0 m-0 panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
+              className="panelButton group relative m-0 aspect-[67/26] h-[350px] cursor-pointer bg-[#f1f1f1] p-0 dark:bg-[#1c1c1c] max-large:h-[250px]"
               aria-label="hero">
               <Show
                 when={dataEntryContext.foundHeroImage()}
@@ -623,7 +623,7 @@ export function NewGame() {
                       when={dataEntryContext.locatedHeroImage()}
                       className="absolute inset-0 overflow-hidden"
                       fallback={
-                        <span class="absolute tooltip group-hover:opacity-100 left-[45%] top-[47%] opacity-0">
+                        <span class="tooltip absolute left-[45%] top-[47%] opacity-0 group-hover:opacity-100">
                           {translateText("hero")}
                         </span>
                       }>
@@ -632,16 +632,16 @@ export function NewGame() {
                           dataEntryContext.locatedHeroImage(),
                         )}
                         alt=""
-                        className="absolute inset-0 h-full rounded-[6px] aspect-[96/31]"
+                        className="absolute inset-0 aspect-[96/31] h-full rounded-[6px]"
                       />
                       <img
                         src={convertFileSrc(
                           dataEntryContext.locatedHeroImage(),
                         )}
                         alt=""
-                        className="absolute inset-0 -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.4] aspect-[96/31]"
+                        className="absolute inset-0 -z-10 aspect-[96/31] h-full rounded-[6px] opacity-[0.4] blur-[80px]"
                       />
-                      <span class="absolute tooltip group-hover:opacity-100 left-[45%] top-[47%] opacity-0">
+                      <span class="tooltip absolute left-[45%] top-[47%] opacity-0 group-hover:opacity-100">
                         {translateText("hero")}
                       </span>
                     </Show>
@@ -658,7 +658,7 @@ export function NewGame() {
                       setShowHeroImageLoading(false);
                     }}
                     alt=""
-                    className="absolute inset-0 h-full rounded-[6px] aspect-[96/31] "
+                    className="absolute inset-0 aspect-[96/31] h-full rounded-[6px] "
                   />
                   <img
                     src={
@@ -670,14 +670,14 @@ export function NewGame() {
                       setShowHeroImageLoading(false);
                     }}
                     alt=""
-                    className="absolute inset-0 -z-10 h-full aspect-[96/31] rounded-[6px] blur-[80px] opacity-[0.4] "
+                    className="absolute inset-0 -z-10 aspect-[96/31] h-full rounded-[6px] opacity-[0.4] blur-[80px] "
                   />
                 </Show>
 
                 <span
-                  class={`absolute tooltip flex items-center gap-[5px] left-[42%] top-[45%] ${
+                  class={`tooltip absolute left-[42%] top-[45%] flex items-center gap-[5px] ${
                     showHeroImageLoading() == false
-                      ? "group-hover:opacity-100 opacity-0"
+                      ? "opacity-0 group-hover:opacity-100"
                       : ""
                   }`}>
                   <span className="opacity-50">
@@ -687,7 +687,7 @@ export function NewGame() {
                   <Show
                     when={showHeroImageLoading() == false}
                     fallback={
-                      <div className="animate-spin-slow w-max h-max">
+                      <div className="h-max w-max animate-spin-slow">
                         <Loading />
                       </div>
                     }>
@@ -710,9 +710,9 @@ export function NewGame() {
                           dataEntryContext.setLocatedLogo(undefined);
                           dataEntryContext.setFoundLogoImage(undefined);
                         }}
-                        className="panelButton cursor-pointer bg-[#E8E8E8] dark:!bg-[#272727] group  absolute bottom-[70px] left-[20px] max-large:w-[243px] max-large:h-[90px] w-[250px] h-[90px] z-[100] "
+                        className="panelButton group absolute bottom-[70px] left-[20px]  z-[100] h-[90px] w-[250px] cursor-pointer bg-[#E8E8E8] dark:!bg-[#272727] max-large:h-[90px] max-large:w-[243px] "
                         aria-label="logo">
-                        <span class="absolute tooltip group-hover:opacity-100 max-large:left-[38%] max-large:top-[32%] left-[40%] top-[35%] opacity-0">
+                        <span class="tooltip absolute left-[40%] top-[35%] opacity-0 group-hover:opacity-100 max-large:left-[38%] max-large:top-[32%]">
                           {translateText("logo")}
                         </span>
                       </button>
@@ -723,14 +723,14 @@ export function NewGame() {
                         dataEntryContext.setLocatedLogo(undefined);
                         dataEntryContext.setFoundLogoImage(undefined);
                       }}
-                      className="bg-[#E8E8E800] dark:bg-[#27272700] group absolute bottom-[70px] left-[20px] panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
+                      className="panelButton group absolute bottom-[70px] left-[20px] cursor-pointer bg-[#E8E8E800] bg-[#f1f1f1] dark:bg-[#1c1c1c] dark:bg-[#27272700]"
                       aria-label="logo">
                       <img
                         src={convertFileSrc(dataEntryContext.locatedLogo())}
                         alt=""
-                        className="relative aspect-auto max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
+                        className="relative aspect-auto max-h-[100px] max-w-[400px] max-large:max-h-[70px] max-large:max-w-[300px]"
                       />
-                      <span class="absolute tooltip group-hover:opacity-100 left-[35%] top-[30%] opacity-0">
+                      <span class="tooltip absolute left-[35%] top-[30%] opacity-0 group-hover:opacity-100">
                         {translateText("logo")}
                       </span>
                     </button>
@@ -786,7 +786,7 @@ export function NewGame() {
                   dataEntryContext.setLocatedLogo(undefined);
                   dataEntryContext.setFoundLogoImage(undefined);
                 }}
-                className="bg-[#E8E8E800] dark:bg-[#27272700] group  absolute bottom-[60px] left-[10px] panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
+                className="panelButton group absolute  bottom-[60px] left-[10px] cursor-pointer bg-[#E8E8E800] bg-[#f1f1f1] dark:bg-[#1c1c1c] dark:bg-[#27272700]"
                 aria-label="logo">
                 <img
                   src={
@@ -795,7 +795,7 @@ export function NewGame() {
                     ]
                   }
                   alt=""
-                  className={`relative max-large:w-[243px] max-large:h-[90px] w-[250px] h-[90px] !object-scale-down ${
+                  className={`relative h-[90px] w-[250px] !object-scale-down max-large:h-[90px] max-large:w-[243px] ${
                     showLogoImageLoading() ? "opacity-0" : ""
                   }`}
                   onLoad={() => {
@@ -804,9 +804,9 @@ export function NewGame() {
                 />
 
                 <span
-                  className={`flex gap-[5px] items-center absolute tooltip  max-large:left-[30%] max-large:top-[35%] left-[33%] top-[35%]  ${
+                  className={`tooltip absolute left-[33%] top-[35%] flex  items-center gap-[5px] max-large:left-[30%] max-large:top-[35%]  ${
                     showLogoImageLoading() == false
-                      ? "group-hover:opacity-100 opacity-0"
+                      ? "opacity-0 group-hover:opacity-100"
                       : ""
                   }`}>
                   <span className="opacity-50">
@@ -817,7 +817,7 @@ export function NewGame() {
                   <Show
                     when={showLogoImageLoading() == false}
                     fallback={
-                      <div className="relative animate-spin-slow w-max h-max">
+                      <div className="relative h-max w-max animate-spin-slow">
                         <Loading />
                       </div>
                     }>
@@ -827,7 +827,7 @@ export function NewGame() {
               </button>
             </Show>
 
-            <div className="flex gap-3 items-center cursor-pointer ">
+            <div className="flex cursor-pointer items-center gap-3 ">
               <Show
                 when={dataEntryContext.foundIconImage()}
                 fallback={
@@ -837,20 +837,20 @@ export function NewGame() {
                       dataEntryContext.setLocatedIcon(undefined);
                       dataEntryContext.setFoundIconImage(undefined);
                     }}
-                    className="relative !bg-[#27272700] group p-0"
+                    className="group relative !bg-[#27272700] p-0"
                     aria-label="logo">
                     <Show
                       when={dataEntryContext.locatedIcon()}
                       fallback={
-                        <div className="w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]" />
+                        <div className="h-[40px] w-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]" />
                       }>
                       <img
                         src={convertFileSrc(dataEntryContext.locatedIcon())}
                         alt=""
-                        className="w-[40px] h-[40px]"
+                        className="h-[40px] w-[40px]"
                       />
                     </Show>
-                    <span class="absolute tooltip z-[10000] group-hover:opacity-100 left-[-10%] top-[120%] opacity-0 ">
+                    <span class="tooltip absolute left-[-10%] top-[120%] z-[10000] opacity-0 group-hover:opacity-100 ">
                       {translateText("icon")}
                     </span>
                   </button>
@@ -904,13 +904,13 @@ export function NewGame() {
                     dataEntryContext.setLocatedIcon(undefined);
                     dataEntryContext.setFoundIconImage(undefined);
                   }}
-                  className="relative group p-0"
+                  className="group relative p-0"
                   aria-label="logo">
                   <Show
                     when={showIconImageLoading() == false}
                     fallback={
-                      <div className="w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]">
-                        <div className="animate-spin-slow absolute top-[30%] left-[32%]">
+                      <div className="h-[40px] w-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]">
+                        <div className="absolute left-[32%] top-[30%] animate-spin-slow">
                           <Loading />
                         </div>
                       </div>
@@ -925,14 +925,14 @@ export function NewGame() {
                       onLoad={() => {
                         setShowIconImageLoading(false);
                       }}
-                      className="w-[40px] h-[40px]"
+                      className="h-[40px] w-[40px]"
                     />
                   </Show>
 
                   <span
-                    className={`absolute tooltip z-[10000] group-hover:opacity-100 left-[-55%] top-[120%] opacity-0 flex items-center gap-[5px] ${
+                    className={`tooltip absolute left-[-55%] top-[120%] z-[10000] flex items-center gap-[5px] opacity-0 group-hover:opacity-100 ${
                       showIconImageLoading() == false
-                        ? "group-hover:opacity-100 opacity-0"
+                        ? "opacity-0 group-hover:opacity-100"
                         : ""
                     }`}>
                     <span className="opacity-50">
@@ -946,7 +946,7 @@ export function NewGame() {
               </Show>
 
               <div
-                className="flex items-center gameInput dark:bg-[#272727cc] bg-[#E8E8E8cc] backdrop-blur-[10px]"
+                className="gameInput flex items-center bg-[#E8E8E8cc] backdrop-blur-[10px] dark:bg-[#272727cc]"
                 style="flex-grow: 1">
                 <input
                   aria-autocomplete="none"
@@ -962,7 +962,7 @@ export function NewGame() {
                   placeholder={translateText("name of game")}
                 />
                 <button
-                  className="standardButton !text-black dark:!text-white  hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0 bg-[#f1f1f1] dark:!bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80]"
+                  className="standardButton !mr-2 !mt-0  !w-max cursor-pointer bg-[#f1f1f1] px-3 py-1 !text-black text-[#ffffff80] hover:!bg-[#d6d6d6] dark:!bg-[#1c1c1c] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
                   onClick={async () => {
                     if (
                       dataEntryContext.gameName() == "" ||
@@ -994,7 +994,7 @@ export function NewGame() {
                         globalContext.libraryData.userSettings.language ==
                           "fr" && applicationStateContext.windowWidth() <= 1500
                       }>
-                      <p className="text-[10px] text-clip w-[70px]">
+                      <p className="w-[70px] text-clip text-[10px]">
                         {translateText("auto find assets")}
                       </p>
                     </Match>
@@ -1008,7 +1008,7 @@ export function NewGame() {
                   </Switch>
                 </button>
                 <button
-                  className="standardButton  !text-black dark:!text-white  hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0 bg-[#f1f1f1] dark:bg-[#1c1c1c] py-1 px-3 !mr-2 cursor-pointer  text-[#ffffff80]"
+                  className="standardButton  !mr-2 !mt-0  !w-max cursor-pointer bg-[#f1f1f1] px-3 py-1 !text-black text-[#ffffff80] hover:!bg-[#d6d6d6] dark:bg-[#1c1c1c] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
                   onClick={async () => {
                     dataEntryContext.gameName() == undefined
                       ? invoke("open_location", {
@@ -1038,7 +1038,7 @@ export function NewGame() {
                         globalContext.libraryData.userSettings.language ==
                           "fr" && applicationStateContext.windowWidth() <= 1500
                       }>
-                      <p className="text-[10px] text-clip w-[100px]">
+                      <p className="w-[100px] text-clip text-[10px]">
                         {translateText("find assets")}
                       </p>
                     </Match>
@@ -1058,7 +1058,7 @@ export function NewGame() {
                 onContextMenu={() => {
                   dataEntryContext.setlocatedGame(undefined);
                 }}
-                className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0">
+                className="standardButton !mt-0 !w-max bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]">
                 {dataEntryContext.locatedGame() == undefined
                   ? translateText("locate game")
                   : dataEntryContext
@@ -1089,7 +1089,7 @@ export function NewGame() {
           </div>
         </div>
 
-        <div className="flex  justify-between max-large:w-[61rem] w-[84rem]">
+        <div className="flex  w-[84rem] justify-between max-large:w-[61rem]">
           <span className="opacity-50">
             {translateText("right click to empty image selection")}
           </span>
@@ -1106,7 +1106,7 @@ export function NewGame() {
 
         <Show when={applicationStateContext.SGDBGames()}>
           <Show when={selectedDataContext.selectedGameId() == undefined}>
-            <div className="dark:bg-[#272727cc] bg-[#E8E8E8cc] gameInput flex backdrop-blur-[10px] max-large:w-[61rem] w-[84rem]">
+            <div className="gameInput flex w-[84rem] bg-[#E8E8E8cc] backdrop-blur-[10px] dark:bg-[#272727cc] max-large:w-[61rem]">
               <button
                 onClick={() => {
                   document.getElementById(
@@ -1117,7 +1117,7 @@ export function NewGame() {
               </button>
               <div
                 id="SGDBGamesContainer"
-                className="flex gap-[5px] overflow-x-auto SGDBGamesContainer scroll-smooth">
+                className="SGDBGamesContainer flex gap-[5px] overflow-x-auto scroll-smooth">
                 <For each={applicationStateContext.SGDBGames()}>
                   {(foundGame) => {
                     return (

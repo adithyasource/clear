@@ -70,18 +70,18 @@ export function Settings() {
             previouslyFocusedElement.focus();
           });
         }}
-        className="outline-none absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#d1d1d166]">
-        <div className="flex items-center justify-center w-screen h-screen align-middle ">
-          <div className="border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] w-[70%] p-6">
+        className="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d166] outline-none dark:bg-[#12121266]">
+        <div className="flex h-screen w-screen items-center justify-center align-middle ">
+          <div className="w-[70%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
             <div className="flex justify-between">
               <div>
-                <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
+                <p className="text-[25px] text-[#000000] dark:text-[#ffffff80]">
                   {translateText("settings")}
                 </p>
               </div>
 
               <button
-                className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !gap-0"
+                className="standardButton !w-max !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                 onClick={() => {
                   closeDialog("settingsModal");
                   getData();
@@ -91,7 +91,7 @@ export function Settings() {
               </button>
             </div>
 
-            <div className="grid grid-cols-3 mt-[25px] gap-y-4">
+            <div className="mt-[25px] grid grid-cols-3 gap-y-4">
               <button
                 onClick={async () => {
                   globalContext.setLibraryData(
@@ -111,7 +111,7 @@ export function Settings() {
                   }>
                   <div className="relative ">
                     <div className="">{translateText("rounded borders")}</div>
-                    <div className="absolute blur-[5px] opacity-70 inset-0">
+                    <div className="absolute inset-0 opacity-70 blur-[5px]">
                       {translateText("rounded borders")}
                     </div>
                   </div>
@@ -137,7 +137,7 @@ export function Settings() {
                   }>
                   <div className="relative">
                     <div className="">{translateText("game title")}</div>
-                    <div className="absolute blur-[5px] opacity-70 inset-0  ">
+                    <div className="absolute inset-0 opacity-70 blur-[5px]  ">
                       {translateText("game title")}
                     </div>
                   </div>
@@ -163,7 +163,7 @@ export function Settings() {
                   }>
                   <div className="relative">
                     <div className="">{translateText("folder title")}</div>
-                    <div className="absolute blur-[5px] opacity-70 inset-0  ">
+                    <div className="absolute inset-0 opacity-70 blur-[5px]  ">
                       {translateText("folder title")}
                     </div>
                   </div>
@@ -193,7 +193,7 @@ export function Settings() {
                     <div className="">
                       {translateText("quit after opening game")}
                     </div>
-                    <div className="absolute blur-[5px] opacity-70 inset-0  ">
+                    <div className="absolute inset-0 opacity-70 blur-[5px]  ">
                       {translateText("quit after opening game")}
                     </div>
                   </div>
@@ -238,8 +238,8 @@ export function Settings() {
 
                   getData();
                 }}
-                className="flex gap-2 cursor-pointer p-0 text-left">
-                <span className="dark:text-[#ffffff80] text-[#12121280]">
+                className="flex cursor-pointer gap-2 p-0 text-left">
+                <span className="text-[#12121280] dark:text-[#ffffff80]">
                   [{translateText("font")}]
                 </span>
                 <div className="">
@@ -266,8 +266,8 @@ export function Settings() {
 
                   getData();
                 }}
-                className="flex gap-2 cursor-pointer p-0 text-left">
-                <span className="dark:text-[#ffffff80] text-[#12121280]">
+                className="flex cursor-pointer gap-2 p-0 text-left">
+                <span className="text-[#12121280] dark:text-[#ffffff80]">
                   [{translateText("theme")}]
                 </span>
                 <div className="">
@@ -276,32 +276,32 @@ export function Settings() {
                   ) || translateText("dark")}
                 </div>
               </button>
-              <div className="flex gap-2 cursor-pointer relative">
+              <div className="relative flex cursor-pointer gap-2">
                 <LanguageSelector onSettingsPage={true} />
               </div>
             </div>
 
             <Show when={uiContext.showNewVersionAvailable()}>
-              <div className="flex gap-3 items-start mt-[35px]">
+              <div className="mt-[35px] flex items-start gap-3">
                 <button
-                  className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !m-0"
+                  className="standardButton !m-0 flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                   onClick={() => {
                     invoke("open_location", {
                       location: "https://clear.adithya.zip/update",
                     });
                   }}>
                   {translateText("new update available!")}
-                  <span className="dark:text-[#ffffff80] text-[#12121280]">
+                  <span className="text-[#12121280] dark:text-[#ffffff80]">
                     v{applicationStateContext.latestVersion()}
                   </span>
                 </button>
               </div>
             </Show>
 
-            <div className="flex flex-row items-start mt-[35px] gap-4">
+            <div className="mt-[35px] flex flex-row items-start gap-4">
               <div>
                 <button
-                  className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] hint--bottom !flex !w-max !gap-3 "
+                  className="standardButton hint--bottom !flex !w-max !gap-3 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] "
                   aria-label={translateText("might not work perfectly!")}
                   onClick={() => {
                     if (globalContext.libraryData.folders.steam != undefined) {
@@ -334,9 +334,9 @@ export function Settings() {
                 </button>
               </div>
 
-              <div className="flex gap-3 items-start">
+              <div className="flex items-start gap-3">
                 <button
-                  className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !m-0"
+                  className="standardButton !m-0 flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                   onClick={async () => {
                     const appDataDirPath = await appDataDir();
 
@@ -346,7 +346,7 @@ export function Settings() {
                   }}>
                   {translateText("open library location")}
                 </button>
-                <span className="dark:text-[#ffffff80] text-[#12121280] w-[50%]">
+                <span className="w-[50%] text-[#12121280] dark:text-[#ffffff80]">
                   {translateText(
                     "these are all the files that the app stores on your pc",
                   )}
@@ -356,10 +356,10 @@ export function Settings() {
 
             <Hotkeys onSettingsPage={true} />
 
-            <div className="flex justify-between mt-[35px] ">
+            <div className="mt-[35px] flex justify-between ">
               <div>
                 clear{" "}
-                <span className="dark:text-[#ffffff80] text-[#12121280]">
+                <span className="text-[#12121280] dark:text-[#ffffff80]">
                   v{applicationStateContext.appVersion()}
                 </span>
               </div>
@@ -369,7 +369,7 @@ export function Settings() {
                     location: "https://clear.adithya.zip/feedback",
                   });
                 }}
-                className="underline cursor-pointer p-0">
+                className="cursor-pointer p-0 underline">
                 {translateText("feedback")}
               </button>
               <button
@@ -378,7 +378,7 @@ export function Settings() {
                     location: "https://clear.adithya.zip/",
                   });
                 }}
-                className="underline cursor-pointer p-0">
+                className="cursor-pointer p-0 underline">
                 {translateText("website")}
               </button>
               <div>
@@ -389,7 +389,7 @@ export function Settings() {
                       location: "https://adithya.zip/",
                     });
                   }}
-                  className="underline cursor-pointer p-0">
+                  className="cursor-pointer p-0 underline">
                   {" "}
                   adithya
                 </button>
@@ -400,7 +400,7 @@ export function Settings() {
                     location: "https://ko-fi.com/adithyasource",
                   });
                 }}
-                className="underline cursor-pointer p-0">
+                className="cursor-pointer p-0 underline">
                 {translateText("buy me a coffee")}
               </button>
             </div>

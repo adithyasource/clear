@@ -418,11 +418,11 @@ export function EditGame() {
         dataUpdateContext.setEditedlocatedGame(undefined);
         getData();
       }}
-      className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#121212cc] bg-[#d1d1d1cc]">
-      <div className="flex flex-col items-center justify-center w-screen h-screen gap-3">
-        <div className="flex justify-between max-large:w-[61rem] w-[84rem]">
+      className="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d1cc] dark:bg-[#121212cc]">
+      <div className="flex h-screen w-screen flex-col items-center justify-center gap-3">
+        <div className="flex w-[84rem] justify-between max-large:w-[61rem]">
           <div>
-            <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
+            <p className="text-[25px] text-[#000000] dark:text-[#ffffff80]">
               {translateText("edit")} {selectedDataContext.selectedGame().name}
             </p>
           </div>
@@ -448,7 +448,7 @@ export function EditGame() {
                     }>
                     <div className="relative">
                       <div className="!w-max">{translateText("favourite")}</div>
-                      <div className="absolute blur-[5px] opacity-70 -z-10 inset-0 !w-max">
+                      <div className="absolute inset-0 -z-10 !w-max opacity-70 blur-[5px]">
                         {translateText("favourite")}
                       </div>
                     </div>
@@ -458,7 +458,7 @@ export function EditGame() {
                 <Match when={dataUpdateContext.editedFavouriteGame() == true}>
                   <div className="relative">
                     <div className="!w-max"> {translateText("favourite")}</div>
-                    <div className="absolute blur-[5px] opacity-70 -z-10 inset-0 !w-max">
+                    <div className="absolute inset-0 -z-10 !w-max opacity-70 blur-[5px]">
                       {translateText("favourite")}
                     </div>
                   </div>
@@ -471,7 +471,7 @@ export function EditGame() {
             </button>
             <button
               onClick={updateGame}
-              className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] ">
+              className="standardButton flex items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] ">
               <div className="!w-max"> {translateText("save")}</div>
               <SaveDisk />
             </button>
@@ -485,8 +485,8 @@ export function EditGame() {
                   uiContext.setShowDeleteConfirm(false);
                 }, 1500);
               }}
-              className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] ">
-              <span className="text-[#FF3636] w-max">
+              className="standardButton flex items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] ">
+              <span className="w-max text-[#FF3636]">
                 {uiContext.showDeleteConfirm()
                   ? translateText("confirm?")
                   : translateText("delete")}
@@ -494,7 +494,7 @@ export function EditGame() {
               <TrashDelete />
             </button>
             <button
-              className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !gap-0 "
+              className="standardButton flex items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] "
               onClick={() => {
                 closeDialog("editGameModal");
                 getData();
@@ -510,7 +510,7 @@ export function EditGame() {
             onContextMenu={() => {
               dataUpdateContext.setEditedLocatedGridImage(null);
             }}
-            className="panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] locatingGridImg h-full aspect-[2/3] group relative overflow-hidden"
+            className="panelButton locatingGridImg group relative aspect-[2/3] h-full cursor-pointer overflow-hidden bg-[#f1f1f1] dark:bg-[#1c1c1c]"
             aria-label="grid/cover">
             <Switch>
               <Match
@@ -524,7 +524,7 @@ export function EditGame() {
                   )}
                   alt=""
                 />
-                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
+                <span class="tooltip absolute left-[35%] top-[47%] opacity-0  group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]">
                   {translateText("grid/cover")}
                 </span>
               </Match>
@@ -536,31 +536,31 @@ export function EditGame() {
                   )}
                   alt=""
                 />
-                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
+                <span class="tooltip absolute left-[35%] top-[47%] opacity-0  group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]">
                   {translateText("grid/cover")}
                 </span>
               </Match>
               <Match when={dataUpdateContext.editedLocatedGridImage() === null}>
-                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]  left-[35%] top-[47%] opacity-0">
+                <span class="tooltip absolute left-[35%] top-[47%] opacity-0  group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]">
                   {translateText("grid/cover")}
                 </span>
               </Match>
             </Switch>
           </button>
 
-          <div className="flex flex-col gap-3 relative">
+          <div className="relative flex flex-col gap-3">
             <button
               onClick={locateEditedHeroImage}
               onContextMenu={() => {
                 dataUpdateContext.setEditedLocatedHeroImage(null);
               }}
-              className="max-large:h-[250px] h-[350px] aspect-[67/26] group relative p-0 m-0 panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c]"
+              className="panelButton group relative m-0 aspect-[67/26] h-[350px] cursor-pointer bg-[#f1f1f1] p-0 dark:bg-[#1c1c1c] max-large:h-[250px]"
               aria-label="hero">
               <Switch>
                 <Match
                   when={dataUpdateContext.editedLocatedHeroImage() === null}
                   className="absolute inset-0 overflow-hidden">
-                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
+                  <span class="tooltip absolute left-[45%] top-[47%] opacity-0 group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%]">
                     {translateText("hero")}
                   </span>
                 </Match>
@@ -585,7 +585,7 @@ export function EditGame() {
                         selectedDataContext.selectedGame().heroImage,
                     )}
                     alt=""
-                    className="absolute inset-0 aspect-[96/31]  -z-10 h-full rounded-[6px] blur-[80px] opacity-[0.6]"
+                    className="absolute inset-0 -z-10  aspect-[96/31] h-full rounded-[6px] opacity-[0.6] blur-[80px]"
                   />
                 </Match>
                 <Match
@@ -603,12 +603,12 @@ export function EditGame() {
                       dataUpdateContext.editedLocatedHeroImage(),
                     )}
                     alt=""
-                    className="absolute inset-0 -z-10 aspect-[96/31]  h-full rounded-[6px] blur-[80px] opacity-[0.6]"
+                    className="absolute inset-0 -z-10 aspect-[96/31]  h-full rounded-[6px] opacity-[0.6] blur-[80px]"
                   />
                 </Match>
               </Switch>
 
-              <span class="absolute tooltip group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%] left-[45%] top-[47%] opacity-0">
+              <span class="tooltip absolute left-[45%] top-[47%] opacity-0 group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%]">
                 {translateText("hero")}
               </span>
             </button>
@@ -621,27 +621,27 @@ export function EditGame() {
                   onContextMenu={() => {
                     dataUpdateContext.setEditedLocatedLogo(null);
                   }}
-                  className={`panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] !bg-[#27272700] group  absolute bottom-[60px] left-[20px] max-large:bottom-[40px] ${
+                  className={`panelButton group absolute bottom-[60px] left-[20px] cursor-pointer  !bg-[#27272700] bg-[#f1f1f1] dark:bg-[#1c1c1c] max-large:bottom-[40px] ${
                     selectedDataContext.selectedGame().logo
                       ? ""
-                      : "!w-[200px] !h-[65px]"
+                      : "!h-[65px] !w-[200px]"
                   } `}
                   aria-label="logo">
                   <Show
                     when={dataUpdateContext.editedLocatedLogo()}
                     fallback={
-                      <div className="max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] relative bg-[#E8E8E8] dark:!bg-[#272727]" />
+                      <div className="relative h-[90px] w-[250px] bg-[#E8E8E8] dark:!bg-[#272727] max-large:h-[70px] max-large:w-[170px]" />
                     }>
                     <img
                       src={convertFileSrc(
                         dataUpdateContext.editedLocatedLogo(),
                       )}
                       alt=""
-                      className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
+                      className="relative max-h-[100px] max-w-[400px] max-large:max-h-[70px] max-large:max-w-[300px]"
                     />
                   </Show>
 
-                  <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[45%] left-[55%] top-[65%] opacity-0">
+                  <span class="tooltip absolute left-[55%] top-[65%] opacity-0 group-hover:opacity-100 max-large:left-[35%] max-large:top-[45%]">
                     {translateText("logo")}
                   </span>
                 </button>
@@ -651,10 +651,10 @@ export function EditGame() {
                 onContextMenu={() => {
                   dataUpdateContext.setEditedLocatedLogo(null);
                 }}
-                className={`panelButton cursor-pointer bg-[#f1f1f1] dark:bg-[#1c1c1c] !bg-[#27272700] group  absolute bottom-[70px] left-[20px] ${
+                className={`panelButton group absolute bottom-[70px] left-[20px] cursor-pointer  !bg-[#27272700] bg-[#f1f1f1] dark:bg-[#1c1c1c] ${
                   selectedDataContext.selectedGame().logo
                     ? ""
-                    : "!w-[200px] !h-[65px]"
+                    : "!h-[65px] !w-[200px]"
                 } `}
                 aria-label="logo">
                 <Switch>
@@ -667,7 +667,7 @@ export function EditGame() {
                           selectedDataContext.selectedGame().logo,
                       )}
                       alt=""
-                      className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
+                      className="relative max-h-[100px] max-w-[400px] max-large:max-h-[70px] max-large:max-w-[300px]"
                     />
                   </Match>
                   <Match when={dataUpdateContext.editedLocatedLogo()}>
@@ -676,27 +676,27 @@ export function EditGame() {
                         dataUpdateContext.editedLocatedLogo(),
                       )}
                       alt=""
-                      className="relative max-large:max-h-[70px] max-large:max-w-[300px] max-h-[100px] max-w-[400px]"
+                      className="relative max-h-[100px] max-w-[400px] max-large:max-h-[70px] max-large:max-w-[300px]"
                     />
                   </Match>
                   <Match when={dataUpdateContext.editedLocatedLogo() === null}>
-                    <div className="max-large:w-[170px] max-large:h-[70px] w-[250px] h-[90px] relative bg-[#E8E8E8] dark:!bg-[#272727]" />
+                    <div className="relative h-[90px] w-[250px] bg-[#E8E8E8] dark:!bg-[#272727] max-large:h-[70px] max-large:w-[170px]" />
                   </Match>
                 </Switch>
 
-                <span class="absolute tooltip group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%] left-[40%] top-[35%] opacity-0">
+                <span class="tooltip absolute left-[40%] top-[35%] opacity-0 group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%]">
                   {translateText("logo")}
                 </span>
               </button>
             </Show>
 
-            <div className="flex gap-3 items-center cursor-pointer">
+            <div className="flex cursor-pointer items-center gap-3">
               <button
                 onClick={locateEditedIcon}
                 onContextMenu={() => {
                   dataUpdateContext.setEditedLocatedIcon(null);
                 }}
-                className="relative !bg-[#27272700] group p-0"
+                className="group relative !bg-[#27272700] p-0"
                 aria-label="logo">
                 <Switch>
                   <Match
@@ -704,7 +704,7 @@ export function EditGame() {
                     <Show
                       when={selectedDataContext.selectedGame().icon}
                       fallback={
-                        <div className="w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]" />
+                        <div className="h-[40px] w-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]" />
                       }>
                       <img
                         src={convertFileSrc(
@@ -713,7 +713,7 @@ export function EditGame() {
                             selectedDataContext.selectedGame().icon,
                         )}
                         alt=""
-                        className="w-[40px] h-[40px] "
+                        className="h-[40px] w-[40px] "
                       />
                     </Show>
                   </Match>
@@ -723,14 +723,14 @@ export function EditGame() {
                         dataUpdateContext.editedLocatedIcon(),
                       )}
                       alt=""
-                      className="w-[40px] h-[40px] "
+                      className="h-[40px] w-[40px] "
                     />
                   </Match>
                   <Match when={dataUpdateContext.editedLocatedIcon() === null}>
-                    <div className="w-[40px] h-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]" />
+                    <div className="h-[40px] w-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]" />
                   </Match>
                 </Switch>
-                <span class="absolute tooltip z-[10000] group-hover:opacity-100 left-[-10%] top-[120%] opacity-0">
+                <span class="tooltip absolute left-[-10%] top-[120%] z-[10000] opacity-0 group-hover:opacity-100">
                   {translateText("icon")}
                 </span>
               </button>
@@ -744,7 +744,7 @@ export function EditGame() {
                 onInput={(e) => {
                   dataUpdateContext.setEditedGameName(e.currentTarget.value);
                 }}
-                className="dark:bg-[#272727cc] bg-[#E8E8E8cc] backdrop-blur-[10px]"
+                className="bg-[#E8E8E8cc] backdrop-blur-[10px] dark:bg-[#272727cc]"
                 placeholder={translateText("name of game")}
                 value={selectedDataContext.selectedGame().name}
               />
@@ -753,7 +753,7 @@ export function EditGame() {
                 onContextMenu={() => {
                   dataUpdateContext.setEditedlocatedGame(null);
                 }}
-                className="standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !mt-0">
+                className="standardButton !mt-0 !w-max bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]">
                 <Switch>
                   <Match
                     when={dataUpdateContext.editedLocatedGame() === undefined}>
@@ -838,11 +838,11 @@ export function EditGame() {
                         .join("\\"),
                     });
                   }}
-                  className="relative group standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max"
+                  className="standardButton group relative !w-max bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                   aria-label="logo">
                   <OpenExternal />
 
-                  <span class="absolute tooltip group-hover:opacity-100 left-[-150%] top-[120%] opacity-0">
+                  <span class="tooltip absolute left-[-150%] top-[120%] opacity-0 group-hover:opacity-100">
                     {translateText("open containing folder")}
                   </span>
                 </button>
@@ -850,7 +850,7 @@ export function EditGame() {
             </div>
           </div>
         </div>
-        <div className="flex justify-between max-large:w-[61rem] w-[84rem]">
+        <div className="flex w-[84rem] justify-between max-large:w-[61rem]">
           <span className=" opacity-50">
             {translateText("right click to empty image selection")}
           </span>

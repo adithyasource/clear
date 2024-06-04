@@ -49,10 +49,10 @@ export function GameCardSideBar(props) {
               globalContext.libraryData.games[props.gameName].icon,
           )}
           alt=""
-          className="h-[16px] aspect-square"
+          className="aspect-square h-[16px]"
         />
       </Show>
-      <span className="text-[#00000080] dark:text-[#ffffff80] active:dark:text-[#ffffff3a] active:text-[#0000003a]">
+      <span className="text-[#00000080] active:text-[#0000003a] dark:text-[#ffffff80] active:dark:text-[#ffffff3a]">
         {props.gameName}
       </span>
     </button>

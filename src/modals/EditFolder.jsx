@@ -151,9 +151,9 @@ export function EditFolder() {
           previouslyFocusedElement.focus();
         });
       }}
-      className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#d1d1d166]">
-      <div className="flex items-center justify-center w-screen h-screen align-middle ">
-        <div className="border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] w-[50%] p-6">
+      className="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d166] dark:bg-[#12121266]">
+      <div className="flex h-screen w-screen items-center justify-center align-middle ">
+        <div className="w-[50%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
           <div
             className={`flex justify-between ${
               globalContext.libraryData.userSettings.language != "en"
@@ -161,7 +161,7 @@ export function EditFolder() {
                 : ""
             } `}>
             <div>
-              <p className="dark:text-[#ffffff80] text-[#000000] text-[25px]">
+              <p className="text-[25px] text-[#000000] dark:text-[#ffffff80]">
                 {translateText("edit")}{" "}
                 {selectedDataContext.selectedFolder().name}
               </p>
@@ -193,7 +193,7 @@ export function EditFolder() {
                         <div className="">
                           {translateText("hide in expanded view")}
                         </div>
-                        <div className="absolute blur-[5px] opacity-70 inset-0">
+                        <div className="absolute inset-0 opacity-70 blur-[5px]">
                           {translateText("hide in expanded view")}
                         </div>
                       </div>
@@ -205,7 +205,7 @@ export function EditFolder() {
                       <div className="">
                         {translateText("hide in expanded view")}
                       </div>
-                      <div className="absolute blur-[5px] opacity-70 inset-0">
+                      <div className="absolute inset-0 opacity-70 blur-[5px]">
                         {translateText("hide in expanded view")}
                       </div>
                     </div>
@@ -221,7 +221,7 @@ export function EditFolder() {
 
               <button
                 onClick={editFolder}
-                className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max">
+                className="standardButton flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]">
                 {translateText("save")}
                 <SaveDisk />
               </button>
@@ -236,7 +236,7 @@ export function EditFolder() {
                     uiContext.setShowDeleteConfirm(false);
                   }, 1500);
                 }}
-                className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max">
+                className="standardButton flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]">
                 <span className="text-[#FF3636]">
                   {uiContext.showDeleteConfirm()
                     ? translateText("confirm?")
@@ -246,7 +246,7 @@ export function EditFolder() {
               </button>
 
               <button
-                className="flex items-center standardButton dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] !w-max !gap-0"
+                className="standardButton flex !w-max items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                 onClick={() => {
                   closeDialog("editFolderModal");
                   getData();
@@ -257,13 +257,13 @@ export function EditFolder() {
             </div>
           </div>
 
-          <div className="flex items-end gap-6 mt-6">
+          <div className="mt-6 flex items-end gap-6">
             <input
               aria-autocomplete="none"
               type="text"
               name=""
               id=""
-              className="w-full dark:bg-[#232323] !text-black dark:!text-white bg-[#E8E8E8] hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b]"
+              className="w-full bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               onInput={(e) => {
                 dataUpdateContext.setEditedFolderName(e.currentTarget.value);
               }}

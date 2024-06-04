@@ -14,9 +14,9 @@ export function Loading() {
       ref={() => {
         // we dont want to close the loading modal through user input, so theres no closeDialog("loadingModal", ref);
       }}
-      className="absolute inset-0 z-[100] w-screen h-screen dark:bg-[#12121266] bg-[#d1d1d166]">
-      <div className="flex items-center justify-center w-screen h-screen align-middle ">
-        <div className="flex justify-between gap-2 items-center border-2 border-solid dark:border-[#ffffff1f] border-[#1212121f] dark:bg-[#121212] bg-[#FFFFFC] w-max p-3">
+      className="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d166] dark:bg-[#12121266]">
+      <div className="flex h-screen w-screen items-center justify-center align-middle ">
+        <div className="flex w-max items-center justify-between gap-2 border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-3 dark:border-[#ffffff1f] dark:bg-[#121212]">
           {translateText("loading")}
           <Show when={steamDataContext.totalSteamGames() != 0}>
             {steamDataContext.totalImportedSteamGames() +
@@ -24,7 +24,7 @@ export function Loading() {
               steamDataContext.totalSteamGames()}
           </Show>
 
-          <div className="animate-spin-slow absolute">
+          <div className="absolute animate-spin-slow">
             <LoadingIcon />
           </div>
         </div>
