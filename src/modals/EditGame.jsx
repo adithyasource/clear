@@ -133,8 +133,6 @@ export function EditGame() {
       folder.games.forEach((gameName) => {
         if (gameName == selectedDataContext.selectedGame().name) {
           previousIndex = folder.games.indexOf(gameName);
-
-          console.log(previousIndex);
         }
       });
     });

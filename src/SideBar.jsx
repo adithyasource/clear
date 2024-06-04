@@ -156,9 +156,9 @@ export function SideBar() {
               onSubmit={(e) => {
                 e.preventDefault();
                 document.getElementById("firstGameCard").focus();
-                console.log(document.getElementById("firstGameCard"));
                 document.body.classList.add("user-is-tabbing");
-              }}>
+              }}
+              className="w-full">
               <input
                 aria-autocomplete="none"
                 type="text"
