@@ -27,22 +27,15 @@ export function EditFolder() {
       selectedDataContext.selectedFolder().name !=
       dataUpdateContext.editedFolderName()
     ) {
-      let folderOccurances = 0;
+      let folderNameAlreadyExists = false;
 
-      for (
-        let x = 0;
-        x < Object.keys(globalContext.libraryData.folders).length;
-        x++
-      ) {
-        if (
-          dataUpdateContext.editedFolderName() ==
-          Object.keys(globalContext.libraryData.folders)[x]
-        ) {
-          folderOccurances += 1;
+      Object.keys(globalContext.libraryData.folders).forEach((folderName) => {
+        if (dataUpdateContext.editedFolderName() == folderName) {
+          folderNameAlreadyExists = true;
         }
-      }
+      });
 
-      if (folderOccurances == 1) {
+      if (folderNameAlreadyExists) {
         triggerToast(
           dataUpdateContext.editedFolderName() +
             " " +

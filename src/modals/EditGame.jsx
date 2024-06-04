@@ -111,22 +111,15 @@ export function EditGame() {
       selectedDataContext.selectedGame().name !=
       dataUpdateContext.editedGameName()
     ) {
-      let gameOccurances = 0;
+      let gameNameAlreadyExists = false;
 
-      for (
-        let x = 0;
-        x < Object.keys(globalContext.libraryData.games).length;
-        x++
-      ) {
-        if (
-          dataUpdateContext.editedGameName() ==
-          Object.keys(globalContext.libraryData.games)[x]
-        ) {
-          gameOccurances += 1;
+      Object.keys(globalContext.libraryData.games).forEach((gameName) => {
+        if (dataUpdateContext.editedGameName() == gameName) {
+          gameNameAlreadyExists = true;
         }
-      }
+      });
 
-      if (gameOccurances == 1) {
+      if (gameNameAlreadyExists) {
         triggerToast(
           dataUpdateContext.editedGameName() +
             " " +
@@ -136,24 +129,15 @@ export function EditGame() {
       }
     }
 
-    for (
-      let i = 0;
-      i < Object.values(globalContext.libraryData.folders).length;
-      i++
-    ) {
-      for (
-        let j = 0;
-        j < Object.values(globalContext.libraryData.folders)[i].games.length;
-        j++
-      ) {
-        if (
-          Object.values(globalContext.libraryData.folders)[i].games[j] ==
-          selectedDataContext.selectedGame().name
-        ) {
-          previousIndex = j;
+    Object.values(globalContext.libraryData.folders).forEach((folder) => {
+      folder.games.forEach((gameName) => {
+        if (gameName == selectedDataContext.selectedGame().name) {
+          previousIndex = folder.games.indexOf(gameName);
+
+          console.log(previousIndex);
         }
-      }
-    }
+      });
+    });
 
     globalContext.setLibraryData((data) => {
       delete data.games[selectedDataContext.selectedGame().name];
@@ -298,45 +282,29 @@ export function EditGame() {
       favourite: dataUpdateContext.editedFavouriteGame(),
     });
 
-    function getCurrentFolder() {
-      let folders = Object.values(globalContext.libraryData.folders);
+    Object.values(globalContext.libraryData.folders).forEach((folder) => {
+      folder.games.forEach((gameName) => {
+        if (gameName == selectedDataContext.selectedGame().name) {
+          if (gameName == selectedDataContext.selectedGame().name) {
+            globalContext.setLibraryData(
+              produce((data) => {
+                data.folders[folder.name].games.splice(
+                  folder.games.indexOf(gameName),
+                  1,
+                );
+                data.folders[folder.name].games.splice(
+                  previousIndex,
+                  0,
+                  dataUpdateContext.editedGameName(),
+                );
 
-      for (let i = 0; i < folders.length; i++) {
-        let games = folders[i].games;
-        for (let j = 0; j < games.length; j++) {
-          if (games[j] == selectedDataContext.selectedGame().name) {
-            let currentFolder = folders[i].name;
-            return currentFolder;
+                return data;
+              }),
+            );
           }
         }
-      }
-    }
-
-    let currentFolder = getCurrentFolder();
-
-    for (
-      let j = 0;
-      j < globalContext.libraryData.folders[currentFolder].games.length;
-      j++
-    ) {
-      if (
-        globalContext.libraryData.folders[currentFolder].games[j] ==
-        selectedDataContext.selectedGame().name
-      ) {
-        globalContext.setLibraryData(
-          produce((data) => {
-            data.folders[currentFolder].games.splice(j, 1);
-            data.folders[currentFolder].games.splice(
-              previousIndex,
-              0,
-              dataUpdateContext.editedGameName(),
-            );
-
-            return data;
-          }),
-        );
-      }
-    }
+      });
+    });
 
     await updateData();
     selectedDataContext.setSelectedGame({});
@@ -350,20 +318,22 @@ export function EditGame() {
       return data;
     });
 
-    let folders = Object.values(globalContext.libraryData.folders);
-
-    for (let i = 0; i < folders.length; i++) {
-      for (let j = 0; j < folders[i].games.length; j++) {
-        if (folders[i].games[j] == selectedDataContext.selectedGame().name) {
+    Object.values(globalContext.libraryData.folders).forEach((folder) => {
+      folder.games.forEach((gameName) => {
+        if (gameName == selectedDataContext.selectedGame().name) {
           globalContext.setLibraryData(
             produce((data) => {
-              Object.values(data.folders)[i].games.splice(j, 1);
+              data.folders[folder.name].games.splice(
+                folder.games.indexOf(gameName),
+                1,
+              );
+
               return data;
             }),
           );
         }
-      }
-    }
+      });
+    });
 
     await updateData();
 

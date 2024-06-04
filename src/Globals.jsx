@@ -319,12 +319,9 @@ export async function getData() {
       setLibraryData(JSON.parse(getLibraryData));
 
       for (let x = 0; x < Object.keys(libraryData["folders"]).length; x++) {
-        for (let y = 0; y < Object.keys(libraryData["folders"]).length; y++) {
-          if (Object.values(libraryData["folders"])[y].index == x) {
-            setCurrentFolders((z) => [
-              ...z,
-              Object.keys(libraryData["folders"])[y],
-            ]);
+        for (let key in libraryData["folders"]) {
+          if (libraryData["folders"][key].index == x) {
+            setCurrentFolders((z) => [...z, key]);
           }
         }
       }

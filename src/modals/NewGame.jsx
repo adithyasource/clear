@@ -43,22 +43,21 @@ export function NewGame() {
       return;
     }
 
-    for (
-      let x = 0;
-      x < Object.keys(globalContext.libraryData.games).length;
-      x++
-    ) {
-      if (
-        dataEntryContext.gameName() ==
-        Object.keys(globalContext.libraryData.games)[x]
-      ) {
-        triggerToast(
-          dataEntryContext.gameName() +
-            " " +
-            translateText("is already in your library"),
-        );
-        return;
+    let gameNameAlreadyExists = false;
+
+    Object.keys(globalContext.libraryData.games).forEach((gameName) => {
+      if (dataEntryContext.gameName() == gameName) {
+        gameNameAlreadyExists = true;
       }
+    });
+
+    if (gameNameAlreadyExists) {
+      triggerToast(
+        dataEntryContext.gameName() +
+          " " +
+          translateText("is already in your library"),
+      );
+      return;
     }
 
     let heroImageFileName;

@@ -24,22 +24,21 @@ export function NewFolder() {
       return;
     }
 
-    for (
-      let x = 0;
-      x < Object.keys(globalContext.libraryData.folders).length;
-      x++
-    ) {
-      if (
-        dataEntryContext.folderName() ==
-        Object.keys(globalContext.libraryData.folders)[x]
-      ) {
-        triggerToast(
-          dataEntryContext.folderName() +
-            " " +
-            translateText("is already in your library"),
-        );
-        return;
+    let folderNameAlreadyExists = false;
+
+    Object.keys(globalContext.libraryData.folders).forEach((folderName) => {
+      if (dataEntryContext.folderName() == folderName) {
+        folderNameAlreadyExists = true;
       }
+    });
+
+    if (folderNameAlreadyExists) {
+      triggerToast(
+        dataEntryContext.folderName() +
+          " " +
+          translateText("is already in your library"),
+      );
+      return;
     }
 
     globalContext.setLibraryData(

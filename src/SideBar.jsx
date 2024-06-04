@@ -58,26 +58,27 @@ export function SideBar() {
       }
     }
 
-    for (let x = 0; x < applicationStateContext.currentFolders().length; x++) {
-      for (
-        let y = 0;
-        y < Object.keys(globalContext.libraryData["folders"]).length;
-        y++
-      ) {
-        if (
-          applicationStateContext.currentFolders()[x] ==
-          Object.keys(globalContext.libraryData["folders"])[y]
-        ) {
-          globalContext.setLibraryData(
-            produce((data) => {
-              Object.values(data["folders"])[y].index = x;
+    applicationStateContext.currentFolders().forEach((currentFolderName) => {
+      Object.keys(globalContext.libraryData["folders"]).forEach(
+        (folderName) => {
+          if (currentFolderName == folderName) {
+            globalContext.setLibraryData(
+              produce((data) => {
+                Object.values(data["folders"])[
+                  Object.keys(globalContext.libraryData["folders"]).indexOf(
+                    folderName,
+                  )
+                ].index = applicationStateContext
+                  .currentFolders()
+                  .indexOf(currentFolderName);
 
-              return data;
-            }),
-          );
-        }
-      }
-    }
+                return data;
+              }),
+            );
+          }
+        },
+      );
+    });
 
     await updateData();
   }
@@ -602,24 +603,14 @@ export function SideBar() {
                 {(currentGame, index) => {
                   let gamesInFolders = [];
 
-                  for (
-                    let x = 0;
-                    x < Object.values(globalContext.libraryData.folders).length;
-                    x++
-                  ) {
-                    for (
-                      let y = 0;
-                      y <
-                      Object.values(globalContext.libraryData.folders)[x].games
-                        .length;
-                      y++
-                    ) {
-                      gamesInFolders.push(
-                        Object.values(globalContext.libraryData.folders)[x]
-                          .games[y],
-                      );
-                    }
-                  }
+                  Object.values(globalContext.libraryData.folders).forEach(
+                    (folder) => {
+                      folder.games.forEach((game) => {
+                        gamesInFolders.push(game);
+                      });
+                    },
+                  );
+
                   return (
                     <Show when={!gamesInFolders.includes(currentGame)}>
                       <GameCardSideBar

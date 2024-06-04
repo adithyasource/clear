@@ -34,6 +34,7 @@ import { GameCards } from "./components/GameCards";
 import { LanguageSelector } from "./components/LanguageSelector";
 import { Hotkeys } from "./components/HotKeys";
 import { Style } from "./Style";
+import { unwrap } from "solid-js/store";
 
 function App() {
   const globalContext = useContext(GlobalContext);
@@ -416,14 +417,8 @@ function App() {
                 applicationStateContext.searchValue() != "" &&
                 applicationStateContext.searchValue() != undefined
               ) {
-                for (
-                  let i = 0;
-                  i < Object.values(globalContext.libraryData.games).length;
-                  i++
-                ) {
-                  allGameNames.push(
-                    Object.keys(globalContext.libraryData.games)[i],
-                  );
+                for (let key in globalContext.libraryData.games) {
+                  allGameNames.push(key);
                 }
               }
 
