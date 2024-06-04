@@ -152,24 +152,25 @@ export function SideBar() {
       <div className="sideBar relative z-10 flex h-[100vh] w-[20%] flex-col overflow-hidden py-[20px] pl-[20px] text-black min-[1500px]:w-[15%]">
         <div id="sideBarTop">
           <div className="flex items-center justify-between gap-[15px]">
-            <input
-              aria-autocomplete="none"
-              type="text"
-              id="searchInput"
-              name=""
-              className="w-full bg-[#E8E8E8] text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:text-white dark:hover:!bg-[#2b2b2b]"
-              placeholder={translateText("search")}
-              onInput={(e) => {
-                applicationStateContext.setSearchValue(e.currentTarget.value);
-              }}
-              onKeyUp={(e) => {
-                if (e.key === "Enter") {
-                  document.getElementById("firstGameCard").focus();
-                  console.log(document.getElementById("firstGameCard"));
-                  document.body.classList.add("user-is-tabbing");
-                }
-              }}
-            />
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                document.getElementById("firstGameCard").focus();
+                console.log(document.getElementById("firstGameCard"));
+                document.body.classList.add("user-is-tabbing");
+              }}>
+              <input
+                aria-autocomplete="none"
+                type="text"
+                id="searchInput"
+                name=""
+                className="w-full bg-[#E8E8E8] text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:text-white dark:hover:!bg-[#2b2b2b]"
+                placeholder={translateText("search")}
+                onInput={(e) => {
+                  applicationStateContext.setSearchValue(e.currentTarget.value);
+                }}
+              />
+            </form>
             <button
               className="w-[28px] cursor-pointer p-2 duration-150 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
               onClick={() => {
