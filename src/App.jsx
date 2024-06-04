@@ -39,164 +39,6 @@ function App() {
   const uiContext = useContext(UIContext);
   const applicationStateContext = useContext(ApplicationStateContext);
 
-  document.addEventListener("keydown", (e) => {
-    for (let i = 0; i < document.querySelectorAll(".sideBarGame").length; i++) {
-      document.querySelectorAll(".sideBarGame")[i].style.cursor = "pointer";
-    }
-
-    if (e.ctrlKey) {
-      for (
-        let i = 0;
-        i < document.querySelectorAll(".sideBarGame").length;
-        i++
-      ) {
-        document
-          .querySelectorAll(".sideBarGame")
-          [i].classList.add("hint--right");
-      }
-
-      for (let i = 0; i < document.querySelectorAll(".gameCard").length; i++) {
-        document.querySelectorAll(".gameCard")[i].classList.add("hint--center");
-      }
-    }
-
-    if (e.ctrlKey && e.code == "Equal") {
-      globalContext.setLibraryData("userSettings", "zoomLevel", (x) =>
-        x != 2 ? (x += 1) : (x = 2),
-      );
-
-      updateData();
-    }
-
-    if (e.ctrlKey && e.code == "Minus") {
-      globalContext.setLibraryData("userSettings", "zoomLevel", (x) =>
-        x != 0 ? (x -= 1) : (x = 0),
-      );
-
-      updateData();
-    }
-
-    if (e.ctrlKey && e.code == "KeyW") {
-      e.preventDefault();
-      closeApp();
-    }
-
-    let allDialogs = [];
-
-    allDialogs = document.querySelectorAll("dialog");
-
-    let anyDialogOpen = false;
-
-    allDialogs.forEach((dialog) => {
-      if (dialog.open) {
-        anyDialogOpen = true;
-      }
-    });
-
-    if (e.ctrlKey && e.code == "KeyF") {
-      if (!anyDialogOpen) {
-        e.preventDefault();
-        document.querySelector("#searchInput").focus();
-      } else {
-        triggerToast(
-          translateText("close current dialog before opening another"),
-        );
-      }
-    }
-
-    if (e.ctrlKey && e.code == "KeyN") {
-      e.preventDefault();
-      if (document.querySelector("[data-newGameModal]").open) {
-        closeDialog("newGameModal");
-      } else {
-        if (!anyDialogOpen) {
-          openDialog("newGameModal");
-        } else {
-          triggerToast(
-            translateText("close current dialog before opening another"),
-          );
-        }
-      }
-    }
-
-    if (e.ctrlKey && e.code == "KeyM") {
-      e.preventDefault();
-      if (document.querySelector("[data-newFolderModal]").open) {
-        closeDialog("newFolderModal");
-      } else {
-        if (!anyDialogOpen) {
-          openDialog("newFolderModal");
-        } else {
-          triggerToast(
-            translateText("close current dialog before opening another"),
-          );
-        }
-      }
-    }
-    if (e.ctrlKey && e.code == "KeyL") {
-      e.preventDefault();
-      if (document.querySelector("[data-notepadModal]").open) {
-        closeDialog("notepadModal");
-      } else {
-        if (!anyDialogOpen) {
-          openDialog("notepadModal");
-        } else {
-          triggerToast(
-            translateText("close current dialog before opening another"),
-          );
-        }
-      }
-    }
-    if (e.ctrlKey && e.code == "Period") {
-      if (document.querySelector("[data-settingsModal]").open) {
-        closeDialog("settingsModal");
-      } else {
-        if (!anyDialogOpen) {
-          e.preventDefault();
-          openDialog("settingsModal");
-        } else {
-          triggerToast(
-            translateText("close current dialog before opening another"),
-          );
-        }
-      }
-    }
-
-    if (e.ctrlKey && e.code == "Backslash") {
-      if (!anyDialogOpen) {
-        e.preventDefault();
-        toggleSideBar();
-        document.querySelector("#searchInput").blur();
-      } else {
-        triggerToast(
-          translateText("close current dialog before toggling sidebar"),
-        );
-      }
-    }
-
-    if (e.ctrlKey && e.code == "KeyR") {
-      e.preventDefault();
-    }
-
-    // ? Disabling Misc WebView Shortcuts
-
-    if (e.ctrlKey && e.code == "KeyG") {
-      e.preventDefault();
-    }
-
-    if (e.ctrlKey && e.code == "KeyP") {
-      e.preventDefault();
-    }
-
-    if (e.ctrlKey && e.code == "KeyU") {
-      e.preventDefault();
-    }
-
-    if (e.ctrlKey && e.code == "KeyU") {
-      e.preventDefault();
-    }
-  });
-
   async function closeApp() {
     invoke("close_app");
   }
@@ -211,65 +53,206 @@ function App() {
   }
 
   function addEventListeners() {
-    document.addEventListener("contextmenu", (event) => event.preventDefault());
-
-    document.addEventListener("keyup", (e) => {
-      for (
-        let i = 0;
-        i < document.querySelectorAll(".sideBarGame").length;
-        i++
-      ) {
-        document.querySelectorAll(".sideBarGame")[i].style.cursor = "grab";
-      }
-
-      for (
-        let i = 0;
-        i < document.querySelectorAll(".sideBarGame").length;
-        i++
-      ) {
-        document.querySelectorAll(".sideBarGame")[i].classList.remove(
-          "hint--right",
-          "hint--no-animate",
-
-          "hint--no-arrow",
-        );
-      }
-
-      for (let i = 0; i < document.querySelectorAll(".gameCard").length; i++) {
-        document.querySelectorAll(".gameCard")[i].classList.remove(
-          "hint--center",
-          "hint--no-animate",
-
-          "hint--no-arrow",
-        );
-      }
-    });
-
-    let body = document.body;
-
     function handleFirstTab(e) {
       if (e.key === "Tab") {
-        body.classList.add("user-is-tabbing");
+        document.body.classList.add("user-is-tabbing");
         window.removeEventListener("keydown", handleFirstTab);
         window.addEventListener("mousedown", handleMouseDown);
       }
     }
 
     function handleMouseDown() {
-      body.classList.remove("user-is-tabbing");
+      document.body.classList.remove("user-is-tabbing");
       window.removeEventListener("mousedown", handleMouseDown);
       window.addEventListener("keydown", handleFirstTab);
     }
 
     window.addEventListener("keydown", handleFirstTab);
+
+    document.addEventListener("contextmenu", (event) => event.preventDefault());
+
+    window.addEventListener("resize", () => {
+      applicationStateContext.setWindowWidth(window.innerWidth);
+    });
+
+    document.addEventListener("keyup", () => {
+      document.querySelectorAll(".sideBarGame").forEach((sideBarGame) => {
+        sideBarGame.style.cursor = "grab";
+      });
+
+      document.querySelectorAll(".sideBarGame").forEach((sideBarGame) => {
+        sideBarGame.classList.remove(
+          "hint--right",
+          "hint--no-animate",
+          "hint--no-arrow",
+        );
+      });
+
+      document.querySelectorAll(".gameCard").forEach((gameCard) => {
+        gameCard.classList.remove(
+          "hint--center",
+          "hint--no-animate",
+          "hint--no-arrow",
+        );
+      });
+    });
+
+    document.addEventListener("keydown", (e) => {
+      let allDialogs = document.querySelectorAll("dialog");
+
+      let anyDialogOpen = false;
+
+      allDialogs.forEach((dialog) => {
+        if (dialog.open) {
+          anyDialogOpen = true;
+        }
+      });
+
+      if (e.ctrlKey) {
+        document.querySelectorAll(".sideBarGame").forEach((sideBarGame) => {
+          sideBarGame.classList.add("hint--right");
+          sideBarGame.style.cursor = "pointer";
+        });
+
+        document.querySelectorAll(".gameCard").forEach((gameCard) => {
+          gameCard.classList.add("hint--center");
+        });
+
+        switch (e.code) {
+          case "Equal":
+            globalContext.setLibraryData("userSettings", "zoomLevel", (x) =>
+              x != 2 ? (x += 1) : (x = 2),
+            );
+
+            updateData();
+
+            break;
+
+          case "Minus":
+            globalContext.setLibraryData("userSettings", "zoomLevel", (x) =>
+              x != 0 ? (x -= 1) : (x = 0),
+            );
+
+            updateData();
+
+            break;
+
+          case "KeyW":
+            e.preventDefault();
+            closeApp();
+
+            break;
+
+          case "KeyF":
+            if (!anyDialogOpen) {
+              e.preventDefault();
+              document.querySelector("#searchInput").focus();
+            } else {
+              triggerToast(
+                translateText("close current dialog before opening another"),
+              );
+            }
+
+            break;
+
+          case "KeyN":
+            e.preventDefault();
+            if (document.querySelector("[data-newGameModal]").open) {
+              closeDialog("newGameModal");
+            } else {
+              if (!anyDialogOpen) {
+                openDialog("newGameModal");
+              } else {
+                triggerToast(
+                  translateText("close current dialog before opening another"),
+                );
+              }
+            }
+
+            break;
+
+          case "KeyM":
+            e.preventDefault();
+            if (document.querySelector("[data-newFolderModal]").open) {
+              closeDialog("newFolderModal");
+            } else {
+              if (!anyDialogOpen) {
+                openDialog("newFolderModal");
+              } else {
+                triggerToast(
+                  translateText("close current dialog before opening another"),
+                );
+              }
+            }
+
+            break;
+
+          case "KeyL":
+            e.preventDefault();
+            if (document.querySelector("[data-notepadModal]").open) {
+              closeDialog("notepadModal");
+            } else {
+              if (!anyDialogOpen) {
+                openDialog("notepadModal");
+              } else {
+                triggerToast(
+                  translateText("close current dialog before opening another"),
+                );
+              }
+            }
+
+            break;
+
+          case "Period":
+            if (document.querySelector("[data-settingsModal]").open) {
+              closeDialog("settingsModal");
+            } else {
+              if (!anyDialogOpen) {
+                e.preventDefault();
+                openDialog("settingsModal");
+              } else {
+                triggerToast(
+                  translateText("close current dialog before opening another"),
+                );
+              }
+            }
+
+            break;
+
+          case "Backslash":
+            if (!anyDialogOpen) {
+              e.preventDefault();
+              toggleSideBar();
+              document.querySelector("#searchInput").blur();
+            } else {
+              triggerToast(
+                translateText("close current dialog before toggling sidebar"),
+              );
+            }
+
+            break;
+
+          // ? Disabling Misc WebView Shortcuts
+
+          case "KeyR":
+            e.preventDefault();
+
+          case "KeyG":
+            e.preventDefault();
+
+          case "KeyP":
+            e.preventDefault();
+
+          case "KeyU":
+            e.preventDefault();
+        }
+      }
+    });
   }
 
   getData();
 
   onMount(async () => {
-    window.addEventListener("resize", () => {
-      applicationStateContext.setWindowWidth(window.innerWidth);
-    });
     invoke("show_window");
     addEventListeners();
   });

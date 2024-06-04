@@ -170,8 +170,7 @@ export function SideBar() {
                 if (e.key === "Enter") {
                   document.getElementById("firstGameCard").focus();
                   console.log(document.getElementById("firstGameCard"));
-                  let body = document.body;
-                  body.classList.add("user-is-tabbing");
+                  document.body.classList.add("user-is-tabbing");
                 }
               }}
             />
