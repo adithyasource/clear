@@ -573,11 +573,4 @@ export let textLanguages = {
     ru: "",
     fr: "",
   },
-  undefined: {
-    jp: "undefined",
-    es: "undefined",
-    hi: "undefined",
-    ru: "undefined",
-    fr: "undefined",
-  },
 };

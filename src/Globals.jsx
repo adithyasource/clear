@@ -549,10 +549,13 @@ export function translateText(text) {
     return undefined;
   }
 
-  return libraryData.userSettings.language == undefined ||
-    libraryData.userSettings.language == "en"
-    ? text
-    : textLanguages[text][libraryData.userSettings.language];
+  let translatedText = textLanguages[text][libraryData.userSettings.language];
+
+  if (libraryData.userSettings.language == "en" || translatedText == "") {
+    return text;
+  } else {
+    return translatedText;
+  }
 }
 
 export async function updateData() {
