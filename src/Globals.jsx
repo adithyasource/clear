@@ -619,3 +619,12 @@ export function closeDialog(dialogData, ref) {
     }, 200);
   }
 }
+
+export async function toggleSideBar() {
+  setSearchValue("");
+
+  setLibraryData("userSettings", "showSideBar", (x) => !x);
+
+  await updateData();
+  getData();
+}

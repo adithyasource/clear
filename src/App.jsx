@@ -13,6 +13,7 @@ import {
   openDialog,
   closeDialog,
   triggerToast,
+  toggleSideBar,
 } from "./Globals";
 
 import "./App.css";
@@ -41,15 +42,6 @@ function App() {
 
   async function closeApp() {
     invoke("close_app");
-  }
-
-  async function toggleSideBar() {
-    applicationStateContext.setSearchValue("");
-
-    globalContext.setLibraryData("userSettings", "showSideBar", (x) => !x);
-
-    await updateData();
-    getData();
   }
 
   function addEventListeners() {
@@ -259,18 +251,10 @@ function App() {
 
   return (
     <>
-      {
-        // * fading out bg color to make the app loading look a
-        // * bit more smoother
-      }
-
+      {/* fading out bg color to make the app loading look a bit more smoother */}
       <div className="loading pointer-events-none absolute z-[1000] flex h-screen w-screen items-center justify-center bg-[#121212]">
         <p className=""></p>
       </div>
-
-      <Style />
-
-      <Toast />
 
       <div className="flex h-full gap-[30px] overflow-y-hidden">
         <Show
@@ -280,7 +264,9 @@ function App() {
           }>
           <button
             className="absolute right-[31px] top-[32px] z-20 w-[25.25px] rotate-180 cursor-pointer p-2 duration-150 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
-            onClick={toggleSideBar}>
+            onClick={() => {
+              toggleSideBar();
+            }}>
             <ChevronArrows />
           </button>
         </Show>
@@ -487,6 +473,9 @@ function App() {
           </Show>
         </div>
       </div>
+
+      <Style />
+      <Toast />
 
       <div id="abovePage">
         <NewGame />

@@ -3,6 +3,7 @@ import { produce } from "solid-js/store";
 import {
   getData,
   openDialog,
+  toggleSideBar,
   translateText,
   triggerToast,
   updateData,
@@ -35,20 +36,6 @@ export function SideBar() {
   const dataUpdateContext = useContext(DataUpdateContext);
 
   let scrollY = " ";
-  onMount(() => {
-    document
-      .getElementById("sideBarFolders")
-      .addEventListener("scroll", function () {
-        scrollY = document.getElementById("sideBarFolders").scrollTop;
-      });
-  });
-
-  async function toggleSideBar() {
-    globalContext.setLibraryData("userSettings", "showSideBar", (x) => !x);
-
-    await updateData();
-    getData();
-  }
 
   async function moveFolder(folderName, toPosition) {
     let pastPositionOfFolder = applicationStateContext
@@ -150,6 +137,14 @@ export function SideBar() {
 
     await updateData();
   }
+
+  onMount(() => {
+    document
+      .getElementById("sideBarFolders")
+      .addEventListener("scroll", function () {
+        scrollY = document.getElementById("sideBarFolders").scrollTop;
+      });
+  });
 
   return (
     <>
