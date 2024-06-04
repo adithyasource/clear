@@ -1,6 +1,6 @@
 import { For, Show, onMount, useContext } from "solid-js";
 import { invoke } from "@tauri-apps/api/tauri";
-import fuzzysort from "fuzzysort";
+import { fuzzysearch } from "./libraries/fuzzysearch";
 
 import {
   GlobalContext,
@@ -33,7 +33,6 @@ import { GameCards } from "./components/GameCards";
 import { LanguageSelector } from "./components/LanguageSelector";
 import { Hotkeys } from "./components/HotKeys";
 import { Style } from "./Style";
-import { unwrap } from "solid-js/store";
 
 function App() {
   const globalContext = useContext(GlobalContext);
@@ -459,17 +458,17 @@ function App() {
                 }
               }
 
-              console.log(applicationStateContext.searchValue());
-              console.log(Object.keys(globalContext.libraryData.games));
-
-              let results = fuzzysort.go(
-                applicationStateContext.searchValue(),
-                Object.keys(globalContext.libraryData.games),
+              Object.keys(globalContext.libraryData.games).forEach(
+                (libraryGame) => {
+                  let result = fuzzysearch(
+                    applicationStateContext.searchValue(),
+                    libraryGame.toLowerCase().replace("-", " "),
+                  );
+                  if (result == true) {
+                    searchResults.push(libraryGame);
+                  }
+                },
               );
-
-              results.forEach((result) => {
-                searchResults.push(result.target);
-              });
 
               return (
                 <div>

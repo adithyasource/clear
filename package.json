@@ -13,7 +13,6 @@
   "license": "UNLICENSE",
   "dependencies": {
     "@tauri-apps/api": "^1.5.1",
-    "fuzzysort": "^3.0.1",
     "solid-js": "^1.7.8"
   },
   "devDependencies": {
