@@ -212,9 +212,7 @@ dialog {
 
 .toast {
   opacity: 1;
-  animation:
-    dialogFadeIn 0.2s,
-    dialogFadeOut 0.3s 2.3s;
+  animation: dialogFadeIn 0.2s, dialogFadeOut 0.3s 2.3s;
 }
 
 .loading {

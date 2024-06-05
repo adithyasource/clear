@@ -68,6 +68,7 @@ export function Notepad() {
               </div>
 
               <button
+                type="button"
                 className="standardButton !w-max !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                 onClick={() => {
                   closeDialog("notepadModal");
@@ -85,7 +86,8 @@ export function Notepad() {
               className="mt-6 h-[40vh] w-full resize-none rounded-[6px] bg-transparent focus:outline-none"
               placeholder={translateText("write anything you want over here!")}
               spellcheck="false"
-              value={dataEntryContext.notepadValue()}></textarea>
+              value={dataEntryContext.notepadValue()}
+            />
           </div>
         </div>
       </dialog>

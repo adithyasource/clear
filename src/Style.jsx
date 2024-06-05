@@ -8,31 +8,35 @@ export function Style() {
   return (
     <style jsx>{`
       .titleBarText {
-        font-family: ${globalContext.libraryData.userSettings.fontName ==
-        "sans serif"
-          ? "Segoe UI"
-          : globalContext.libraryData.userSettings.fontName == "serif"
-          ? "Times New Roman"
-          : "IBM Plex Mono, Consolas"};
+        font-family: ${
+          globalContext.libraryData.userSettings.fontName === "sans serif"
+            ? "Segoe UI"
+            : globalContext.libraryData.userSettings.fontName === "serif"
+              ? "Times New Roman"
+              : "IBM Plex Mono, Consolas"
+        };
       }
 
       * {
-        font-family: ${globalContext.libraryData.userSettings.fontName ==
-        "sans serif"
-          ? "Helvetica, Arial, sans-serif"
-          : globalContext.libraryData.userSettings.fontName == "serif"
-          ? "Times New Roman"
-          : "IBM Plex Mono, Consolas"};
-        color: ${globalContext.libraryData.userSettings.currentTheme == "light"
-          ? "#000000"
-          : "#ffffff"};
+        font-family: ${
+          globalContext.libraryData.userSettings.fontName === "sans serif"
+            ? "Helvetica, Arial, sans-serif"
+            : globalContext.libraryData.userSettings.fontName === "serif"
+              ? "Times New Roman"
+              : "IBM Plex Mono, Consolas"
+        };
+        color: ${
+          globalContext.libraryData.userSettings.currentTheme === "light"
+            ? "#000000"
+            : "#ffffff"
+        };
       }
 
       *:not(body, svg),
       [class*="hint--"]:after {
-        border-radius: ${globalContext.libraryData.userSettings.roundedBorders
-          ? "6px"
-          : "0px"};
+        border-radius: ${
+          globalContext.libraryData.userSettings.roundedBorders ? "6px" : "0px"
+        };
       }
 
       .currentlyDragging {
@@ -45,9 +49,11 @@ export function Style() {
       body.user-is-tabbing input:focus,
       body.user-is-tabbing select:focus {
         outline: 1px solid
-          ${globalContext.libraryData.userSettings.currentTheme == "light"
-            ? "#000000"
-            : "#ffffff"};
+          ${
+            globalContext.libraryData.userSettings.currentTheme === "light"
+              ? "#000000"
+              : "#ffffff"
+          };
       }
     `}</style>
   );

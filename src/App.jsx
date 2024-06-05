@@ -34,7 +34,6 @@ import { GameCards } from "./components/GameCards";
 import { LanguageSelector } from "./components/LanguageSelector";
 import { Hotkeys } from "./components/HotKeys";
 import { Style } from "./Style";
-import { unwrap } from "solid-js/store";
 
 function App() {
   const globalContext = useContext(GlobalContext);
@@ -69,71 +68,88 @@ function App() {
     });
 
     document.addEventListener("keyup", () => {
-      document.querySelectorAll(".sideBarGame").forEach((sideBarGame) => {
+      for (const sideBarGame of document.querySelectorAll(".sideBarGame")) {
         sideBarGame.style.cursor = "grab";
-      });
+      }
 
-      document.querySelectorAll(".sideBarGame").forEach((sideBarGame) => {
+      for (const sideBarGame of document.querySelectorAll(".sideBarGame")) {
         sideBarGame.classList.remove(
           "hint--right",
           "hint--no-animate",
           "hint--no-arrow",
         );
-      });
+      }
 
-      document.querySelectorAll(".gameCard").forEach((gameCard) => {
+      for (const gameCard of document.querySelectorAll(".gameCard")) {
         gameCard.classList.remove(
           "hint--center",
           "hint--no-animate",
           "hint--no-arrow",
         );
-      });
+      }
     });
 
     document.addEventListener("keydown", (e) => {
-      let allDialogs = document.querySelectorAll("dialog");
+      const allDialogs = document.querySelectorAll("dialog");
 
       let anyDialogOpen = false;
 
-      allDialogs.forEach((dialog) => {
+      for (const dialog of allDialogs) {
         if (dialog.open) {
           anyDialogOpen = true;
         }
-      });
+      }
 
       if (e.ctrlKey) {
-        document.querySelectorAll(".sideBarGame").forEach((sideBarGame) => {
+        for (const sideBarGame of document.querySelectorAll(".sideBarGame")) {
           sideBarGame.classList.add("hint--right");
           sideBarGame.style.cursor = "pointer";
-        });
+        }
 
-        document.querySelectorAll(".gameCard").forEach((gameCard) => {
+        for (const gameCard of document.querySelectorAll(".gameCard")) {
           gameCard.classList.add("hint--center");
-        });
+        }
 
         switch (e.code) {
           case "Equal":
-            globalContext.setLibraryData("userSettings", "zoomLevel", (x) =>
-              x != 2 ? (x += 1) : (x = 2),
+            globalContext.setLibraryData(
+              "userSettings",
+              "zoomLevel",
+              (zoomLevel) => {
+                let newZoomLevel = zoomLevel;
+                if (zoomLevel !== 2) {
+                  newZoomLevel += 1;
+                } else {
+                  newZoomLevel = 2;
+                }
+
+                return newZoomLevel;
+              },
             );
-
             updateData();
-
             break;
 
           case "Minus":
-            globalContext.setLibraryData("userSettings", "zoomLevel", (x) =>
-              x != 0 ? (x -= 1) : (x = 0),
+            globalContext.setLibraryData(
+              "userSettings",
+              "zoomLevel",
+              (zoomLevel) => {
+                let newZoomLevel = zoomLevel;
+                if (zoomLevel !== 0) {
+                  newZoomLevel -= 1;
+                } else {
+                  newZoomLevel = 0;
+                }
+
+                return newZoomLevel;
+              },
             );
-
             updateData();
-
             break;
 
           case "KeyW":
             e.preventDefault();
             closeApp();
-
             break;
 
           case "KeyF":
@@ -145,7 +161,6 @@ function App() {
                 translateText("close current dialog before opening another"),
               );
             }
-
             break;
 
           case "KeyN":
@@ -161,7 +176,6 @@ function App() {
                 );
               }
             }
-
             break;
 
           case "KeyM":
@@ -177,7 +191,6 @@ function App() {
                 );
               }
             }
-
             break;
 
           case "KeyL":
@@ -193,7 +206,6 @@ function App() {
                 );
               }
             }
-
             break;
 
           case "Period":
@@ -209,7 +221,6 @@ function App() {
                 );
               }
             }
-
             break;
 
           case "Backslash":
@@ -222,22 +233,25 @@ function App() {
                 translateText("close current dialog before toggling sidebar"),
               );
             }
-
             break;
 
           // ? Disabling Misc WebView Shortcuts
 
           case "KeyR":
             e.preventDefault();
+            break;
 
           case "KeyG":
             e.preventDefault();
+            break;
 
           case "KeyP":
             e.preventDefault();
+            break;
 
           case "KeyU":
             e.preventDefault();
+            break;
         }
       }
     });
@@ -254,16 +268,17 @@ function App() {
     <>
       {/* fading out bg color to make the app loading look a bit more smoother */}
       <div className="loading pointer-events-none absolute z-[1000] flex h-screen w-screen items-center justify-center bg-[#121212]">
-        <p className=""></p>
+        <p className="" />
       </div>
 
       <div className="flex h-full gap-[30px] overflow-y-hidden">
         <Show
           when={
-            globalContext.libraryData.userSettings.showSideBar == false &&
+            globalContext.libraryData.userSettings.showSideBar === false &&
             applicationStateContext.windowWidth() >= 1000
           }>
           <button
+            type="button"
             className="absolute right-[31px] top-[32px] z-20 w-[25.25px] rotate-180 cursor-pointer p-2 duration-150 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
             onClick={() => {
               toggleSideBar();
@@ -281,9 +296,9 @@ function App() {
 
         <Show
           when={
-            JSON.stringify(globalContext.libraryData.folders) == "{}" &&
-            (applicationStateContext.searchValue() == "" ||
-              applicationStateContext.searchValue() == undefined)
+            JSON.stringify(globalContext.libraryData.folders) === "{}" &&
+            (applicationStateContext.searchValue() === "" ||
+              applicationStateContext.searchValue() === undefined)
           }>
           <div
             className={` absolute flex h-[100vh] w-full flex-col items-center justify-center
@@ -311,10 +326,11 @@ function App() {
 
               <div className="mt-[35px] flex gap-6">
                 <button
+                  type="button"
                   className="standardButton hint--bottom !flex !w-max !gap-3 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                   aria-label={translateText("might not work perfectly!")}
                   onClick={() => {
-                    if (globalContext.libraryData.folders.steam != undefined) {
+                    if (globalContext.libraryData.folders.steam !== undefined) {
                       uiContext.showImportAndOverwriteConfirm()
                         ? importSteamGames()
                         : uiContext.setShowImportAndOverwriteConfirm(true);
@@ -327,11 +343,11 @@ function App() {
                     }
                   }}>
                   <Show
-                    when={globalContext.libraryData.folders.steam != undefined}
-                    fallback={<>{translateText("import Steam games")}</>}>
+                    when={globalContext.libraryData.folders.steam !== undefined}
+                    fallback={translateText("import Steam games")}>
                     <Show
-                      when={uiContext.showImportAndOverwriteConfirm() == true}
-                      fallback={<>{translateText("import Steam games")}</>}>
+                      when={uiContext.showImportAndOverwriteConfirm() === true}
+                      fallback={translateText("import Steam games")}>
                       <span className="text-[#FF3636]">
                         {translateText(
                           "current 'steam' folder will be overwritten. confirm?",
@@ -359,15 +375,15 @@ function App() {
           }`}>
           <Show
             when={
-              applicationStateContext.searchValue() == "" ||
-              applicationStateContext.searchValue() == undefined
+              applicationStateContext.searchValue() === "" ||
+              applicationStateContext.searchValue() === undefined
             }>
             <For each={applicationStateContext.currentFolders()}>
               {(folderName) => {
-                let folder = globalContext.libraryData.folders[folderName];
+                const folder = globalContext.libraryData.folders[folderName];
 
                 return (
-                  <Show when={folder.games != "" && !folder.hide}>
+                  <Show when={folder.games !== "" && !folder.hide}>
                     <div className="mb-[40px]">
                       <Show
                         when={
@@ -379,21 +395,23 @@ function App() {
                       </Show>
                       <div
                         className={`foldersDiv mt-4 grid gap-5 ${
-                          globalContext.libraryData.userSettings.zoomLevel == 0
+                          globalContext.libraryData.userSettings.zoomLevel === 0
                             ? globalContext.libraryData.userSettings.showSideBar
                               ? "grid-cols-4 medium:grid-cols-5 large:grid-cols-7"
                               : "grid-cols-4 medium:grid-cols-6 large:grid-cols-8"
                             : globalContext.libraryData.userSettings
-                                .zoomLevel == 1
-                            ? globalContext.libraryData.userSettings.showSideBar
-                              ? "grid-cols-3 medium:grid-cols-4 large:grid-cols-6"
-                              : "grid-cols-3 medium:grid-cols-5 large:grid-cols-7"
-                            : globalContext.libraryData.userSettings
-                                .zoomLevel == 2
-                            ? globalContext.libraryData.userSettings.showSideBar
-                              ? "grid-cols-2 medium:grid-cols-3 large:grid-cols-5"
-                              : "grid-cols-2 medium:grid-cols-4 large:grid-cols-6"
-                            : ""
+                                  .zoomLevel === 1
+                              ? globalContext.libraryData.userSettings
+                                  .showSideBar
+                                ? "grid-cols-3 medium:grid-cols-4 large:grid-cols-6"
+                                : "grid-cols-3 medium:grid-cols-5 large:grid-cols-7"
+                              : globalContext.libraryData.userSettings
+                                    .zoomLevel === 2
+                                ? globalContext.libraryData.userSettings
+                                    .showSideBar
+                                  ? "grid-cols-2 medium:grid-cols-3 large:grid-cols-5"
+                                  : "grid-cols-2 medium:grid-cols-4 large:grid-cols-6"
+                                : ""
                         }`}>
                         <GameCards gamesList={folder.games} />
                       </div>
@@ -406,56 +424,57 @@ function App() {
 
           <Show
             when={
-              applicationStateContext.searchValue() != "" &&
-              applicationStateContext.searchValue() != undefined
+              applicationStateContext.searchValue() !== "" &&
+              applicationStateContext.searchValue() !== undefined
             }>
             {() => {
-              let searchResults = [];
-              let allGameNames = [];
+              const searchResults = [];
+              const allGameNames = [];
 
               if (
-                applicationStateContext.searchValue() != "" &&
-                applicationStateContext.searchValue() != undefined
+                applicationStateContext.searchValue() !== "" &&
+                applicationStateContext.searchValue() !== undefined
               ) {
-                for (let key in globalContext.libraryData.games) {
+                for (const key in globalContext.libraryData.games) {
                   allGameNames.push(key);
                 }
               }
 
-              Object.keys(globalContext.libraryData.games).forEach(
-                (libraryGame) => {
-                  let result = fuzzysearch(
-                    applicationStateContext.searchValue(),
-                    libraryGame.toLowerCase().replace("-", " "),
-                  );
-                  if (result == true) {
-                    searchResults.push(libraryGame);
-                  }
-                },
-              );
+              for (const libraryGame of Object.keys(
+                globalContext.libraryData.games,
+              )) {
+                const result = fuzzysearch(
+                  applicationStateContext.searchValue(),
+                  libraryGame.toLowerCase().replace("-", " "),
+                );
+                if (result === true) {
+                  searchResults.push(libraryGame);
+                }
+              }
 
               return (
                 <div>
                   <div
                     className={`foldersDiv mt-4 grid gap-5 ${
-                      globalContext.libraryData.userSettings.zoomLevel == 0
+                      globalContext.libraryData.userSettings.zoomLevel === 0
                         ? globalContext.libraryData.userSettings.showSideBar
                           ? "grid-cols-4 medium:grid-cols-5 large:grid-cols-7"
                           : "grid-cols-4 medium:grid-cols-6 large:grid-cols-8"
-                        : globalContext.libraryData.userSettings.zoomLevel == 1
-                        ? globalContext.libraryData.userSettings.showSideBar
-                          ? "grid-cols-3 medium:grid-cols-4 large:grid-cols-6"
-                          : "grid-cols-3 medium:grid-cols-5 large:grid-cols-7"
-                        : globalContext.libraryData.userSettings.zoomLevel == 2
-                        ? globalContext.libraryData.userSettings.showSideBar
-                          ? "grid-cols-2 medium:grid-cols-3 large:grid-cols-5"
-                          : "grid-cols-2 medium:grid-cols-4 large:grid-cols-6"
-                        : ""
+                        : globalContext.libraryData.userSettings.zoomLevel === 1
+                          ? globalContext.libraryData.userSettings.showSideBar
+                            ? "grid-cols-3 medium:grid-cols-4 large:grid-cols-6"
+                            : "grid-cols-3 medium:grid-cols-5 large:grid-cols-7"
+                          : globalContext.libraryData.userSettings.zoomLevel ===
+                              2
+                            ? globalContext.libraryData.userSettings.showSideBar
+                              ? "grid-cols-2 medium:grid-cols-3 large:grid-cols-5"
+                              : "grid-cols-2 medium:grid-cols-4 large:grid-cols-6"
+                            : ""
                     }`}>
                     <GameCards gamesList={searchResults} />
                   </div>
                   <div className="items-center">
-                    <Show when={searchResults == ""}>
+                    <Show when={searchResults.length === 0}>
                       <div className="flex h-[calc(100vh-100px)]  w-full items-center justify-center gap-3 align-middle">
                         <EmptyTray />
                         {translateText("no games found")}

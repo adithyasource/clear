@@ -307,32 +307,32 @@ export async function getData() {
   setAppDataDirPath(await appDataDir());
 
   if (await exists("data.json", { dir: BaseDirectory.AppData })) {
-    let getLibraryData = await readTextFile("data.json", {
+    const getLibraryData = await readTextFile("data.json", {
       dir: BaseDirectory.AppData,
     });
 
     // ! potential footgun here cause you're not checking if games are empty
-    if (getLibraryData != "" && JSON.parse(getLibraryData).folders != "") {
+    if (getLibraryData !== "" && JSON.parse(getLibraryData).folders !== "") {
       setCurrentGames("");
       setCurrentFolders("");
 
       setLibraryData(JSON.parse(getLibraryData));
 
-      for (let x = 0; x < Object.keys(libraryData["folders"]).length; x++) {
-        for (let key in libraryData["folders"]) {
-          if (libraryData["folders"][key].index == x) {
+      for (let x = 0; x < Object.keys(libraryData.folders).length; x++) {
+        for (const key in libraryData.folders) {
+          if (libraryData.folders[key].index === x) {
             setCurrentFolders((z) => [...z, key]);
           }
         }
       }
 
-      setCurrentGames(Object.keys(libraryData["games"]));
+      setCurrentGames(Object.keys(libraryData.games));
 
       console.log("data fetched");
 
       // ? Checks currentTheme and adds it to the document classList for Tailwind
 
-      if (libraryData.userSettings.currentTheme == "light") {
+      if (libraryData.userSettings.currentTheme === "light") {
         document.documentElement.classList.remove("dark");
       } else {
         document.documentElement.classList.add("dark");
@@ -350,7 +350,7 @@ export async function getData() {
 }
 
 export async function openGame(gameLocation) {
-  if (gameLocation == undefined) {
+  if (gameLocation === undefined) {
     triggerToast(translateText("no game file provided!"));
     return;
   }
@@ -360,8 +360,8 @@ export async function openGame(gameLocation) {
   });
 
   if (
-    libraryData.userSettings.quitAfterOpen == true ||
-    libraryData.userSettings.quitAfterOpen == undefined
+    libraryData.userSettings.quitAfterOpen === true ||
+    libraryData.userSettings.quitAfterOpen === undefined
   ) {
     setTimeout(async () => {
       invoke("close_app");
@@ -401,7 +401,7 @@ export async function importSteamGames() {
   await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?version=a`)
     .then(() => {
       invoke("read_steam_vdf").then(async (data) => {
-        if (data == "error") {
+        if (data === "error") {
           closeDialog("loadingModal");
 
           triggerToast(
@@ -413,9 +413,9 @@ export async function importSteamGames() {
           return;
         }
 
-        let steamData = parseVDF(data);
+        const steamData = parseVDF(data);
 
-        let steamGameIds = [];
+        const steamGameIds = [];
 
         for (let x = 0; x < Object.keys(steamData.libraryfolders).length; x++) {
           steamGameIds.push(...Object.keys(steamData.libraryfolders[x].apps));
@@ -423,14 +423,15 @@ export async function importSteamGames() {
 
         const index = steamGameIds.indexOf("228980");
 
-        index != -1 ? steamGameIds.splice(index, 1) : null;
+        index !== -1 ? steamGameIds.splice(index, 1) : null;
 
         setTotalSteamGames(steamGameIds.length);
 
-        let allGameNames = [];
+        const allGameNames = [];
 
+        // ! check if this works
         setLibraryData((data) => {
-          delete data.folders["steam"];
+          data.folders.steam = undefined;
           return data;
         });
 
@@ -442,15 +443,15 @@ export async function importSteamGames() {
               `${import.meta.env.VITE_CLEAR_API_URL}/?steamID=${steamId}`,
             ).then((res) =>
               res.json().then(async (jsonres) => {
-                let gameId = jsonres.data.id;
-                let name = jsonres.data.name;
+                const gameId = jsonres.data.id;
+                const name = jsonres.data.name;
 
                 allGameNames.push(name);
 
-                let gridImageFileName = generateRandomString() + ".png";
-                let heroImageFileName = generateRandomString() + ".png";
-                let logoImageFileName = generateRandomString() + ".png";
-                let iconImageFileName = generateRandomString() + ".png";
+                let gridImageFileName = `${generateRandomString()}.png`;
+                let heroImageFileName = `${generateRandomString()}.png`;
+                let logoImageFileName = `${generateRandomString()}.png`;
+                let iconImageFileName = `${generateRandomString()}.png`;
 
                 await fetch(
                   `${
@@ -459,34 +460,41 @@ export async function importSteamGames() {
                 )
                   .then((res) =>
                     res.json().then(async (jsonres) => {
-                      jsonres.grids.length != 0
-                        ? await invoke("download_image", {
-                            link: jsonres.grids[0],
-                            location:
-                              appDataDirPath() + "grids\\" + gridImageFileName,
-                          })
-                        : (gridImageFileName = undefined);
-                      jsonres.heroes.length != 0
-                        ? await invoke("download_image", {
-                            link: jsonres.heroes[0],
-                            location:
-                              appDataDirPath() + "heroes\\" + heroImageFileName,
-                          })
-                        : (heroImageFileName = undefined);
-                      jsonres.logos.length != 0
-                        ? await invoke("download_image", {
-                            link: jsonres.logos[0],
-                            location:
-                              appDataDirPath() + "logos\\" + logoImageFileName,
-                          })
-                        : (logoImageFileName = undefined);
-                      jsonres.icons.length != 0
-                        ? await invoke("download_image", {
-                            link: jsonres.icons[0],
-                            location:
-                              appDataDirPath() + "icons\\" + iconImageFileName,
-                          })
-                        : (iconImageFileName = undefined);
+                      if (jsonres.grids.length !== 0) {
+                        await invoke("download_image", {
+                          link: jsonres.grids[0],
+                          location: `${appDataDirPath()}grids\\${gridImageFileName}`,
+                        });
+                      } else {
+                        gridImageFileName = undefined;
+                      }
+
+                      if (jsonres.heroes.length !== 0) {
+                        await invoke("download_image", {
+                          link: jsonres.heroes[0],
+                          location: `${appDataDirPath()}heroes\\${heroImageFileName}`,
+                        });
+                      } else {
+                        heroImageFileName = undefined;
+                      }
+
+                      if (jsonres.logos.length !== 0) {
+                        await invoke("download_image", {
+                          link: jsonres.logos[0],
+                          location: `${appDataDirPath()}logos\\${logoImageFileName}`,
+                        });
+                      } else {
+                        logoImageFileName = undefined;
+                      }
+
+                      if (jsonres.icons.length !== 0) {
+                        await invoke("download_image", {
+                          link: jsonres.icons[0],
+                          location: `${appDataDirPath()}icons\\${iconImageFileName}`,
+                        });
+                      } else {
+                        iconImageFileName = undefined;
+                      }
 
                       setLibraryData((data) => {
                         data.games[name] = {
@@ -516,7 +524,7 @@ export async function importSteamGames() {
 
           setLibraryData(
             produce((data) => {
-              data.folders["steam"] = {
+              data.folders.steam = {
                 name: "steam",
                 hide: false,
                 games: allGameNames,
@@ -543,19 +551,19 @@ export async function importSteamGames() {
 }
 
 export function translateText(text) {
-  if (!textLanguages.hasOwnProperty(text)) {
+  if (!Object.prototype.hasOwnProperty.call(textLanguages, text)) {
     console.trace(`missing text translation '${text}'`);
 
-    return undefined;
+    return "undefined";
   }
 
-  let translatedText = textLanguages[text][libraryData.userSettings.language];
+  const translatedText = textLanguages[text][libraryData.userSettings.language];
 
-  if (libraryData.userSettings.language == "en" || translatedText == "") {
+  if (libraryData.userSettings.language === "en" || translatedText === "") {
     return text;
-  } else {
-    return translatedText;
   }
+
+  return translatedText;
 }
 
 export async function updateData() {
@@ -589,7 +597,7 @@ export function closeToast() {
 }
 
 export function openDialog(dialogData) {
-  let dialogRef = document.querySelector(`[data-${dialogData}]`);
+  const dialogRef = document.querySelector(`[data-${dialogData}]`);
 
   dialogRef.classList.remove("hideDialog");
   dialogRef.show();
@@ -597,9 +605,9 @@ export function openDialog(dialogData) {
 }
 
 export function closeDialog(dialogData, ref) {
-  if (ref != undefined) {
+  if (ref !== undefined) {
     ref.addEventListener("keydown", (e) => {
-      if (e.key == "Escape") {
+      if (e.key === "Escape") {
         e.stopPropagation();
 
         ref.classList.remove("showDialog");
@@ -610,7 +618,7 @@ export function closeDialog(dialogData, ref) {
       }
     });
   } else {
-    let dialogRef = document.querySelector(`[data-${dialogData}]`);
+    const dialogRef = document.querySelector(`[data-${dialogData}]`);
 
     dialogRef.classList.remove("showDialog");
     dialogRef.classList.add("hideDialog");

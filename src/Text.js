@@ -1,4 +1,4 @@
-export let textLanguages = {
+export const textLanguages = {
   "hey there! thank you so much for using clear": {
     jp: "ちょっと、そこ！いつもクリアをご利用いただき誠にありがとうございます",
     es: "¡hola! muchas gracias por usar claro",

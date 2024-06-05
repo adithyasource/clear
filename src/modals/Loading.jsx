@@ -18,10 +18,8 @@ export function Loading() {
       <div className="flex h-screen w-screen items-center justify-center align-middle ">
         <div className="flex w-max items-center justify-between gap-2 border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-3 dark:border-[#ffffff1f] dark:bg-[#121212]">
           {translateText("loading")}
-          <Show when={steamDataContext.totalSteamGames() != 0}>
-            {steamDataContext.totalImportedSteamGames() +
-              " / " +
-              steamDataContext.totalSteamGames()}
+          <Show when={steamDataContext.totalSteamGames() !== 0}>
+            {`${steamDataContext.totalImportedSteamGames()} / ${steamDataContext.totalSteamGames()}`}
           </Show>
 
           <div className="absolute animate-spin-slow">

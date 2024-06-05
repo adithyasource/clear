@@ -18,28 +18,26 @@ export function EditFolder() {
   const dataUpdateContext = useContext(DataUpdateContext);
 
   async function editFolder() {
-    if (dataUpdateContext.editedFolderName() == "") {
+    if (dataUpdateContext.editedFolderName() === "") {
       triggerToast(translateText("no folder name"));
       return;
     }
 
     if (
-      selectedDataContext.selectedFolder().name !=
+      selectedDataContext.selectedFolder().name !==
       dataUpdateContext.editedFolderName()
     ) {
       let folderNameAlreadyExists = false;
 
-      Object.keys(globalContext.libraryData.folders).forEach((folderName) => {
-        if (dataUpdateContext.editedFolderName() == folderName) {
+      for (const folderName of Object.keys(globalContext.libraryData.folders)) {
+        if (dataUpdateContext.editedFolderName() === folderName) {
           folderNameAlreadyExists = true;
         }
-      });
+      }
 
       if (folderNameAlreadyExists) {
         triggerToast(
-          dataUpdateContext.editedFolderName() +
-            " " +
-            translateText("is already in your library"),
+          `${dataUpdateContext.editedFolderName()} ${translateText("is already in your library")}`,
         );
         return;
       }
@@ -149,7 +147,7 @@ export function EditFolder() {
         <div className="w-[50%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
           <div
             className={`flex justify-between ${
-              globalContext.libraryData.userSettings.language != "en"
+              globalContext.libraryData.userSettings.language !== "en"
                 ? "flex-col large:flex-row"
                 : ""
             } `}>
@@ -162,8 +160,9 @@ export function EditFolder() {
 
             <div className="flex items-center gap-5">
               <button
+                type="button"
                 onClick={() => {
-                  if (dataUpdateContext.editedHideFolder() == undefined) {
+                  if (dataUpdateContext.editedHideFolder() === undefined) {
                     dataUpdateContext.setEditedHideFolder(!selectedGame().hide);
                   } else {
                     dataUpdateContext.setEditedHideFolder(
@@ -174,7 +173,7 @@ export function EditFolder() {
                 className="relative cursor-pointer">
                 <Switch>
                   <Match
-                    when={dataUpdateContext.editedHideFolder() == undefined}>
+                    when={dataUpdateContext.editedHideFolder() === undefined}>
                     <Show
                       when={selectedDataContext.selectedFolder().hide}
                       fallback={
@@ -193,7 +192,7 @@ export function EditFolder() {
                     </Show>
                   </Match>
 
-                  <Match when={dataUpdateContext.editedHideFolder() == true}>
+                  <Match when={dataUpdateContext.editedHideFolder() === true}>
                     <div className="relative">
                       <div className="">
                         {translateText("hide in expanded view")}
@@ -204,7 +203,7 @@ export function EditFolder() {
                     </div>
                   </Match>
 
-                  <Match when={dataUpdateContext.editedHideFolder() == false}>
+                  <Match when={dataUpdateContext.editedHideFolder() === false}>
                     <div className="">
                       {translateText("hide in expanded view")}
                     </div>
@@ -213,6 +212,7 @@ export function EditFolder() {
               </button>
 
               <button
+                type="button"
                 onClick={editFolder}
                 className="standardButton flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]">
                 {translateText("save")}
@@ -220,6 +220,7 @@ export function EditFolder() {
               </button>
 
               <button
+                type="button"
                 onClick={() => {
                   uiContext.showDeleteConfirm()
                     ? deleteFolder()
@@ -239,6 +240,7 @@ export function EditFolder() {
               </button>
 
               <button
+                type="button"
                 className="standardButton flex !w-max items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                 onClick={() => {
                   closeDialog("editFolderModal");

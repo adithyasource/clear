@@ -17,7 +17,7 @@ export function GamePopUp() {
         e.preventDefault();
       }}
       onKeyDown={(e) => {
-        if (e.key == "Escape") {
+        if (e.key === "Escape") {
           e.stopPropagation();
         }
       }}
@@ -27,9 +27,7 @@ export function GamePopUp() {
       <div className="flex h-screen w-screen flex-col items-center justify-center px-[40px]">
         <img
           src={convertFileSrc(
-            applicationStateContext.appDataDirPath() +
-              "heroes\\" +
-              selectedDataContext.selectedGame().heroImage,
+            `${applicationStateContext.appDataDirPath()}heroes\\${selectedDataContext.selectedGame().heroImage}`,
           )}
           alt=""
           className="absolute -z-10 h-[350px] opacity-[0.4] blur-[80px] max-large:h-[270px]"
@@ -68,6 +66,7 @@ export function GamePopUp() {
           }}>
           <div className="absolute bottom-[30px] right-[30px] flex gap-[15px]">
             <button
+              type="button"
               className="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
                 openGame(selectedDataContext.selectedGame().location);
@@ -76,6 +75,7 @@ export function GamePopUp() {
               <Play />
             </button>
             <button
+              type="button"
               className="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
                 closeDialog("gamePopup");
@@ -84,6 +84,7 @@ export function GamePopUp() {
               <Settings />
             </button>
             <button
+              type="button"
               className="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
                 closeDialog("gamePopup");
@@ -98,9 +99,7 @@ export function GamePopUp() {
             }>
             <img
               src={convertFileSrc(
-                applicationStateContext.appDataDirPath() +
-                  "heroes\\" +
-                  selectedDataContext.selectedGame().heroImage,
+                `${applicationStateContext.appDataDirPath()}heroes\\${selectedDataContext.selectedGame().heroImage}`,
               )}
               alt=""
               className="aspect-[96/31] h-[350px] max-large:h-[270px]"
@@ -115,9 +114,7 @@ export function GamePopUp() {
               }>
               <img
                 src={convertFileSrc(
-                  applicationStateContext.appDataDirPath() +
-                    "logos\\" +
-                    selectedDataContext.selectedGame().logo,
+                  `${applicationStateContext.appDataDirPath()}logos\\${selectedDataContext.selectedGame().logo}`,
                 )}
                 alt=""
                 className=" relative aspect-auto max-h-[100px] max-w-[400px] max-large:max-h-[70px] max-large:max-w-[300px]"

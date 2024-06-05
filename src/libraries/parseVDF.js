@@ -73,11 +73,11 @@ export function parseVDF(text) {
         expect = true;
       } else {
         if (m[7] === undefined && m[8] === undefined) {
-          line += "\n" + lines[++i];
+          line += `\n${lines[++i]}`;
           continue;
         }
 
-        if (val !== "" && !isNaN(val)) val = +val;
+        if (val !== "" && !Number.isNaN(val)) val = +val;
         if (val === "true") val = true;
         if (val === "false") val = false;
         if (val === "null") val = null;

@@ -81,6 +81,7 @@ export function Settings() {
               </div>
 
               <button
+                type="button"
                 className="standardButton !w-max !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                 onClick={() => {
                   closeDialog("settingsModal");
@@ -93,6 +94,7 @@ export function Settings() {
 
             <div className="mt-[25px] grid grid-cols-3 gap-y-4">
               <button
+                type="button"
                 onClick={async () => {
                   globalContext.setLibraryData(
                     "userSettings",
@@ -118,6 +120,7 @@ export function Settings() {
                 </Show>
               </button>
               <button
+                type="button"
                 onClick={async () => {
                   globalContext.setLibraryData(
                     "userSettings",
@@ -144,6 +147,7 @@ export function Settings() {
                 </Show>
               </button>
               <button
+                type="button"
                 onClick={async () => {
                   globalContext.setLibraryData(
                     "userSettings",
@@ -170,6 +174,7 @@ export function Settings() {
                 </Show>
               </button>
               <button
+                type="button"
                 onClick={async () => {
                   globalContext.setLibraryData(
                     "userSettings",
@@ -201,9 +206,10 @@ export function Settings() {
               </button>
 
               <button
+                type="button"
                 onClick={async () => {
                   if (
-                    globalContext.libraryData.userSettings.fontName ==
+                    globalContext.libraryData.userSettings.fontName ===
                     "sans serif"
                   ) {
                     globalContext.setLibraryData(
@@ -213,7 +219,8 @@ export function Settings() {
                     );
                   } else {
                     if (
-                      globalContext.libraryData.userSettings.fontName == "serif"
+                      globalContext.libraryData.userSettings.fontName ===
+                      "serif"
                     ) {
                       globalContext.setLibraryData(
                         "userSettings",
@@ -222,7 +229,7 @@ export function Settings() {
                       );
                     } else {
                       if (
-                        globalContext.libraryData.userSettings.fontName ==
+                        globalContext.libraryData.userSettings.fontName ===
                         "mono"
                       ) {
                         globalContext.setLibraryData(
@@ -249,8 +256,9 @@ export function Settings() {
                 </div>
               </button>
               <button
+                type="button"
                 onClick={async () => {
-                  globalContext.libraryData.userSettings.currentTheme == "dark"
+                  globalContext.libraryData.userSettings.currentTheme === "dark"
                     ? globalContext.setLibraryData(
                         "userSettings",
                         "currentTheme",
@@ -284,6 +292,7 @@ export function Settings() {
             <Show when={uiContext.showNewVersionAvailable()}>
               <div className="mt-[35px] flex items-start gap-3">
                 <button
+                  type="button"
                   className="standardButton !m-0 flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                   onClick={() => {
                     invoke("open_location", {
@@ -301,10 +310,11 @@ export function Settings() {
             <div className="mt-[35px] flex flex-row items-start gap-4">
               <div>
                 <button
+                  type="button"
                   className="standardButton hint--bottom !flex !w-max !gap-3 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] "
                   aria-label={translateText("might not work perfectly!")}
                   onClick={() => {
-                    if (globalContext.libraryData.folders.steam != undefined) {
+                    if (globalContext.libraryData.folders.steam !== undefined) {
                       uiContext.showImportAndOverwriteConfirm()
                         ? importSteamGames()
                         : uiContext.setShowImportAndOverwriteConfirm(true);
@@ -317,11 +327,11 @@ export function Settings() {
                     }
                   }}>
                   <Show
-                    when={globalContext.libraryData.folders.steam != undefined}
-                    fallback={<>{translateText("import Steam games")}</>}>
+                    when={globalContext.libraryData.folders.steam !== undefined}
+                    fallback={translateText("import Steam games")}>
                     <Show
-                      when={uiContext.showImportAndOverwriteConfirm() == true}
-                      fallback={<>{translateText("import Steam games")}</>}>
+                      when={uiContext.showImportAndOverwriteConfirm() === true}
+                      fallback={translateText("import Steam games")}>
                       <span className="text-[#FF3636]">
                         {translateText(
                           "current 'steam' folder will be overwritten. confirm?",
@@ -336,6 +346,7 @@ export function Settings() {
 
               <div className="flex items-start gap-3">
                 <button
+                  type="button"
                   className="standardButton !m-0 flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                   onClick={async () => {
                     const appDataDirPath = await appDataDir();
@@ -364,6 +375,7 @@ export function Settings() {
                 </span>
               </div>
               <button
+                type="button"
                 onClick={() => {
                   invoke("open_location", {
                     location: "https://clear.adithya.zip/feedback",
@@ -373,6 +385,7 @@ export function Settings() {
                 {translateText("feedback")}
               </button>
               <button
+                type="button"
                 onClick={() => {
                   invoke("open_location", {
                     location: "https://clear.adithya.zip/",
@@ -384,6 +397,7 @@ export function Settings() {
               <div>
                 {translateText("made by")}{" "}
                 <button
+                  type="button"
                   onClick={() => {
                     invoke("open_location", {
                       location: "https://adithya.zip/",
@@ -395,6 +409,7 @@ export function Settings() {
                 </button>
               </div>
               <button
+                type="button"
                 onClick={() => {
                   invoke("open_location", {
                     location: "https://ko-fi.com/adithyasource",

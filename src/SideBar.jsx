@@ -38,13 +38,13 @@ export function SideBar() {
   let scrollY = " ";
 
   async function moveFolder(folderName, toPosition) {
-    let pastPositionOfFolder = applicationStateContext
+    const pastPositionOfFolder = applicationStateContext
       .currentFolders()
       .indexOf(folderName);
 
     applicationStateContext.currentFolders().splice(pastPositionOfFolder, 1);
 
-    if (toPosition == -1) {
+    if (toPosition === -1) {
       applicationStateContext.currentFolders().push(folderName);
     } else {
       if (toPosition > pastPositionOfFolder) {
@@ -58,27 +58,25 @@ export function SideBar() {
       }
     }
 
-    applicationStateContext.currentFolders().forEach((currentFolderName) => {
-      Object.keys(globalContext.libraryData["folders"]).forEach(
-        (folderName) => {
-          if (currentFolderName == folderName) {
-            globalContext.setLibraryData(
-              produce((data) => {
-                Object.values(data["folders"])[
-                  Object.keys(globalContext.libraryData["folders"]).indexOf(
-                    folderName,
-                  )
-                ].index = applicationStateContext
-                  .currentFolders()
-                  .indexOf(currentFolderName);
+    for (const currentFolderName of applicationStateContext.currentFolders()) {
+      for (const folderName of Object.keys(globalContext.libraryData.folders)) {
+        if (currentFolderName === folderName) {
+          globalContext.setLibraryData(
+            produce((data) => {
+              Object.values(data.folders)[
+                Object.keys(globalContext.libraryData.folders).indexOf(
+                  folderName,
+                )
+              ].index = applicationStateContext
+                .currentFolders()
+                .indexOf(currentFolderName);
 
-                return data;
-              }),
-            );
-          }
-        },
-      );
-    });
+              return data;
+            }),
+          );
+        }
+      }
+    }
 
     await updateData();
   }
@@ -88,25 +86,25 @@ export function SideBar() {
     toPosition,
     currentFolderName,
   ) {
-    let pastPositionOfGame =
-      globalContext.libraryData.folders[currentFolderName]["games"].indexOf(
+    const pastPositionOfGame =
+      globalContext.libraryData.folders[currentFolderName].games.indexOf(
         gameName,
       );
 
     globalContext.setLibraryData(
       produce((data) => {
-        data.folders[currentFolderName]["games"].splice(
-          data.folders[currentFolderName]["games"].indexOf(gameName),
+        data.folders[currentFolderName].games.splice(
+          data.folders[currentFolderName].games.indexOf(gameName),
           1,
         );
         return data;
       }),
     );
 
-    if (toPosition == -1) {
+    if (toPosition === -1) {
       globalContext.setLibraryData(
         produce((data) => {
-          data.folders[currentFolderName]["games"].push(gameName);
+          data.folders[currentFolderName].games.push(gameName);
           return data;
         }),
       );
@@ -114,7 +112,7 @@ export function SideBar() {
       if (toPosition > pastPositionOfGame) {
         globalContext.setLibraryData(
           produce((data) => {
-            data.folders[currentFolderName]["games"].splice(
+            data.folders[currentFolderName].games.splice(
               toPosition - 1,
               0,
               gameName,
@@ -125,7 +123,7 @@ export function SideBar() {
       } else {
         globalContext.setLibraryData(
           produce((data) => {
-            data.folders[currentFolderName]["games"].splice(
+            data.folders[currentFolderName].games.splice(
               toPosition,
               0,
               gameName,
@@ -140,11 +138,9 @@ export function SideBar() {
   }
 
   onMount(() => {
-    document
-      .getElementById("sideBarFolders")
-      .addEventListener("scroll", function () {
-        scrollY = document.getElementById("sideBarFolders").scrollTop;
-      });
+    document.getElementById("sideBarFolders").addEventListener("scroll", () => {
+      scrollY = document.getElementById("sideBarFolders").scrollTop;
+    });
   });
 
   return (
@@ -172,6 +168,7 @@ export function SideBar() {
               />
             </form>
             <button
+              type="button"
               className="w-[28px] cursor-pointer p-2 duration-150 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
               onClick={() => {
                 toggleSideBar();
@@ -186,13 +183,14 @@ export function SideBar() {
           </div>
           <Show when={uiContext.showContentSkipButton()}>
             <button
+              type="button"
               className="standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
                 uiContext.setShowContentSkipButton(false);
 
-                let firstGameCard = document.getElementById("firstGameCard");
+                const firstGameCard = document.getElementById("firstGameCard");
 
-                if (firstGameCard != undefined) {
+                if (firstGameCard !== undefined) {
                   firstGameCard.focus();
                 } else {
                   triggerToast(translateText("no games found"));
@@ -217,22 +215,22 @@ export function SideBar() {
               e.preventDefault();
 
               if (
-                document.querySelectorAll(".sideBarFolder:is(.dragging)")[0] !=
+                document.querySelectorAll(".sideBarFolder:is(.dragging)")[0] !==
                 undefined
               ) {
-                let siblings = [
+                const siblings = [
                   ...e.srcElement.querySelectorAll(
                     ".sideBarFolder:not(.dragging)",
                   ),
                 ];
 
-                let allGames = document.querySelectorAll(".sideBarFolder");
+                const allGames = document.querySelectorAll(".sideBarFolder");
 
-                allGames.forEach((game) => {
+                for (const game of allGames) {
                   game.classList.remove("currentlyDragging");
-                });
+                }
 
-                let nextSibling = siblings.find((sibling) => {
+                const nextSibling = siblings.find((sibling) => {
                   let compensatedY = "";
                   compensatedY = e.clientY + scrollY;
 
@@ -249,19 +247,19 @@ export function SideBar() {
               }
             }}
             onDrop={async (e) => {
-              let folderName = e.dataTransfer.getData("folderName");
+              const folderName = e.dataTransfer.getData("folderName");
 
               if (
-                document.querySelectorAll(".sideBarFolder:is(.dragging)")[0] !=
+                document.querySelectorAll(".sideBarFolder:is(.dragging)")[0] !==
                 undefined
               ) {
-                let siblings = [
+                const siblings = [
                   ...e.srcElement.querySelectorAll(
                     ".sideBarFolder:not(.dragging)",
                   ),
                 ];
 
-                let nextSibling = siblings.find((sibling) => {
+                const nextSibling = siblings.find((sibling) => {
                   let compensatedY = "";
                   compensatedY = e.clientY + scrollY;
 
@@ -299,14 +297,14 @@ export function SideBar() {
               }
             }}
             class={` ${
-              globalContext.libraryData.userSettings.language == "fr"
+              globalContext.libraryData.userSettings.language === "fr"
                 ? "medium:h-[calc(100vh-330px)] large:h-[calc(100vh-275px)]"
                 : "h-[calc(100vh-275px)]"
             } overflow-auto`}>
-            <p className="mt-[5px]"></p>
+            <p className="mt-[5px]" />
             <For each={applicationStateContext.currentFolders()}>
               {(folderName, index) => {
-                let folder = globalContext.libraryData.folders[folderName];
+                const folder = globalContext.libraryData.folders[folderName];
 
                 if (folder.games.length > 0) {
                   return (
@@ -330,22 +328,22 @@ export function SideBar() {
                         if (
                           document.querySelectorAll(
                             ".sideBarFolder:is(.dragging)",
-                          )[0] == undefined
+                          )[0] === undefined
                         ) {
-                          let siblings = [
+                          const siblings = [
                             ...e.srcElement.querySelectorAll(
                               ".sideBarGame:not(.dragging)",
                             ),
                           ];
 
-                          let allGames =
+                          const allGames =
                             document.querySelectorAll(".sideBarGame");
 
-                          allGames.forEach((game) => {
+                          for (const game of allGames) {
                             game.classList.remove("currentlyDragging");
-                          });
+                          }
 
-                          let nextSibling = siblings.find((sibling) => {
+                          const nextSibling = siblings.find((sibling) => {
                             let compensatedY = "";
                             compensatedY = e.clientY + scrollY;
 
@@ -363,25 +361,25 @@ export function SideBar() {
                         }
                       }}
                       onDrop={async (e) => {
-                        let gameName = e.dataTransfer.getData("gameName");
-                        let oldFolderName =
+                        const gameName = e.dataTransfer.getData("gameName");
+                        const oldFolderName =
                           e.dataTransfer.getData("oldFolderName");
 
                         if (
                           document.querySelectorAll(
                             ".sideBarFolder:is(.dragging)",
-                          )[0] == undefined
+                          )[0] === undefined
                         ) {
-                          if (oldFolderName == folderName) {
+                          if (oldFolderName === folderName) {
                             const draggingItem =
                               document.querySelector(".dragging");
-                            let siblings = [
+                            const siblings = [
                               ...e.srcElement.querySelectorAll(
                                 ".sideBarGame:not(.dragging)",
                               ),
                             ];
 
-                            let nextSibling = siblings.find((sibling) => {
+                            const nextSibling = siblings.find((sibling) => {
                               let compensatedY = "";
                               compensatedY = e.clientY + scrollY;
 
@@ -392,16 +390,16 @@ export function SideBar() {
                             });
 
                             try {
-                              let currentDraggingItem =
+                              const currentDraggingItem =
                                 draggingItem.textContent;
 
-                              let nextSiblingItem = nextSibling.textContent;
+                              const nextSiblingItem = nextSibling.textContent;
 
                               moveGameInCurrentFolder(
                                 currentDraggingItem,
-                                globalContext.libraryData.folders[folderName][
-                                  "games"
-                                ].indexOf(nextSiblingItem),
+                                globalContext.libraryData.folders[
+                                  folderName
+                                ].games.indexOf(nextSiblingItem),
                                 folderName,
                               );
 
@@ -414,7 +412,7 @@ export function SideBar() {
                             return;
                           }
 
-                          if (oldFolderName != "uncategorized") {
+                          if (oldFolderName !== "uncategorized") {
                             const index =
                               globalContext.libraryData.folders[
                                 oldFolderName
@@ -448,10 +446,11 @@ export function SideBar() {
                         <span className="break-all text-black dark:text-white">
                           {folder.name}
                         </span>
-                        <Show when={folder.hide == true}>
+                        <Show when={folder.hide === true}>
                           <EyeClosed />
                         </Show>
                         <button
+                          type="button"
                           className="w-[25.25px] p-2 duration-150 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
                           onClick={() => {
                             openDialog("editFolderModal");
@@ -487,83 +486,80 @@ export function SideBar() {
                       </p>
                     </div>
                   );
-                } else {
-                  return (
-                    <div
-                      className="sideBarFolder bg-[#f1f1f1] dark:bg-[#1c1c1c]"
-                      onDragOver={(e) => {
-                        e.preventDefault();
-                      }}
-                      draggable={true}
-                      onDragStart={(e) => {
-                        setTimeout(
-                          () => e.srcElement.classList.add("dragging"),
-                          0,
-                        );
+                }
+                return (
+                  <div
+                    className="sideBarFolder bg-[#f1f1f1] dark:bg-[#1c1c1c]"
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                    }}
+                    draggable={true}
+                    onDragStart={(e) => {
+                      setTimeout(
+                        () => e.srcElement.classList.add("dragging"),
+                        0,
+                      );
 
-                        e.dataTransfer.setData("folderName", folderName);
-                      }}
-                      onDragEnd={(e) => {
-                        e.srcElement.classList.remove("dragging");
-                      }}
-                      onDrop={async (e) => {
-                        let gameName = e.dataTransfer.getData("gameName");
-                        let oldFolderName =
-                          e.dataTransfer.getData("oldFolderName");
-                        if (oldFolderName != "uncategorized") {
-                          const index =
-                            globalContext.libraryData.folders[
-                              oldFolderName
-                            ].games.indexOf(gameName);
-
-                          globalContext.setLibraryData(
-                            produce((data) => {
-                              data.folders[oldFolderName].games.splice(
-                                index,
-                                1,
-                              );
-
-                              return data;
-                            }),
-                          );
-                        }
+                      e.dataTransfer.setData("folderName", folderName);
+                    }}
+                    onDragEnd={(e) => {
+                      e.srcElement.classList.remove("dragging");
+                    }}
+                    onDrop={async (e) => {
+                      const gameName = e.dataTransfer.getData("gameName");
+                      const oldFolderName =
+                        e.dataTransfer.getData("oldFolderName");
+                      if (oldFolderName !== "uncategorized") {
+                        const index =
+                          globalContext.libraryData.folders[
+                            oldFolderName
+                          ].games.indexOf(gameName);
 
                         globalContext.setLibraryData(
                           produce((data) => {
-                            data.folders[folder.name].games.push(gameName);
+                            data.folders[oldFolderName].games.splice(index, 1);
 
                             return data;
                           }),
                         );
-                        await updateData();
-                        getData();
-                      }}>
-                      <div className="my-[-4px] flex cursor-move items-center gap-[10px]">
-                        <s className="cursor-move break-all text-black dark:text-white">
-                          {folder.name}
-                        </s>
-                        <Show when={folder.hide == true}>
-                          <EyeClosed />
-                        </Show>
-                        <button
-                          className="w-[25.25px] p-2 duration-150 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
-                          onClick={() => {
-                            openDialog("editFolderModal");
-                            selectedDataContext.setSelectedFolder(folder);
+                      }
 
-                            dataUpdateContext.setEditedFolderName(
-                              selectedDataContext.selectedFolder().name,
-                            );
-                            dataUpdateContext.setEditedHideFolder(
-                              selectedDataContext.selectedFolder().hide,
-                            );
-                          }}>
-                          <Edit />
-                        </button>
-                      </div>
+                      globalContext.setLibraryData(
+                        produce((data) => {
+                          data.folders[folder.name].games.push(gameName);
+
+                          return data;
+                        }),
+                      );
+                      await updateData();
+                      getData();
+                    }}>
+                    <div className="my-[-4px] flex cursor-move items-center gap-[10px]">
+                      <s className="cursor-move break-all text-black dark:text-white">
+                        {folder.name}
+                      </s>
+                      <Show when={folder.hide === true}>
+                        <EyeClosed />
+                      </Show>
+                      <button
+                        type="button"
+                        className="w-[25.25px] p-2 duration-150 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
+                        onClick={() => {
+                          openDialog("editFolderModal");
+                          selectedDataContext.setSelectedFolder(folder);
+
+                          dataUpdateContext.setEditedFolderName(
+                            selectedDataContext.selectedFolder().name,
+                          );
+                          dataUpdateContext.setEditedHideFolder(
+                            selectedDataContext.selectedFolder().hide,
+                          );
+                        }}>
+                        <Edit />
+                      </button>
                     </div>
-                  );
-                }
+                  </div>
+                );
               }}
             </For>
             {/* uncategorized */}
@@ -575,8 +571,8 @@ export function SideBar() {
                 e.preventDefault();
               }}
               onDrop={async (e) => {
-                let gameName = e.dataTransfer.getData("gameName");
-                let oldFolderName = e.dataTransfer.getData("oldFolderName");
+                const gameName = e.dataTransfer.getData("gameName");
+                const oldFolderName = e.dataTransfer.getData("oldFolderName");
 
                 const index =
                   globalContext.libraryData.folders[
@@ -602,15 +598,15 @@ export function SideBar() {
               </div>
               <For each={applicationStateContext.currentGames()}>
                 {(currentGame, index) => {
-                  let gamesInFolders = [];
+                  const gamesInFolders = [];
 
-                  Object.values(globalContext.libraryData.folders).forEach(
-                    (folder) => {
-                      folder.games.forEach((game) => {
-                        gamesInFolders.push(game);
-                      });
-                    },
-                  );
+                  for (const folder of Object.values(
+                    globalContext.libraryData.folders,
+                  )) {
+                    for (const game of folder.games) {
+                      gamesInFolders.push(game);
+                    }
+                  }
 
                   return (
                     <Show when={!gamesInFolders.includes(currentGame)}>
@@ -631,6 +627,7 @@ export function SideBar() {
           class="absolute bottom-[20px] w-[calc(100%-2px)] pr-[20px]">
           <div className="">
             <button
+              type="button"
               className="standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
                 openDialog("newGameModal");
@@ -641,6 +638,7 @@ export function SideBar() {
               </div>
             </button>
             <button
+              type="button"
               className="standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
                 openDialog("newFolderModal");
@@ -654,11 +652,12 @@ export function SideBar() {
 
           <div
             className={`flex ${
-              globalContext.libraryData.userSettings.language == "fr"
+              globalContext.libraryData.userSettings.language === "fr"
                 ? "flex-col gap-0 medium:flex-col medium:gap-0 large:flex-row large:gap-3"
                 : "gap-3"
             }`}>
             <button
+              type="button"
               className={`standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] ${
                 uiContext.showNewVersionAvailable() ? "!w-[80%]" : ""
               } whitespace-nowrap`}
@@ -671,6 +670,7 @@ export function SideBar() {
               </div>
             </button>
             <button
+              type="button"
               className=" standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
                 openDialog("settingsModal");

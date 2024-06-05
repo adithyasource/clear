@@ -18,8 +18,9 @@ export function GameCards(props) {
       {(gameName, index) => {
         return (
           <button
+            type="button"
             className="gameCard group relative w-full cursor-pointer bg-transparent p-0"
-            id={`${index() == 0 ? "firstGameCard" : ""}`}
+            id={`${index() === 0 ? "firstGameCard" : ""}`}
             aria-label={translateText("play")}
             onDragStart={(e) => {
               e.preventDefault();
@@ -83,9 +84,7 @@ export function GameCards(props) {
                       <img
                         className="relative z-10 mb-[7px] aspect-[2/3] w-full group-hover:outline-none group-hover:outline-[2px] group-hover:outline-[#0000001f] dark:group-hover:outline-[#ffffff1f]"
                         src={convertFileSrc(
-                          applicationStateContext.appDataDirPath() +
-                            "grids\\" +
-                            globalContext.libraryData.games[gameName].gridImage,
+                          `${applicationStateContext.appDataDirPath()}grids\\${globalContext.libraryData.games[gameName].gridImage}`,
                         )}
                         alt=""
                       />
@@ -121,9 +120,7 @@ export function GameCards(props) {
                   <img
                     className="relative z-10 mb-[7px] outline-none outline-[4px] outline-[#0000001c] duration-200 hover:outline-[#0000003b] dark:outline-[2px] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b]"
                     src={convertFileSrc(
-                      applicationStateContext.appDataDirPath() +
-                        "grids\\" +
-                        globalContext.libraryData.games[gameName].gridImage,
+                      `${applicationStateContext.appDataDirPath()}grids\\${globalContext.libraryData.games[gameName].gridImage}`,
                     )}
                     alt=""
                     width="100%"
@@ -134,9 +131,7 @@ export function GameCards(props) {
                   <img
                     className="absolute inset-0 opacity-0 duration-500 dark:opacity-[40%] dark:group-hover:opacity-60"
                     src={convertFileSrc(
-                      applicationStateContext.appDataDirPath() +
-                        "grids\\" +
-                        globalContext.libraryData.games[gameName].gridImage,
+                      `${applicationStateContext.appDataDirPath()}grids\\${globalContext.libraryData.games[gameName].gridImage}`,
                     )}
                     alt=""
                   />

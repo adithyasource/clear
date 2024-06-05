@@ -17,8 +17,8 @@ export function NewFolder() {
 
   async function addFolder() {
     if (
-      dataEntryContext.folderName() == "" ||
-      dataEntryContext.folderName() == undefined
+      dataEntryContext.folderName() === "" ||
+      dataEntryContext.folderName() === undefined
     ) {
       triggerToast(translateText("no folder name"));
       return;
@@ -26,17 +26,15 @@ export function NewFolder() {
 
     let folderNameAlreadyExists = false;
 
-    Object.keys(globalContext.libraryData.folders).forEach((folderName) => {
-      if (dataEntryContext.folderName() == folderName) {
+    for (const folderName of Object.keys(globalContext.libraryData.folders)) {
+      if (dataEntryContext.folderName() === folderName) {
         folderNameAlreadyExists = true;
       }
-    });
+    }
 
     if (folderNameAlreadyExists) {
       triggerToast(
-        dataEntryContext.folderName() +
-          " " +
-          translateText("is already in your library"),
+        `${dataEntryContext.folderName()} ${translateText("is already in your library")}`,
       );
       return;
     }
@@ -103,7 +101,7 @@ export function NewFolder() {
         <div className="w-[50%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
           <div
             className={`flex justify-between ${
-              globalContext.libraryData.userSettings.language != "en"
+              globalContext.libraryData.userSettings.language !== "en"
                 ? "flex-col large:flex-row"
                 : ""
             } `}>
@@ -114,6 +112,7 @@ export function NewFolder() {
             </div>
             <div className="flex items-center gap-5">
               <button
+                type="button"
                 onClick={() => {
                   dataEntryContext.setHideFolder((x) => !x);
                 }}
@@ -136,12 +135,14 @@ export function NewFolder() {
                 </Show>
               </button>
               <button
+                type="button"
                 onClick={addFolder}
                 className="standardButton flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]">
                 {translateText("save")}
                 <SaveDisk />
               </button>
               <button
+                type="button"
                 className="standardButton flex !w-max items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                 onClick={() => {
                   closeDialog("newFolderModal");
