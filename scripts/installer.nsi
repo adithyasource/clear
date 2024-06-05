@@ -12,8 +12,6 @@ VIAddVersionKey "LegalCopyright" "Unlicense"
 ; The name of the installer
 Name "clear"
 
-; The setup filename
-OutFile "clear v1.1.0 setup.exe"
 
 ; The setup icon
 Icon "${NSISDIR}\Contrib\Graphics\Icons\nsis1-install.ico"

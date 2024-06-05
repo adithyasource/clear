@@ -50,8 +50,6 @@ If you would like to, you can create your own completely different version of th
 
 ## Acknowledgments
 
-For the full list of the licenses for all the tools and libraries, please refer to the [ACKNOWLEDGEMENTS](https://github.com/adithyasource/clear/blob/main/ACKNOWLEDGEMENTS) file.
-
 <table>
 <tbody>
 <tr>
