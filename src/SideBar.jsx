@@ -293,7 +293,6 @@ export function SideBar() {
                 });
 
                 await updateData();
-                getData();
               }
             }}
             class={` ${
@@ -439,7 +438,6 @@ export function SideBar() {
                           );
 
                           await updateData();
-                          getData();
                         }
                       }}>
                       <div className="flex cursor-move items-center gap-[10px]  ">
@@ -532,7 +530,6 @@ export function SideBar() {
                         }),
                       );
                       await updateData();
-                      getData();
                     }}>
                     <div className="my-[-4px] flex cursor-move items-center gap-[10px]">
                       <s className="cursor-move break-all text-black dark:text-white">
@@ -588,8 +585,6 @@ export function SideBar() {
                 );
 
                 await updateData();
-
-                getData();
               }}>
               <div className=" flex cursor-default items-center gap-[10px]">
                 <p className="pd-3 text-[#00000080] dark:text-[#ffffff80] ">

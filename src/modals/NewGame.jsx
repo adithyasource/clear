@@ -187,8 +187,6 @@ export function NewGame() {
     closeDialog("loadingModal");
 
     await updateData();
-
-    getData();
   }
 
   async function locateGame() {

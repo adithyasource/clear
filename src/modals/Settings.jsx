@@ -103,7 +103,6 @@ export function Settings() {
                   );
 
                   await updateData();
-                  getData();
                 }}
                 className="relative cursor-pointer p-0 text-left">
                 <Show
@@ -129,8 +128,6 @@ export function Settings() {
                   );
 
                   await updateData();
-
-                  getData();
                 }}
                 className="relative cursor-pointer p-0 text-left">
                 <Show
@@ -156,8 +153,6 @@ export function Settings() {
                   );
 
                   await updateData();
-
-                  getData();
                 }}
                 className="relative cursor-pointer p-0 text-left">
                 <Show
@@ -183,8 +178,6 @@ export function Settings() {
                   );
 
                   await updateData();
-
-                  getData();
                 }}
                 className="relative cursor-pointer p-0 text-left">
                 <Show
@@ -242,8 +235,6 @@ export function Settings() {
                   }
 
                   await updateData();
-
-                  getData();
                 }}
                 className="flex cursor-pointer gap-2 p-0 text-left">
                 <span className="text-[#12121280] dark:text-[#ffffff80]">
@@ -271,8 +262,6 @@ export function Settings() {
                       );
 
                   await updateData();
-
-                  getData();
                 }}
                 className="flex cursor-pointer gap-2 p-0 text-left">
                 <span className="text-[#12121280] dark:text-[#ffffff80]">

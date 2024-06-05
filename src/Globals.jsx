@@ -299,8 +299,6 @@ export async function createEmptyLibrary() {
   });
 
   updateData();
-
-  getData();
 }
 
 export async function getData() {
@@ -388,9 +386,6 @@ export async function changeLanguage(lang) {
   setLibraryData("userSettings", "language", lang);
 
   await updateData();
-
-  getData();
-
   setShowLanguageSelector(false);
   setShowSettingsLanguageSelector(false);
 }
@@ -436,8 +431,6 @@ export async function importSteamGames() {
         });
 
         await updateData().then(async () => {
-          getData();
-
           for (const steamId of steamGameIds) {
             await fetch(
               `${import.meta.env.VITE_CLEAR_API_URL}/?steamID=${steamId}`,
@@ -539,7 +532,6 @@ export async function importSteamGames() {
             closeDialog("settingsModal");
             setTotalImportedSteamGames(0);
             setTotalSteamGames(0);
-            getData();
           });
         });
       });
@@ -634,5 +626,4 @@ export async function toggleSideBar() {
   setLibraryData("userSettings", "showSideBar", (x) => !x);
 
   await updateData();
-  getData();
 }

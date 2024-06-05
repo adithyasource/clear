@@ -113,7 +113,7 @@ export function EditGame() {
     ) {
       let gameNameAlreadyExists = false;
 
-      for (gameName of Object.keys(globalContext.libraryData.games)) {
+      for (const gameName of Object.keys(globalContext.libraryData.games)) {
         if (dataUpdateContext.editedGameName() === gameName) {
           gameNameAlreadyExists = true;
         }
@@ -298,7 +298,6 @@ export function EditGame() {
 
     await updateData();
     selectedDataContext.setSelectedGame({});
-    getData();
     closeDialog("editGameModal");
   }
 
@@ -326,8 +325,6 @@ export function EditGame() {
     }
 
     await updateData();
-
-    getData();
   }
 
   return (

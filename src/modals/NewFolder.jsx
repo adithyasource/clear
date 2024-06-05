@@ -53,7 +53,6 @@ export function NewFolder() {
     );
 
     await updateData();
-    getData();
     closeDialog("newFolderModal");
   }
 
