@@ -32,7 +32,7 @@ export function Style() {
         };
       }
 
-      *:not(body, svg),
+      *:not(body, svg, #loading),
       [class*="hint--"]:after {
         border-radius: ${
           globalContext.libraryData.userSettings.roundedBorders ? "6px" : "0px"
