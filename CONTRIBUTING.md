@@ -37,8 +37,7 @@ If you would like to contribute to the translations but do not know how to do so
 
 ## if you would like to contribute to improving the code:
 
-[This](https://adithyaa.notion.site/1557ca8ac05e4aee8ed35e270c58ee48?v=64af609e060c4a39ba527d8f2a1ee8e2) is a notion board with a couple of ideas and features that would be cool to have in the application. If you find something
-that interests you, it'd be great if you could implement it! If you need any help, you can always open up a [new issue](https://github.com/adithyasource/clear/issues) \
+A bunch of ideas and features that I'm working on / will work on are mentioned in [this github projects kanban board](https://github.com/users/adithyasource/projects/3/views/9). If you find something that interests you, it'd be great if you could implement it! If you need any help, you can always open up a [new issue](https://github.com/adithyasource/clear/issues) \
 \
 Please make sure that you do not implement any major new features that are not on the notion board before
 opening an issue discussing it. This is in order to make that that the clear's original purpose of being clean, minimalistic and simple to use stays true. \
