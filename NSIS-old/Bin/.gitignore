@@ -1,9 +1,0 @@
-clear_setup.exe
-.vscode/
-GenPat.exe
-MakeLangId.exe
-makensis.exe
-RegTool-x86.bin
-zip2exe.exe
-zlib1.dll
-*.exe

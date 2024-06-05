@@ -4,3 +4,4 @@ z
 *.exe
 .env
 .env*
+upx.exe
