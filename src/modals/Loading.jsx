@@ -22,7 +22,7 @@ export function Loading() {
             {`${steamDataContext.totalImportedSteamGames()} / ${steamDataContext.totalSteamGames()}`}
           </Show>
 
-          <div className="absolute animate-spin-slow">
+          <div className="absolute">
             <LoadingIcon />
           </div>
         </div>

@@ -21,7 +21,7 @@ export const DataEntryContext = createContext();
 export const DataUpdateContext = createContext();
 export const SteamDataContext = createContext();
 
-// ? Global Store
+// * Global Store
 export const [libraryData, setLibraryData] = createStore({
   // Default Values
   games: {},
@@ -40,7 +40,7 @@ export const [libraryData, setLibraryData] = createStore({
   },
 });
 
-// ? UI
+// * UI
 const [showToast, setShowToast] = createSignal(false);
 const [showContentSkipButton, setShowContentSkipButton] = createSignal(false);
 const [showSettingsLanguageSelector, setShowSettingsLanguageSelector] =
@@ -52,12 +52,12 @@ const [showImportAndOverwriteConfirm, setShowImportAndOverwriteConfirm] =
 const [showNewVersionAvailable, setShowNewVersionAvailable] =
   createSignal(false);
 
-// ? Selected Data Signals
+// * Selected Data Signals
 const [selectedGame, setSelectedGame] = createSignal({});
 const [selectedFolder, setSelectedFolder] = createSignal([]);
 const [selectedGameId, setSelectedGameId] = createSignal();
 
-// ? Application State Signals
+// * Application State Signals
 const [currentGames, setCurrentGames] = createSignal([]);
 const [currentFolders, setCurrentFolders] = createSignal([]);
 const [searchValue, setSearchValue] = createSignal();
@@ -68,7 +68,7 @@ const [appDataDirPath, setAppDataDirPath] = createSignal({});
 const [windowWidth, setWindowWidth] = createSignal(window.innerWidth);
 const [SGDBGames, setSGDBGames] = createSignal();
 
-// ? Add Data Signals
+// * Add Data Signals
 const [gameName, setGameName] = createSignal("");
 const [favouriteGame, setFavouriteGame] = createSignal(false);
 const [locatedHeroImage, setLocatedHeroImage] = createSignal();
@@ -88,7 +88,7 @@ const [foundLogoImageIndex, setFoundLogoImageIndex] = createSignal(0);
 const [foundIconImageIndex, setFoundIconImageIndex] = createSignal(0);
 const [notepadValue, setNotepadValue] = createSignal("");
 
-// ? Update Data Signals
+// * Update Data Signals
 const [editedGameName, setEditedGameName] = createSignal();
 const [editedFavouriteGame, setEditedFavouriteGame] = createSignal();
 const [editedLocatedHeroImage, setEditedLocatedHeroImage] = createSignal();
@@ -99,11 +99,11 @@ const [editedLocatedGame, setEditedlocatedGame] = createSignal();
 const [editedFolderName, setEditedFolderName] = createSignal();
 const [editedHideFolder, setEditedHideFolder] = createSignal();
 
-// ? Steam Data Signals
+// * Steam Data Signals
 const [totalSteamGames, setTotalSteamGames] = createSignal(0);
 const [totalImportedSteamGames, setTotalImportedSteamGames] = createSignal(0);
 
-// ? Exporting Context Providers
+// * Exporting Context Providers
 
 export function GlobalContextProvider(props) {
   const context = {
@@ -278,7 +278,7 @@ export function SteamDataContextProvider(props) {
   );
 }
 
-// ? Global Functions
+// * Global Functions
 
 export async function createEmptyLibrary() {
   await createDir("heroes", {

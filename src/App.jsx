@@ -282,7 +282,7 @@ function App() {
           }>
           <button
             type="button"
-            className="absolute right-[31px] top-[32px] z-20 w-[25.25px] rotate-180 cursor-pointer p-2 duration-150 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
+            className="absolute right-[31px] top-[32px] z-20 w-[25.25px] rotate-180 cursor-pointer p-2 duration-150 motion-reduce:duration-0 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
             onClick={() => {
               toggleSideBar();
             }}>

@@ -535,7 +535,7 @@ export function NewGame() {
                 <Show
                   when={showGridImageLoading() === false}
                   fallback={
-                    <div className="h-max w-max animate-spin-slow">
+                    <div className="h-max w-max">
                       <Loading />
                     </div>
                   }>
@@ -671,7 +671,7 @@ export function NewGame() {
                   <Show
                     when={showHeroImageLoading() === false}
                     fallback={
-                      <div className="h-max w-max animate-spin-slow">
+                      <div className="h-max w-max">
                         <Loading />
                       </div>
                     }>
@@ -804,7 +804,7 @@ export function NewGame() {
                   <Show
                     when={showLogoImageLoading() === false}
                     fallback={
-                      <div className="relative h-max w-max animate-spin-slow">
+                      <div className="relative h-max w-max">
                         <Loading />
                       </div>
                     }>
@@ -899,7 +899,7 @@ export function NewGame() {
                     when={showIconImageLoading() === false}
                     fallback={
                       <div className="h-[40px] w-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]">
-                        <div className="absolute left-[32%] top-[30%] animate-spin-slow">
+                        <div className="absolute left-[32%] top-[30%]">
                           <Loading />
                         </div>
                       </div>

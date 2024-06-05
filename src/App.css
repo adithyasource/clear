@@ -96,6 +96,15 @@
   }
 }
 
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /* * Setting Base Styles */
 
 * {
@@ -205,9 +214,14 @@ dialog.hideDialog {
   animation: dialogFadeOut 0.2s ease forwards;
 }
 
-dialog {
-  box-shadow: 0 0 0.5rem 100vw rgba(0, 0, 0, 0.2);
-  transition: 2s ease-out;
+.loading {
+  opacity: 1;
+  animation: loadingFadeOut 0.3s;
+  opacity: 0;
+}
+
+.loadingIcon {
+  animation: spin 3s linear infinite;
 }
 
 .toast {
@@ -215,8 +229,38 @@ dialog {
   animation: dialogFadeIn 0.2s, dialogFadeOut 0.3s 2.3s;
 }
 
-.loading {
-  opacity: 1;
-  animation: loadingFadeOut 0.3s;
-  opacity: 0;
+/* * removing all animations for people with animations turned off */
+
+@media (prefers-reduced-motion) {
+  .standardButton {
+    transition: 0s;
+  }
+
+  input,
+  #searchInput {
+    transition: 0s;
+  }
+
+  dialog.showDialog {
+    animation: dialogFadeIn 0s ease forwards;
+  }
+
+  dialog.hideDialog {
+    animation: dialogFadeOut 0s ease forwards;
+  }
+
+  .loading {
+    opacity: 1;
+    animation: loadingFadeOut 0s;
+    opacity: 0;
+  }
+
+  .loadingIcon {
+    animation: spin 0s linear infinite;
+  }
+
+  .toast {
+    opacity: 1;
+    animation: dialogFadeIn 0s, dialogFadeOut 0s 2.3s;
+  }
 }

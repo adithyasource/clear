@@ -169,7 +169,7 @@ export function SideBar() {
             </form>
             <button
               type="button"
-              className="w-[28px] cursor-pointer p-2 duration-150 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
+              className="w-[28px] cursor-pointer p-2 duration-150 motion-reduce:duration-0 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
               onClick={() => {
                 toggleSideBar();
               }}
@@ -449,7 +449,7 @@ export function SideBar() {
                         </Show>
                         <button
                           type="button"
-                          className="w-[25.25px] p-2 duration-150 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
+                          className="w-[25.25px] p-2 duration-150 motion-reduce:duration-0 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
                           onClick={() => {
                             openDialog("editFolderModal");
                             selectedDataContext.setSelectedFolder(folder);
@@ -540,7 +540,7 @@ export function SideBar() {
                       </Show>
                       <button
                         type="button"
-                        className="w-[25.25px] p-2 duration-150 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
+                        className="w-[25.25px] p-2 duration-150 motion-reduce:duration-0 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
                         onClick={() => {
                           openDialog("editFolderModal");
                           selectedDataContext.setSelectedFolder(folder);

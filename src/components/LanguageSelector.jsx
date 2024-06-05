@@ -63,7 +63,7 @@ export function LanguageSelector(props) {
           }}>
           <button
             type="button"
-            className="p-0 text-left text-[#12121280] duration-150 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
+            className="p-0 text-left text-[#12121280] duration-150 motion-reduce:duration-0 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
             id="firstDropdownItem"
             onClick={() => {
               changeLanguage("en");
@@ -72,7 +72,7 @@ export function LanguageSelector(props) {
           </button>
           <button
             type="button"
-            className="p-0 text-left text-[#12121280] duration-75 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
+            className="p-0 text-left text-[#12121280] duration-75 motion-reduce:duration-0 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
             onClick={() => {
               changeLanguage("fr");
             }}>
@@ -80,7 +80,7 @@ export function LanguageSelector(props) {
           </button>
           <button
             type="button"
-            className="p-0 text-left text-[#12121280] duration-75 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
+            className="p-0 text-left text-[#12121280] duration-75 motion-reduce:duration-0 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
             onClick={() => {
               changeLanguage("ru");
             }}>
@@ -88,7 +88,7 @@ export function LanguageSelector(props) {
           </button>
           <button
             type="button"
-            className="p-0 text-left text-[#12121280] duration-150 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
+            className="p-0 text-left text-[#12121280] duration-150 motion-reduce:duration-0 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
             onClick={() => {
               changeLanguage("jp");
             }}>
@@ -96,7 +96,7 @@ export function LanguageSelector(props) {
           </button>
           <button
             type="button"
-            className="p-0 text-left text-[#12121280] duration-150 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
+            className="p-0 text-left text-[#12121280] duration-150 motion-reduce:duration-0 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
             onClick={() => {
               changeLanguage("es");
             }}>
@@ -111,7 +111,7 @@ export function LanguageSelector(props) {
                   : uiContext.setShowLanguageSelector(false);
               }
             }}
-            className="p-0 text-left text-[#12121280] duration-150 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
+            className="p-0 text-left text-[#12121280] duration-150 motion-reduce:duration-0 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
             onClick={() => {
               changeLanguage("hi");
             }}>
