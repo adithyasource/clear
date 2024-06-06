@@ -16,10 +16,11 @@
     "solid-js": "^1.7.8"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.0",
     "@tauri-apps/cli": "^1.5.6",
     "autoprefixer": "^10.4.16",
     "cross-env": "^7.0.3",
+    "eslint": "~8.57.0",
+    "eslint-plugin-solid": "^0.14.0",
     "postcss": "^8.4.31",
     "vite": "^4.4.4",
     "vite-plugin-minify": "^1.5.2",
