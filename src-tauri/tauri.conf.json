@@ -13,9 +13,6 @@
   },
   "tauri": {
     "allowlist": {
-      "os": {
-        "all": true
-      },
       "path": {
         "all": true
       },

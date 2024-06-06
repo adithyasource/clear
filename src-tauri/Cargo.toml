@@ -13,7 +13,7 @@ edition = "2021"
 tauri-build = { version = "1.5", features = [] }
 
 [dependencies]
-tauri = { version = "1.5.2", features = [ "protocol-asset", "os-all", "path-all", "fs-read-file", "fs-create-dir", "fs-copy-file", "fs-write-file", "dialog-open", "fs-exists", "objc-exception", "wry"], default-features = false}
+tauri = { version = "1.5.2", features = [ "protocol-asset", "path-all", "fs-read-file", "fs-create-dir", "fs-copy-file", "fs-write-file", "dialog-open", "fs-exists", "objc-exception", "wry"], default-features = false}
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem
