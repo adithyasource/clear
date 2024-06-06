@@ -76,7 +76,7 @@ function App() {
         sideBarGame.classList.remove(
           "hint--right",
           "hint--no-animate",
-          "hint--no-arrow",
+          "hint--no-arrow"
         );
       }
 
@@ -84,7 +84,7 @@ function App() {
         gameCard.classList.remove(
           "hint--center",
           "hint--no-animate",
-          "hint--no-arrow",
+          "hint--no-arrow"
         );
       }
     });
@@ -124,7 +124,7 @@ function App() {
                 }
 
                 return newZoomLevel;
-              },
+              }
             );
             updateData();
             break;
@@ -142,7 +142,7 @@ function App() {
                 }
 
                 return newZoomLevel;
-              },
+              }
             );
             updateData();
             break;
@@ -158,7 +158,7 @@ function App() {
               document.querySelector("#searchInput").focus();
             } else {
               triggerToast(
-                translateText("close current dialog before opening another"),
+                translateText("close current dialog before opening another")
               );
             }
             break;
@@ -172,7 +172,7 @@ function App() {
                 openDialog("newGameModal");
               } else {
                 triggerToast(
-                  translateText("close current dialog before opening another"),
+                  translateText("close current dialog before opening another")
                 );
               }
             }
@@ -187,7 +187,7 @@ function App() {
                 openDialog("newFolderModal");
               } else {
                 triggerToast(
-                  translateText("close current dialog before opening another"),
+                  translateText("close current dialog before opening another")
                 );
               }
             }
@@ -202,7 +202,7 @@ function App() {
                 openDialog("notepadModal");
               } else {
                 triggerToast(
-                  translateText("close current dialog before opening another"),
+                  translateText("close current dialog before opening another")
                 );
               }
             }
@@ -217,7 +217,7 @@ function App() {
                 openDialog("settingsModal");
               } else {
                 triggerToast(
-                  translateText("close current dialog before opening another"),
+                  translateText("close current dialog before opening another")
                 );
               }
             }
@@ -230,7 +230,7 @@ function App() {
               document.querySelector("#searchInput").blur();
             } else {
               triggerToast(
-                translateText("close current dialog before toggling sidebar"),
+                translateText("close current dialog before toggling sidebar")
               );
             }
             break;
@@ -270,11 +270,11 @@ function App() {
   return (
     <>
       {/* fading out bg color to make the app loading look a bit more smoother */}
-      <div className="loading pointer-events-none absolute z-[1000] flex h-screen w-screen items-center justify-center bg-[#121212]">
-        <p className="" />
+      <div class="loading pointer-events-none absolute z-[1000] flex h-screen w-screen items-center justify-center bg-[#121212]">
+        <p class="" />
       </div>
 
-      <div className="flex h-full gap-[30px] overflow-y-hidden">
+      <div class="flex h-full gap-[30px] overflow-y-hidden">
         <Show
           when={
             globalContext.libraryData.userSettings.showSideBar === false &&
@@ -282,7 +282,7 @@ function App() {
           }>
           <button
             type="button"
-            className="absolute right-[31px] top-[32px] z-20 w-[25.25px] rotate-180 cursor-pointer p-2 duration-150 motion-reduce:duration-0 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
+            class="absolute right-[31px] top-[32px] z-20 w-[25.25px] rotate-180 cursor-pointer p-2 duration-150 motion-reduce:duration-0 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
             onClick={() => {
               toggleSideBar();
             }}>
@@ -304,15 +304,15 @@ function App() {
               applicationStateContext.searchValue() === undefined)
           }>
           <div
-            className={` absolute flex h-[100vh] w-full flex-col items-center justify-center
+            class={` absolute flex h-[100vh] w-full flex-col items-center justify-center
             overflow-y-scroll py-[20px] pr-[30px]  ${
               globalContext.libraryData.userSettings.showSideBar &&
               applicationStateContext.windowWidth() >= 1000
                 ? "pl-[23%] large:pl-[17%]"
                 : "pl-[30px] large:pl-[30px]"
             }`}>
-            <div className="!z-50">
-              <p className="text-[#000000] dark:text-[#ffffff80] ">
+            <div class="!z-50">
+              <p class="text-[#000000] dark:text-[#ffffff80] ">
                 {translateText("hey there! thank you so much for using clear")}
                 <br />
                 <br />-{" "}
@@ -320,17 +320,17 @@ function App() {
                 <br />
                 <br />-{" "}
                 {translateText(
-                  "create new folders and drag and drop your games into them",
+                  "create new folders and drag and drop your games into them"
                 )}
                 <br />
                 <br />-{" "}
                 {translateText("don't forget to check out the settings!")}
               </p>
 
-              <div className="mt-[35px] flex gap-6">
+              <div class="mt-[35px] flex gap-6">
                 <button
                   type="button"
-                  className="standardButton hint--bottom !flex !w-max !gap-3 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+                  class="standardButton hint--bottom !flex !w-max !gap-3 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                   aria-label={translateText("might not work perfectly!")}
                   onClick={() => {
                     if (globalContext.libraryData.folders.steam !== undefined) {
@@ -351,9 +351,9 @@ function App() {
                     <Show
                       when={uiContext.showImportAndOverwriteConfirm() === true}
                       fallback={translateText("import Steam games")}>
-                      <span className="text-[#FF3636]">
+                      <span class="text-[#FF3636]">
                         {translateText(
-                          "current 'steam' folder will be overwritten. confirm?",
+                          "current 'steam' folder will be overwritten. confirm?"
                         )}
                       </span>
                     </Show>
@@ -370,7 +370,7 @@ function App() {
           </div>
         </Show>
         <div
-          className={`absolute h-[100vh] w-full overflow-y-scroll !rounded-[0px] py-[20px] pr-[30px] ${
+          class={`absolute h-[100vh] w-full overflow-y-scroll !rounded-[0px] py-[20px] pr-[30px] ${
             globalContext.libraryData.userSettings.showSideBar &&
             applicationStateContext.windowWidth() >= 1000
               ? "pl-[23%] large:pl-[17%]"
@@ -387,34 +387,32 @@ function App() {
 
                 return (
                   <Show when={folder.games !== "" && !folder.hide}>
-                    <div className="mb-[40px]">
+                    <div class="mb-[40px]">
                       <Show
                         when={
                           globalContext.libraryData.userSettings.folderTitle
                         }>
-                        <p className="text-[25px] text-[#000000] dark:text-[#ffffff80]">
+                        <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">
                           {folder.name}
                         </p>
                       </Show>
                       <div
-                        className={`foldersDiv mt-4 grid gap-5 ${
+                        class={`foldersDiv mt-4 grid gap-5 ${
                           globalContext.libraryData.userSettings.zoomLevel === 0
                             ? globalContext.libraryData.userSettings.showSideBar
                               ? "grid-cols-4 medium:grid-cols-5 large:grid-cols-7"
                               : "grid-cols-4 medium:grid-cols-6 large:grid-cols-8"
                             : globalContext.libraryData.userSettings
-                                  .zoomLevel === 1
-                              ? globalContext.libraryData.userSettings
-                                  .showSideBar
-                                ? "grid-cols-3 medium:grid-cols-4 large:grid-cols-6"
-                                : "grid-cols-3 medium:grid-cols-5 large:grid-cols-7"
-                              : globalContext.libraryData.userSettings
-                                    .zoomLevel === 2
-                                ? globalContext.libraryData.userSettings
-                                    .showSideBar
-                                  ? "grid-cols-2 medium:grid-cols-3 large:grid-cols-5"
-                                  : "grid-cols-2 medium:grid-cols-4 large:grid-cols-6"
-                                : ""
+                                .zoomLevel === 1
+                            ? globalContext.libraryData.userSettings.showSideBar
+                              ? "grid-cols-3 medium:grid-cols-4 large:grid-cols-6"
+                              : "grid-cols-3 medium:grid-cols-5 large:grid-cols-7"
+                            : globalContext.libraryData.userSettings
+                                .zoomLevel === 2
+                            ? globalContext.libraryData.userSettings.showSideBar
+                              ? "grid-cols-2 medium:grid-cols-3 large:grid-cols-5"
+                              : "grid-cols-2 medium:grid-cols-4 large:grid-cols-6"
+                            : ""
                         }`}>
                         <GameCards gamesList={folder.games} />
                       </div>
@@ -444,11 +442,11 @@ function App() {
               }
 
               for (const libraryGame of Object.keys(
-                globalContext.libraryData.games,
+                globalContext.libraryData.games
               )) {
                 const result = fuzzysearch(
                   applicationStateContext.searchValue(),
-                  libraryGame.toLowerCase().replace("-", " "),
+                  libraryGame.toLowerCase().replace("-", " ")
                 );
                 if (result === true) {
                   searchResults.push(libraryGame);
@@ -458,27 +456,26 @@ function App() {
               return (
                 <div>
                   <div
-                    className={`foldersDiv mt-4 grid gap-5 ${
+                    class={`foldersDiv mt-4 grid gap-5 ${
                       globalContext.libraryData.userSettings.zoomLevel === 0
                         ? globalContext.libraryData.userSettings.showSideBar
                           ? "grid-cols-4 medium:grid-cols-5 large:grid-cols-7"
                           : "grid-cols-4 medium:grid-cols-6 large:grid-cols-8"
                         : globalContext.libraryData.userSettings.zoomLevel === 1
-                          ? globalContext.libraryData.userSettings.showSideBar
-                            ? "grid-cols-3 medium:grid-cols-4 large:grid-cols-6"
-                            : "grid-cols-3 medium:grid-cols-5 large:grid-cols-7"
-                          : globalContext.libraryData.userSettings.zoomLevel ===
-                              2
-                            ? globalContext.libraryData.userSettings.showSideBar
-                              ? "grid-cols-2 medium:grid-cols-3 large:grid-cols-5"
-                              : "grid-cols-2 medium:grid-cols-4 large:grid-cols-6"
-                            : ""
+                        ? globalContext.libraryData.userSettings.showSideBar
+                          ? "grid-cols-3 medium:grid-cols-4 large:grid-cols-6"
+                          : "grid-cols-3 medium:grid-cols-5 large:grid-cols-7"
+                        : globalContext.libraryData.userSettings.zoomLevel === 2
+                        ? globalContext.libraryData.userSettings.showSideBar
+                          ? "grid-cols-2 medium:grid-cols-3 large:grid-cols-5"
+                          : "grid-cols-2 medium:grid-cols-4 large:grid-cols-6"
+                        : ""
                     }`}>
                     <GameCards gamesList={searchResults} />
                   </div>
-                  <div className="items-center">
+                  <div class="items-center">
                     <Show when={searchResults.length === 0}>
-                      <div className="flex h-[calc(100vh-100px)]  w-full items-center justify-center gap-3 align-middle">
+                      <div class="flex h-[calc(100vh-100px)]  w-full items-center justify-center gap-3 align-middle">
                         <EmptyTray />
                         {translateText("no games found")}
                       </div>

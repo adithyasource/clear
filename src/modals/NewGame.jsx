@@ -1,4 +1,4 @@
-import { Match, Show, Switch, createSignal, useContext } from "solid-js";
+import { Match, Show, Switch, createSignal, useContext, For } from "solid-js";
 import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
 import { BaseDirectory, copyFile } from "@tauri-apps/api/fs";
 
@@ -53,7 +53,9 @@ export function NewGame() {
 
     if (gameNameAlreadyExists) {
       triggerToast(
-        `${dataEntryContext.gameName()} ${translateText("is already in your library")}`,
+        `${dataEntryContext.gameName()} ${translateText(
+          "is already in your library"
+        )}`
       );
       return;
     }
@@ -85,7 +87,7 @@ export function NewGame() {
           `${dataEntryContext.locatedGridImage()}grids\\${gridImageFileName}`,
           {
             dir: BaseDirectory.AppData,
-          },
+          }
         );
       }
     }
@@ -111,7 +113,7 @@ export function NewGame() {
           `${dataEntryContext.locatedHeroImage()}heroes\\${heroImageFileName}`,
           {
             dir: BaseDirectory.AppData,
-          },
+          }
         );
       }
     }
@@ -137,7 +139,7 @@ export function NewGame() {
           `${dataEntryContext.locatedLogo()}logos\\${logoFileName}`,
           {
             dir: BaseDirectory.AppData,
-          },
+          }
         );
       }
     }
@@ -163,7 +165,7 @@ export function NewGame() {
           `${dataEntryContext.locatedIcon()}icons\\${iconFileName}`,
           {
             dir: BaseDirectory.AppData,
-          },
+          }
         );
       }
     }
@@ -181,7 +183,7 @@ export function NewGame() {
         };
 
         return data;
-      }),
+      })
     );
 
     closeDialog("loadingModal");
@@ -199,7 +201,7 @@ export function NewGame() {
             extensions: ["exe", "lnk", "url"],
           },
         ],
-      }),
+      })
     );
   }
   async function locateGridImage() {
@@ -213,7 +215,7 @@ export function NewGame() {
             extensions: ["png", "jpg", "jpeg", "webp"],
           },
         ],
-      }),
+      })
     );
   }
   async function locateHeroImage() {
@@ -227,7 +229,7 @@ export function NewGame() {
             extensions: ["png", "jpg", "jpeg", "webp"],
           },
         ],
-      }),
+      })
     );
   }
   async function locateLogo() {
@@ -241,7 +243,7 @@ export function NewGame() {
             extensions: ["png", "jpg", "jpeg", "webp"],
           },
         ],
-      }),
+      })
     );
   }
 
@@ -256,7 +258,7 @@ export function NewGame() {
             extensions: ["png", "jpg", "jpeg", "ico"],
           },
         ],
-      }),
+      })
     );
   }
 
@@ -265,7 +267,7 @@ export function NewGame() {
     await fetch(
       `${
         import.meta.env.VITE_CLEAR_API_URL
-      }/?gameName=${dataEntryContext.gameName()}`,
+      }/?gameName=${dataEntryContext.gameName()}`
     )
       .then((res) =>
         res.json().then(async (jsonres) => {
@@ -274,7 +276,7 @@ export function NewGame() {
           } else {
             applicationStateContext.setSGDBGames(jsonres.data);
           }
-        }),
+        })
       )
       .catch((err) => {
         triggerToast(translateText("you're not connected to the internet :("));
@@ -290,7 +292,7 @@ export function NewGame() {
     await fetch(
       `${
         import.meta.env.VITE_CLEAR_API_URL
-      }/?assets=${selectedDataContext.selectedGameId()}`,
+      }/?assets=${selectedDataContext.selectedGameId()}`
     ).then((res) =>
       res.json().then(async (jsonres) => {
         const missingAssets = [];
@@ -318,17 +320,17 @@ export function NewGame() {
             const lastAssetType = missingAssets.splice(-1);
             triggerToast(
               `${translateText("couldn't find")} ${missingAssets.join(
-                ", ",
-              )} & ${lastAssetType} :(`,
+                ", "
+              )} & ${lastAssetType} :(`
             );
             return;
           }
 
           triggerToast(
-            `${translateText("couldn't find")} ${missingAssets[0]} :(`,
+            `${translateText("couldn't find")} ${missingAssets[0]} :(`
           );
         }
-      }),
+      })
     );
   }
 
@@ -343,7 +345,7 @@ export function NewGame() {
 
         function handleTab(e) {
           const focusableElements = ref.querySelectorAll(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
           );
           const firstElement = focusableElements[0];
           const lastElement = focusableElements[focusableElements.length - 1];
@@ -384,29 +386,29 @@ export function NewGame() {
         selectedDataContext.setSelectedGameId(undefined);
         applicationStateContext.setSGDBGames(undefined);
       }}
-      className="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d1cc] dark:bg-[#121212cc]">
-      <div className="flex h-screen  w-screen flex-col  items-center justify-center gap-3">
-        <div className="flex w-[84rem] justify-between max-large:w-[61rem]">
+      class="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d1cc] dark:bg-[#121212cc]">
+      <div class="flex h-screen  w-screen flex-col  items-center justify-center gap-3">
+        <div class="flex w-[84rem] justify-between max-large:w-[61rem]">
           <div>
-            <p className="text-[25px] text-[#00000080] dark:text-[#ffffff80]">
+            <p class="text-[25px] text-[#00000080] dark:text-[#ffffff80]">
               {translateText("add new game")}
             </p>
           </div>
-          <div className="flex items-center gap-4">
+          <div class="flex items-center gap-4">
             <button
               type="button"
-              className="cursor-pointer"
+              class="cursor-pointer"
               onClick={() => {
                 dataEntryContext.setFavouriteGame((x) => !x);
               }}>
               <Show
                 when={dataEntryContext.favouriteGame()}
                 fallback={
-                  <div className="!w-max">{translateText("favourite")}</div>
+                  <div class="!w-max">{translateText("favourite")}</div>
                 }>
-                <div className="relative">
-                  <div className="!w-max">{translateText("favourite")}</div>
-                  <div className="absolute inset-0 -z-10 !w-max opacity-70 blur-[5px]">
+                <div class="relative">
+                  <div class="!w-max">{translateText("favourite")}</div>
+                  <div class="absolute inset-0 -z-10 !w-max opacity-70 blur-[5px]">
                     {translateText("favourite")}
                   </div>
                 </div>
@@ -415,14 +417,14 @@ export function NewGame() {
             <button
               type="button"
               onClick={addGame}
-              className="standardButton flex items-center gap-1 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] ">
-              <p className="!w-max">{translateText("save")}</p>
+              class="standardButton flex items-center gap-1 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] ">
+              <p class="!w-max">{translateText("save")}</p>
 
               <SaveDisk />
             </button>
             <button
               type="button"
-              className="standardButton flex items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+              class="standardButton flex items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
                 closeDialog("newGameModal");
                 getData();
@@ -433,7 +435,7 @@ export function NewGame() {
           </div>
         </div>
 
-        <div className="flex gap-[1rem]">
+        <div class="flex gap-[1rem]">
           <button
             type="button"
             onClick={locateGridImage}
@@ -444,7 +446,7 @@ export function NewGame() {
                   dataEntryContext.setFoundGridImageIndex((i) =>
                     i === dataEntryContext.foundGridImage().length - 1
                       ? 0
-                      : i + 1,
+                      : i + 1
                   );
                   setShowGridImageLoading(true);
                 }
@@ -465,7 +467,7 @@ export function NewGame() {
                   dataEntryContext.setFoundGridImageIndex((i) =>
                     i === dataEntryContext.foundGridImage().length - 1
                       ? 0
-                      : i + 1,
+                      : i + 1
                   );
                   setShowGridImageLoading(true);
                 }
@@ -484,7 +486,7 @@ export function NewGame() {
               dataEntryContext.setLocatedGridImage(undefined);
               dataEntryContext.setFoundGridImage(undefined);
             }}
-            className="panelButton locatingGridImg group relative aspect-[2/3] h-full cursor-pointer overflow-hidden bg-[#f1f1f1] dark:bg-[#1c1c1c]">
+            class="panelButton locatingGridImg group relative aspect-[2/3] h-full cursor-pointer overflow-hidden bg-[#f1f1f1] dark:bg-[#1c1c1c]">
             <Show
               when={dataEntryContext.foundGridImage()}
               fallback={
@@ -497,7 +499,7 @@ export function NewGame() {
                       </span>
                     }>
                     <img
-                      className="absolute inset-0 aspect-[2/3]"
+                      class="absolute inset-0 aspect-[2/3]"
                       src={convertFileSrc(dataEntryContext.locatedGridImage())}
                       alt=""
                     />
@@ -509,7 +511,7 @@ export function NewGame() {
               }>
               <Show when={showGridImageLoading() === false}>
                 <img
-                  className="absolute inset-0 aspect-[2/3]"
+                  class="absolute inset-0 aspect-[2/3]"
                   src={
                     dataEntryContext.foundGridImage()[
                       dataEntryContext.foundGridImageIndex()
@@ -528,14 +530,14 @@ export function NewGame() {
                     ? "opacity-0 group-hover:opacity-100"
                     : ""
                 }`}>
-                <span className="opacity-50">
+                <span class="opacity-50">
                   {dataEntryContext.foundGridImageIndex()} /{" "}
                   {dataEntryContext.foundGridImage().length - 1}
                 </span>
                 <Show
                   when={showGridImageLoading() === false}
                   fallback={
-                    <div className="h-max w-max">
+                    <div class="h-max w-max">
                       <Loading />
                     </div>
                   }>
@@ -545,7 +547,7 @@ export function NewGame() {
             </Show>
           </button>
 
-          <div className="relative flex flex-col gap-3">
+          <div class="relative flex flex-col gap-3">
             <button
               type="button"
               onClick={locateHeroImage}
@@ -556,7 +558,7 @@ export function NewGame() {
                     dataEntryContext.setFoundHeroImageIndex((i) =>
                       i === dataEntryContext.foundHeroImage().length - 1
                         ? 0
-                        : i + 1,
+                        : i + 1
                     );
                     setShowHeroImageLoading(true);
                   }
@@ -577,7 +579,7 @@ export function NewGame() {
                     dataEntryContext.setFoundHeroImageIndex((i) =>
                       i === dataEntryContext.foundHeroImage().length - 1
                         ? 0
-                        : i + 1,
+                        : i + 1
                     );
                     setShowHeroImageLoading(true);
                   }
@@ -596,16 +598,16 @@ export function NewGame() {
                 dataEntryContext.setLocatedHeroImage(undefined);
                 dataEntryContext.setFoundHeroImage(undefined);
               }}
-              className="panelButton group relative m-0 aspect-[67/26] h-[350px] cursor-pointer bg-[#f1f1f1] p-0 dark:bg-[#1c1c1c] max-large:h-[250px]"
+              class="panelButton group relative m-0 aspect-[67/26] h-[350px] cursor-pointer bg-[#f1f1f1] p-0 dark:bg-[#1c1c1c] max-large:h-[250px]"
               aria-label="hero">
               <Show
                 when={dataEntryContext.foundHeroImage()}
-                className="absolute inset-0 overflow-hidden"
+                class="absolute inset-0 overflow-hidden"
                 fallback={
                   <>
                     <Show
                       when={dataEntryContext.locatedHeroImage()}
-                      className="absolute inset-0 overflow-hidden"
+                      class="absolute inset-0 overflow-hidden"
                       fallback={
                         <span class="tooltip absolute left-[45%] top-[47%] opacity-0 group-hover:opacity-100">
                           {translateText("hero")}
@@ -613,17 +615,17 @@ export function NewGame() {
                       }>
                       <img
                         src={convertFileSrc(
-                          dataEntryContext.locatedHeroImage(),
+                          dataEntryContext.locatedHeroImage()
                         )}
                         alt=""
-                        className="absolute inset-0 aspect-[96/31] h-full rounded-[6px]"
+                        class="absolute inset-0 aspect-[96/31] h-full rounded-[6px]"
                       />
                       <img
                         src={convertFileSrc(
-                          dataEntryContext.locatedHeroImage(),
+                          dataEntryContext.locatedHeroImage()
                         )}
                         alt=""
-                        className="absolute inset-0 -z-10 aspect-[96/31] h-full rounded-[6px] opacity-[0.4] blur-[80px]"
+                        class="absolute inset-0 -z-10 aspect-[96/31] h-full rounded-[6px] opacity-[0.4] blur-[80px]"
                       />
                       <span class="tooltip absolute left-[45%] top-[47%] opacity-0 group-hover:opacity-100">
                         {translateText("hero")}
@@ -642,7 +644,7 @@ export function NewGame() {
                       setShowHeroImageLoading(false);
                     }}
                     alt=""
-                    className="absolute inset-0 aspect-[96/31] h-full rounded-[6px] "
+                    class="absolute inset-0 aspect-[96/31] h-full rounded-[6px] "
                   />
                   <img
                     src={
@@ -654,7 +656,7 @@ export function NewGame() {
                       setShowHeroImageLoading(false);
                     }}
                     alt=""
-                    className="absolute inset-0 -z-10 aspect-[96/31] h-full rounded-[6px] opacity-[0.4] blur-[80px] "
+                    class="absolute inset-0 -z-10 aspect-[96/31] h-full rounded-[6px] opacity-[0.4] blur-[80px] "
                   />
                 </Show>
 
@@ -664,14 +666,14 @@ export function NewGame() {
                       ? "opacity-0 group-hover:opacity-100"
                       : ""
                   }`}>
-                  <span className="opacity-50">
+                  <span class="opacity-50">
                     {dataEntryContext.foundHeroImageIndex()} /{" "}
                     {dataEntryContext.foundHeroImage().length - 1}
                   </span>
                   <Show
                     when={showHeroImageLoading() === false}
                     fallback={
-                      <div className="h-max w-max">
+                      <div class="h-max w-max">
                         <Loading />
                       </div>
                     }>
@@ -695,7 +697,7 @@ export function NewGame() {
                           dataEntryContext.setLocatedLogo(undefined);
                           dataEntryContext.setFoundLogoImage(undefined);
                         }}
-                        className="panelButton group absolute bottom-[70px] left-[20px]  z-[100] h-[90px] w-[250px] cursor-pointer bg-[#E8E8E8] dark:!bg-[#272727] max-large:h-[90px] max-large:w-[243px] "
+                        class="panelButton group absolute bottom-[70px] left-[20px]  z-[100] h-[90px] w-[250px] cursor-pointer bg-[#E8E8E8] dark:!bg-[#272727] max-large:h-[90px] max-large:w-[243px] "
                         aria-label="logo">
                         <span class="tooltip absolute left-[40%] top-[35%] opacity-0 group-hover:opacity-100 max-large:left-[38%] max-large:top-[32%]">
                           {translateText("logo")}
@@ -709,12 +711,12 @@ export function NewGame() {
                         dataEntryContext.setLocatedLogo(undefined);
                         dataEntryContext.setFoundLogoImage(undefined);
                       }}
-                      className="panelButton group absolute bottom-[70px] left-[20px] cursor-pointer bg-[#E8E8E800] bg-[#f1f1f1] dark:bg-[#1c1c1c] dark:bg-[#27272700]"
+                      class="panelButton group absolute bottom-[70px] left-[20px] cursor-pointer bg-[#E8E8E800] bg-[#f1f1f1] dark:bg-[#1c1c1c] dark:bg-[#27272700]"
                       aria-label="logo">
                       <img
                         src={convertFileSrc(dataEntryContext.locatedLogo())}
                         alt=""
-                        className="relative aspect-auto max-h-[100px] max-w-[400px] max-large:max-h-[70px] max-large:max-w-[300px]"
+                        class="relative aspect-auto max-h-[100px] max-w-[400px] max-large:max-h-[70px] max-large:max-w-[300px]"
                       />
                       <span class="tooltip absolute left-[35%] top-[30%] opacity-0 group-hover:opacity-100">
                         {translateText("logo")}
@@ -733,7 +735,7 @@ export function NewGame() {
                       dataEntryContext.setFoundLogoImageIndex((i) =>
                         i === dataEntryContext.foundLogoImage().length - 1
                           ? 0
-                          : i + 1,
+                          : i + 1
                       );
                       setShowLogoImageLoading(true);
                     }
@@ -754,7 +756,7 @@ export function NewGame() {
                       dataEntryContext.setFoundLogoImageIndex((i) =>
                         i === dataEntryContext.foundLogoImage().length - 1
                           ? 0
-                          : i + 1,
+                          : i + 1
                       );
                       setShowLogoImageLoading(true);
                     }
@@ -773,7 +775,7 @@ export function NewGame() {
                   dataEntryContext.setLocatedLogo(undefined);
                   dataEntryContext.setFoundLogoImage(undefined);
                 }}
-                className="panelButton group absolute  bottom-[60px] left-[10px] cursor-pointer bg-[#E8E8E800] bg-[#f1f1f1] dark:bg-[#1c1c1c] dark:bg-[#27272700]"
+                class="panelButton group absolute  bottom-[60px] left-[10px] cursor-pointer bg-[#E8E8E800] bg-[#f1f1f1] dark:bg-[#1c1c1c] dark:bg-[#27272700]"
                 aria-label="logo">
                 <img
                   src={
@@ -782,7 +784,7 @@ export function NewGame() {
                     ]
                   }
                   alt=""
-                  className={`relative h-[90px] w-[250px] !object-scale-down max-large:h-[90px] max-large:w-[243px] ${
+                  class={`relative h-[90px] w-[250px] !object-scale-down max-large:h-[90px] max-large:w-[243px] ${
                     showLogoImageLoading() ? "opacity-0" : ""
                   }`}
                   onLoad={() => {
@@ -791,12 +793,12 @@ export function NewGame() {
                 />
 
                 <span
-                  className={`tooltip absolute left-[33%] top-[35%] flex  items-center gap-[5px] max-large:left-[30%] max-large:top-[35%]  ${
+                  class={`tooltip absolute left-[33%] top-[35%] flex  items-center gap-[5px] max-large:left-[30%] max-large:top-[35%]  ${
                     showLogoImageLoading() === false
                       ? "opacity-0 group-hover:opacity-100"
                       : ""
                   }`}>
-                  <span className="opacity-50">
+                  <span class="opacity-50">
                     {dataEntryContext.foundLogoImageIndex()} /{" "}
                     {dataEntryContext.foundLogoImage().length - 1}
                   </span>
@@ -804,7 +806,7 @@ export function NewGame() {
                   <Show
                     when={showLogoImageLoading() === false}
                     fallback={
-                      <div className="relative h-max w-max">
+                      <div class="relative h-max w-max">
                         <Loading />
                       </div>
                     }>
@@ -814,7 +816,7 @@ export function NewGame() {
               </button>
             </Show>
 
-            <div className="flex cursor-pointer items-center gap-3 ">
+            <div class="flex cursor-pointer items-center gap-3 ">
               <Show
                 when={dataEntryContext.foundIconImage()}
                 fallback={
@@ -825,17 +827,17 @@ export function NewGame() {
                       dataEntryContext.setLocatedIcon(undefined);
                       dataEntryContext.setFoundIconImage(undefined);
                     }}
-                    className="group relative !bg-[#27272700] p-0"
+                    class="group relative !bg-[#27272700] p-0"
                     aria-label="logo">
                     <Show
                       when={dataEntryContext.locatedIcon()}
                       fallback={
-                        <div className="h-[40px] w-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]" />
+                        <div class="h-[40px] w-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]" />
                       }>
                       <img
                         src={convertFileSrc(dataEntryContext.locatedIcon())}
                         alt=""
-                        className="h-[40px] w-[40px]"
+                        class="h-[40px] w-[40px]"
                       />
                     </Show>
                     <span class="tooltip absolute left-[-10%] top-[120%] z-[10000] opacity-0 group-hover:opacity-100 ">
@@ -853,7 +855,7 @@ export function NewGame() {
                         dataEntryContext.setFoundIconImageIndex((i) =>
                           i === dataEntryContext.foundIconImage().length - 1
                             ? 0
-                            : i + 1,
+                            : i + 1
                         );
                         setShowIconImageLoading(true);
                       }
@@ -874,7 +876,7 @@ export function NewGame() {
                         dataEntryContext.setFoundIconImageIndex((i) =>
                           i === dataEntryContext.foundIconImage().length - 1
                             ? 0
-                            : i + 1,
+                            : i + 1
                         );
                         setShowIconImageLoading(true);
                       }
@@ -893,13 +895,13 @@ export function NewGame() {
                     dataEntryContext.setLocatedIcon(undefined);
                     dataEntryContext.setFoundIconImage(undefined);
                   }}
-                  className="group relative p-0"
+                  class="group relative p-0"
                   aria-label="logo">
                   <Show
                     when={showIconImageLoading() === false}
                     fallback={
-                      <div className="h-[40px] w-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]">
-                        <div className="absolute left-[32%] top-[30%]">
+                      <div class="h-[40px] w-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]">
+                        <div class="absolute left-[32%] top-[30%]">
                           <Loading />
                         </div>
                       </div>
@@ -914,17 +916,17 @@ export function NewGame() {
                       onLoad={() => {
                         setShowIconImageLoading(false);
                       }}
-                      className="h-[40px] w-[40px]"
+                      class="h-[40px] w-[40px]"
                     />
                   </Show>
 
                   <span
-                    className={`tooltip absolute left-[-55%] top-[120%] z-[10000] flex items-center gap-[5px] opacity-0 group-hover:opacity-100 ${
+                    class={`tooltip absolute left-[-55%] top-[120%] z-[10000] flex items-center gap-[5px] opacity-0 group-hover:opacity-100 ${
                       showIconImageLoading() === false
                         ? "opacity-0 group-hover:opacity-100"
                         : ""
                     }`}>
-                    <span className="opacity-50">
+                    <span class="opacity-50">
                       {dataEntryContext.foundIconImageIndex()} /{" "}
                       {dataEntryContext.foundIconImage().length - 1}
                     </span>
@@ -935,24 +937,24 @@ export function NewGame() {
               </Show>
 
               <div
-                className="gameInput flex items-center bg-[#E8E8E8cc] backdrop-blur-[10px] dark:bg-[#272727cc]"
-                style="flex-grow: 1">
+                class="gameInput flex items-center bg-[#E8E8E8cc] backdrop-blur-[10px] dark:bg-[#272727cc]"
+                style={{ "flex-grow": "1" }}>
                 <input
                   aria-autocomplete="none"
                   type="text"
                   name=""
-                  style="flex-grow: 1;"
+                  style={{ "flex-grow": "1" }}
                   id=""
                   onInput={(e) => {
                     dataEntryContext.setGameName(e.currentTarget.value);
                   }}
                   value={dataEntryContext.gameName()}
-                  className="!bg-transparent"
+                  class="!bg-transparent"
                   placeholder={translateText("name of game")}
                 />
                 <button
                   type="button"
-                  className="standardButton !mr-2 !mt-0  !w-max cursor-pointer bg-[#f1f1f1] px-3 py-1 !text-black text-[#ffffff80] hover:!bg-[#d6d6d6] dark:!bg-[#1c1c1c] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
+                  class="standardButton !mr-2 !mt-0  !w-max cursor-pointer bg-[#f1f1f1] px-3 py-1 !text-black text-[#ffffff80] hover:!bg-[#d6d6d6] dark:!bg-[#1c1c1c] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
                   onClick={async () => {
                     if (
                       dataEntryContext.gameName() === "" ||
@@ -984,7 +986,7 @@ export function NewGame() {
                         globalContext.libraryData.userSettings.language ===
                           "fr" && applicationStateContext.windowWidth() <= 1500
                       }>
-                      <p className="w-[70px] text-clip text-[10px]">
+                      <p class="w-[70px] text-clip text-[10px]">
                         {translateText("auto find assets")}
                       </p>
                     </Match>
@@ -999,19 +1001,19 @@ export function NewGame() {
                 </button>
                 <button
                   type="button"
-                  className="standardButton  !mr-2 !mt-0  !w-max cursor-pointer bg-[#f1f1f1] px-3 py-1 !text-black text-[#ffffff80] hover:!bg-[#d6d6d6] dark:bg-[#1c1c1c] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
+                  class="standardButton  !mr-2 !mt-0  !w-max cursor-pointer bg-[#f1f1f1] px-3 py-1 !text-black text-[#ffffff80] hover:!bg-[#d6d6d6] dark:bg-[#1c1c1c] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
                   onClick={async () => {
                     dataEntryContext.gameName() === undefined
                       ? invoke("open_location", {
                           location: "https://www.steamgriddb.com/",
                         })
                       : dataEntryContext.gameName() === ""
-                        ? invoke("open_location", {
-                            location: "https://www.steamgriddb.com/",
-                          })
-                        : invoke("open_location", {
-                            location: `https://www.steamgriddb.com/search/grids?term=${dataEntryContext.gameName()}`,
-                          });
+                      ? invoke("open_location", {
+                          location: "https://www.steamgriddb.com/",
+                        })
+                      : invoke("open_location", {
+                          location: `https://www.steamgriddb.com/search/grids?term=${dataEntryContext.gameName()}`,
+                        });
                   }}>
                   <Switch>
                     <Match
@@ -1027,7 +1029,7 @@ export function NewGame() {
                         globalContext.libraryData.userSettings.language ===
                           "fr" && applicationStateContext.windowWidth() <= 1500
                       }>
-                      <p className="w-[100px] text-clip text-[10px]">
+                      <p class="w-[100px] text-clip text-[10px]">
                         {translateText("find assets")}
                       </p>
                     </Match>
@@ -1048,38 +1050,38 @@ export function NewGame() {
                 onContextMenu={() => {
                   dataEntryContext.setlocatedGame(undefined);
                 }}
-                className="standardButton !mt-0 !w-max bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]">
+                class="standardButton !mt-0 !w-max bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]">
                 {dataEntryContext.locatedGame() === undefined
                   ? translateText("locate game")
                   : dataEntryContext
-                        .locatedGame()
-                        .toString()
-                        .split("\\")
-                        .slice(-1)
-                        .toString().length > 17
-                    ? `...${dataEntryContext
-                        .locatedGame()
-                        .toString()
-                        .split("\\")
-                        .slice(-1)
-                        .toString()
-                        .slice(
-                          0,
-                          7,
-                        )}...${dataEntryContext.locatedGame().toString().slice(-7)}`
-                    : `...${dataEntryContext
-                        .locatedGame()
-                        .toString()
-                        .split("\\")
-                        .slice(-1)
-                        .toString()}`}
+                      .locatedGame()
+                      .toString()
+                      .split("\\")
+                      .slice(-1)
+                      .toString().length > 17
+                  ? `...${dataEntryContext
+                      .locatedGame()
+                      .toString()
+                      .split("\\")
+                      .slice(-1)
+                      .toString()
+                      .slice(0, 7)}...${dataEntryContext
+                      .locatedGame()
+                      .toString()
+                      .slice(-7)}`
+                  : `...${dataEntryContext
+                      .locatedGame()
+                      .toString()
+                      .split("\\")
+                      .slice(-1)
+                      .toString()}`}
               </button>
             </div>
           </div>
         </div>
 
-        <div className="flex  w-[84rem] justify-between max-large:w-[61rem]">
-          <span className="opacity-50">
+        <div class="flex  w-[84rem] justify-between max-large:w-[61rem]">
+          <span class="opacity-50">
             {translateText("right click to empty image selection")}
           </span>
           <Show
@@ -1087,7 +1089,7 @@ export function NewGame() {
               applicationStateContext.SGDBGames() &&
               selectedDataContext.selectedGameId() === undefined
             }>
-            <span className="opacity-80">
+            <span class="opacity-80">
               {translateText("select the official name of your game")}
             </span>
           </Show>
@@ -1095,24 +1097,25 @@ export function NewGame() {
 
         <Show when={applicationStateContext.SGDBGames()}>
           <Show when={selectedDataContext.selectedGameId() === undefined}>
-            <div className="gameInput flex w-[84rem] bg-[#E8E8E8cc] backdrop-blur-[10px] dark:bg-[#272727cc] max-large:w-[61rem]">
+            <div class="gameInput flex w-[84rem] bg-[#E8E8E8cc] backdrop-blur-[10px] dark:bg-[#272727cc] max-large:w-[61rem]">
               <button
                 type="button"
                 onClick={() => {
-                  document.getElementById("SGDBGamesContainer").scrollLeft -=
-                    40;
+                  document.getElementById(
+                    "SGDBGamesContainer"
+                  ).scrollLeft -= 40;
                 }}>
                 <ChevronArrow />
               </button>
               <div
                 id="SGDBGamesContainer"
-                className="SGDBGamesContainer flex gap-[5px] overflow-x-auto scroll-smooth">
+                class="SGDBGamesContainer flex gap-[5px] overflow-x-auto scroll-smooth">
                 <For each={applicationStateContext.SGDBGames()}>
                   {(foundGame) => {
                     return (
                       <button
                         type="button"
-                        className="flex-shrink-0"
+                        class="flex-shrink-0"
                         onClick={() => {
                           selectedDataContext.setSelectedGameId(undefined);
                           selectedDataContext.setSelectedGameId(foundGame.id);
@@ -1128,10 +1131,11 @@ export function NewGame() {
               <button
                 type="button"
                 onClick={() => {
-                  document.getElementById("SGDBGamesContainer").scrollLeft +=
-                    40;
+                  document.getElementById(
+                    "SGDBGamesContainer"
+                  ).scrollLeft += 40;
                 }}>
-                <div className="rotate-180">
+                <div class="rotate-180">
                   <ChevronArrow />
                 </div>
               </button>

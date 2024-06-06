@@ -34,7 +34,9 @@ export function NewFolder() {
 
     if (folderNameAlreadyExists) {
       triggerToast(
-        `${dataEntryContext.folderName()} ${translateText("is already in your library")}`,
+        `${dataEntryContext.folderName()} ${translateText(
+          "is already in your library"
+        )}`
       );
       return;
     }
@@ -49,7 +51,7 @@ export function NewFolder() {
         };
 
         return data;
-      }),
+      })
     );
 
     await updateData();
@@ -69,7 +71,7 @@ export function NewFolder() {
 
         function handleTab(e) {
           const focusableElements = ref.querySelectorAll(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
           );
           const firstElement = focusableElements[0];
           const lastElement = focusableElements[focusableElements.length - 1];
@@ -95,39 +97,35 @@ export function NewFolder() {
           previouslyFocusedElement.focus();
         });
       }}
-      className="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d166] dark:bg-[#12121266]">
-      <div className="flex h-screen w-screen items-center justify-center align-middle ">
-        <div className="w-[50%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
+      class="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d166] dark:bg-[#12121266]">
+      <div class="flex h-screen w-screen items-center justify-center align-middle ">
+        <div class="w-[50%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
           <div
-            className={`flex justify-between ${
+            class={`flex justify-between ${
               globalContext.libraryData.userSettings.language !== "en"
                 ? "flex-col large:flex-row"
                 : ""
             } `}>
             <div>
-              <p className="text-[25px] text-[#000000] dark:text-[#ffffff80]">
+              <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">
                 {translateText("add new folder")}
               </p>
             </div>
-            <div className="flex items-center gap-5">
+            <div class="flex items-center gap-5">
               <button
                 type="button"
                 onClick={() => {
                   dataEntryContext.setHideFolder((x) => !x);
                 }}
-                className="relative cursor-pointer">
+                class="relative cursor-pointer">
                 <Show
                   when={dataEntryContext.hideFolder()}
                   fallback={
-                    <div className="">
-                      {translateText("hide in expanded view")}
-                    </div>
+                    <div class="">{translateText("hide in expanded view")}</div>
                   }>
-                  <div className="relative">
-                    <div className="">
-                      {translateText("hide in expanded view")}
-                    </div>
-                    <div className="absolute inset-0 opacity-70 blur-[5px]">
+                  <div class="relative">
+                    <div class="">{translateText("hide in expanded view")}</div>
+                    <div class="absolute inset-0 opacity-70 blur-[5px]">
                       {translateText("hide in expanded view")}
                     </div>
                   </div>
@@ -136,13 +134,13 @@ export function NewFolder() {
               <button
                 type="button"
                 onClick={addFolder}
-                className="standardButton flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]">
+                class="standardButton flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]">
                 {translateText("save")}
                 <SaveDisk />
               </button>
               <button
                 type="button"
-                className="standardButton flex !w-max items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+                class="standardButton flex !w-max items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                 onClick={() => {
                   closeDialog("newFolderModal");
                   getData();
@@ -152,13 +150,13 @@ export function NewFolder() {
               </button>
             </div>
           </div>
-          <div className="mt-6 flex items-end gap-6">
+          <div class="mt-6 flex items-end gap-6">
             <input
               aria-autocomplete="none"
               type="text"
               name=""
               id=""
-              className="w-full bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+              class="w-full bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               onInput={(e) => {
                 dataEntryContext.setFolderName(e.currentTarget.value);
               }}

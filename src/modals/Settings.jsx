@@ -28,7 +28,7 @@ export function Settings() {
         applicationStateContext.appVersion().replaceAll(".", "")
           ? uiContext.setShowNewVersionAvailable(true)
           : uiContext.setShowNewVersionAvailable(false);
-      }),
+      })
     );
   });
 
@@ -44,7 +44,7 @@ export function Settings() {
 
           function handleTab(e) {
             const focusableElements = ref.querySelectorAll(
-              'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+              'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
             );
             const firstElement = focusableElements[0];
             const lastElement = focusableElements[focusableElements.length - 1];
@@ -70,19 +70,19 @@ export function Settings() {
             previouslyFocusedElement.focus();
           });
         }}
-        className="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d166] outline-none dark:bg-[#12121266]">
-        <div className="flex h-screen w-screen items-center justify-center align-middle ">
-          <div className="w-[70%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
-            <div className="flex justify-between">
+        class="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d166] outline-none dark:bg-[#12121266]">
+        <div class="flex h-screen w-screen items-center justify-center align-middle ">
+          <div class="w-[70%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
+            <div class="flex justify-between">
               <div>
-                <p className="text-[25px] text-[#000000] dark:text-[#ffffff80]">
+                <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">
                   {translateText("settings")}
                 </p>
               </div>
 
               <button
                 type="button"
-                className="standardButton !w-max !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+                class="standardButton !w-max !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                 onClick={() => {
                   closeDialog("settingsModal");
                   getData();
@@ -92,27 +92,27 @@ export function Settings() {
               </button>
             </div>
 
-            <div className="mt-[25px] grid grid-cols-3 gap-y-4">
+            <div class="mt-[25px] grid grid-cols-3 gap-y-4">
               <button
                 type="button"
                 onClick={async () => {
                   globalContext.setLibraryData(
                     "userSettings",
                     "roundedBorders",
-                    (x) => !x,
+                    (x) => !x
                   );
 
                   await updateData();
                 }}
-                className="relative cursor-pointer p-0 text-left">
+                class="relative cursor-pointer p-0 text-left">
                 <Show
                   when={globalContext.libraryData.userSettings.roundedBorders}
                   fallback={
-                    <div className="">{translateText("rounded borders")}</div>
+                    <div class="">{translateText("rounded borders")}</div>
                   }>
-                  <div className="relative ">
-                    <div className="">{translateText("rounded borders")}</div>
-                    <div className="absolute inset-0 opacity-70 blur-[5px]">
+                  <div class="relative ">
+                    <div class="">{translateText("rounded borders")}</div>
+                    <div class="absolute inset-0 opacity-70 blur-[5px]">
                       {translateText("rounded borders")}
                     </div>
                   </div>
@@ -124,20 +124,18 @@ export function Settings() {
                   globalContext.setLibraryData(
                     "userSettings",
                     "gameTitle",
-                    (x) => !x,
+                    (x) => !x
                   );
 
                   await updateData();
                 }}
-                className="relative cursor-pointer p-0 text-left">
+                class="relative cursor-pointer p-0 text-left">
                 <Show
                   when={globalContext.libraryData.userSettings.gameTitle}
-                  fallback={
-                    <div className="">{translateText("game title")}</div>
-                  }>
-                  <div className="relative">
-                    <div className="">{translateText("game title")}</div>
-                    <div className="absolute inset-0 opacity-70 blur-[5px]  ">
+                  fallback={<div class="">{translateText("game title")}</div>}>
+                  <div class="relative">
+                    <div class="">{translateText("game title")}</div>
+                    <div class="absolute inset-0 opacity-70 blur-[5px]  ">
                       {translateText("game title")}
                     </div>
                   </div>
@@ -149,20 +147,20 @@ export function Settings() {
                   globalContext.setLibraryData(
                     "userSettings",
                     "folderTitle",
-                    (x) => !x,
+                    (x) => !x
                   );
 
                   await updateData();
                 }}
-                className="relative cursor-pointer p-0 text-left">
+                class="relative cursor-pointer p-0 text-left">
                 <Show
                   when={globalContext.libraryData.userSettings.folderTitle}
                   fallback={
-                    <div className="">{translateText("folder title")}</div>
+                    <div class="">{translateText("folder title")}</div>
                   }>
-                  <div className="relative">
-                    <div className="">{translateText("folder title")}</div>
-                    <div className="absolute inset-0 opacity-70 blur-[5px]  ">
+                  <div class="relative">
+                    <div class="">{translateText("folder title")}</div>
+                    <div class="absolute inset-0 opacity-70 blur-[5px]  ">
                       {translateText("folder title")}
                     </div>
                   </div>
@@ -174,24 +172,24 @@ export function Settings() {
                   globalContext.setLibraryData(
                     "userSettings",
                     "quitAfterOpen",
-                    (x) => !x,
+                    (x) => !x
                   );
 
                   await updateData();
                 }}
-                className="relative cursor-pointer p-0 text-left">
+                class="relative cursor-pointer p-0 text-left">
                 <Show
                   when={globalContext.libraryData.userSettings.quitAfterOpen}
                   fallback={
-                    <div className="">
+                    <div class="">
                       {translateText("quit after opening game")}
                     </div>
                   }>
-                  <div className="relative">
-                    <div className="">
+                  <div class="relative">
+                    <div class="">
                       {translateText("quit after opening game")}
                     </div>
-                    <div className="absolute inset-0 opacity-70 blur-[5px]  ">
+                    <div class="absolute inset-0 opacity-70 blur-[5px]  ">
                       {translateText("quit after opening game")}
                     </div>
                   </div>
@@ -208,7 +206,7 @@ export function Settings() {
                     globalContext.setLibraryData(
                       "userSettings",
                       "fontName",
-                      "serif",
+                      "serif"
                     );
                   } else {
                     if (
@@ -218,7 +216,7 @@ export function Settings() {
                       globalContext.setLibraryData(
                         "userSettings",
                         "fontName",
-                        "mono",
+                        "mono"
                       );
                     } else {
                       if (
@@ -228,7 +226,7 @@ export function Settings() {
                         globalContext.setLibraryData(
                           "userSettings",
                           "fontName",
-                          "sans serif",
+                          "sans serif"
                         );
                       }
                     }
@@ -236,13 +234,13 @@ export function Settings() {
 
                   await updateData();
                 }}
-                className="flex cursor-pointer gap-2 p-0 text-left">
-                <span className="text-[#12121280] dark:text-[#ffffff80]">
+                class="flex cursor-pointer gap-2 p-0 text-left">
+                <span class="text-[#12121280] dark:text-[#ffffff80]">
                   [{translateText("font")}]
                 </span>
-                <div className="">
+                <div class="">
                   {translateText(
-                    globalContext.libraryData.userSettings.fontName,
+                    globalContext.libraryData.userSettings.fontName
                   ) || translateText("sans serif")}
                 </div>
               </button>
@@ -253,54 +251,54 @@ export function Settings() {
                     ? globalContext.setLibraryData(
                         "userSettings",
                         "currentTheme",
-                        "light",
+                        "light"
                       )
                     : globalContext.setLibraryData(
                         "userSettings",
                         "currentTheme",
-                        "dark",
+                        "dark"
                       );
 
                   await updateData();
                 }}
-                className="flex cursor-pointer gap-2 p-0 text-left">
-                <span className="text-[#12121280] dark:text-[#ffffff80]">
+                class="flex cursor-pointer gap-2 p-0 text-left">
+                <span class="text-[#12121280] dark:text-[#ffffff80]">
                   [{translateText("theme")}]
                 </span>
-                <div className="">
+                <div class="">
                   {translateText(
-                    globalContext.libraryData.userSettings.currentTheme,
+                    globalContext.libraryData.userSettings.currentTheme
                   ) || translateText("dark")}
                 </div>
               </button>
-              <div className="relative flex cursor-pointer gap-2">
+              <div class="relative flex cursor-pointer gap-2">
                 <LanguageSelector onSettingsPage={true} />
               </div>
             </div>
 
             <Show when={uiContext.showNewVersionAvailable()}>
-              <div className="mt-[35px] flex items-start gap-3">
+              <div class="mt-[35px] flex items-start gap-3">
                 <button
                   type="button"
-                  className="standardButton !m-0 flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+                  class="standardButton !m-0 flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                   onClick={() => {
                     invoke("open_location", {
                       location: "https://clear.adithya.zip/update",
                     });
                   }}>
                   {translateText("new update available!")}
-                  <span className="text-[#12121280] dark:text-[#ffffff80]">
+                  <span class="text-[#12121280] dark:text-[#ffffff80]">
                     v{applicationStateContext.latestVersion()}
                   </span>
                 </button>
               </div>
             </Show>
 
-            <div className="mt-[35px] flex flex-row items-start gap-4">
+            <div class="mt-[35px] flex flex-row items-start gap-4">
               <div>
                 <button
                   type="button"
-                  className="standardButton hint--bottom !flex !w-max !gap-3 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] "
+                  class="standardButton hint--bottom !flex !w-max !gap-3 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] "
                   aria-label={translateText("might not work perfectly!")}
                   onClick={() => {
                     if (globalContext.libraryData.folders.steam !== undefined) {
@@ -321,9 +319,9 @@ export function Settings() {
                     <Show
                       when={uiContext.showImportAndOverwriteConfirm() === true}
                       fallback={translateText("import Steam games")}>
-                      <span className="text-[#FF3636]">
+                      <span class="text-[#FF3636]">
                         {translateText(
-                          "current 'steam' folder will be overwritten. confirm?",
+                          "current 'steam' folder will be overwritten. confirm?"
                         )}
                       </span>
                     </Show>
@@ -333,10 +331,10 @@ export function Settings() {
                 </button>
               </div>
 
-              <div className="flex items-start gap-3">
+              <div class="flex items-start gap-3">
                 <button
                   type="button"
-                  className="standardButton !m-0 flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+                  class="standardButton !m-0 flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                   onClick={async () => {
                     const appDataDirPath = await appDataDir();
 
@@ -346,9 +344,9 @@ export function Settings() {
                   }}>
                   {translateText("open library location")}
                 </button>
-                <span className="w-[50%] text-[#12121280] dark:text-[#ffffff80]">
+                <span class="w-[50%] text-[#12121280] dark:text-[#ffffff80]">
                   {translateText(
-                    "these are all the files that the app stores on your pc",
+                    "these are all the files that the app stores on your pc"
                   )}
                 </span>
               </div>
@@ -356,10 +354,10 @@ export function Settings() {
 
             <Hotkeys onSettingsPage={true} />
 
-            <div className="mt-[35px] flex justify-between ">
+            <div class="mt-[35px] flex justify-between ">
               <div>
                 clear{" "}
-                <span className="text-[#12121280] dark:text-[#ffffff80]">
+                <span class="text-[#12121280] dark:text-[#ffffff80]">
                   v{applicationStateContext.appVersion()}
                 </span>
               </div>
@@ -370,7 +368,7 @@ export function Settings() {
                     location: "https://clear.adithya.zip/feedback",
                   });
                 }}
-                className="cursor-pointer p-0 underline">
+                class="cursor-pointer p-0 underline">
                 {translateText("feedback")}
               </button>
               <button
@@ -380,7 +378,7 @@ export function Settings() {
                     location: "https://clear.adithya.zip/",
                   });
                 }}
-                className="cursor-pointer p-0 underline">
+                class="cursor-pointer p-0 underline">
                 {translateText("website")}
               </button>
               <div>
@@ -392,7 +390,7 @@ export function Settings() {
                       location: "https://adithya.zip/",
                     });
                   }}
-                  className="cursor-pointer p-0 underline">
+                  class="cursor-pointer p-0 underline">
                   {" "}
                   adithya
                 </button>
@@ -404,7 +402,7 @@ export function Settings() {
                     location: "https://ko-fi.com/adithyasource",
                   });
                 }}
-                className="cursor-pointer p-0 underline">
+                class="cursor-pointer p-0 underline">
                 {translateText("buy me a coffee")}
               </button>
             </div>

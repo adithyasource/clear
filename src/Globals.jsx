@@ -401,8 +401,8 @@ export async function importSteamGames() {
 
           triggerToast(
             translateText(
-              "sorry but there was an error \n reading your Steam library :(",
-            ),
+              "sorry but there was an error \n reading your Steam library :("
+            )
           );
 
           return;
@@ -433,7 +433,7 @@ export async function importSteamGames() {
         await updateData().then(async () => {
           for (const steamId of steamGameIds) {
             await fetch(
-              `${import.meta.env.VITE_CLEAR_API_URL}/?steamID=${steamId}`,
+              `${import.meta.env.VITE_CLEAR_API_URL}/?steamID=${steamId}`
             ).then((res) =>
               res.json().then(async (jsonres) => {
                 const gameId = jsonres.data.id;
@@ -449,7 +449,7 @@ export async function importSteamGames() {
                 await fetch(
                   `${
                     import.meta.env.VITE_CLEAR_API_URL
-                  }/?assets=${gameId}&length=1`,
+                  }/?assets=${gameId}&length=1`
                 )
                   .then((res) =>
                     res.json().then(async (jsonres) => {
@@ -506,12 +506,12 @@ export async function importSteamGames() {
                       await updateData();
 
                       setTotalImportedSteamGames((x) => x + 1);
-                    }),
+                    })
                   )
                   .catch((err) => {
                     // no assets found at all for this game
                   });
-              }),
+              })
             );
           }
 
@@ -524,7 +524,7 @@ export async function importSteamGames() {
                 index: currentFolders().length,
               };
               return data;
-            }),
+            })
           );
 
           await updateData().then(() => {
@@ -566,7 +566,7 @@ export async function updateData() {
     },
     {
       dir: BaseDirectory.AppData,
-    },
+    }
   ).then(getData());
 }
 

@@ -4,7 +4,6 @@
     "plugin:solid/recommended",
     "plugin:jsx-a11y/recommended"
   ],
-  "plugins": ["solid", "jsx-a11y"],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true

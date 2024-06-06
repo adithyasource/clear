@@ -12,7 +12,7 @@ export function GamePopUp() {
   return (
     <dialog
       data-gamePopup
-      className="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d166]  dark:bg-[#12121266]"
+      class="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d166]  dark:bg-[#12121266]"
       onDragStart={(e) => {
         e.preventDefault();
       }}
@@ -24,20 +24,22 @@ export function GamePopUp() {
       ref={(ref) => {
         closeDialog("gamePopup", ref);
       }}>
-      <div className="flex h-screen w-screen flex-col items-center justify-center px-[40px]">
+      <div class="flex h-screen w-screen flex-col items-center justify-center px-[40px]">
         <img
           src={convertFileSrc(
-            `${applicationStateContext.appDataDirPath()}heroes\\${selectedDataContext.selectedGame().heroImage}`,
+            `${applicationStateContext.appDataDirPath()}heroes\\${
+              selectedDataContext.selectedGame().heroImage
+            }`
           )}
           alt=""
-          className="absolute -z-10 h-[350px] opacity-[0.4] blur-[80px] max-large:h-[270px]"
+          class="absolute -z-10 h-[350px] opacity-[0.4] blur-[80px] max-large:h-[270px]"
         />
         <div
-          className="relative"
+          class="relative"
           ref={(ref) => {
             function handleTab(e) {
               const focusableElements = ref.querySelectorAll(
-                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
               );
               const firstElement = focusableElements[0];
               const lastElement =
@@ -64,19 +66,19 @@ export function GamePopUp() {
               previouslyFocusedElement.focus();
             });
           }}>
-          <div className="absolute bottom-[30px] right-[30px] flex gap-[15px]">
+          <div class="absolute bottom-[30px] right-[30px] flex gap-[15px]">
             <button
               type="button"
-              className="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
+              class="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
                 openGame(selectedDataContext.selectedGame().location);
               }}>
-              <div className="!w-max">{translateText("play")}</div>
+              <div class="!w-max">{translateText("play")}</div>
               <Play />
             </button>
             <button
               type="button"
-              className="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
+              class="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
                 closeDialog("gamePopup");
                 openDialog("editGameModal");
@@ -85,7 +87,7 @@ export function GamePopUp() {
             </button>
             <button
               type="button"
-              className="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
+              class="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
                 closeDialog("gamePopup");
               }}>
@@ -95,29 +97,33 @@ export function GamePopUp() {
           <Show
             when={selectedDataContext.selectedGame().heroImage}
             fallback={
-              <div className="aspect-[96/31] h-[350px] bg-[#f1f1f1] dark:bg-[#1c1c1c] max-large:h-[270px]" />
+              <div class="aspect-[96/31] h-[350px] bg-[#f1f1f1] dark:bg-[#1c1c1c] max-large:h-[270px]" />
             }>
             <img
               src={convertFileSrc(
-                `${applicationStateContext.appDataDirPath()}heroes\\${selectedDataContext.selectedGame().heroImage}`,
+                `${applicationStateContext.appDataDirPath()}heroes\\${
+                  selectedDataContext.selectedGame().heroImage
+                }`
               )}
               alt=""
-              className="aspect-[96/31] h-[350px] max-large:h-[270px]"
+              class="aspect-[96/31] h-[350px] max-large:h-[270px]"
             />
           </Show>
 
-          <div className="absolute bottom-[30px] left-[25px] flex h-[70px] w-[300px] items-center align-middle max-large:bottom-[15px]">
+          <div class="absolute bottom-[30px] left-[25px] flex h-[70px] w-[300px] items-center align-middle max-large:bottom-[15px]">
             <Show
               when={selectedDataContext.selectedGame().logo}
               fallback={
-                <div className="absolute bottom-[5px] h-[90px] w-[250px] bg-[#E8E8E8] dark:!bg-[#272727] max-large:h-[70px] max-large:w-[170px]" />
+                <div class="absolute bottom-[5px] h-[90px] w-[250px] bg-[#E8E8E8] dark:!bg-[#272727] max-large:h-[70px] max-large:w-[170px]" />
               }>
               <img
                 src={convertFileSrc(
-                  `${applicationStateContext.appDataDirPath()}logos\\${selectedDataContext.selectedGame().logo}`,
+                  `${applicationStateContext.appDataDirPath()}logos\\${
+                    selectedDataContext.selectedGame().logo
+                  }`
                 )}
                 alt=""
-                className=" relative aspect-auto max-h-[100px] max-w-[400px] max-large:max-h-[70px] max-large:max-w-[300px]"
+                class=" relative aspect-auto max-h-[100px] max-w-[400px] max-large:max-h-[70px] max-large:max-w-[300px]"
               />
             </Show>
           </div>

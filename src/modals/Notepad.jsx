@@ -23,7 +23,7 @@ export function Notepad() {
         data-notepadModal
         onClose={() => {
           dataEntryContext.setNotepadValue(
-            globalContext.libraryData.notepad || "",
+            globalContext.libraryData.notepad || ""
           );
         }}
         ref={(ref) => {
@@ -31,7 +31,7 @@ export function Notepad() {
 
           function handleTab(e) {
             const focusableElements = ref.querySelectorAll(
-              'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+              'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
             );
             const firstElement = focusableElements[0];
             const lastElement = focusableElements[focusableElements.length - 1];
@@ -57,19 +57,19 @@ export function Notepad() {
             previouslyFocusedElement.focus();
           });
         }}
-        className="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d166] dark:bg-[#12121266]">
-        <div className="flex h-screen w-screen items-center justify-center align-middle ">
-          <div className="w-[50%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
-            <div className="flex justify-between">
+        class="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d166] dark:bg-[#12121266]">
+        <div class="flex h-screen w-screen items-center justify-center align-middle ">
+          <div class="w-[50%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
+            <div class="flex justify-between">
               <div>
-                <p className="text-[25px] text-[#000000] dark:text-[#ffffff80]">
+                <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">
                   {translateText("notepad")}
                 </p>
               </div>
 
               <button
                 type="button"
-                className="standardButton !w-max !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+                class="standardButton !w-max !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                 onClick={() => {
                   closeDialog("notepadModal");
                   getData();
@@ -83,7 +83,7 @@ export function Notepad() {
                 dataEntryContext.setNotepadValue(e.target.value);
                 saveNotepad();
               }}
-              className="mt-6 h-[40vh] w-full resize-none rounded-[6px] bg-transparent focus:outline-none"
+              class="mt-6 h-[40vh] w-full resize-none rounded-[6px] bg-transparent focus:outline-none"
               placeholder={translateText("write anything you want over here!")}
               spellcheck="false"
               value={dataEntryContext.notepadValue()}

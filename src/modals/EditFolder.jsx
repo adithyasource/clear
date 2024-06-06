@@ -1,5 +1,5 @@
 import { produce } from "solid-js/store";
-import { Switch, useContext } from "solid-js";
+import { Switch, useContext, Match, Show } from "solid-js";
 import { closeDialog, getData, translateText, updateData } from "../Globals";
 import { Close, SaveDisk, TrashDelete } from "../libraries/Icons";
 
@@ -37,7 +37,9 @@ export function EditFolder() {
 
       if (folderNameAlreadyExists) {
         triggerToast(
-          `${dataUpdateContext.editedFolderName()} ${translateText("is already in your library")}`,
+          `${dataUpdateContext.editedFolderName()} ${translateText(
+            "is already in your library"
+          )}`
         );
         return;
       }
@@ -48,7 +50,7 @@ export function EditFolder() {
         delete data.folders[selectedDataContext.selectedFolder().name];
 
         return data;
-      }),
+      })
     );
 
     globalContext.setLibraryData(
@@ -60,7 +62,7 @@ export function EditFolder() {
         };
 
         return data;
-      }),
+      })
     );
 
     await updateData();
@@ -85,7 +87,7 @@ export function EditFolder() {
             Object.values(data.folders)[x].index -= 1;
 
             return data;
-          }),
+          })
         );
       }
     }
@@ -95,7 +97,7 @@ export function EditFolder() {
         delete data.folders[selectedDataContext.selectedFolder().name];
 
         return data;
-      }),
+      })
     );
 
     await updateData();
@@ -112,7 +114,7 @@ export function EditFolder() {
 
         function handleTab(e) {
           const focusableElements = ref.querySelectorAll(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
           );
           const firstElement = focusableElements[0];
           const lastElement = focusableElements[focusableElements.length - 1];
@@ -138,50 +140,52 @@ export function EditFolder() {
           previouslyFocusedElement.focus();
         });
       }}
-      className="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d166] dark:bg-[#12121266]">
-      <div className="flex h-screen w-screen items-center justify-center align-middle ">
-        <div className="w-[50%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
+      class="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d166] dark:bg-[#12121266]">
+      <div class="flex h-screen w-screen items-center justify-center align-middle ">
+        <div class="w-[50%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
           <div
-            className={`flex justify-between ${
+            class={`flex justify-between ${
               globalContext.libraryData.userSettings.language !== "en"
                 ? "flex-col large:flex-row"
                 : ""
             } `}>
             <div>
-              <p className="text-[25px] text-[#000000] dark:text-[#ffffff80]">
+              <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">
                 {translateText("edit")}{" "}
                 {selectedDataContext.selectedFolder().name}
               </p>
             </div>
 
-            <div className="flex items-center gap-5">
+            <div class="flex items-center gap-5">
               <button
                 type="button"
                 onClick={() => {
                   if (dataUpdateContext.editedHideFolder() === undefined) {
-                    dataUpdateContext.setEditedHideFolder(!selectedGame().hide);
+                    dataUpdateContext.setEditedHideFolder(
+                      !selectedDataContext.selectedGame().hide
+                    );
                   } else {
                     dataUpdateContext.setEditedHideFolder(
-                      !dataUpdateContext.editedHideFolder(),
+                      !dataUpdateContext.editedHideFolder()
                     );
                   }
                 }}
-                className="relative cursor-pointer">
+                class="relative cursor-pointer">
                 <Switch>
                   <Match
                     when={dataUpdateContext.editedHideFolder() === undefined}>
                     <Show
                       when={selectedDataContext.selectedFolder().hide}
                       fallback={
-                        <div className="">
+                        <div class="">
                           {translateText("hide in expanded view")}
                         </div>
                       }>
-                      <div className="relative">
-                        <div className="">
+                      <div class="relative">
+                        <div class="">
                           {translateText("hide in expanded view")}
                         </div>
-                        <div className="absolute inset-0 opacity-70 blur-[5px]">
+                        <div class="absolute inset-0 opacity-70 blur-[5px]">
                           {translateText("hide in expanded view")}
                         </div>
                       </div>
@@ -189,20 +193,18 @@ export function EditFolder() {
                   </Match>
 
                   <Match when={dataUpdateContext.editedHideFolder() === true}>
-                    <div className="relative">
-                      <div className="">
+                    <div class="relative">
+                      <div class="">
                         {translateText("hide in expanded view")}
                       </div>
-                      <div className="absolute inset-0 opacity-70 blur-[5px]">
+                      <div class="absolute inset-0 opacity-70 blur-[5px]">
                         {translateText("hide in expanded view")}
                       </div>
                     </div>
                   </Match>
 
                   <Match when={dataUpdateContext.editedHideFolder() === false}>
-                    <div className="">
-                      {translateText("hide in expanded view")}
-                    </div>
+                    <div class="">{translateText("hide in expanded view")}</div>
                   </Match>
                 </Switch>
               </button>
@@ -210,7 +212,7 @@ export function EditFolder() {
               <button
                 type="button"
                 onClick={editFolder}
-                className="standardButton flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]">
+                class="standardButton flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]">
                 {translateText("save")}
                 <SaveDisk />
               </button>
@@ -226,8 +228,8 @@ export function EditFolder() {
                     uiContext.setShowDeleteConfirm(false);
                   }, 1500);
                 }}
-                className="standardButton flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]">
-                <span className="text-[#FF3636]">
+                class="standardButton flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]">
+                <span class="text-[#FF3636]">
                   {uiContext.showDeleteConfirm()
                     ? translateText("confirm?")
                     : translateText("delete")}
@@ -237,7 +239,7 @@ export function EditFolder() {
 
               <button
                 type="button"
-                className="standardButton flex !w-max items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+                class="standardButton flex !w-max items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                 onClick={() => {
                   closeDialog("editFolderModal");
                   getData();
@@ -248,13 +250,13 @@ export function EditFolder() {
             </div>
           </div>
 
-          <div className="mt-6 flex items-end gap-6">
+          <div class="mt-6 flex items-end gap-6">
             <input
               aria-autocomplete="none"
               type="text"
               name=""
               id=""
-              className="w-full bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+              class="w-full bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               onInput={(e) => {
                 dataUpdateContext.setEditedFolderName(e.currentTarget.value);
               }}

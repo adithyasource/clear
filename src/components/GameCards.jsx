@@ -1,4 +1,4 @@
-import { Show, useContext } from "solid-js";
+import { Show, useContext, For } from "solid-js";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import {
   GlobalContext,
@@ -6,6 +6,7 @@ import {
   translateText,
   openDialog,
   SelectedDataContext,
+  openGame,
 } from "../Globals";
 
 export function GameCards(props) {
@@ -19,7 +20,7 @@ export function GameCards(props) {
         return (
           <button
             type="button"
-            className="gameCard group relative w-full cursor-pointer bg-transparent p-0"
+            class="gameCard group relative w-full cursor-pointer bg-transparent p-0"
             id={`${index() === 0 ? "firstGameCard" : ""}`}
             aria-label={translateText("play")}
             onDragStart={(e) => {
@@ -31,7 +32,7 @@ export function GameCards(props) {
                 return;
               }
               await selectedDataContext.setSelectedGame(
-                globalContext.libraryData.games[gameName],
+                globalContext.libraryData.games[gameName]
               );
 
               openDialog("gamePopup");
@@ -39,16 +40,16 @@ export function GameCards(props) {
             <Show
               when={globalContext.libraryData.games[gameName].favourite}
               fallback={
-                <div className="relative w-full">
+                <div class="relative w-full">
                   <Show
                     when={globalContext.libraryData.games[gameName].gridImage}
                     fallback={
-                      <div className="relative flex items-center justify-center">
+                      <div class="relative flex items-center justify-center">
                         <Show
                           when={
                             !globalContext.libraryData.userSettings.gameTitle
                           }>
-                          <span className="absolute z-[100] !max-w-[50%]">
+                          <span class="absolute z-[100] !max-w-[50%]">
                             {gameName}
                           </span>
 
@@ -63,10 +64,10 @@ export function GameCards(props) {
                           </Show>
                         </Show>
 
-                        <div className="relative z-10 mb-[7px] aspect-[2/3] w-full bg-[#F1F1F1] group-hover:outline-none group-hover:outline-[2px] group-hover:outline-[#0000001f] dark:bg-[#1C1C1C] dark:group-hover:outline-[#ffffff1f]" />
+                        <div class="relative z-10 mb-[7px] aspect-[2/3] w-full bg-[#F1F1F1] group-hover:outline-none group-hover:outline-[2px] group-hover:outline-[#0000001f] dark:bg-[#1C1C1C] dark:group-hover:outline-[#ffffff1f]" />
                       </div>
                     }>
-                    <div className="relative flex items-center justify-center">
+                    <div class="relative flex items-center justify-center">
                       <Show
                         when={
                           !globalContext.libraryData.userSettings.gameTitle
@@ -82,9 +83,11 @@ export function GameCards(props) {
                       </Show>
 
                       <img
-                        className="relative z-10 mb-[7px] aspect-[2/3] w-full group-hover:outline-none group-hover:outline-[2px] group-hover:outline-[#0000001f] dark:group-hover:outline-[#ffffff1f]"
+                        class="relative z-10 mb-[7px] aspect-[2/3] w-full group-hover:outline-none group-hover:outline-[2px] group-hover:outline-[#0000001f] dark:group-hover:outline-[#ffffff1f]"
                         src={convertFileSrc(
-                          `${applicationStateContext.appDataDirPath()}grids\\${globalContext.libraryData.games[gameName].gridImage}`,
+                          `${applicationStateContext.appDataDirPath()}grids\\${
+                            globalContext.libraryData.games[gameName].gridImage
+                          }`
                         )}
                         alt=""
                       />
@@ -92,16 +95,16 @@ export function GameCards(props) {
                   </Show>
                 </div>
               }>
-              <div className="relative w-full">
+              <div class="relative w-full">
                 <Show
                   when={globalContext.libraryData.games[gameName].gridImage}
                   fallback={
-                    <div className="relative flex items-center justify-center">
+                    <div class="relative flex items-center justify-center">
                       <Show
                         when={
                           !globalContext.libraryData.userSettings.gameTitle
                         }>
-                        <span className="absolute z-[100] !max-w-[50%]">
+                        <span class="absolute z-[100] !max-w-[50%]">
                           {gameName}
                         </span>
 
@@ -114,41 +117,45 @@ export function GameCards(props) {
                           </span>
                         </Show>
                       </Show>
-                      <div className="relative z-10 mb-[7px] aspect-[2/3] w-full bg-[#F1F1F1] outline-none outline-[4px]  outline-[#0000001c] duration-200 motion-reduce:duration-100 hover:outline-[#0000003b] dark:bg-[#1C1C1C] dark:outline-[2px] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b]" />
+                      <div class="relative z-10 mb-[7px] aspect-[2/3] w-full bg-[#F1F1F1] outline-none outline-[4px]  outline-[#0000001c] duration-200 motion-reduce:duration-100 hover:outline-[#0000003b] dark:bg-[#1C1C1C] dark:outline-[2px] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b]" />
                     </div>
                   }>
                   <img
-                    className="relative z-10 mb-[7px] outline-none outline-[4px] outline-[#0000001c] duration-200 motion-reduce:duration-100 hover:outline-[#0000003b] dark:outline-[2px] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b]"
+                    class="relative z-10 mb-[7px] outline-none outline-[4px] outline-[#0000001c] duration-200 motion-reduce:duration-100 hover:outline-[#0000003b] dark:outline-[2px] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b]"
                     src={convertFileSrc(
-                      `${applicationStateContext.appDataDirPath()}grids\\${globalContext.libraryData.games[gameName].gridImage}`,
+                      `${applicationStateContext.appDataDirPath()}grids\\${
+                        globalContext.libraryData.games[gameName].gridImage
+                      }`
                     )}
                     alt=""
                     width="100%"
                   />
                 </Show>
 
-                <div className="absolute inset-0 duration-500 motion-reduce:duration-100 dark:bg-blend-screen dark:blur-[30px] dark:group-hover:blur-[50px] ">
+                <div class="absolute inset-0 duration-500 motion-reduce:duration-100 dark:bg-blend-screen dark:blur-[30px] dark:group-hover:blur-[50px] ">
                   <img
-                    className="absolute inset-0 opacity-0 duration-500 motion-reduce:duration-100 dark:opacity-[40%] dark:group-hover:opacity-60"
+                    class="absolute inset-0 opacity-0 duration-500 motion-reduce:duration-100 dark:opacity-[40%] dark:group-hover:opacity-60"
                     src={convertFileSrc(
-                      `${applicationStateContext.appDataDirPath()}grids\\${globalContext.libraryData.games[gameName].gridImage}`,
+                      `${applicationStateContext.appDataDirPath()}grids\\${
+                        globalContext.libraryData.games[gameName].gridImage
+                      }`
                     )}
                     alt=""
                   />
                   <div
-                    className="aspect-[2/3] w-full  bg-[#000] opacity-[0%] dark:bg-[#fff] dark:opacity-[10%]"
+                    class="aspect-[2/3] w-full  bg-[#000] opacity-[0%] dark:bg-[#fff] dark:opacity-[10%]"
                     alt=""
                   />
                 </div>
               </div>
             </Show>
             <Show when={globalContext.libraryData.userSettings.gameTitle}>
-              <div className="flex items-start justify-between">
+              <div class="flex items-start justify-between">
                 <Show
                   when={globalContext.libraryData.games[gameName].location}
                   fallback={
                     <>
-                      <span className="!max-w-[50%] text-[#000000] dark:text-white">
+                      <span class="!max-w-[50%] text-[#000000] dark:text-white">
                         {gameName}
                       </span>
 
@@ -157,9 +164,7 @@ export function GameCards(props) {
                       </span>
                     </>
                   }>
-                  <span className="text-[#000000] dark:text-white">
-                    {gameName}
-                  </span>
+                  <span class="text-[#000000] dark:text-white">{gameName}</span>
                 </Show>
               </div>
             </Show>

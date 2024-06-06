@@ -39,7 +39,7 @@ export function EditGame() {
             extensions: ["exe", "lnk"],
           },
         ],
-      }),
+      })
     );
   }
 
@@ -53,7 +53,7 @@ export function EditGame() {
             extensions: ["png", "jpg", "jpeg", "webp"],
           },
         ],
-      }),
+      })
     );
   }
 
@@ -67,7 +67,7 @@ export function EditGame() {
             extensions: ["png", "jpg", "jpeg", "webp"],
           },
         ],
-      }),
+      })
     );
   }
 
@@ -81,7 +81,7 @@ export function EditGame() {
             extensions: ["png", "jpg", "jpeg", "webp"],
           },
         ],
-      }),
+      })
     );
   }
 
@@ -95,7 +95,7 @@ export function EditGame() {
             extensions: ["png", "jpg", "jpeg", "ico"],
           },
         ],
-      }),
+      })
     );
   }
 
@@ -121,7 +121,9 @@ export function EditGame() {
 
       if (gameNameAlreadyExists) {
         triggerToast(
-          `${dataUpdateContext.editedGameName()} ${translateText("is already in your library")}`,
+          `${dataUpdateContext.editedGameName()} ${translateText(
+            "is already in your library"
+          )}`
         );
         return;
       }
@@ -142,19 +144,19 @@ export function EditGame() {
 
     if (!dataUpdateContext.editedGameName()) {
       dataUpdateContext.setEditedGameName(
-        selectedDataContext.selectedGame().name,
+        selectedDataContext.selectedGame().name
       );
     }
 
     if (dataUpdateContext.editedFavouriteGame() === undefined) {
       dataUpdateContext.setEditedFavouriteGame(
-        selectedDataContext.selectedGame().favourite,
+        selectedDataContext.selectedGame().favourite
       );
     }
 
     if (dataUpdateContext.editedLocatedGame() === undefined) {
       dataUpdateContext.setEditedlocatedGame(
-        selectedDataContext.selectedGame().location,
+        selectedDataContext.selectedGame().location
       );
     } else {
       if (dataUpdateContext.editedLocatedGame() === null) {
@@ -164,7 +166,7 @@ export function EditGame() {
 
     if (dataUpdateContext.editedLocatedGridImage() === undefined) {
       dataUpdateContext.setEditedLocatedGridImage(
-        selectedDataContext.selectedGame().gridImage,
+        selectedDataContext.selectedGame().gridImage
       );
     } else {
       if (dataUpdateContext.editedLocatedGridImage() === null) {
@@ -180,7 +182,7 @@ export function EditGame() {
           `${dataUpdateContext.editedLocatedGridImage()}grids\\${gridImageFileName}`,
           {
             dir: BaseDirectory.AppData,
-          },
+          }
         ).then(() => {
           dataUpdateContext.setEditedLocatedGridImage(gridImageFileName);
         });
@@ -189,7 +191,7 @@ export function EditGame() {
 
     if (dataUpdateContext.editedLocatedHeroImage() === undefined) {
       dataUpdateContext.setEditedLocatedHeroImage(
-        selectedDataContext.selectedGame().heroImage,
+        selectedDataContext.selectedGame().heroImage
       );
     } else {
       if (dataUpdateContext.editedLocatedHeroImage() === null) {
@@ -205,7 +207,7 @@ export function EditGame() {
           `${dataUpdateContext.editedLocatedHeroImage()}heroes\\${heroImageFileName}`,
           {
             dir: BaseDirectory.AppData,
-          },
+          }
         ).then(() => {
           dataUpdateContext.setEditedLocatedHeroImage(heroImageFileName);
         });
@@ -214,7 +216,7 @@ export function EditGame() {
 
     if (dataUpdateContext.editedLocatedLogo() === undefined) {
       dataUpdateContext.setEditedLocatedLogo(
-        selectedDataContext.selectedGame().logo,
+        selectedDataContext.selectedGame().logo
       );
     } else {
       if (dataUpdateContext.editedLocatedLogo() === null) {
@@ -230,7 +232,7 @@ export function EditGame() {
           `${dataUpdateContext.editedLocatedLogo()}logos\\${logoFileName}`,
           {
             dir: BaseDirectory.AppData,
-          },
+          }
         ).then(() => {
           dataUpdateContext.setEditedLocatedLogo(logoFileName);
         });
@@ -239,7 +241,7 @@ export function EditGame() {
 
     if (dataUpdateContext.editedLocatedIcon() === undefined) {
       dataUpdateContext.setEditedLocatedIcon(
-        selectedDataContext.selectedGame().icon,
+        selectedDataContext.selectedGame().icon
       );
     } else {
       if (dataUpdateContext.editedLocatedIcon() === null) {
@@ -255,7 +257,7 @@ export function EditGame() {
           `${dataUpdateContext.editedLocatedIcon()}icons\\${iconFileName}`,
           {
             dir: BaseDirectory.AppData,
-          },
+          }
         ).then(() => {
           dataUpdateContext.setEditedLocatedIcon(iconFileName);
         });
@@ -280,16 +282,16 @@ export function EditGame() {
               produce((data) => {
                 data.folders[folder.name].games.splice(
                   folder.games.indexOf(gameName),
-                  1,
+                  1
                 );
                 data.folders[folder.name].games.splice(
                   previousIndex,
                   0,
-                  dataUpdateContext.editedGameName(),
+                  dataUpdateContext.editedGameName()
                 );
 
                 return data;
-              }),
+              })
             );
           }
         }
@@ -314,11 +316,11 @@ export function EditGame() {
             produce((data) => {
               data.folders[folder.name].games.splice(
                 folder.games.indexOf(gameName),
-                1,
+                1
               );
 
               return data;
-            }),
+            })
           );
         }
       }
@@ -338,7 +340,7 @@ export function EditGame() {
 
         function handleTab(e) {
           const focusableElements = ref.querySelectorAll(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
           );
           const firstElement = focusableElements[0];
           const lastElement = focusableElements[focusableElements.length - 1];
@@ -375,22 +377,22 @@ export function EditGame() {
         dataUpdateContext.setEditedlocatedGame(undefined);
         getData();
       }}
-      className="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d1cc] dark:bg-[#121212cc]">
-      <div className="flex h-screen w-screen flex-col items-center justify-center gap-3">
-        <div className="flex w-[84rem] justify-between max-large:w-[61rem]">
+      class="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d1cc] dark:bg-[#121212cc]">
+      <div class="flex h-screen w-screen flex-col items-center justify-center gap-3">
+        <div class="flex w-[84rem] justify-between max-large:w-[61rem]">
           <div>
-            <p className="text-[25px] text-[#000000] dark:text-[#ffffff80]">
+            <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">
               {translateText("edit")} {selectedDataContext.selectedGame().name}
             </p>
           </div>
-          <div className="flex items-center gap-4">
+          <div class="flex items-center gap-4">
             <button
               type="button"
-              className="cursor-pointer"
+              class="cursor-pointer"
               onClick={() => {
                 if (dataUpdateContext.editedFavouriteGame() === undefined) {
                   dataUpdateContext.setEditedFavouriteGame(
-                    !selectedDataContext.selectedGame().favourite,
+                    !selectedDataContext.selectedGame().favourite
                   );
                 } else {
                   dataUpdateContext.setEditedFavouriteGame((x) => !x);
@@ -402,11 +404,11 @@ export function EditGame() {
                   <Show
                     when={selectedDataContext.selectedGame().favourite}
                     fallback={
-                      <div className="!w-max">{translateText("favourite")}</div>
+                      <div class="!w-max">{translateText("favourite")}</div>
                     }>
-                    <div className="relative">
-                      <div className="!w-max">{translateText("favourite")}</div>
-                      <div className="absolute inset-0 -z-10 !w-max opacity-70 blur-[5px]">
+                    <div class="relative">
+                      <div class="!w-max">{translateText("favourite")}</div>
+                      <div class="absolute inset-0 -z-10 !w-max opacity-70 blur-[5px]">
                         {translateText("favourite")}
                       </div>
                     </div>
@@ -414,24 +416,24 @@ export function EditGame() {
                 </Match>
 
                 <Match when={dataUpdateContext.editedFavouriteGame() === true}>
-                  <div className="relative">
-                    <div className="!w-max"> {translateText("favourite")}</div>
-                    <div className="absolute inset-0 -z-10 !w-max opacity-70 blur-[5px]">
+                  <div class="relative">
+                    <div class="!w-max"> {translateText("favourite")}</div>
+                    <div class="absolute inset-0 -z-10 !w-max opacity-70 blur-[5px]">
                       {translateText("favourite")}
                     </div>
                   </div>
                 </Match>
 
                 <Match when={dataUpdateContext.editedFavouriteGame() === false}>
-                  <div className="!w-max">favourite</div>
+                  <div class="!w-max">favourite</div>
                 </Match>
               </Switch>
             </button>
             <button
               type="button"
               onClick={updateGame}
-              className="standardButton flex items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] ">
-              <div className="!w-max"> {translateText("save")}</div>
+              class="standardButton flex items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] ">
+              <div class="!w-max"> {translateText("save")}</div>
               <SaveDisk />
             </button>
             <button
@@ -445,8 +447,8 @@ export function EditGame() {
                   uiContext.setShowDeleteConfirm(false);
                 }, 1500);
               }}
-              className="standardButton flex items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] ">
-              <span className="w-max text-[#FF3636]">
+              class="standardButton flex items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] ">
+              <span class="w-max text-[#FF3636]">
                 {uiContext.showDeleteConfirm()
                   ? translateText("confirm?")
                   : translateText("delete")}
@@ -455,7 +457,7 @@ export function EditGame() {
             </button>
             <button
               type="button"
-              className="standardButton flex items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] "
+              class="standardButton flex items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] "
               onClick={() => {
                 closeDialog("editGameModal");
                 getData();
@@ -465,22 +467,24 @@ export function EditGame() {
             </button>
           </div>
         </div>
-        <div className="flex gap-3">
+        <div class="flex gap-3">
           <button
             type="button"
             onClick={locateEditedGridImage}
             onContextMenu={() => {
               dataUpdateContext.setEditedLocatedGridImage(null);
             }}
-            className="panelButton locatingGridImg group relative aspect-[2/3] h-full cursor-pointer overflow-hidden bg-[#f1f1f1] dark:bg-[#1c1c1c]"
+            class="panelButton locatingGridImg group relative aspect-[2/3] h-full cursor-pointer overflow-hidden bg-[#f1f1f1] dark:bg-[#1c1c1c]"
             aria-label="grid/cover">
             <Switch>
               <Match
                 when={dataUpdateContext.editedLocatedGridImage() === undefined}>
                 <img
-                  className="absolute inset-0 aspect-[2/3]"
+                  class="absolute inset-0 aspect-[2/3]"
                   src={convertFileSrc(
-                    `${applicationStateContext.appDataDirPath()}grids\\${selectedDataContext.selectedGame().gridImage}`,
+                    `${applicationStateContext.appDataDirPath()}grids\\${
+                      selectedDataContext.selectedGame().gridImage
+                    }`
                   )}
                   alt=""
                 />
@@ -490,9 +494,9 @@ export function EditGame() {
               </Match>
               <Match when={dataUpdateContext.editedLocatedGridImage()}>
                 <img
-                  className="absolute inset-0 aspect-[2/3]"
+                  class="absolute inset-0 aspect-[2/3]"
                   src={convertFileSrc(
-                    dataUpdateContext.editedLocatedGridImage(),
+                    dataUpdateContext.editedLocatedGridImage()
                   )}
                   alt=""
                 />
@@ -508,19 +512,19 @@ export function EditGame() {
             </Switch>
           </button>
 
-          <div className="relative flex flex-col gap-3">
+          <div class="relative flex flex-col gap-3">
             <button
               type="button"
               onClick={locateEditedHeroImage}
               onContextMenu={() => {
                 dataUpdateContext.setEditedLocatedHeroImage(null);
               }}
-              className="panelButton group relative m-0 aspect-[67/26] h-[350px] cursor-pointer bg-[#f1f1f1] p-0 dark:bg-[#1c1c1c] max-large:h-[250px]"
+              class="panelButton group relative m-0 aspect-[67/26] h-[350px] cursor-pointer bg-[#f1f1f1] p-0 dark:bg-[#1c1c1c] max-large:h-[250px]"
               aria-label="hero">
               <Switch>
                 <Match
                   when={dataUpdateContext.editedLocatedHeroImage() === null}
-                  className="absolute inset-0 overflow-hidden">
+                  class="absolute inset-0 overflow-hidden">
                   <span class="tooltip absolute left-[45%] top-[47%] opacity-0 group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%]">
                     {translateText("hero")}
                   </span>
@@ -529,38 +533,42 @@ export function EditGame() {
                   when={
                     dataUpdateContext.editedLocatedHeroImage() === undefined
                   }
-                  className="absolute inset-0 overflow-hidden">
+                  class="absolute inset-0 overflow-hidden">
                   <img
                     src={convertFileSrc(
-                      `${applicationStateContext.appDataDirPath()}heroes\\${selectedDataContext.selectedGame().heroImage}`,
+                      `${applicationStateContext.appDataDirPath()}heroes\\${
+                        selectedDataContext.selectedGame().heroImage
+                      }`
                     )}
                     alt=""
-                    className="absolute inset-0  aspect-[96/31]  h-full  rounded-[6px]"
+                    class="absolute inset-0  aspect-[96/31]  h-full  rounded-[6px]"
                   />
                   <img
                     src={convertFileSrc(
-                      `${applicationStateContext.appDataDirPath()}heroes\\${selectedDataContext.selectedGame().heroImage}`,
+                      `${applicationStateContext.appDataDirPath()}heroes\\${
+                        selectedDataContext.selectedGame().heroImage
+                      }`
                     )}
                     alt=""
-                    className="absolute inset-0 -z-10  aspect-[96/31] h-full rounded-[6px] opacity-[0.6] blur-[80px]"
+                    class="absolute inset-0 -z-10  aspect-[96/31] h-full rounded-[6px] opacity-[0.6] blur-[80px]"
                   />
                 </Match>
                 <Match
                   when={dataUpdateContext.editedLocatedHeroImage()}
-                  className="absolute inset-0 overflow-hidden">
+                  class="absolute inset-0 overflow-hidden">
                   <img
                     src={convertFileSrc(
-                      dataUpdateContext.editedLocatedHeroImage(),
+                      dataUpdateContext.editedLocatedHeroImage()
                     )}
                     alt=""
-                    className="absolute inset-0  aspect-[96/31] h-full rounded-[6px]"
+                    class="absolute inset-0  aspect-[96/31] h-full rounded-[6px]"
                   />
                   <img
                     src={convertFileSrc(
-                      dataUpdateContext.editedLocatedHeroImage(),
+                      dataUpdateContext.editedLocatedHeroImage()
                     )}
                     alt=""
-                    className="absolute inset-0 -z-10 aspect-[96/31]  h-full rounded-[6px] opacity-[0.6] blur-[80px]"
+                    class="absolute inset-0 -z-10 aspect-[96/31]  h-full rounded-[6px] opacity-[0.6] blur-[80px]"
                   />
                 </Match>
               </Switch>
@@ -579,7 +587,7 @@ export function EditGame() {
                   onContextMenu={() => {
                     dataUpdateContext.setEditedLocatedLogo(null);
                   }}
-                  className={`panelButton group absolute bottom-[60px] left-[20px] cursor-pointer  !bg-[#27272700] bg-[#f1f1f1] dark:bg-[#1c1c1c] max-large:bottom-[40px] ${
+                  class={`panelButton group absolute bottom-[60px] left-[20px] cursor-pointer  !bg-[#27272700] bg-[#f1f1f1] dark:bg-[#1c1c1c] max-large:bottom-[40px] ${
                     selectedDataContext.selectedGame().logo
                       ? ""
                       : "!h-[65px] !w-[200px]"
@@ -588,14 +596,14 @@ export function EditGame() {
                   <Show
                     when={dataUpdateContext.editedLocatedLogo()}
                     fallback={
-                      <div className="relative h-[90px] w-[250px] bg-[#E8E8E8] dark:!bg-[#272727] max-large:h-[70px] max-large:w-[170px]" />
+                      <div class="relative h-[90px] w-[250px] bg-[#E8E8E8] dark:!bg-[#272727] max-large:h-[70px] max-large:w-[170px]" />
                     }>
                     <img
                       src={convertFileSrc(
-                        dataUpdateContext.editedLocatedLogo(),
+                        dataUpdateContext.editedLocatedLogo()
                       )}
                       alt=""
-                      className="relative max-h-[100px] max-w-[400px] max-large:max-h-[70px] max-large:max-w-[300px]"
+                      class="relative max-h-[100px] max-w-[400px] max-large:max-h-[70px] max-large:max-w-[300px]"
                     />
                   </Show>
 
@@ -610,7 +618,7 @@ export function EditGame() {
                 onContextMenu={() => {
                   dataUpdateContext.setEditedLocatedLogo(null);
                 }}
-                className={`panelButton group absolute bottom-[70px] left-[20px] cursor-pointer  !bg-[#27272700] bg-[#f1f1f1] dark:bg-[#1c1c1c] ${
+                class={`panelButton group absolute bottom-[70px] left-[20px] cursor-pointer  !bg-[#27272700] bg-[#f1f1f1] dark:bg-[#1c1c1c] ${
                   selectedDataContext.selectedGame().logo
                     ? ""
                     : "!h-[65px] !w-[200px]"
@@ -621,23 +629,25 @@ export function EditGame() {
                     when={dataUpdateContext.editedLocatedLogo() === undefined}>
                     <img
                       src={convertFileSrc(
-                        `${applicationStateContext.appDataDirPath()}logos\\${selectedDataContext.selectedGame().logo}`,
+                        `${applicationStateContext.appDataDirPath()}logos\\${
+                          selectedDataContext.selectedGame().logo
+                        }`
                       )}
                       alt=""
-                      className="relative max-h-[100px] max-w-[400px] max-large:max-h-[70px] max-large:max-w-[300px]"
+                      class="relative max-h-[100px] max-w-[400px] max-large:max-h-[70px] max-large:max-w-[300px]"
                     />
                   </Match>
                   <Match when={dataUpdateContext.editedLocatedLogo()}>
                     <img
                       src={convertFileSrc(
-                        dataUpdateContext.editedLocatedLogo(),
+                        dataUpdateContext.editedLocatedLogo()
                       )}
                       alt=""
-                      className="relative max-h-[100px] max-w-[400px] max-large:max-h-[70px] max-large:max-w-[300px]"
+                      class="relative max-h-[100px] max-w-[400px] max-large:max-h-[70px] max-large:max-w-[300px]"
                     />
                   </Match>
                   <Match when={dataUpdateContext.editedLocatedLogo() === null}>
-                    <div className="relative h-[90px] w-[250px] bg-[#E8E8E8] dark:!bg-[#272727] max-large:h-[70px] max-large:w-[170px]" />
+                    <div class="relative h-[90px] w-[250px] bg-[#E8E8E8] dark:!bg-[#272727] max-large:h-[70px] max-large:w-[170px]" />
                   </Match>
                 </Switch>
 
@@ -647,14 +657,14 @@ export function EditGame() {
               </button>
             </Show>
 
-            <div className="flex cursor-pointer items-center gap-3">
+            <div class="flex cursor-pointer items-center gap-3">
               <button
                 type="button"
                 onClick={locateEditedIcon}
                 onContextMenu={() => {
                   dataUpdateContext.setEditedLocatedIcon(null);
                 }}
-                className="group relative !bg-[#27272700] p-0"
+                class="group relative !bg-[#27272700] p-0"
                 aria-label="logo">
                 <Switch>
                   <Match
@@ -662,28 +672,30 @@ export function EditGame() {
                     <Show
                       when={selectedDataContext.selectedGame().icon}
                       fallback={
-                        <div className="h-[40px] w-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]" />
+                        <div class="h-[40px] w-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]" />
                       }>
                       <img
                         src={convertFileSrc(
-                          `${applicationStateContext.appDataDirPath()}icons\\${selectedDataContext.selectedGame().icon}`,
+                          `${applicationStateContext.appDataDirPath()}icons\\${
+                            selectedDataContext.selectedGame().icon
+                          }`
                         )}
                         alt=""
-                        className="h-[40px] w-[40px] "
+                        class="h-[40px] w-[40px] "
                       />
                     </Show>
                   </Match>
                   <Match when={dataUpdateContext.editedLocatedIcon()}>
                     <img
                       src={convertFileSrc(
-                        dataUpdateContext.editedLocatedIcon(),
+                        dataUpdateContext.editedLocatedIcon()
                       )}
                       alt=""
-                      className="h-[40px] w-[40px] "
+                      class="h-[40px] w-[40px] "
                     />
                   </Match>
                   <Match when={dataUpdateContext.editedLocatedIcon() === null}>
-                    <div className="h-[40px] w-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]" />
+                    <div class="h-[40px] w-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]" />
                   </Match>
                 </Switch>
                 <span class="tooltip absolute left-[-10%] top-[120%] z-[10000] opacity-0 group-hover:opacity-100">
@@ -694,13 +706,13 @@ export function EditGame() {
               <input
                 aria-autocomplete="none"
                 type="text"
-                style="flex-grow: 1"
+                style={{ "flex-grow": "1" }}
                 name=""
                 id=""
                 onInput={(e) => {
                   dataUpdateContext.setEditedGameName(e.currentTarget.value);
                 }}
-                className="bg-[#E8E8E8cc] backdrop-blur-[10px] dark:bg-[#272727cc]"
+                class="bg-[#E8E8E8cc] backdrop-blur-[10px] dark:bg-[#272727cc]"
                 placeholder={translateText("name of game")}
                 value={selectedDataContext.selectedGame().name}
               />
@@ -710,7 +722,7 @@ export function EditGame() {
                 onContextMenu={() => {
                   dataUpdateContext.setEditedlocatedGame(null);
                 }}
-                className="standardButton !mt-0 !w-max bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]">
+                class="standardButton !mt-0 !w-max bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]">
                 <Switch>
                   <Match
                     when={dataUpdateContext.editedLocatedGame() === undefined}>
@@ -788,7 +800,7 @@ export function EditGame() {
                         .join("\\"),
                     });
                   }}
-                  className="standardButton group relative !w-max bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+                  class="standardButton group relative !w-max bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                   aria-label="logo">
                   <OpenExternal />
 
@@ -800,8 +812,8 @@ export function EditGame() {
             </div>
           </div>
         </div>
-        <div className="flex w-[84rem] justify-between max-large:w-[61rem]">
-          <span className=" opacity-50">
+        <div class="flex w-[84rem] justify-between max-large:w-[61rem]">
+          <span class=" opacity-50">
             {translateText("right click to empty image selection")}
           </span>
         </div>

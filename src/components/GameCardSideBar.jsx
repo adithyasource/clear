@@ -16,7 +16,7 @@ export function GameCardSideBar(props) {
   return (
     <button
       type="button"
-      className={`!flex gap-[5px] bg-transparent ${
+      class={`!flex gap-[5px] bg-transparent ${
         props.index === 0 ? "mt-4" : "mt-5"
       }  sideBarGame cursor-grab p-0`}
       aria-label={translateText("play")}
@@ -34,7 +34,7 @@ export function GameCardSideBar(props) {
       }}
       onClick={async (e) => {
         await selectedDataContext.setSelectedGame(
-          globalContext.libraryData.games[props.gameName],
+          globalContext.libraryData.games[props.gameName]
         );
         openDialog("gamePopup");
 
@@ -45,13 +45,15 @@ export function GameCardSideBar(props) {
       <Show when={globalContext.libraryData.games[props.gameName].icon}>
         <img
           src={convertFileSrc(
-            `${applicationStateContext.appDataDirPath()}icons\\${globalContext.libraryData.games[props.gameName].icon}`,
+            `${applicationStateContext.appDataDirPath()}icons\\${
+              globalContext.libraryData.games[props.gameName].icon
+            }`
           )}
           alt=""
-          className="aspect-square h-[16px]"
+          class="aspect-square h-[16px]"
         />
       </Show>
-      <span className="text-[#00000080] active:text-[#0000003a] dark:text-[#ffffff80] active:dark:text-[#ffffff3a]">
+      <span class="text-[#00000080] active:text-[#0000003a] dark:text-[#ffffff80] active:dark:text-[#ffffff3a]">
         {props.gameName}
       </span>
     </button>
