@@ -67,15 +67,32 @@ export function GamePopUp() {
             });
           }}>
           <div class="absolute bottom-[30px] right-[30px] flex gap-[15px]">
-            <button
-              type="button"
-              class="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
-              onClick={() => {
-                openGame(selectedDataContext.selectedGame().location);
-              }}>
-              <div class="!w-max">{translateText("play")}</div>
-              <Play />
-            </button>
+            <Show
+              when={selectedDataContext.selectedGame().location}
+              fallback={
+                <button
+                  type="button"
+                  class="!flex standardButton w-max bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b] hint--bottom"
+                  data-tooltiptext={translateText("no game file")}>
+                  <div class="!w-max opacity-50">
+                    <s>{translateText("play")}</s>
+                  </div>
+                  <div class="opacity-50">
+                    <Play />
+                  </div>
+                </button>
+              }>
+              <button
+                type="button"
+                class="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
+                onClick={() => {
+                  openGame(selectedDataContext.selectedGame().location);
+                }}>
+                <div class="!w-max">{translateText("play")}</div>
+                <Play />
+              </button>
+            </Show>
+
             <button
               type="button"
               class="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
