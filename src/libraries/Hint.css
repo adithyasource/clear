@@ -5,9 +5,7 @@
 * Copyright (c) 2021 Kushagra Gour
 
 * Heavily modified for "clear"
-* https://github.com/adithyasource/clear
-* Probably not the best idea to use this
-* version for your projects
+* Probably not the best idea to use this version for your projects
 
 */
 
@@ -44,8 +42,8 @@
   white-space: nowrap;
 }
 
-[class*="hint--"][aria-label]:after {
-  content: attr(aria-label);
+[class*="hint--"][data-tooltiptext]:after {
+  content: attr(data-tooltiptext);
 }
 
 .hint--right:after {

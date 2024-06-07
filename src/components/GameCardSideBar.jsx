@@ -19,7 +19,7 @@ export function GameCardSideBar(props) {
       class={`!flex gap-[5px] bg-transparent ${
         props.index === 0 ? "mt-4" : "mt-5"
       }  sideBarGame cursor-grab p-0`}
-      aria-label={translateText("play")}
+      data-tooltiptext={translateText("play")}
       draggable={true}
       onDragStart={(e) => {
         setTimeout(() => {

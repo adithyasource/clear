@@ -8,7 +8,6 @@ import {
   SelectedDataContext,
   openGame,
 } from "../Globals";
-import { NoFile } from "../libraries/Icons";
 
 export function GameCards(props) {
   const globalContext = useContext(GlobalContext);
@@ -23,7 +22,7 @@ export function GameCards(props) {
             type="button"
             class="gameCard group relative w-full cursor-pointer bg-transparent p-0"
             id={`${index() === 0 ? "firstGameCard" : ""}`}
-            aria-label={
+            data-tooltiptext={
               globalContext.libraryData.games[gameName].location
                 ? translateText("play")
                 : translateText("no game file")

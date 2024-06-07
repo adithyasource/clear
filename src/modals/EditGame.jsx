@@ -475,7 +475,7 @@ export function EditGame() {
               dataUpdateContext.setEditedLocatedGridImage(null);
             }}
             class="panelButton locatingGridImg group relative aspect-[2/3] h-full cursor-pointer overflow-hidden bg-[#f1f1f1] dark:bg-[#1c1c1c]"
-            aria-label="grid/cover">
+            data-tooltiptext="grid/cover">
             <Switch>
               <Match
                 when={dataUpdateContext.editedLocatedGridImage() === undefined}>
@@ -488,7 +488,7 @@ export function EditGame() {
                   )}
                   alt=""
                 />
-                <span class="tooltip absolute left-[35%] top-[47%] opacity-0  group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]">
+                <span class=" absolute left-[35%] top-[47%] opacity-0  group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]">
                   {translateText("grid/cover")}
                 </span>
               </Match>
@@ -500,12 +500,12 @@ export function EditGame() {
                   )}
                   alt=""
                 />
-                <span class="tooltip absolute left-[35%] top-[47%] opacity-0  group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]">
+                <span class=" absolute left-[35%] top-[47%] opacity-0  group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]">
                   {translateText("grid/cover")}
                 </span>
               </Match>
               <Match when={dataUpdateContext.editedLocatedGridImage() === null}>
-                <span class="tooltip absolute left-[35%] top-[47%] opacity-0  group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]">
+                <span class=" absolute left-[35%] top-[47%] opacity-0  group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]">
                   {translateText("grid/cover")}
                 </span>
               </Match>
@@ -520,12 +520,12 @@ export function EditGame() {
                 dataUpdateContext.setEditedLocatedHeroImage(null);
               }}
               class="panelButton group relative m-0 aspect-[67/26] h-[350px] cursor-pointer bg-[#f1f1f1] p-0 dark:bg-[#1c1c1c] max-large:h-[250px]"
-              aria-label="hero">
+              data-tooltiptext="hero">
               <Switch>
                 <Match
                   when={dataUpdateContext.editedLocatedHeroImage() === null}
                   class="absolute inset-0 overflow-hidden">
-                  <span class="tooltip absolute left-[45%] top-[47%] opacity-0 group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%]">
+                  <span class=" absolute left-[45%] top-[47%] opacity-0 group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%]">
                     {translateText("hero")}
                   </span>
                 </Match>
@@ -573,7 +573,7 @@ export function EditGame() {
                 </Match>
               </Switch>
 
-              <span class="tooltip absolute left-[45%] top-[47%] opacity-0 group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%]">
+              <span class=" absolute left-[45%] top-[47%] opacity-0 group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%]">
                 {translateText("hero")}
               </span>
             </button>
@@ -592,7 +592,7 @@ export function EditGame() {
                       ? ""
                       : "!h-[65px] !w-[200px]"
                   } `}
-                  aria-label="logo">
+                  data-tooltiptext="logo">
                   <Show
                     when={dataUpdateContext.editedLocatedLogo()}
                     fallback={
@@ -607,7 +607,7 @@ export function EditGame() {
                     />
                   </Show>
 
-                  <span class="tooltip absolute left-[55%] top-[65%] opacity-0 group-hover:opacity-100 max-large:left-[35%] max-large:top-[45%]">
+                  <span class=" absolute left-[55%] top-[65%] opacity-0 group-hover:opacity-100 max-large:left-[35%] max-large:top-[45%]">
                     {translateText("logo")}
                   </span>
                 </button>
@@ -623,7 +623,7 @@ export function EditGame() {
                     ? ""
                     : "!h-[65px] !w-[200px]"
                 } `}
-                aria-label="logo">
+                data-tooltiptext="logo">
                 <Switch>
                   <Match
                     when={dataUpdateContext.editedLocatedLogo() === undefined}>
@@ -651,7 +651,7 @@ export function EditGame() {
                   </Match>
                 </Switch>
 
-                <span class="tooltip absolute left-[40%] top-[35%] opacity-0 group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%]">
+                <span class=" absolute left-[40%] top-[35%] opacity-0 group-hover:opacity-100 max-large:left-[35%] max-large:top-[30%]">
                   {translateText("logo")}
                 </span>
               </button>
@@ -665,7 +665,7 @@ export function EditGame() {
                   dataUpdateContext.setEditedLocatedIcon(null);
                 }}
                 class="group relative !bg-[#27272700] p-0"
-                aria-label="logo">
+                data-tooltiptext="logo">
                 <Switch>
                   <Match
                     when={dataUpdateContext.editedLocatedIcon() === undefined}>
@@ -698,7 +698,7 @@ export function EditGame() {
                     <div class="h-[40px] w-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]" />
                   </Match>
                 </Switch>
-                <span class="tooltip absolute left-[-10%] top-[120%] z-[10000] opacity-0 group-hover:opacity-100">
+                <span class=" absolute left-[-10%] top-[120%] z-[10000] opacity-0 group-hover:opacity-100">
                   {translateText("icon")}
                 </span>
               </button>
@@ -801,10 +801,10 @@ export function EditGame() {
                     });
                   }}
                   class="standardButton group relative !w-max bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
-                  aria-label="logo">
+                  data-tooltiptext="logo">
                   <OpenExternal />
 
-                  <span class="tooltip absolute left-[-150%] top-[120%] opacity-0 group-hover:opacity-100">
+                  <span class=" absolute left-[-150%] top-[120%] opacity-0 group-hover:opacity-100">
                     {translateText("open containing folder")}
                   </span>
                 </button>

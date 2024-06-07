@@ -10,7 +10,6 @@
     @apply dark:bg-[#121212] bg-[#FFFFFC];
   }
 
-  .tooltip,
   [class*="hint--"]:after {
     @apply dark:bg-[#272727cc] bg-[#E8E8E8cc] dark:text-white text-black border-2 border-solid border-[#00000010] dark:border-[#ffffff10];
   }
@@ -164,14 +163,6 @@ body {
   justify-content: space-between;
   padding: 10px;
   margin: 0px 0px 12px 0px;
-}
-
-.tooltip {
-  padding: 8px 10px;
-  font-family: Helvetica;
-  line-height: 12px;
-  white-space: nowrap;
-  backdrop-filter: blur(10px);
 }
 
 .titleButton {

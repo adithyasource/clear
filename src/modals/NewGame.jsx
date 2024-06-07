@@ -495,7 +495,7 @@ export function NewGame() {
               dataEntryContext.setFoundGridImage(undefined);
             }}
             class="aspect-[2/3] h-full cursor-pointer overflow-hidden bg-[#f1f1f1] dark:bg-[#1c1c1c] hint--center"
-            aria-label={
+            data-tooltiptext={
               dataEntryContext.foundGridImage()
                 ? showGridImageLoading() === false
                   ? `${dataEntryContext.foundGridImageIndex()} / ${
@@ -580,7 +580,7 @@ export function NewGame() {
                   dataEntryContext.setFoundHeroImage(undefined);
                 }}
                 class="aspect-[67/26] h-[350px] cursor-pointer bg-[#f1f1f1] p-0 dark:bg-[#1c1c1c] max-large:h-[250px] hint--center"
-                aria-label={
+                data-tooltiptext={
                   dataEntryContext.foundHeroImage()
                     ? showHeroImageLoading() === false
                       ? `${dataEntryContext.foundHeroImageIndex()} / ${
@@ -687,7 +687,7 @@ export function NewGame() {
                       : "bg-[#E8E8E8] dark:!bg-[#272727]"
                   }
                     `}
-                aria-label={
+                data-tooltiptext={
                   dataEntryContext.foundLogoImage()
                     ? showLogoImageLoading() === false
                       ? `${dataEntryContext.foundLogoImageIndex()} / ${
@@ -777,7 +777,7 @@ export function NewGame() {
                     ? "hover:outline-dashed !outline-[2px] !outline-[#E8E8E880] !outline:dark:bg-[#27272780]"
                     : "bg-[#E8E8E8] dark:!bg-[#272727]"
                 }`}
-                aria-label={
+                data-tooltiptext={
                   dataEntryContext.foundIconImage()
                     ? showIconImageLoading() === false
                       ? `${dataEntryContext.foundIconImageIndex()} / ${
