@@ -54,7 +54,7 @@
 
 /* * Animation Keyframes */
 
-@keyframes dialogFadeIn {
+@keyframes elementFadeIn {
   from {
     opacity: 0;
     transform: scale(0.99);
@@ -65,7 +65,7 @@
   }
 }
 
-@keyframes dialogFadeOut {
+@keyframes elementFadeOut {
   from {
     opacity: 1;
     transform: scale(1);
@@ -76,7 +76,7 @@
   }
 }
 
-@keyframes dialogFadeInShorter {
+@keyframes elementFadeInShorter {
   from {
     opacity: 0.6;
     transform: scale(0.99);
@@ -207,11 +207,11 @@ input,
 }
 
 dialog.showDialog {
-  animation: dialogFadeIn 0.3s ease forwards;
+  animation: elementFadeIn 0.3s ease forwards;
 }
 
 dialog.hideDialog {
-  animation: dialogFadeOut 0.2s ease forwards;
+  animation: elementFadeOut 0.2s ease forwards;
 }
 
 .loading {
@@ -226,7 +226,7 @@ dialog.hideDialog {
 
 .toast {
   opacity: 1;
-  animation: dialogFadeIn 0.2s, dialogFadeOut 0.3s 2.3s;
+  animation: elementFadeIn 0.2s, elementFadeOut 0.3s 2.3s;
 }
 
 /* * removing all animations for people with animations turned off */
@@ -242,11 +242,11 @@ dialog.hideDialog {
   }
 
   dialog.showDialog {
-    animation: dialogFadeIn 0s ease forwards;
+    animation: elementFadeIn 0s ease forwards;
   }
 
   dialog.hideDialog {
-    animation: dialogFadeOut 0s ease forwards;
+    animation: elementFadeOut 0s ease forwards;
   }
 
   .loading {
@@ -261,6 +261,6 @@ dialog.hideDialog {
 
   .toast {
     opacity: 1;
-    animation: dialogFadeIn 0s, dialogFadeOut 0s 2.3s;
+    animation: elementFadeIn 0s, elementFadeOut 0s 2.3s;
   }
 }

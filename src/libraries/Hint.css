@@ -17,6 +17,7 @@
 }
 
 [class*="hint--"]:hover:after {
+  animation: elementFadeIn 0.2s ease forwards;
   visibility: visible;
   opacity: 1;
 }
@@ -42,39 +43,21 @@
   right: 10%;
   bottom: 50%;
   margin-bottom: -14px;
-  transform: translateX(8px);
 }
 
 .hint--center:after {
-  top: 40%;
-  left: 50%;
-  transform: translateX(-50%) translateY(8px);
+  top: 45%;
+  left: 40%;
 }
 
-.hint--bottom:before {
-  margin-top: -5.5px;
-  transform: rotate(var(--rotation));
-}
-.hint--bottom:before,
 .hint--bottom:after {
   top: 100%;
-  left: 50%;
-}
-.hint--bottom:before {
-  left: calc(50% - 6px);
-}
-.hint--bottom:after {
-  transform: translateX(-50%);
-}
-.hint--bottom:hover:before {
-  transform: translateY(8px) rotate(var(--rotation));
-}
-.hint--bottom:hover:after {
-  transform: translateX(-50%) translateY(8px);
+  left: 0;
+  margin-top: 5px;
 }
 
-/*
-  
-  * Hint.css - Ends Here
-  
-*/
+@media (prefers-reduced-motion) {
+  [class*="hint--"]:hover:after {
+    animation: tooltipFadeIn 0s ease forwards;
+  }
+}
