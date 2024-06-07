@@ -298,7 +298,7 @@ export function Settings() {
               <div>
                 <button
                   type="button"
-                  class="standardButton hint--bottom !flex !w-max !gap-3 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] "
+                  class="standardButton tooltip-bottom !flex !w-max !gap-3 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] "
                   data-tooltiptext={translateText("might not work perfectly!")}
                   onClick={() => {
                     if (globalContext.libraryData.folders.steam !== undefined) {

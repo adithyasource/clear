@@ -29,7 +29,7 @@ export function Style() {
       }
 
       *:not(body, svg, #loading, .sideBarGame, .gameIconImage),
-      [class*="hint--"]:after {
+      [class*="tooltip-"]:after {
         border-radius: ${globalContext.libraryData.userSettings.roundedBorders
           ? "6px"
           : "0px"};

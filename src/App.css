@@ -10,7 +10,7 @@
     @apply dark:bg-[#121212] bg-[#FFFFFC];
   }
 
-  [class*="hint--"]:after {
+  [class*="tooltip-"]::after {
     @apply dark:bg-[#272727cc] bg-[#E8E8E8cc] dark:text-white text-black border-2 border-solid border-[#00000010] dark:border-[#ffffff10];
   }
 
@@ -101,6 +101,15 @@
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 
@@ -220,6 +229,55 @@ dialog.hideDialog {
   animation: dialogFadeIn 0.2s, dialogFadeOut 0.3s 2.3s;
 }
 
+/* * tooltip related */
+
+/*
+
+- [class*="value"] will select if value exists in class 
+- we aren't using the simpler [data-tooltiptext] because of ctrl-hold behaviours,
+- the tooltip should only be visible once the class has been added to the element
+
+*/
+
+/* original positioning of right tooltip */
+[class*="tooltip-"] {
+  position: relative;
+}
+
+/* position of :after elements determined by ancestor */
+[class*="tooltip-"]:after {
+  position: absolute;
+  content: attr(data-tooltiptext);
+  width: max-content;
+  padding: 2px 8px;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  display: none;
+}
+
+[class*="tooltip-"]:hover:after {
+  display: block;
+  animation: tooltipFadeIn 0.2s ease forwards;
+}
+
+.tooltip-bottom:after {
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  margin-top: 5px;
+}
+
+.tooltip-center:after {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.tooltip-right:after {
+  transform: translate(0%, -17%);
+  right: 5%;
+}
+
 /* * removing all animations for people with animations turned off */
 
 @media (prefers-reduced-motion) {
@@ -253,5 +311,9 @@ dialog.hideDialog {
   .toast {
     opacity: 1;
     animation: dialogFadeIn 0s, dialogFadeOut 0s 2.3s;
+  }
+
+  [class*="tooltip-"]:hover:after {
+    animation: tooltipFadeIn 0s ease forwards;
   }
 }

@@ -17,7 +17,6 @@ import {
 } from "./Globals";
 
 import "./App.css";
-import "./libraries/Hint.css";
 
 import { SideBar } from "./SideBar";
 import { EditFolder } from "./modals/EditFolder";
@@ -73,19 +72,11 @@ function App() {
       }
 
       for (const sideBarGame of document.querySelectorAll(".sideBarGame")) {
-        sideBarGame.classList.remove(
-          "hint--right",
-          "hint--no-animate",
-          "hint--no-arrow"
-        );
+        sideBarGame.classList.remove("tooltip-right");
       }
 
       for (const gameCard of document.querySelectorAll(".gameCard")) {
-        gameCard.classList.remove(
-          "hint--center",
-          "hint--no-animate",
-          "hint--no-arrow"
-        );
+        gameCard.classList.remove("tooltip-center");
       }
     });
 
@@ -102,12 +93,12 @@ function App() {
 
       if (e.ctrlKey) {
         for (const sideBarGame of document.querySelectorAll(".sideBarGame")) {
-          sideBarGame.classList.add("hint--right");
+          sideBarGame.classList.add("tooltip-right");
           sideBarGame.style.cursor = "pointer";
         }
 
         for (const gameCard of document.querySelectorAll(".gameCard")) {
-          gameCard.classList.add("hint--center");
+          gameCard.classList.add("tooltip-center");
         }
 
         switch (e.code) {
@@ -330,7 +321,7 @@ function App() {
               <div class="mt-[35px] flex gap-6">
                 <button
                   type="button"
-                  class="standardButton hint--bottom !flex !w-max !gap-3 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+                  class="standardButton tooltip-bottom !flex !w-max !gap-3 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                   data-tooltiptext={translateText("might not work perfectly!")}
                   onClick={() => {
                     if (globalContext.libraryData.folders.steam !== undefined) {

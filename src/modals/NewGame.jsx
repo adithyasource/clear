@@ -494,7 +494,7 @@ export function NewGame() {
               dataEntryContext.setLocatedGridImage(undefined);
               dataEntryContext.setFoundGridImage(undefined);
             }}
-            class="aspect-[2/3] h-full cursor-pointer overflow-hidden bg-[#f1f1f1] dark:bg-[#1c1c1c] hint--center"
+            class="aspect-[2/3] h-full cursor-pointer overflow-hidden bg-[#f1f1f1] dark:bg-[#1c1c1c] tooltip-center"
             data-tooltiptext={
               dataEntryContext.foundGridImage()
                 ? showGridImageLoading() === false
@@ -579,7 +579,7 @@ export function NewGame() {
                   dataEntryContext.setLocatedHeroImage(undefined);
                   dataEntryContext.setFoundHeroImage(undefined);
                 }}
-                class="aspect-[67/26] h-[350px] cursor-pointer bg-[#f1f1f1] p-0 dark:bg-[#1c1c1c] max-large:h-[250px] hint--center"
+                class="aspect-[67/26] h-[350px] cursor-pointer bg-[#f1f1f1] p-0 dark:bg-[#1c1c1c] max-large:h-[250px] tooltip-center"
                 data-tooltiptext={
                   dataEntryContext.foundHeroImage()
                     ? showHeroImageLoading() === false
@@ -679,7 +679,7 @@ export function NewGame() {
                     }
                   }
                 }}
-                class={`bottom-[70px] left-[20px] !absolute z-[100] h-[90px] w-[250px] !p-[2px] cursor-pointer max-large:h-[90px] max-large:w-[243px] hint--center
+                class={`bottom-[70px] left-[20px] !absolute z-[100] h-[90px] w-[250px] !p-[2px] cursor-pointer max-large:h-[90px] max-large:w-[243px] tooltip-center
                   ${
                     dataEntryContext.foundLogoImage() ||
                     dataEntryContext.locatedLogo()
@@ -771,7 +771,7 @@ export function NewGame() {
                     }
                   }
                 }}
-                class={`group relative p-0 hint--bottom ${
+                class={`group relative p-0 tooltip-bottom ${
                   dataEntryContext.foundIconImage() ||
                   dataEntryContext.locatedIcon()
                     ? "hover:outline-dashed !outline-[2px] !outline-[#E8E8E880] !outline:dark:bg-[#27272780]"

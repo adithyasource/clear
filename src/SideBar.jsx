@@ -286,11 +286,6 @@ export function SideBar() {
                   getData();
                 }
 
-                globalContext.setLibraryData((data) => {
-                  data.folders[folderName].games.push(gameName);
-                  return data;
-                });
-
                 await updateData();
               }
             }}
