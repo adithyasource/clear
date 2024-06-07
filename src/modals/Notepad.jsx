@@ -83,7 +83,7 @@ export function Notepad() {
                 dataEntryContext.setNotepadValue(e.target.value);
                 saveNotepad();
               }}
-              class="mt-6 h-[40vh] w-full resize-none rounded-[6px] bg-transparent focus:outline-none"
+              class="mt-6 h-[40vh] w-full resize-none bg-transparent focus:outline-none"
               placeholder={translateText("write anything you want over here!")}
               spellcheck="false"
               value={dataEntryContext.notepadValue()}

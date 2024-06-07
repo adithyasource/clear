@@ -11,13 +11,22 @@
 
 */
 
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 [class*="hint--"] {
   position: relative;
   display: inline-block;
 }
 
 [class*="hint--"]:hover:after {
-  animation: elementFadeIn 0.2s ease forwards;
+  animation: tooltipFadeIn 0.2s ease forwards;
   visibility: visible;
   opacity: 1;
 }
@@ -46,8 +55,9 @@
 }
 
 .hint--center:after {
-  top: 45%;
-  left: 40%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .hint--bottom:after {

@@ -541,7 +541,7 @@ export function EditGame() {
                       }`
                     )}
                     alt=""
-                    class="absolute inset-0  aspect-[96/31]  h-full  rounded-[6px]"
+                    class="absolute inset-0  aspect-[96/31]  h-full  "
                   />
                   <img
                     src={convertFileSrc(
@@ -550,7 +550,7 @@ export function EditGame() {
                       }`
                     )}
                     alt=""
-                    class="absolute inset-0 -z-10  aspect-[96/31] h-full rounded-[6px] opacity-[0.6] blur-[80px]"
+                    class="absolute inset-0 -z-10  aspect-[96/31] h-full  opacity-[0.6] blur-[80px]"
                   />
                 </Match>
                 <Match
@@ -561,14 +561,14 @@ export function EditGame() {
                       dataUpdateContext.editedLocatedHeroImage()
                     )}
                     alt=""
-                    class="absolute inset-0  aspect-[96/31] h-full rounded-[6px]"
+                    class="absolute inset-0  aspect-[96/31] h-full "
                   />
                   <img
                     src={convertFileSrc(
                       dataUpdateContext.editedLocatedHeroImage()
                     )}
                     alt=""
-                    class="absolute inset-0 -z-10 aspect-[96/31]  h-full rounded-[6px] opacity-[0.6] blur-[80px]"
+                    class="absolute inset-0 -z-10 aspect-[96/31]  h-full  opacity-[0.6] blur-[80px]"
                   />
                 </Match>
               </Switch>

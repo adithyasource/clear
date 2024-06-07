@@ -12,7 +12,13 @@ import {
 } from "../Globals";
 
 import { open } from "@tauri-apps/api/dialog";
-import { ChevronArrow, Close, Loading, SaveDisk } from "../libraries/Icons";
+import {
+  ChevronArrow,
+  Close,
+  Loading,
+  SaveDisk,
+  TrashDelete,
+} from "../libraries/Icons";
 import { produce } from "solid-js/store";
 
 import {
@@ -436,6 +442,8 @@ export function NewGame() {
         </div>
 
         <div class="flex gap-[1rem]">
+          {/* grid image card */}
+
           <button
             type="button"
             onClick={locateGridImage}
@@ -486,248 +494,148 @@ export function NewGame() {
               dataEntryContext.setLocatedGridImage(undefined);
               dataEntryContext.setFoundGridImage(undefined);
             }}
-            class="panelButton locatingGridImg group relative aspect-[2/3] h-full cursor-pointer overflow-hidden bg-[#f1f1f1] dark:bg-[#1c1c1c]">
-            <Show
-              when={dataEntryContext.foundGridImage()}
-              fallback={
-                <>
-                  <Show
-                    when={dataEntryContext.locatedGridImage()}
-                    fallback={
-                      <span class="tooltip absolute left-[35%] top-[47%] opacity-0 group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]">
-                        {translateText("grid/cover")} <br />
-                      </span>
-                    }>
-                    <img
-                      class="absolute inset-0 aspect-[2/3]"
-                      src={convertFileSrc(dataEntryContext.locatedGridImage())}
-                      alt=""
-                    />
-                    <span class="tooltip absolute left-[35%] top-[47%] opacity-0  group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%] ">
-                      {translateText("grid/cover")} <br />
-                    </span>
-                  </Show>
-                </>
-              }>
-              <Show when={showGridImageLoading() === false}>
-                <img
-                  class="absolute inset-0 aspect-[2/3]"
-                  src={
-                    dataEntryContext.foundGridImage()[
+            class="aspect-[2/3] h-full cursor-pointer overflow-hidden bg-[#f1f1f1] dark:bg-[#1c1c1c] hint--center"
+            aria-label={
+              dataEntryContext.foundGridImage()
+                ? showGridImageLoading() === false
+                  ? `${dataEntryContext.foundGridImageIndex()} / ${
+                      dataEntryContext.foundGridImage().length - 1
+                    } scroll`
+                  : "loading"
+                : translateText("grid/cover")
+            }>
+            <img
+              src={
+                dataEntryContext.foundGridImage()
+                  ? dataEntryContext.foundGridImage()[
                       dataEntryContext.foundGridImageIndex()
                     ]
-                  }
-                  alt=""
-                  onLoad={() => {
-                    setShowGridImageLoading(false);
-                  }}
-                />
-              </Show>
-
-              <span
-                class={`tooltip absolute left-[35%] top-[47%] flex items-center gap-[5px] max-large:left-[25%] max-large:top-[45%] ${
-                  showGridImageLoading() === false
-                    ? "opacity-0 group-hover:opacity-100"
-                    : ""
-                }`}>
-                <span class="opacity-50">
-                  {dataEntryContext.foundGridImageIndex()} /{" "}
-                  {dataEntryContext.foundGridImage().length - 1}
-                </span>
-                <Show
-                  when={showGridImageLoading() === false}
-                  fallback={
-                    <div class="h-max w-max">
-                      <Loading />
-                    </div>
-                  }>
-                  {translateText("scroll")}
-                </Show>
-              </span>
-            </Show>
+                  : dataEntryContext.locatedGridImage()
+                  ? convertFileSrc(dataEntryContext.locatedGridImage())
+                  : // this is a gif which is completely empty
+                    "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+              }
+              alt=""
+              class={`absolute inset-0 w-full h-full ${
+                showGridImageLoading() ? "opacity-0" : ""
+              }  `}
+              onLoad={() => {
+                setShowGridImageLoading(false);
+              }}
+            />
           </button>
 
           <div class="relative flex flex-col gap-3">
-            <button
-              type="button"
-              onClick={locateHeroImage}
-              onScroll={() => {}}
-              onWheel={(e) => {
-                if (applicationStateContext.SGDBGames()) {
-                  if (e.deltaY <= 0) {
-                    dataEntryContext.setFoundHeroImageIndex((i) =>
-                      i === dataEntryContext.foundHeroImage().length - 1
-                        ? 0
-                        : i + 1
-                    );
-                    setShowHeroImageLoading(true);
-                  }
+            <div class="flex">
+              {/* hero image card */}
 
-                  if (e.deltaY >= 0) {
-                    if (dataEntryContext.foundHeroImageIndex() !== 0) {
-                      dataEntryContext.setFoundHeroImageIndex((i) => i - 1);
+              <button
+                type="button"
+                onClick={locateHeroImage}
+                onScroll={() => {}}
+                onWheel={(e) => {
+                  if (applicationStateContext.SGDBGames()) {
+                    if (e.deltaY <= 0) {
+                      dataEntryContext.setFoundHeroImageIndex((i) =>
+                        i === dataEntryContext.foundHeroImage().length - 1
+                          ? 0
+                          : i + 1
+                      );
                       setShowHeroImageLoading(true);
-                    } else {
-                      setShowHeroImageLoading(false);
+                    }
+
+                    if (e.deltaY >= 0) {
+                      if (dataEntryContext.foundHeroImageIndex() !== 0) {
+                        dataEntryContext.setFoundHeroImageIndex((i) => i - 1);
+                        setShowHeroImageLoading(true);
+                      } else {
+                        setShowHeroImageLoading(false);
+                      }
                     }
                   }
-                }
-              }}
-              onKeyDown={(e) => {
-                if (applicationStateContext.SGDBGames()) {
-                  if (e.key === "ArrowRight") {
-                    dataEntryContext.setFoundHeroImageIndex((i) =>
-                      i === dataEntryContext.foundHeroImage().length - 1
-                        ? 0
-                        : i + 1
-                    );
-                    setShowHeroImageLoading(true);
-                  }
-
-                  if (e.key === "ArrowLeft") {
-                    if (dataEntryContext.foundHeroImageIndex() !== 0) {
-                      dataEntryContext.setFoundHeroImageIndex((i) => i - 1);
+                }}
+                onKeyDown={(e) => {
+                  if (applicationStateContext.SGDBGames()) {
+                    if (e.key === "ArrowRight") {
+                      dataEntryContext.setFoundHeroImageIndex((i) =>
+                        i === dataEntryContext.foundHeroImage().length - 1
+                          ? 0
+                          : i + 1
+                      );
                       setShowHeroImageLoading(true);
-                    } else {
-                      setShowHeroImageLoading(false);
+                    }
+
+                    if (e.key === "ArrowLeft") {
+                      if (dataEntryContext.foundHeroImageIndex() !== 0) {
+                        dataEntryContext.setFoundHeroImageIndex((i) => i - 1);
+                        setShowHeroImageLoading(true);
+                      } else {
+                        setShowHeroImageLoading(false);
+                      }
                     }
                   }
-                }
-              }}
-              onContextMenu={() => {
-                dataEntryContext.setLocatedHeroImage(undefined);
-                dataEntryContext.setFoundHeroImage(undefined);
-              }}
-              class="panelButton group relative m-0 aspect-[67/26] h-[350px] cursor-pointer bg-[#f1f1f1] p-0 dark:bg-[#1c1c1c] max-large:h-[250px]"
-              aria-label="hero">
-              <Show
-                when={dataEntryContext.foundHeroImage()}
-                class="absolute inset-0 overflow-hidden"
-                fallback={
-                  <>
-                    <Show
-                      when={dataEntryContext.locatedHeroImage()}
-                      class="absolute inset-0 overflow-hidden"
-                      fallback={
-                        <span class="tooltip absolute left-[45%] top-[47%] opacity-0 group-hover:opacity-100">
-                          {translateText("hero")}
-                        </span>
-                      }>
-                      <img
-                        src={convertFileSrc(
-                          dataEntryContext.locatedHeroImage()
-                        )}
-                        alt=""
-                        class="absolute inset-0 aspect-[96/31] h-full rounded-[6px]"
-                      />
-                      <img
-                        src={convertFileSrc(
-                          dataEntryContext.locatedHeroImage()
-                        )}
-                        alt=""
-                        class="absolute inset-0 -z-10 aspect-[96/31] h-full rounded-[6px] opacity-[0.4] blur-[80px]"
-                      />
-                      <span class="tooltip absolute left-[45%] top-[47%] opacity-0 group-hover:opacity-100">
-                        {translateText("hero")}
-                      </span>
-                    </Show>
-                  </>
+                }}
+                onContextMenu={() => {
+                  dataEntryContext.setLocatedHeroImage(undefined);
+                  dataEntryContext.setFoundHeroImage(undefined);
+                }}
+                class="aspect-[67/26] h-[350px] cursor-pointer bg-[#f1f1f1] p-0 dark:bg-[#1c1c1c] max-large:h-[250px] hint--center"
+                aria-label={
+                  dataEntryContext.foundHeroImage()
+                    ? showHeroImageLoading() === false
+                      ? `${dataEntryContext.foundHeroImageIndex()} / ${
+                          dataEntryContext.foundHeroImage().length - 1
+                        } scroll`
+                      : "loading"
+                    : translateText("hero")
                 }>
-                <Show when={showHeroImageLoading() === false}>
-                  <img
-                    src={
-                      dataEntryContext.foundHeroImage()[
-                        dataEntryContext.foundHeroImageIndex()
-                      ]
-                    }
-                    onLoad={() => {
-                      setShowHeroImageLoading(false);
-                    }}
-                    alt=""
-                    class="absolute inset-0 aspect-[96/31] h-full rounded-[6px] "
-                  />
-                  <img
-                    src={
-                      dataEntryContext.foundHeroImage()[
-                        dataEntryContext.foundHeroImageIndex()
-                      ]
-                    }
-                    onLoad={() => {
-                      setShowHeroImageLoading(false);
-                    }}
-                    alt=""
-                    class="absolute inset-0 -z-10 aspect-[96/31] h-full rounded-[6px] opacity-[0.4] blur-[80px] "
-                  />
-                </Show>
+                <img
+                  src={
+                    dataEntryContext.foundHeroImage()
+                      ? dataEntryContext.foundHeroImage()[
+                          dataEntryContext.foundHeroImageIndex()
+                        ]
+                      : dataEntryContext.locatedHeroImage()
+                      ? convertFileSrc(dataEntryContext.locatedHeroImage())
+                      : // this is a gif which is completely empty
+                        "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                  }
+                  alt=""
+                  class={`w-full h-full aspect-[96/31] ${
+                    showHeroImageLoading() ? "opacity-0" : ""
+                  }`}
+                  onLoad={() => {
+                    setShowHeroImageLoading(false);
+                  }}
+                />
+                <img
+                  src={
+                    dataEntryContext.foundHeroImage()
+                      ? dataEntryContext.foundHeroImage()[
+                          dataEntryContext.foundHeroImageIndex()
+                        ]
+                      : dataEntryContext.locatedHeroImage()
+                      ? convertFileSrc(dataEntryContext.locatedHeroImage())
+                      : // this is a gif which is completely empty
+                        "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                  }
+                  onLoad={() => {
+                    setShowHeroImageLoading(false);
+                  }}
+                  alt=""
+                  class="w-full h-full absolute inset-0 -z-10 aspect-[96/31] opacity-[0.4] blur-[80px]"
+                />
+              </button>
 
-                <span
-                  class={`tooltip absolute left-[42%] top-[45%] flex items-center gap-[5px] ${
-                    showHeroImageLoading() === false
-                      ? "opacity-0 group-hover:opacity-100"
-                      : ""
-                  }`}>
-                  <span class="opacity-50">
-                    {dataEntryContext.foundHeroImageIndex()} /{" "}
-                    {dataEntryContext.foundHeroImage().length - 1}
-                  </span>
-                  <Show
-                    when={showHeroImageLoading() === false}
-                    fallback={
-                      <div class="h-max w-max">
-                        <Loading />
-                      </div>
-                    }>
-                    {translateText("scroll")}
-                  </Show>
-                </span>
-              </Show>
-            </button>
+              {/* logo image card */}
 
-            <Show
-              when={dataEntryContext.foundLogoImage()}
-              fallback={
-                <>
-                  <Show
-                    when={dataEntryContext.locatedLogo()}
-                    fallback={
-                      <button
-                        type="button"
-                        onClick={locateLogo}
-                        onContextMenu={() => {
-                          dataEntryContext.setLocatedLogo(undefined);
-                          dataEntryContext.setFoundLogoImage(undefined);
-                        }}
-                        class="panelButton group absolute bottom-[70px] left-[20px]  z-[100] h-[90px] w-[250px] cursor-pointer bg-[#E8E8E8] dark:!bg-[#272727] max-large:h-[90px] max-large:w-[243px] "
-                        aria-label="logo">
-                        <span class="tooltip absolute left-[40%] top-[35%] opacity-0 group-hover:opacity-100 max-large:left-[38%] max-large:top-[32%]">
-                          {translateText("logo")}
-                        </span>
-                      </button>
-                    }>
-                    <button
-                      type="button"
-                      onClick={locateLogo}
-                      onContextMenu={() => {
-                        dataEntryContext.setLocatedLogo(undefined);
-                        dataEntryContext.setFoundLogoImage(undefined);
-                      }}
-                      class="panelButton group absolute bottom-[70px] left-[20px] cursor-pointer bg-[#E8E8E800] bg-[#f1f1f1] dark:bg-[#1c1c1c] dark:bg-[#27272700]"
-                      aria-label="logo">
-                      <img
-                        src={convertFileSrc(dataEntryContext.locatedLogo())}
-                        alt=""
-                        class="relative aspect-auto max-h-[100px] max-w-[400px] max-large:max-h-[70px] max-large:max-w-[300px]"
-                      />
-                      <span class="tooltip absolute left-[35%] top-[30%] opacity-0 group-hover:opacity-100">
-                        {translateText("logo")}
-                      </span>
-                    </button>
-                  </Show>
-                </>
-              }>
               <button
                 type="button"
                 onClick={locateLogo}
+                onContextMenu={() => {
+                  dataEntryContext.setLocatedLogo(undefined);
+                  dataEntryContext.setFoundLogoImage(undefined);
+                }}
                 onScroll={() => {}}
                 onWheel={(e) => {
                   if (applicationStateContext.SGDBGames()) {
@@ -771,170 +679,133 @@ export function NewGame() {
                     }
                   }
                 }}
-                onContextMenu={() => {
-                  dataEntryContext.setLocatedLogo(undefined);
-                  dataEntryContext.setFoundLogoImage(undefined);
-                }}
-                class="panelButton group absolute  bottom-[60px] left-[10px] cursor-pointer bg-[#E8E8E800] bg-[#f1f1f1] dark:bg-[#1c1c1c] dark:bg-[#27272700]"
-                aria-label="logo">
+                class={`bottom-[70px] left-[20px] !absolute z-[100] h-[90px] w-[250px] !p-[2px] cursor-pointer max-large:h-[90px] max-large:w-[243px] hint--center
+                  ${
+                    dataEntryContext.foundLogoImage() ||
+                    dataEntryContext.locatedLogo()
+                      ? "hover:outline-dashed !outline-[2px] !outline-[#E8E8E880] !outline:dark:bg-[#27272780]"
+                      : "bg-[#E8E8E8] dark:!bg-[#272727]"
+                  }
+                    `}
+                aria-label={
+                  dataEntryContext.foundLogoImage()
+                    ? showLogoImageLoading() === false
+                      ? `${dataEntryContext.foundLogoImageIndex()} / ${
+                          dataEntryContext.foundLogoImage().length - 1
+                        } scroll`
+                      : "loading"
+                    : translateText("logo")
+                }>
                 <img
                   src={
-                    dataEntryContext.foundLogoImage()[
-                      dataEntryContext.foundLogoImageIndex()
-                    ]
+                    dataEntryContext.foundLogoImage()
+                      ? dataEntryContext.foundLogoImage()[
+                          dataEntryContext.foundLogoImageIndex()
+                        ]
+                      : dataEntryContext.locatedLogo()
+                      ? convertFileSrc(dataEntryContext.locatedLogo())
+                      : // this is a gif which is completely empty
+                        "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
                   }
                   alt=""
-                  class={`relative h-[90px] w-[250px] !object-scale-down max-large:h-[90px] max-large:w-[243px] ${
+                  class={`!object-scale-down w-full h-full  ${
                     showLogoImageLoading() ? "opacity-0" : ""
                   }`}
                   onLoad={() => {
                     setShowLogoImageLoading(false);
                   }}
                 />
-
-                <span
-                  class={`tooltip absolute left-[33%] top-[35%] flex  items-center gap-[5px] max-large:left-[30%] max-large:top-[35%]  ${
-                    showLogoImageLoading() === false
-                      ? "opacity-0 group-hover:opacity-100"
-                      : ""
-                  }`}>
-                  <span class="opacity-50">
-                    {dataEntryContext.foundLogoImageIndex()} /{" "}
-                    {dataEntryContext.foundLogoImage().length - 1}
-                  </span>
-
-                  <Show
-                    when={showLogoImageLoading() === false}
-                    fallback={
-                      <div class="relative h-max w-max">
-                        <Loading />
-                      </div>
-                    }>
-                    <span>{translateText("scroll")} </span>
-                  </Show>
-                </span>
               </button>
-            </Show>
+            </div>
+
+            {/* h-[40px] w-[40px] !bg-[#E8E8E8] dark:!bg-[#272727] */}
 
             <div class="flex cursor-pointer items-center gap-3 ">
-              <Show
-                when={dataEntryContext.foundIconImage()}
-                fallback={
-                  <button
-                    type="button"
-                    onClick={locateIcon}
-                    onContextMenu={() => {
-                      dataEntryContext.setLocatedIcon(undefined);
-                      dataEntryContext.setFoundIconImage(undefined);
-                    }}
-                    class="group relative !bg-[#27272700] p-0"
-                    aria-label="logo">
-                    <Show
-                      when={dataEntryContext.locatedIcon()}
-                      fallback={
-                        <div class="h-[40px] w-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]" />
-                      }>
-                      <img
-                        src={convertFileSrc(dataEntryContext.locatedIcon())}
-                        alt=""
-                        class="h-[40px] w-[40px]"
-                      />
-                    </Show>
-                    <span class="tooltip absolute left-[-10%] top-[120%] z-[10000] opacity-0 group-hover:opacity-100 ">
-                      {translateText("icon")}
-                    </span>
-                  </button>
+              <button
+                type="button"
+                onClick={locateIcon}
+                onContextMenu={() => {
+                  dataEntryContext.setLocatedIcon(undefined);
+                  dataEntryContext.setFoundIconImage(undefined);
+                }}
+                onScroll={() => {}}
+                onWheel={(e) => {
+                  if (applicationStateContext.SGDBGames()) {
+                    if (e.deltaY <= 0) {
+                      dataEntryContext.setFoundIconImageIndex((i) =>
+                        i === dataEntryContext.foundIconImage().length - 1
+                          ? 0
+                          : i + 1
+                      );
+                      setShowIconImageLoading(true);
+                    }
+
+                    if (e.deltaY >= 0) {
+                      if (dataEntryContext.foundIconImageIndex() !== 0) {
+                        dataEntryContext.setFoundIconImageIndex((i) => i - 1);
+                        setShowIconImageLoading(true);
+                      } else {
+                        setShowIconImageLoading(false);
+                      }
+                    }
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (applicationStateContext.SGDBGames()) {
+                    if (e.key === "ArrowRight") {
+                      dataEntryContext.setFoundIconImageIndex((i) =>
+                        i === dataEntryContext.foundIconImage().length - 1
+                          ? 0
+                          : i + 1
+                      );
+                      setShowIconImageLoading(true);
+                    }
+
+                    if (e.key === "ArrowLeft") {
+                      if (dataEntryContext.foundIconImageIndex() !== 0) {
+                        dataEntryContext.setFoundIconImageIndex((i) => i - 1);
+                        setShowIconImageLoading(true);
+                      } else {
+                        setShowIconImageLoading(false);
+                      }
+                    }
+                  }
+                }}
+                class={`group relative p-0 hint--bottom ${
+                  dataEntryContext.foundIconImage() ||
+                  dataEntryContext.locatedIcon()
+                    ? "hover:outline-dashed !outline-[2px] !outline-[#E8E8E880] !outline:dark:bg-[#27272780]"
+                    : "bg-[#E8E8E8] dark:!bg-[#272727]"
+                }`}
+                aria-label={
+                  dataEntryContext.foundIconImage()
+                    ? showIconImageLoading() === false
+                      ? `${dataEntryContext.foundIconImageIndex()} / ${
+                          dataEntryContext.foundIconImage().length - 1
+                        } scroll`
+                      : "loading"
+                    : translateText("icon")
                 }>
-                <button
-                  type="button"
-                  onClick={locateIcon}
-                  onScroll={() => {}}
-                  onWheel={(e) => {
-                    if (applicationStateContext.SGDBGames()) {
-                      if (e.deltaY <= 0) {
-                        dataEntryContext.setFoundIconImageIndex((i) =>
-                          i === dataEntryContext.foundIconImage().length - 1
-                            ? 0
-                            : i + 1
-                        );
-                        setShowIconImageLoading(true);
-                      }
-
-                      if (e.deltaY >= 0) {
-                        if (dataEntryContext.foundIconImageIndex() !== 0) {
-                          dataEntryContext.setFoundIconImageIndex((i) => i - 1);
-                          setShowIconImageLoading(true);
-                        } else {
-                          setShowIconImageLoading(false);
-                        }
-                      }
-                    }
-                  }}
-                  onKeyDown={(e) => {
-                    if (applicationStateContext.SGDBGames()) {
-                      if (e.key === "ArrowRight") {
-                        dataEntryContext.setFoundIconImageIndex((i) =>
-                          i === dataEntryContext.foundIconImage().length - 1
-                            ? 0
-                            : i + 1
-                        );
-                        setShowIconImageLoading(true);
-                      }
-
-                      if (e.key === "ArrowLeft") {
-                        if (dataEntryContext.foundIconImageIndex() !== 0) {
-                          dataEntryContext.setFoundIconImageIndex((i) => i - 1);
-                          setShowIconImageLoading(true);
-                        } else {
-                          setShowIconImageLoading(false);
-                        }
-                      }
-                    }
-                  }}
-                  onContextMenu={() => {
-                    dataEntryContext.setLocatedIcon(undefined);
-                    dataEntryContext.setFoundIconImage(undefined);
-                  }}
-                  class="group relative p-0"
-                  aria-label="logo">
-                  <Show
-                    when={showIconImageLoading() === false}
-                    fallback={
-                      <div class="h-[40px] w-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]">
-                        <div class="absolute left-[32%] top-[30%]">
-                          <Loading />
-                        </div>
-                      </div>
-                    }>
-                    <img
-                      src={
-                        dataEntryContext.foundIconImage()[
+                <img
+                  src={
+                    dataEntryContext.foundIconImage()
+                      ? dataEntryContext.foundIconImage()[
                           dataEntryContext.foundIconImageIndex()
                         ]
-                      }
-                      alt=""
-                      onLoad={() => {
-                        setShowIconImageLoading(false);
-                      }}
-                      class="h-[40px] w-[40px]"
-                    />
-                  </Show>
-
-                  <span
-                    class={`tooltip absolute left-[-55%] top-[120%] z-[10000] flex items-center gap-[5px] opacity-0 group-hover:opacity-100 ${
-                      showIconImageLoading() === false
-                        ? "opacity-0 group-hover:opacity-100"
-                        : ""
-                    }`}>
-                    <span class="opacity-50">
-                      {dataEntryContext.foundIconImageIndex()} /{" "}
-                      {dataEntryContext.foundIconImage().length - 1}
-                    </span>
-
-                    <span>{translateText("scroll")} </span>
-                  </span>
-                </button>
-              </Show>
+                      : dataEntryContext.locatedIcon()
+                      ? convertFileSrc(dataEntryContext.locatedIcon())
+                      : // this is a gif which is completely empty
+                        "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                  }
+                  alt=""
+                  class={`!object-scale-down h-[40px] w-[40px]  ${
+                    showIconImageLoading() ? "opacity-0" : ""
+                  }`}
+                  onLoad={() => {
+                    setShowIconImageLoading(false);
+                  }}
+                />
+              </button>
 
               <div
                 class="gameInput flex items-center bg-[#E8E8E8cc] backdrop-blur-[10px] dark:bg-[#272727cc]"
