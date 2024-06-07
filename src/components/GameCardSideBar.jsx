@@ -50,7 +50,7 @@ export function GameCardSideBar(props) {
             }`
           )}
           alt=""
-          class="aspect-square h-[16px]"
+          class="aspect-square h-[16px] gameIconImage"
         />
       </Show>
       <span class="text-[#00000080] active:text-[#0000003a] dark:text-[#ffffff80] active:dark:text-[#ffffff3a]">

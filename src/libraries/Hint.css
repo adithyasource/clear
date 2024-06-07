@@ -62,7 +62,8 @@
 
 .hint--bottom:after {
   top: 100%;
-  left: 0;
+  left: 50%;
+  transform: translate(-50%, 0%);
   margin-top: 5px;
 }
 

@@ -8,6 +8,7 @@ import {
   SelectedDataContext,
   openGame,
 } from "../Globals";
+import { NoFile } from "../libraries/Icons";
 
 export function GameCards(props) {
   const globalContext = useContext(GlobalContext);
@@ -22,7 +23,11 @@ export function GameCards(props) {
             type="button"
             class="gameCard group relative w-full cursor-pointer bg-transparent p-0"
             id={`${index() === 0 ? "firstGameCard" : ""}`}
-            aria-label={translateText("play")}
+            aria-label={
+              globalContext.libraryData.games[gameName].location
+                ? translateText("play")
+                : translateText("no game file")
+            }
             onDragStart={(e) => {
               e.preventDefault();
             }}
@@ -52,36 +57,12 @@ export function GameCards(props) {
                           <span class="absolute z-[100] !max-w-[50%]">
                             {gameName}
                           </span>
-
-                          <Show
-                            when={
-                              !globalContext.libraryData.games[gameName]
-                                .location
-                            }>
-                            <span class="tooltip absolute bottom-[30px] z-[100]">
-                              {translateText("no game file")}
-                            </span>
-                          </Show>
                         </Show>
 
                         <div class="relative z-10 mb-[7px] aspect-[2/3] w-full bg-[#F1F1F1] group-hover:outline-none group-hover:outline-[2px] group-hover:outline-[#0000001f] dark:bg-[#1C1C1C] dark:group-hover:outline-[#ffffff1f]" />
                       </div>
                     }>
                     <div class="relative flex items-center justify-center">
-                      <Show
-                        when={
-                          !globalContext.libraryData.userSettings.gameTitle
-                        }>
-                        <Show
-                          when={
-                            !globalContext.libraryData.games[gameName].location
-                          }>
-                          <span class="tooltip absolute bottom-[30px] z-[100]">
-                            {translateText("no game file")}
-                          </span>
-                        </Show>
-                      </Show>
-
                       <img
                         class="relative z-10 mb-[7px] aspect-[2/3] w-full group-hover:outline-none group-hover:outline-[2px] group-hover:outline-[#0000001f] dark:group-hover:outline-[#ffffff1f]"
                         src={convertFileSrc(
@@ -107,15 +88,6 @@ export function GameCards(props) {
                         <span class="absolute z-[100] !max-w-[50%]">
                           {gameName}
                         </span>
-
-                        <Show
-                          when={
-                            !globalContext.libraryData.games[gameName].location
-                          }>
-                          <span class="tooltip absolute bottom-[30px] z-[100]">
-                            {translateText("no game file")}
-                          </span>
-                        </Show>
                       </Show>
                       <div class="relative z-10 mb-[7px] aspect-[2/3] w-full bg-[#F1F1F1] outline-none outline-[4px]  outline-[#0000001c] duration-200 motion-reduce:duration-100 hover:outline-[#0000003b] dark:bg-[#1C1C1C] dark:outline-[2px] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b]" />
                     </div>
@@ -151,21 +123,7 @@ export function GameCards(props) {
             </Show>
             <Show when={globalContext.libraryData.userSettings.gameTitle}>
               <div class="flex items-start justify-between">
-                <Show
-                  when={globalContext.libraryData.games[gameName].location}
-                  fallback={
-                    <>
-                      <span class="!max-w-[50%] text-[#000000] dark:text-white">
-                        {gameName}
-                      </span>
-
-                      <span class=" tooltip z-[100]">
-                        {translateText("no game file")}
-                      </span>
-                    </>
-                  }>
-                  <span class="text-[#000000] dark:text-white">{gameName}</span>
-                </Show>
+                <span class="text-[#000000] dark:text-white">{gameName}</span>
               </div>
             </Show>
           </button>

@@ -28,7 +28,7 @@ export function Style() {
           : "#ffffff"};
       }
 
-      *:not(body, svg, #loading, .sideBarGame),
+      *:not(body, svg, #loading, .sideBarGame, .gameIconImage),
       [class*="hint--"]:after {
         border-radius: ${globalContext.libraryData.userSettings.roundedBorders
           ? "6px"
