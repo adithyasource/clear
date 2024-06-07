@@ -135,10 +135,6 @@ export function EditFolder() {
         }
 
         ref.addEventListener("keydown", handleTab);
-
-        ref.addEventListener("close", () => {
-          previouslyFocusedElement.focus();
-        });
       }}
       class="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d166] dark:bg-[#12121266]">
       <div class="flex h-screen w-screen items-center justify-center align-middle ">
@@ -239,12 +235,11 @@ export function EditFolder() {
 
               <button
                 type="button"
-                class="standardButton flex !w-max items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+                class="standardButton flex !w-max !h-full items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                 onClick={() => {
                   closeDialog("editFolderModal");
                   getData();
                 }}>
-                ​
                 <Close />
               </button>
             </div>

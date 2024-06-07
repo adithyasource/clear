@@ -12,13 +12,7 @@ import {
 } from "../Globals";
 
 import { open } from "@tauri-apps/api/dialog";
-import {
-  ChevronArrow,
-  Close,
-  Loading,
-  SaveDisk,
-  TrashDelete,
-} from "../libraries/Icons";
+import { ChevronArrow, Close, SaveDisk } from "../libraries/Icons";
 import { produce } from "solid-js/store";
 
 import {
@@ -270,23 +264,30 @@ export function NewGame() {
 
   async function searchGameName() {
     applicationStateContext.setSGDBGames(undefined);
-    await fetch(
-      `${
-        import.meta.env.VITE_CLEAR_API_URL
-      }/?gameName=${dataEntryContext.gameName()}`
-    )
-      .then((res) =>
-        res.json().then(async (jsonres) => {
-          if (jsonres.data.length === 0) {
-            triggerToast(translateText("couldn't find that game :("));
-          } else {
-            applicationStateContext.setSGDBGames(jsonres.data);
-          }
-        })
-      )
-      .catch((err) => {
-        triggerToast(translateText("you're not connected to the internet :("));
-      });
+
+    let searchedGameData;
+
+    try {
+      searchedGameData = await fetch(
+        `${
+          import.meta.env.VITE_CLEAR_API_URL
+        }/?gameName=${dataEntryContext.gameName()}`
+      );
+    } catch {
+      searchedGameData = undefined;
+    }
+
+    if (searchedGameData) {
+      searchedGameData = await searchedGameData.json();
+
+      if (searchedGameData.data.length === 0) {
+        triggerToast(translateText("couldn't find that game :("));
+      } else {
+        applicationStateContext.setSGDBGames(searchedGameData.data);
+      }
+    } else {
+      triggerToast(translateText("you're not connected to the internet :("));
+    }
   }
 
   async function getGameAssets() {
@@ -372,10 +373,6 @@ export function NewGame() {
         }
 
         ref.addEventListener("keydown", handleTab);
-
-        ref.addEventListener("close", () => {
-          previouslyFocusedElement.focus();
-        });
       }}
       onClose={() => {
         dataEntryContext.setFavouriteGame();
@@ -430,12 +427,11 @@ export function NewGame() {
             </button>
             <button
               type="button"
-              class="standardButton flex items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+              class="standardButton flex items-center !w-max !h-full !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
                 closeDialog("newGameModal");
                 getData();
               }}>
-              ​
               <Close />
             </button>
           </div>

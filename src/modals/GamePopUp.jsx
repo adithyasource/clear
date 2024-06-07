@@ -23,6 +23,30 @@ export function GamePopUp() {
       }}
       ref={(ref) => {
         closeDialog("gamePopup", ref);
+
+        function handleTab(e) {
+          const focusableElements = ref.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+          );
+          const firstElement = focusableElements[0];
+          const lastElement = focusableElements[focusableElements.length - 1];
+
+          if (e.key === "Tab") {
+            if (e.shiftKey) {
+              if (document.activeElement === firstElement) {
+                e.preventDefault();
+                lastElement.focus();
+              }
+            } else {
+              if (document.activeElement === lastElement) {
+                e.preventDefault();
+                firstElement.focus();
+              }
+            }
+          }
+        }
+
+        ref.addEventListener("keydown", handleTab);
       }}>
       <div class="flex h-screen w-screen flex-col items-center justify-center px-[40px]">
         <img
@@ -34,38 +58,7 @@ export function GamePopUp() {
           alt=""
           class="absolute -z-10 h-[350px] opacity-[0.4] blur-[80px] max-large:h-[270px]"
         />
-        <div
-          class="relative"
-          ref={(ref) => {
-            function handleTab(e) {
-              const focusableElements = ref.querySelectorAll(
-                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-              );
-              const firstElement = focusableElements[0];
-              const lastElement =
-                focusableElements[focusableElements.length - 1];
-
-              if (e.key === "Tab") {
-                if (e.shiftKey) {
-                  if (document.activeElement === firstElement) {
-                    e.preventDefault();
-                    lastElement.focus();
-                  }
-                } else {
-                  if (document.activeElement === lastElement) {
-                    e.preventDefault();
-                    firstElement.focus();
-                  }
-                }
-              }
-            }
-
-            ref.addEventListener("keydown", handleTab);
-
-            ref.addEventListener("close", () => {
-              previouslyFocusedElement.focus();
-            });
-          }}>
+        <div class="relative">
           <div class="absolute bottom-[30px] right-[30px] flex gap-[15px]">
             <Show
               when={selectedDataContext.selectedGame().location}

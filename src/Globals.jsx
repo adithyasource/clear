@@ -393,153 +393,140 @@ export async function changeLanguage(lang) {
 export async function importSteamGames() {
   openDialog("loadingModal");
 
-  await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?version=a`)
-    .then(() => {
-      invoke("read_steam_vdf").then(async (data) => {
-        if (data === "error") {
-          closeDialog("loadingModal");
+  const connectedToInternet = await checkIfConnectedToInternet();
 
-          triggerToast(
-            translateText(
-              "sorry but there was an error \n reading your Steam library :("
-            )
-          );
+  if (connectedToInternet) {
+    const steamVDFData = await invoke("read_steam_vdf");
 
-          return;
-        }
-
-        const steamData = parseVDF(data);
-
-        const steamGameIds = [];
-
-        for (let x = 0; x < Object.keys(steamData.libraryfolders).length; x++) {
-          steamGameIds.push(...Object.keys(steamData.libraryfolders[x].apps));
-        }
-
-        const index = steamGameIds.indexOf("228980");
-
-        index !== -1 ? steamGameIds.splice(index, 1) : null;
-
-        setTotalSteamGames(steamGameIds.length);
-
-        const allGameNames = [];
-
-        // ! check if this works
-        setLibraryData((data) => {
-          data.folders.steam = undefined;
-          return data;
-        });
-
-        await updateData().then(async () => {
-          for (const steamId of steamGameIds) {
-            await fetch(
-              `${import.meta.env.VITE_CLEAR_API_URL}/?steamID=${steamId}`
-            ).then((res) =>
-              res.json().then(async (jsonres) => {
-                const gameId = jsonres.data.id;
-                const name = jsonres.data.name;
-
-                allGameNames.push(name);
-
-                let gridImageFileName = `${generateRandomString()}.png`;
-                let heroImageFileName = `${generateRandomString()}.png`;
-                let logoImageFileName = `${generateRandomString()}.png`;
-                let iconImageFileName = `${generateRandomString()}.png`;
-
-                await fetch(
-                  `${
-                    import.meta.env.VITE_CLEAR_API_URL
-                  }/?assets=${gameId}&length=1`
-                )
-                  .then((res) =>
-                    res.json().then(async (jsonres) => {
-                      if (jsonres.grids.length !== 0) {
-                        await invoke("download_image", {
-                          link: jsonres.grids[0],
-                          location: `${appDataDirPath()}grids\\${gridImageFileName}`,
-                        });
-                      } else {
-                        gridImageFileName = undefined;
-                      }
-
-                      if (jsonres.heroes.length !== 0) {
-                        await invoke("download_image", {
-                          link: jsonres.heroes[0],
-                          location: `${appDataDirPath()}heroes\\${heroImageFileName}`,
-                        });
-                      } else {
-                        heroImageFileName = undefined;
-                      }
-
-                      if (jsonres.logos.length !== 0) {
-                        await invoke("download_image", {
-                          link: jsonres.logos[0],
-                          location: `${appDataDirPath()}logos\\${logoImageFileName}`,
-                        });
-                      } else {
-                        logoImageFileName = undefined;
-                      }
-
-                      if (jsonres.icons.length !== 0) {
-                        await invoke("download_image", {
-                          link: jsonres.icons[0],
-                          location: `${appDataDirPath()}icons\\${iconImageFileName}`,
-                        });
-                      } else {
-                        iconImageFileName = undefined;
-                      }
-
-                      setLibraryData((data) => {
-                        data.games[name] = {
-                          location: `steam://rungameid/${steamId}`,
-                          name: name,
-                          heroImage: heroImageFileName,
-                          gridImage: gridImageFileName,
-                          logo: logoImageFileName,
-                          icon: iconImageFileName,
-                          favourite: false,
-                        };
-
-                        return data;
-                      });
-
-                      await updateData();
-
-                      setTotalImportedSteamGames((x) => x + 1);
-                    })
-                  )
-                  .catch((err) => {
-                    // no assets found at all for this game
-                  });
-              })
-            );
-          }
-
-          setLibraryData(
-            produce((data) => {
-              data.folders.steam = {
-                name: "steam",
-                hide: false,
-                games: allGameNames,
-                index: currentFolders().length,
-              };
-              return data;
-            })
-          );
-
-          await updateData().then(() => {
-            closeDialog("loadingModal");
-            closeDialog("settingsModal");
-            setTotalImportedSteamGames(0);
-            setTotalSteamGames(0);
-          });
-        });
-      });
-    })
-    .catch((err) => {
+    if (steamVDFData === "error") {
       closeDialog("loadingModal");
-      triggerToast(translateText("you're not connected to the internet :("));
+
+      triggerToast(
+        translateText(
+          "sorry but there was an error \n reading your Steam library :("
+        )
+      );
+
+      return;
+    }
+
+    const steamData = parseVDF(steamVDFData);
+
+    const steamGameIds = [];
+
+    for (let x = 0; x < Object.keys(steamData.libraryfolders).length; x++) {
+      steamGameIds.push(...Object.keys(steamData.libraryfolders[x].apps));
+    }
+
+    const index = steamGameIds.indexOf("228980");
+
+    index !== -1 ? steamGameIds.splice(index, 1) : null;
+
+    setTotalSteamGames(steamGameIds.length);
+
+    const allGameNames = [];
+
+    // ! check if this works
+    setLibraryData((data) => {
+      data.folders.steam = undefined;
+      return data;
     });
+
+    await updateData();
+
+    for (const steamId of steamGameIds) {
+      console.log(steamId);
+
+      let gameData = await fetch(
+        `${import.meta.env.VITE_CLEAR_API_URL}/?steamID=${steamId}`
+      );
+
+      gameData = await gameData.json();
+
+      const gameSGDBID = gameData.data.id;
+      const name = gameData.data.name;
+      allGameNames.push(name);
+      let gridImageFileName = `${generateRandomString()}.png`;
+      let heroImageFileName = `${generateRandomString()}.png`;
+      let logoImageFileName = `${generateRandomString()}.png`;
+      let iconImageFileName = `${generateRandomString()}.png`;
+
+      let assetsData = await fetch(
+        `${import.meta.env.VITE_CLEAR_API_URL}/?assets=${gameSGDBID}&length=1`
+      );
+
+      assetsData = await assetsData.json();
+
+      if (assetsData.grids.length !== 0) {
+        await invoke("download_image", {
+          link: assetsData.grids[0],
+          location: `${appDataDirPath()}grids\\${gridImageFileName}`,
+        });
+      } else {
+        gridImageFileName = undefined;
+      }
+      if (assetsData.heroes.length !== 0) {
+        await invoke("download_image", {
+          link: assetsData.heroes[0],
+          location: `${appDataDirPath()}heroes\\${heroImageFileName}`,
+        });
+      } else {
+        heroImageFileName = undefined;
+      }
+      if (assetsData.logos.length !== 0) {
+        await invoke("download_image", {
+          link: assetsData.logos[0],
+          location: `${appDataDirPath()}logos\\${logoImageFileName}`,
+        });
+      } else {
+        logoImageFileName = undefined;
+      }
+      if (assetsData.icons.length !== 0) {
+        await invoke("download_image", {
+          link: assetsData.icons[0],
+          location: `${appDataDirPath()}icons\\${iconImageFileName}`,
+        });
+      } else {
+        iconImageFileName = undefined;
+      }
+      setLibraryData((data) => {
+        data.games[name] = {
+          location: `steam://rungameid/${steamId}`,
+          name: name,
+          heroImage: heroImageFileName,
+          gridImage: gridImageFileName,
+          logo: logoImageFileName,
+          icon: iconImageFileName,
+          favourite: false,
+        };
+        return data;
+      });
+      await updateData();
+      setTotalImportedSteamGames((x) => x + 1);
+    }
+
+    setLibraryData(
+      produce((data) => {
+        data.folders.steam = {
+          name: "steam",
+          hide: false,
+          games: allGameNames,
+          index: currentFolders().length,
+        };
+        return data;
+      })
+    );
+
+    await updateData().then(() => {
+      closeDialog("loadingModal");
+      closeDialog("settingsModal");
+      setTotalImportedSteamGames(0);
+      setTotalSteamGames(0);
+    });
+  } else {
+    closeDialog("loadingModal");
+    triggerToast(translateText("you're not connected to the internet :("));
+  }
 }
 
 export function translateText(text) {
@@ -626,4 +613,17 @@ export async function toggleSideBar() {
   setLibraryData("userSettings", "showSideBar", (x) => !x);
 
   await updateData();
+}
+
+export async function checkIfConnectedToInternet() {
+  let connectedToInternet = false;
+
+  try {
+    await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?version=a`);
+    connectedToInternet = true;
+  } catch {
+    connectedToInternet = false;
+  }
+
+  return connectedToInternet;
 }

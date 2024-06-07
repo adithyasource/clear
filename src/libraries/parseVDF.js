@@ -58,6 +58,9 @@ export function parseVDF(text) {
       stack.pop();
       continue;
     }
+
+    /*eslint no-constant-condition: ["error", { "checkLoops": false }]*/
+
     while (true) {
       const m = regex.exec(line);
       if (m === null) {
