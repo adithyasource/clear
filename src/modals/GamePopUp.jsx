@@ -33,7 +33,7 @@ export function GamePopUp() {
               fallback={
                 <button
                   type="button"
-                  class="!flex standardButton w-max bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b] tooltip-bottom"
+                  class="!flex standardButton w-max bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b] tooltip-bottom cursor-not-allowed"
                   data-tooltip={translateText("no game file")}>
                   <div class="!w-max opacity-50">{translateText("play")}</div>
                   <div class="opacity-50">

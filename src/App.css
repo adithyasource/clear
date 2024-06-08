@@ -270,15 +270,13 @@ dialog.hideDialog {
   display: none;
 }
 
-[class*="tooltip-"]:hover::after,
-[class*="tooltip-"]:focus::after {
+[class*="tooltip-"]:hover::after {
   display: block;
   opacity: 0;
   animation: normalFadeIn 0.2s ease forwards;
 }
 
-[class*="tooltip-delayed-"]:hover::after,
-[class*="tooltip-delayed-"]:focus::after {
+[class*="tooltip-delayed-"]:hover::after {
   display: block;
   opacity: 0;
   animation: normalFadeIn 0.2s ease 0.4s forwards;
@@ -318,6 +316,20 @@ dialog.hideDialog {
 .tooltip-delayed-right::after {
   transform: translate(0%, -17%);
   right: 5%;
+}
+
+body.user-is-tabbing {
+  [class*="tooltip-"]:focus::after {
+    display: block;
+    opacity: 0;
+    animation: normalFadeIn 0.2s ease forwards;
+  }
+
+  [class*="tooltip-delayed-"]:focus::after {
+    display: block;
+    opacity: 0;
+    animation: normalFadeIn 0.2s ease 0.4s forwards;
+  }
 }
 
 /* * removing all animations for people with animations turned off */
