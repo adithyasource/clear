@@ -65,11 +65,12 @@ export function Notepad() {
 
               <button
                 type="button"
-                class="standardButton !w-max aspect-square !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+                class="standardButton !w-max aspect-square !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
                 onClick={() => {
                   closeDialog("notepadModal");
                   getData();
-                }}>
+                }}
+                data-tooltiptext="close">
                 <Close />
               </button>
             </div>

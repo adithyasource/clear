@@ -5,8 +5,11 @@
 
 export function ChevronArrows() {
   return (
-    <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <title>close/open sidebar</title>
+    <svg
+      viewBox="0 0 12 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true">
       <path
         d="M6 11L1 6L6 1"
         class="stroke-[#00000080] dark:stroke-[#ffffff80] "
@@ -32,8 +35,8 @@ export function EyeClosed() {
       height="15"
       viewBox="0 0 24 24"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg">
-      <title>hidden</title>
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true">
       <path
         d="M2 2L22 22"
         class="stroke-[#00000080] dark:stroke-[#ffffff80] "
@@ -66,8 +69,8 @@ export function Edit() {
       height="14"
       viewBox="0 0 18 18"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg">
-      <title>edit</title>
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true">
       <path
         d="M2.5 11.5L12.5 1.50002C13.3284 0.671585 14.6716 0.671585 15.5 1.50002C16.3284 2.32845 16.3284 3.67159 15.5 4.50002L5.5 14.5L1.5 15.5L2.5 11.5Z"
         class="stroke-[#00000080] dark:stroke-[#ffffff80] "
@@ -159,8 +162,8 @@ export function UpdateDownload() {
       viewBox="0 0 24 26"
       class="stroke-[#000000] dark:stroke-[#ffffff]"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg">
-      <title>update available</title>
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true">
       <path
         d="M3 14V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V14"
         stroke-width="1.5"
@@ -335,8 +338,8 @@ export function Close() {
       height="12"
       viewBox="0 0 12 12"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg">
-      <title>close</title>
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true">
       <path
         d="M1 1L11 10.3369M1 10.3369L11 1"
         stroke="#FF3636"
@@ -396,8 +399,8 @@ export function Loading() {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      class="loadingIcon">
-      <title>loading</title>
+      class="loadingIcon"
+      aria-hidden="true">
       <path
         d="M16 16L19 19M18 12H22M8 8L5 5M16 8L19 5M8 16L5 19M2 12H6M12 2V6M12 18V22"
         class="stroke-[#000000] dark:stroke-[#ffffff] "
@@ -416,8 +419,8 @@ export function ChevronArrow() {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg">
-      <title>left/right arrow</title>
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true">
       <path
         d="M14 8L10 12L14 16"
         stroke="rgba(255,255,255,0.5)"

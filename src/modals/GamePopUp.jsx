@@ -59,7 +59,9 @@ export function GamePopUp() {
           class="absolute -z-10 h-[350px] opacity-[0.4] blur-[80px] max-large:h-[270px]"
         />
         <div class="relative">
-          <div class="absolute bottom-[30px] right-[30px] flex gap-[15px]">
+          <div
+            class="absolute bottom-[30px] right-[30px] flex gap-[15px]"
+            tabIndex="-1">
             <Show
               when={selectedDataContext.selectedGame().location}
               fallback={
@@ -67,9 +69,7 @@ export function GamePopUp() {
                   type="button"
                   class="!flex standardButton w-max bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b] tooltip-bottom"
                   data-tooltiptext={translateText("no game file")}>
-                  <div class="!w-max opacity-50">
-                    <s>{translateText("play")}</s>
-                  </div>
+                  <div class="!w-max opacity-50">{translateText("play")}</div>
                   <div class="opacity-50">
                     <Play />
                   </div>
@@ -88,19 +88,21 @@ export function GamePopUp() {
 
             <button
               type="button"
-              class="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
+              class="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
               onClick={() => {
                 closeDialog("gamePopup");
                 openDialog("editGameModal");
-              }}>
+              }}
+              data-tooltiptext="settings">
               <Settings />
             </button>
             <button
               type="button"
-              class="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
+              class="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
               onClick={() => {
                 closeDialog("gamePopup");
-              }}>
+              }}
+              data-tooltiptext="close">
               <Close />
             </button>
           </div>

@@ -427,11 +427,12 @@ export function NewGame() {
             </button>
             <button
               type="button"
-              class="standardButton flex items-center !w-max !h-full !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+              class="standardButton flex items-center !w-max !h-full !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
               onClick={() => {
                 closeDialog("newGameModal");
                 getData();
-              }}>
+              }}
+              data-tooltiptext="close">
               <Close />
             </button>
           </div>
@@ -971,7 +972,9 @@ export function NewGame() {
                   document.getElementById(
                     "SGDBGamesContainer"
                   ).scrollLeft -= 40;
-                }}>
+                }}
+                class="tooltip-delayed-bottom"
+                data-tooltiptext="scroll left">
                 <ChevronArrow />
               </button>
               <div
@@ -1001,7 +1004,9 @@ export function NewGame() {
                   document.getElementById(
                     "SGDBGamesContainer"
                   ).scrollLeft += 40;
-                }}>
+                }}
+                class="tooltip-delayed-bottom"
+                data-tooltiptext="scroll right">
                 <div class="rotate-180">
                   <ChevronArrow />
                 </div>

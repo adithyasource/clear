@@ -145,7 +145,7 @@ export function SideBar() {
 
   return (
     <>
-      <div class="sideBar relative z-10 flex h-[100vh] w-[20%] flex-col overflow-hidden py-[20px] pl-[20px] text-black min-[1500px]:w-[15%]">
+      <div class="sideBar relative z-10 flex h-[100vh] w-[20%] flex-col py-[20px] pl-[20px] text-black min-[1500px]:w-[15%]">
         <div id="sideBarTop">
           <div class="flex items-center justify-between gap-[15px]">
             <form
@@ -169,10 +169,11 @@ export function SideBar() {
             </form>
             <button
               type="button"
-              class="w-[28px] cursor-pointer p-2 duration-150 motion-reduce:duration-0 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
+              class="w-[28px] cursor-pointer p-2 duration-150 motion-reduce:duration-0 hover:bg-[#D6D6D6] dark:hover:bg-[#232323] tooltip-delayed-bottom"
               onClick={() => {
                 toggleSideBar();
               }}
+              data-tooltiptext="close sidebar"
               onKeyDown={(e) => {
                 if (e.key === "Tab" && e.shiftKey === false) {
                   uiContext.setShowContentSkipButton(true);
@@ -441,11 +442,15 @@ export function SideBar() {
                           {folder.name}
                         </span>
                         <Show when={folder.hide === true}>
-                          <EyeClosed />
+                          <div
+                            class="tooltip-delayed-bottom"
+                            data-tooltiptext="hidden">
+                            <EyeClosed />
+                          </div>
                         </Show>
                         <button
                           type="button"
-                          class="w-[25.25px] p-2 duration-150 motion-reduce:duration-0 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
+                          class="w-[25.25px] p-2 duration-150 motion-reduce:duration-0 hover:bg-[#D6D6D6] dark:hover:bg-[#232323] tooltip-delayed-bottom"
                           onClick={() => {
                             openDialog("editFolderModal");
                             selectedDataContext.setSelectedFolder(folder);
@@ -462,7 +467,8 @@ export function SideBar() {
                                 uiContext.setShowContentSkipButton(true);
                               }
                             }
-                          }}>
+                          }}
+                          data-tooltiptext="edit">
                           <Edit />
                         </button>
                       </div>
@@ -532,11 +538,15 @@ export function SideBar() {
                         {folder.name}
                       </s>
                       <Show when={folder.hide === true}>
-                        <EyeClosed />
+                        <div
+                          class="tooltip-delayed-bottom"
+                          data-tooltiptext="hidden">
+                          <EyeClosed />
+                        </div>
                       </Show>
                       <button
                         type="button"
-                        class="w-[25.25px] p-2 duration-150 motion-reduce:duration-0 hover:bg-[#D6D6D6] dark:hover:bg-[#232323]"
+                        class="w-[25.25px] p-2 duration-150 motion-reduce:duration-0 hover:bg-[#D6D6D6] dark:hover:bg-[#232323] tooltip-delayed-bottom"
                         onClick={() => {
                           openDialog("editFolderModal");
                           selectedDataContext.setSelectedFolder(folder);
@@ -547,7 +557,8 @@ export function SideBar() {
                           dataUpdateContext.setEditedHideFolder(
                             selectedDataContext.selectedFolder().hide
                           );
-                        }}>
+                        }}
+                        data-tooltiptext="edit">
                         <Edit />
                       </button>
                     </div>
@@ -668,8 +679,12 @@ export function SideBar() {
               }}>
               {translateText("settings")}
               <Show when={uiContext.showNewVersionAvailable()}>
-                <div class="opacity-50">
-                  <UpdateDownload />
+                <div
+                  class=" tooltip-delayed-top"
+                  data-tooltiptext="update available">
+                  <div class="opacity-50">
+                    <UpdateDownload />
+                  </div>
                 </div>
               </Show>
               <div class="opacity-50">

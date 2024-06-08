@@ -245,35 +245,63 @@ dialog.hideDialog {
 }
 
 /* position of :after elements determined by ancestor */
-[class*="tooltip-"]:after {
+[class*="tooltip-"]::after {
   position: absolute;
   content: attr(data-tooltiptext);
   width: max-content;
   padding: 2px 8px;
-  z-index: 1000;
+  z-index: 100000000000000000 !important;
   backdrop-filter: blur(10px);
+  opacity: 0;
   display: none;
 }
 
-[class*="tooltip-"]:hover:after {
+[class*="tooltip-"]:hover::after,
+[class*="tooltip-"]:focus::after {
   display: block;
+  opacity: 0;
   animation: tooltipFadeIn 0.2s ease forwards;
 }
 
-.tooltip-bottom:after {
+[class*="tooltip-delayed-"]:hover::after,
+[class*="tooltip-delayed-"]:focus::after {
+  display: block;
+  opacity: 0;
+  animation: tooltipFadeIn 0.2s ease 0.4s forwards;
+}
+
+.tooltip-top::after,
+.tooltip-delayed-top::after {
+  top: -100%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+}
+
+.tooltip-bottom::after,
+.tooltip-delayed-bottom::after {
   top: 100%;
   left: 50%;
   transform: translate(-50%, 0%);
   margin-top: 5px;
 }
 
-.tooltip-center:after {
+.tooltip-center::after,
+.tooltip-delayed-center::after {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.tooltip-right:after {
+.tooltip-left::after,
+.tooltip-delayed-left::after {
+  transform: translate(50%, -50%);
+  top: 50%;
+  right: 300%;
+  margin-right: 5px;
+}
+
+.tooltip-right::after,
+.tooltip-delayed-right::after {
   transform: translate(0%, -17%);
   right: 5%;
 }
@@ -313,7 +341,8 @@ dialog.hideDialog {
     animation: dialogFadeIn 0s, dialogFadeOut 0s 2.3s;
   }
 
-  [class*="tooltip-"]:hover:after {
+  [class*="tooltip-"]:hover::after,
+  [class*="tooltip-"]:focus::after {
     animation: tooltipFadeIn 0s ease forwards;
   }
 }

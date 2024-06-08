@@ -235,11 +235,12 @@ export function EditFolder() {
 
               <button
                 type="button"
-                class="standardButton flex !w-max !h-full items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+                class="standardButton flex !w-max !h-full items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
                 onClick={() => {
                   closeDialog("editFolderModal");
                   getData();
-                }}>
+                }}
+                data-tooltiptext="close">
                 <Close />
               </button>
             </div>
