@@ -30,5 +30,5 @@ render(
       </UIContextProvider>
     </GlobalContextProvider>
   ),
-  document.getElementById("root"),
+  document.getElementById("root")
 );

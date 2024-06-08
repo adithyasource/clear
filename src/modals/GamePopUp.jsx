@@ -20,33 +20,6 @@ export function GamePopUp() {
         if (e.key === "Escape") {
           e.stopPropagation();
         }
-      }}
-      ref={(ref) => {
-        closeDialog("gamePopup", ref);
-
-        function handleTab(e) {
-          const focusableElements = ref.querySelectorAll(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-          );
-          const firstElement = focusableElements[0];
-          const lastElement = focusableElements[focusableElements.length - 1];
-
-          if (e.key === "Tab") {
-            if (e.shiftKey) {
-              if (document.activeElement === firstElement) {
-                e.preventDefault();
-                lastElement.focus();
-              }
-            } else {
-              if (document.activeElement === lastElement) {
-                e.preventDefault();
-                firstElement.focus();
-              }
-            }
-          }
-        }
-
-        ref.addEventListener("keydown", handleTab);
       }}>
       <div class="flex h-screen w-screen flex-col items-center justify-center px-[40px]">
         <img

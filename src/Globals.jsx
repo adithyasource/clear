@@ -579,7 +579,7 @@ export function openDialog(dialogData) {
   const dialogRef = document.querySelector(`[data-${dialogData}]`);
 
   dialogRef.classList.remove("hideDialog");
-  dialogRef.show();
+  dialogRef.showModal();
   dialogRef.classList.add("showDialog");
 }
 
