@@ -14,6 +14,7 @@ import {
   closeDialog,
   triggerToast,
   toggleSideBar,
+  closeDialogImmediately,
 } from "./Globals";
 
 import "./App.css";
@@ -85,9 +86,22 @@ function App() {
 
       let anyDialogOpen = false;
 
+      let currentlyOpenDialog;
+
       for (const dialog of allDialogs) {
         if (dialog.open) {
           anyDialogOpen = true;
+          currentlyOpenDialog = dialog;
+        }
+      }
+
+      if (e.key === "Escape") {
+        e.preventDefault();
+
+        console.log(anyDialogOpen);
+        console.log(currentlyOpenDialog);
+        if (anyDialogOpen) {
+          closeDialogImmediately(currentlyOpenDialog);
         }
       }
 

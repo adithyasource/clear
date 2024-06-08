@@ -582,6 +582,7 @@ export function openDialog(dialogData) {
   dialogRef.showModal();
   dialogRef.classList.add("showDialog");
 
+  document.activeElement.focus();
   document.activeElement.blur();
 }
 
@@ -607,6 +608,14 @@ export function closeDialog(dialogData, ref) {
       dialogRef.close();
     }, 200);
   }
+}
+
+export function closeDialogImmediately(ref) {
+  ref.classList.remove("showDialog");
+  ref.classList.add("hideDialog");
+  setTimeout(() => {
+    ref.close();
+  }, 200);
 }
 
 export async function toggleSideBar() {

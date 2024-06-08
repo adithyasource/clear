@@ -12,16 +12,11 @@ export function GamePopUp() {
   return (
     <dialog
       data-gamePopup
-      class="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d166]  dark:bg-[#12121266]"
+      class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible"
       onDragStart={(e) => {
         e.preventDefault();
-      }}
-      onKeyDown={(e) => {
-        if (e.key === "Escape") {
-          e.stopPropagation();
-        }
       }}>
-      <div class="flex h-screen w-screen flex-col items-center justify-center px-[40px]">
+      <div class="flex h-screen w-screen flex-col items-center justify-center px-[40px] bg-[#d1d1d166] dark:bg-[#12121266] ">
         <img
           src={convertFileSrc(
             `${applicationStateContext.appDataDirPath()}heroes\\${

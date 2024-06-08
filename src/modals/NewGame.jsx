@@ -362,8 +362,8 @@ export function NewGame() {
         selectedDataContext.setSelectedGameId(undefined);
         applicationStateContext.setSGDBGames(undefined);
       }}
-      class="absolute inset-0 z-[100] h-screen w-screen bg-[#d1d1d1cc] dark:bg-[#121212cc]">
-      <div class="flex h-screen  w-screen flex-col  items-center justify-center gap-3">
+      class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible">
+      <div class="flex h-screen  w-screen flex-col  items-center justify-center gap-3 bg-[#d1d1d1cc] dark:bg-[#121212cc]">
         <div class="flex w-[84rem] justify-between max-large:w-[61rem]">
           <div>
             <p class="text-[25px] text-[#00000080] dark:text-[#ffffff80]">

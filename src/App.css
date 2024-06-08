@@ -133,7 +133,8 @@ body {
 
 button:focus,
 input:focus,
-select:focus {
+select:focus,
+dialog:focus {
   outline: none;
 }
 
@@ -147,7 +148,6 @@ select {
 
 dialog {
   overflow: hidden;
-  padding: 0px 50px 50px 0px;
   border: none !important;
   background-color: #00000000;
   opacity: 0;
