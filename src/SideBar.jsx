@@ -272,7 +272,7 @@ export function SideBar() {
                     folderName,
                     applicationStateContext
                       .currentFolders()
-                      .indexOf(nextSibling.firstChild.textContent)
+                      .indexOf(nextSibling.id)
                   );
 
                   document
@@ -283,6 +283,7 @@ export function SideBar() {
                     getData();
                   }, 100);
                 } catch (error) {
+                  console.log(error);
                   getData();
                 }
 
@@ -303,6 +304,7 @@ export function SideBar() {
                   return (
                     <div
                       class="sideBarFolder bg-[#f1f1f1] !py-2 dark:bg-[#1c1c1c]"
+                      id={folderName}
                       draggable={true}
                       onDragStart={(e) => {
                         setTimeout(
