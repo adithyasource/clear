@@ -58,10 +58,8 @@ export function GamePopUp() {
           alt=""
           class="absolute -z-10 h-[350px] opacity-[0.4] blur-[80px] max-large:h-[270px]"
         />
-        <div class="relative">
-          <div
-            class="absolute bottom-[30px] right-[30px] flex gap-[15px]"
-            tabIndex="-1">
+        <div class="relative" tabIndex="-1">
+          <div class="absolute bottom-[30px] right-[30px] flex gap-[15px]">
             <Show
               when={selectedDataContext.selectedGame().location}
               fallback={
