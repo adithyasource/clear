@@ -432,7 +432,7 @@ export function NewGame() {
                 closeDialog("newGameModal");
                 getData();
               }}
-              data-tooltiptext="close">
+              data-tooltip={translateText("close")}>
               <Close />
             </button>
           </div>
@@ -492,13 +492,13 @@ export function NewGame() {
               dataEntryContext.setFoundGridImage(undefined);
             }}
             class="aspect-[2/3] h-full cursor-pointer overflow-hidden bg-[#f1f1f1] dark:bg-[#1c1c1c] tooltip-center"
-            data-tooltiptext={
+            data-tooltip={
               dataEntryContext.foundGridImage()
                 ? showGridImageLoading() === false
                   ? `${dataEntryContext.foundGridImageIndex()} / ${
                       dataEntryContext.foundGridImage().length - 1
-                    } scroll`
-                  : "loading"
+                    } ${translateText("scroll")}`
+                  : translateText("loading")
                 : translateText("grid/cover")
             }>
             <img
@@ -577,13 +577,13 @@ export function NewGame() {
                   dataEntryContext.setFoundHeroImage(undefined);
                 }}
                 class="aspect-[67/26] h-[350px] cursor-pointer bg-[#f1f1f1] p-0 dark:bg-[#1c1c1c] max-large:h-[250px] tooltip-center"
-                data-tooltiptext={
+                data-tooltip={
                   dataEntryContext.foundHeroImage()
                     ? showHeroImageLoading() === false
                       ? `${dataEntryContext.foundHeroImageIndex()} / ${
                           dataEntryContext.foundHeroImage().length - 1
-                        } scroll`
-                      : "loading"
+                        } ${translateText("scroll")}`
+                      : translateText("loading")
                     : translateText("hero")
                 }>
                 <img
@@ -684,13 +684,13 @@ export function NewGame() {
                       : "bg-[#E8E8E8] dark:!bg-[#272727]"
                   }
                     `}
-                data-tooltiptext={
+                data-tooltip={
                   dataEntryContext.foundLogoImage()
                     ? showLogoImageLoading() === false
                       ? `${dataEntryContext.foundLogoImageIndex()} / ${
                           dataEntryContext.foundLogoImage().length - 1
-                        } scroll`
-                      : "loading"
+                        } ${translateText("scroll")}`
+                      : translateText("loading")
                     : translateText("logo")
                 }>
                 <img
@@ -774,13 +774,13 @@ export function NewGame() {
                     ? "hover:outline-dashed !outline-[2px] !outline-[#E8E8E880] !outline:dark:bg-[#27272780]"
                     : "bg-[#E8E8E8] dark:!bg-[#272727]"
                 }`}
-                data-tooltiptext={
+                data-tooltip={
                   dataEntryContext.foundIconImage()
                     ? showIconImageLoading() === false
                       ? `${dataEntryContext.foundIconImageIndex()} / ${
                           dataEntryContext.foundIconImage().length - 1
-                        } scroll`
-                      : "loading"
+                        } ${translateText("scroll")}`
+                      : translateText("loading")
                     : translateText("icon")
                 }>
                 <img
@@ -974,7 +974,7 @@ export function NewGame() {
                   ).scrollLeft -= 40;
                 }}
                 class="tooltip-delayed-bottom"
-                data-tooltiptext="scroll left">
+                data-tooltip={translateText("scroll left")}>
                 <ChevronArrow />
               </button>
               <div
@@ -1006,7 +1006,7 @@ export function NewGame() {
                   ).scrollLeft += 40;
                 }}
                 class="tooltip-delayed-bottom"
-                data-tooltiptext="scroll right">
+                data-tooltip={translateText("scroll right")}>
                 <div class="rotate-180">
                   <ChevronArrow />
                 </div>

@@ -70,7 +70,7 @@ export function Notepad() {
                   closeDialog("notepadModal");
                   getData();
                 }}
-                data-tooltiptext="close">
+                data-tooltip={translateText("close")}>
                 <Close />
               </button>
             </div>

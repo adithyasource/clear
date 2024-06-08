@@ -240,7 +240,7 @@ export function EditFolder() {
                   closeDialog("editFolderModal");
                   getData();
                 }}
-                data-tooltiptext="close">
+                data-tooltip={translateText("close")}>
                 <Close />
               </button>
             </div>

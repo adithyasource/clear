@@ -234,7 +234,7 @@ dialog.hideDialog {
 /*
 
 - [class*="value"] will select if value exists in class 
-- we aren't using the simpler [data-tooltiptext] because of ctrl-hold behaviours,
+- we aren't using the simpler [data-tooltip] because of ctrl-hold behaviours,
 - the tooltip should only be visible once the class has been added to the element
 
 */
@@ -247,7 +247,7 @@ dialog.hideDialog {
 /* position of :after elements determined by ancestor */
 [class*="tooltip-"]::after {
   position: absolute;
-  content: attr(data-tooltiptext);
+  content: attr(data-tooltip);
   width: max-content;
   padding: 2px 8px;
   z-index: 100000000000000000 !important;

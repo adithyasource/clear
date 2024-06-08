@@ -173,7 +173,7 @@ export function SideBar() {
               onClick={() => {
                 toggleSideBar();
               }}
-              data-tooltiptext="close sidebar"
+              data-tooltip={translateText("close sidebar")}
               onKeyDown={(e) => {
                 if (e.key === "Tab" && e.shiftKey === false) {
                   uiContext.setShowContentSkipButton(true);
@@ -444,7 +444,7 @@ export function SideBar() {
                         <Show when={folder.hide === true}>
                           <div
                             class="tooltip-delayed-bottom"
-                            data-tooltiptext="hidden">
+                            data-tooltip={translateText("hidden")}>
                             <EyeClosed />
                           </div>
                         </Show>
@@ -468,7 +468,7 @@ export function SideBar() {
                               }
                             }
                           }}
-                          data-tooltiptext="edit">
+                          data-tooltip={translateText("edit")}>
                           <Edit />
                         </button>
                       </div>
@@ -540,7 +540,7 @@ export function SideBar() {
                       <Show when={folder.hide === true}>
                         <div
                           class="tooltip-delayed-bottom"
-                          data-tooltiptext="hidden">
+                          data-tooltip={translateText("hidden")}>
                           <EyeClosed />
                         </div>
                       </Show>
@@ -558,7 +558,7 @@ export function SideBar() {
                             selectedDataContext.selectedFolder().hide
                           );
                         }}
-                        data-tooltiptext="edit">
+                        data-tooltip={translateText("edit")}>
                         <Edit />
                       </button>
                     </div>
@@ -681,7 +681,7 @@ export function SideBar() {
               <Show when={uiContext.showNewVersionAvailable()}>
                 <div
                   class=" tooltip-delayed-top"
-                  data-tooltiptext="update available">
+                  data-tooltip={translateText("new update available!")}>
                   <div class="opacity-50">
                     <UpdateDownload />
                   </div>

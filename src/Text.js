@@ -566,7 +566,42 @@ export const textLanguages = {
     ru: "",
     fr: "",
   },
-  "": {
+  "open sidebar": {
+    jp: "",
+    es: "",
+    hi: "",
+    ru: "",
+    fr: "",
+  },
+  "close sidebar": {
+    jp: "",
+    es: "",
+    hi: "",
+    ru: "",
+    fr: "",
+  },
+  hidden: {
+    jp: "",
+    es: "",
+    hi: "",
+    ru: "",
+    fr: "",
+  },
+  close: {
+    jp: "",
+    es: "",
+    hi: "",
+    ru: "",
+    fr: "",
+  },
+  "scroll left": {
+    jp: "",
+    es: "",
+    hi: "",
+    ru: "",
+    fr: "",
+  },
+  "scroll right": {
     jp: "",
     es: "",
     hi: "",

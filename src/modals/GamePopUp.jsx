@@ -66,7 +66,7 @@ export function GamePopUp() {
                 <button
                   type="button"
                   class="!flex standardButton w-max bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b] tooltip-bottom"
-                  data-tooltiptext={translateText("no game file")}>
+                  data-tooltip={translateText("no game file")}>
                   <div class="!w-max opacity-50">{translateText("play")}</div>
                   <div class="opacity-50">
                     <Play />
@@ -91,7 +91,7 @@ export function GamePopUp() {
                 closeDialog("gamePopup");
                 openDialog("editGameModal");
               }}
-              data-tooltiptext="settings">
+              data-tooltip={translateText("settings")}>
               <Settings />
             </button>
             <button
@@ -100,7 +100,7 @@ export function GamePopUp() {
               onClick={() => {
                 closeDialog("gamePopup");
               }}
-              data-tooltiptext="close">
+              data-tooltip={translateText("close")}>
               <Close />
             </button>
           </div>

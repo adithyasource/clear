@@ -141,7 +141,7 @@ export function NewFolder() {
                   closeDialog("newFolderModal");
                   getData();
                 }}
-                data-tooltiptext="close">
+                data-tooltip={translateText("close")}>
                 <Close />
               </button>
             </div>

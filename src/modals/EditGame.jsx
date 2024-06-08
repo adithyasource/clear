@@ -458,7 +458,7 @@ export function EditGame() {
                 closeDialog("editGameModal");
                 getData();
               }}
-              data-tooltiptext="close">
+              data-tooltip={translateText("close")}>
               <Close />
             </button>
           </div>
@@ -471,7 +471,7 @@ export function EditGame() {
               dataUpdateContext.setEditedLocatedGridImage(null);
             }}
             class="panelButton locatingGridImg group relative aspect-[2/3] h-full cursor-pointer overflow-hidden bg-[#f1f1f1] dark:bg-[#1c1c1c]"
-            data-tooltiptext="grid/cover">
+            data-tooltip={translateText("grid/cover")}>
             <Switch>
               <Match
                 when={dataUpdateContext.editedLocatedGridImage() === undefined}>
@@ -516,7 +516,7 @@ export function EditGame() {
                 dataUpdateContext.setEditedLocatedHeroImage(null);
               }}
               class="panelButton group relative m-0 aspect-[67/26] h-[350px] cursor-pointer bg-[#f1f1f1] p-0 dark:bg-[#1c1c1c] max-large:h-[250px]"
-              data-tooltiptext="hero">
+              data-tooltip={translateText("hero")}>
               <Switch>
                 <Match
                   when={dataUpdateContext.editedLocatedHeroImage() === null}
@@ -588,7 +588,7 @@ export function EditGame() {
                       ? ""
                       : "!h-[65px] !w-[200px]"
                   } `}
-                  data-tooltiptext="logo">
+                  data-tooltip={translateText("logo")}>
                   <Show
                     when={dataUpdateContext.editedLocatedLogo()}
                     fallback={
@@ -619,7 +619,7 @@ export function EditGame() {
                     ? ""
                     : "!h-[65px] !w-[200px]"
                 } `}
-                data-tooltiptext="logo">
+                data-tooltip={translateText("logo")}>
                 <Switch>
                   <Match
                     when={dataUpdateContext.editedLocatedLogo() === undefined}>
@@ -661,7 +661,7 @@ export function EditGame() {
                   dataUpdateContext.setEditedLocatedIcon(null);
                 }}
                 class="group relative !bg-[#27272700] p-0"
-                data-tooltiptext="logo">
+                data-tooltip={translateText("logo")}>
                 <Switch>
                   <Match
                     when={dataUpdateContext.editedLocatedIcon() === undefined}>
@@ -797,7 +797,7 @@ export function EditGame() {
                     });
                   }}
                   class="standardButton group relative !w-max bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
-                  data-tooltiptext="logo">
+                  data-tooltip={translateText("logo")}>
                   <OpenExternal />
 
                   <span class=" absolute left-[-150%] top-[120%] opacity-0 group-hover:opacity-100">
