@@ -581,6 +581,8 @@ export function openDialog(dialogData) {
   dialogRef.classList.remove("hideDialog");
   dialogRef.showModal();
   dialogRef.classList.add("showDialog");
+
+  document.activeElement.blur();
 }
 
 export function closeDialog(dialogData, ref) {
