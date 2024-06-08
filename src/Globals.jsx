@@ -41,7 +41,6 @@ export const [libraryData, setLibraryData] = createStore({
 });
 
 // * UI
-const [showToast, setShowToast] = createSignal(false);
 const [showContentSkipButton, setShowContentSkipButton] = createSignal(false);
 const [showSettingsLanguageSelector, setShowSettingsLanguageSelector] =
   createSignal(false);
@@ -120,8 +119,6 @@ export function GlobalContextProvider(props) {
 
 export function UIContextProvider(props) {
   const context = {
-    showToast,
-    setShowToast,
     showContentSkipButton,
     setShowContentSkipButton,
     showSettingsLanguageSelector,
@@ -560,19 +557,14 @@ export async function updateData() {
 let toastTimeout = setTimeout(() => {}, 0);
 
 export function triggerToast(message) {
-  setShowToast(false);
-  setShowToast(true);
+  document.querySelector(".toast").hidePopover();
+  document.querySelector(".toast").showPopover();
+
   setToastMessage(message);
   clearTimeout(toastTimeout);
   toastTimeout = setTimeout(() => {
-    setShowToast(false);
-  }, 2500);
-}
-
-export function closeToast() {
-  setShowToast(false);
-  setToastMessage(undefined);
-  clearTimeout(toastTimeout);
+    document.querySelector(".toast").hidePopover();
+  }, 1500);
 }
 
 export function openDialog(dialogData) {

@@ -28,7 +28,6 @@ import { NewGame } from "./modals/NewGame";
 import { Notepad } from "./modals/Notepad";
 import { Settings } from "./modals/Settings";
 import { Loading } from "./modals/Loading";
-import { Toast } from "./components/Toast";
 import { ChevronArrows, EmptyTray, Steam } from "./libraries/Icons";
 import { GameCards } from "./components/GameCards";
 import { LanguageSelector } from "./components/LanguageSelector";
@@ -495,7 +494,12 @@ function App() {
       </div>
 
       <Style />
-      <Toast />
+
+      <div
+        popover
+        class="toast bg-[#E8E8E8] p-[10px] text-black hover:bg-[#d6d6d6] dark:bg-[#232323] dark:text-white dark:hover:bg-[#2b2b2b]">
+        {applicationStateContext.toastMessage()}
+      </div>
 
       <div id="abovePage">
         <NewGame />

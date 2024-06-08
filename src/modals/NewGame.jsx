@@ -362,7 +362,7 @@ export function NewGame() {
         selectedDataContext.setSelectedGameId(undefined);
         applicationStateContext.setSGDBGames(undefined);
       }}
-      class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible">
+      class="backdrop:bg-transparent !p-0 overflow-visible">
       <div class="flex h-screen  w-screen flex-col  items-center justify-center gap-3 bg-[#d1d1d1cc] dark:bg-[#121212cc]">
         <div class="flex w-[84rem] justify-between max-large:w-[61rem]">
           <div>

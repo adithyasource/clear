@@ -104,12 +104,21 @@
   }
 }
 
-@keyframes tooltipFadeIn {
+@keyframes normalFadeIn {
   from {
     opacity: 0;
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes normalFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }
 
@@ -147,7 +156,6 @@ select {
 }
 
 dialog {
-  overflow: hidden;
   border: none !important;
   background-color: #00000000;
   opacity: 0;
@@ -224,9 +232,15 @@ dialog.hideDialog {
   animation: spin 3s linear infinite;
 }
 
-.toast {
+.toast:popover-open {
   opacity: 1;
-  animation: dialogFadeIn 0.2s, dialogFadeOut 0.3s 2.3s;
+  animation: normalFadeIn 0.2s;
+}
+
+.toast {
+  top: 95%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* * tooltip related */
@@ -260,14 +274,14 @@ dialog.hideDialog {
 [class*="tooltip-"]:focus::after {
   display: block;
   opacity: 0;
-  animation: tooltipFadeIn 0.2s ease forwards;
+  animation: normalFadeIn 0.2s ease forwards;
 }
 
 [class*="tooltip-delayed-"]:hover::after,
 [class*="tooltip-delayed-"]:focus::after {
   display: block;
   opacity: 0;
-  animation: tooltipFadeIn 0.2s ease 0.4s forwards;
+  animation: normalFadeIn 0.2s ease 0.4s forwards;
 }
 
 .tooltip-top::after,
@@ -343,6 +357,11 @@ dialog.hideDialog {
 
   [class*="tooltip-"]:hover::after,
   [class*="tooltip-"]:focus::after {
-    animation: tooltipFadeIn 0s ease forwards;
+    animation: normalFadeIn 0s ease forwards;
+  }
+
+  .toast:popover-open {
+    opacity: 1;
+    animation: normalFadeIn 0s;
   }
 }
