@@ -234,7 +234,7 @@ dialog.hideDialog {
 
 .toast:popover-open {
   opacity: 1;
-  animation: normalFadeIn 0.2s;
+  animation: normalFadeIn 0.2s, normalFadeOut 0.2s 1.3s;
 }
 
 .toast {
@@ -374,6 +374,6 @@ body.user-is-tabbing {
 
   .toast:popover-open {
     opacity: 1;
-    animation: normalFadeIn 0s;
+    animation: normalFadeIn 0s, normalFadeOut 0s 1.3s;
   }
 }

@@ -558,7 +558,9 @@ let toastTimeout = setTimeout(() => {}, 0);
 
 export function triggerToast(message) {
   document.querySelector(".toast").hidePopover();
-  document.querySelector(".toast").showPopover();
+  setTimeout(() => {
+    document.querySelector(".toast").showPopover();
+  }, 20);
 
   setToastMessage(message);
   clearTimeout(toastTimeout);
