@@ -186,9 +186,9 @@ export function NewGame() {
       })
     );
 
-    closeDialog("loadingModal");
-
     await updateData();
+
+    closeDialog("loadingModal");
   }
 
   async function locateGame() {

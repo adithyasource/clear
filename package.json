@@ -23,6 +23,7 @@
     "eslint": "~8.57.0",
     "eslint-plugin-solid": "^0.14.0",
     "postcss": "^8.4.31",
+    "tailwindcss": "^3.4.4",
     "vite": "^4.4.4",
     "vite-plugin-minify": "^1.5.2",
     "vite-plugin-solid": "^2.7.0"
