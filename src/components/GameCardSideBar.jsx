@@ -5,7 +5,7 @@ import { openDialog, openGame, translateText } from "../Globals";
 import {
   GlobalContext,
   SelectedDataContext,
-  ApplicationStateContext,
+  ApplicationStateContext
 } from "../Globals";
 
 export function GameCardSideBar(props) {

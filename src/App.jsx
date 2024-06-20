@@ -14,7 +14,7 @@ import {
   closeDialog,
   triggerToast,
   toggleSideBar,
-  closeDialogImmediately,
+  closeDialogImmediately
 } from "./Globals";
 
 import "./App.css";
@@ -408,16 +408,18 @@ function App() {
                               ? "grid-cols-4 medium:grid-cols-5 large:grid-cols-7"
                               : "grid-cols-4 medium:grid-cols-6 large:grid-cols-8"
                             : globalContext.libraryData.userSettings
-                                .zoomLevel === 1
-                            ? globalContext.libraryData.userSettings.showSideBar
-                              ? "grid-cols-3 medium:grid-cols-4 large:grid-cols-6"
-                              : "grid-cols-3 medium:grid-cols-5 large:grid-cols-7"
-                            : globalContext.libraryData.userSettings
-                                .zoomLevel === 2
-                            ? globalContext.libraryData.userSettings.showSideBar
-                              ? "grid-cols-2 medium:grid-cols-3 large:grid-cols-5"
-                              : "grid-cols-2 medium:grid-cols-4 large:grid-cols-6"
-                            : ""
+                                  .zoomLevel === 1
+                              ? globalContext.libraryData.userSettings
+                                  .showSideBar
+                                ? "grid-cols-3 medium:grid-cols-4 large:grid-cols-6"
+                                : "grid-cols-3 medium:grid-cols-5 large:grid-cols-7"
+                              : globalContext.libraryData.userSettings
+                                    .zoomLevel === 2
+                                ? globalContext.libraryData.userSettings
+                                    .showSideBar
+                                  ? "grid-cols-2 medium:grid-cols-3 large:grid-cols-5"
+                                  : "grid-cols-2 medium:grid-cols-4 large:grid-cols-6"
+                                : ""
                         }`}>
                         <GameCards gamesList={folder.games} />
                       </div>
@@ -467,14 +469,15 @@ function App() {
                           ? "grid-cols-4 medium:grid-cols-5 large:grid-cols-7"
                           : "grid-cols-4 medium:grid-cols-6 large:grid-cols-8"
                         : globalContext.libraryData.userSettings.zoomLevel === 1
-                        ? globalContext.libraryData.userSettings.showSideBar
-                          ? "grid-cols-3 medium:grid-cols-4 large:grid-cols-6"
-                          : "grid-cols-3 medium:grid-cols-5 large:grid-cols-7"
-                        : globalContext.libraryData.userSettings.zoomLevel === 2
-                        ? globalContext.libraryData.userSettings.showSideBar
-                          ? "grid-cols-2 medium:grid-cols-3 large:grid-cols-5"
-                          : "grid-cols-2 medium:grid-cols-4 large:grid-cols-6"
-                        : ""
+                          ? globalContext.libraryData.userSettings.showSideBar
+                            ? "grid-cols-3 medium:grid-cols-4 large:grid-cols-6"
+                            : "grid-cols-3 medium:grid-cols-5 large:grid-cols-7"
+                          : globalContext.libraryData.userSettings.zoomLevel ===
+                              2
+                            ? globalContext.libraryData.userSettings.showSideBar
+                              ? "grid-cols-2 medium:grid-cols-3 large:grid-cols-5"
+                              : "grid-cols-2 medium:grid-cols-4 large:grid-cols-6"
+                            : ""
                     }`}>
                     <GameCards gamesList={searchResults} />
                   </div>

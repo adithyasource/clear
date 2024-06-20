@@ -6,7 +6,7 @@ import {
   toggleSideBar,
   translateText,
   triggerToast,
-  updateData,
+  updateData
 } from "./Globals";
 import {
   ChevronArrows,
@@ -16,7 +16,7 @@ import {
   Folder,
   Notepad,
   UpdateDownload,
-  Settings,
+  Settings
 } from "./libraries/Icons";
 
 import {
@@ -24,7 +24,7 @@ import {
   SelectedDataContext,
   ApplicationStateContext,
   DataUpdateContext,
-  UIContext,
+  UIContext
 } from "./Globals";
 import { GameCardSideBar } from "./components/GameCardSideBar";
 
@@ -221,7 +221,7 @@ export function SideBar() {
                 const siblings = [
                   ...e.srcElement.querySelectorAll(
                     ".sideBarFolder:not(.dragging)"
-                  ),
+                  )
                 ];
 
                 const allGames = document.querySelectorAll(".sideBarFolder");
@@ -256,7 +256,7 @@ export function SideBar() {
                 const siblings = [
                   ...e.srcElement.querySelectorAll(
                     ".sideBarFolder:not(.dragging)"
-                  ),
+                  )
                 ];
 
                 const nextSibling = siblings.find((sibling) => {
@@ -329,7 +329,7 @@ export function SideBar() {
                           const siblings = [
                             ...e.srcElement.querySelectorAll(
                               ".sideBarGame:not(.dragging)"
-                            ),
+                            )
                           ];
 
                           const allGames =
@@ -372,7 +372,7 @@ export function SideBar() {
                             const siblings = [
                               ...e.srcElement.querySelectorAll(
                                 ".sideBarGame:not(.dragging)"
-                              ),
+                              )
                             ];
 
                             const nextSibling = siblings.find((sibling) => {

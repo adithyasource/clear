@@ -9,7 +9,7 @@ import {
   ApplicationStateContextProvider,
   DataEntryContextProvider,
   DataUpdateContextProvider,
-  SteamDataContextProvider,
+  SteamDataContextProvider
 } from "./Globals";
 
 render(

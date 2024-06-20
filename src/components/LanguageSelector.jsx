@@ -29,16 +29,16 @@ export function LanguageSelector(props) {
       {globalContext.libraryData.userSettings.language === "en"
         ? "english"
         : globalContext.libraryData.userSettings.language === "jp"
-        ? "日本語"
-        : globalContext.libraryData.userSettings.language === "es"
-        ? "Español"
-        : globalContext.libraryData.userSettings.language === "hi"
-        ? "हिंदी"
-        : globalContext.libraryData.userSettings.language === "ru"
-        ? "русский"
-        : globalContext.libraryData.userSettings.language === "fr"
-        ? "Français"
-        : "english"}
+          ? "日本語"
+          : globalContext.libraryData.userSettings.language === "es"
+            ? "Español"
+            : globalContext.libraryData.userSettings.language === "hi"
+              ? "हिंदी"
+              : globalContext.libraryData.userSettings.language === "ru"
+                ? "русский"
+                : globalContext.libraryData.userSettings.language === "fr"
+                  ? "Français"
+                  : "english"}
       <Show
         when={
           props.onSettingsPage

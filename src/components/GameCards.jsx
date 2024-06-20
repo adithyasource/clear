@@ -6,7 +6,7 @@ import {
   translateText,
   openDialog,
   SelectedDataContext,
-  openGame,
+  openGame
 } from "../Globals";
 
 export function GameCards(props) {

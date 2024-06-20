@@ -12,8 +12,8 @@ export function Style() {
         "sans serif"
           ? "Segoe UI"
           : globalContext.libraryData.userSettings.fontName === "serif"
-          ? "Times New Roman"
-          : "IBM Plex Mono, Consolas"};
+            ? "Times New Roman"
+            : "IBM Plex Mono, Consolas"};
       }
 
       * {
@@ -21,8 +21,8 @@ export function Style() {
         "sans serif"
           ? "Helvetica, Arial, sans-serif"
           : globalContext.libraryData.userSettings.fontName === "serif"
-          ? "Times New Roman"
-          : "IBM Plex Mono, Consolas"};
+            ? "Times New Roman"
+            : "IBM Plex Mono, Consolas"};
         color: ${globalContext.libraryData.userSettings.currentTheme === "light"
           ? "#000000"
           : "#ffffff"};
