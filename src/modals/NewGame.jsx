@@ -8,7 +8,7 @@ import {
   translateText,
   updateData,
   closeDialog,
-  openDialog,
+  openDialog
 } from "../Globals";
 
 import { open } from "@tauri-apps/api/dialog";
@@ -19,7 +19,7 @@ import {
   GlobalContext,
   SelectedDataContext,
   ApplicationStateContext,
-  DataEntryContext,
+  DataEntryContext
 } from "../Globals";
 import { triggerToast } from "../Globals";
 
@@ -73,7 +73,7 @@ export function NewGame() {
         link: dataEntryContext.foundGridImage()[
           dataEntryContext.foundGridImageIndex()
         ],
-        location: `${applicationStateContext.appDataDirPath()}grids\\${gridImageFileName}`,
+        location: `${applicationStateContext.appDataDirPath()}grids\\${gridImageFileName}`
       });
     } else {
       if (dataEntryContext.locatedGridImage()) {
@@ -86,7 +86,7 @@ export function NewGame() {
         await copyFile(
           `${dataEntryContext.locatedGridImage()}grids\\${gridImageFileName}`,
           {
-            dir: BaseDirectory.AppData,
+            dir: BaseDirectory.AppData
           }
         );
       }
@@ -99,7 +99,7 @@ export function NewGame() {
         link: dataEntryContext.foundHeroImage()[
           dataEntryContext.foundHeroImageIndex()
         ],
-        location: `${applicationStateContext.appDataDirPath()}heroes\\${heroImageFileName}`,
+        location: `${applicationStateContext.appDataDirPath()}heroes\\${heroImageFileName}`
       });
     } else {
       if (dataEntryContext.locatedHeroImage()) {
@@ -112,7 +112,7 @@ export function NewGame() {
         await copyFile(
           `${dataEntryContext.locatedHeroImage()}heroes\\${heroImageFileName}`,
           {
-            dir: BaseDirectory.AppData,
+            dir: BaseDirectory.AppData
           }
         );
       }
@@ -125,7 +125,7 @@ export function NewGame() {
         link: dataEntryContext.foundLogoImage()[
           dataEntryContext.foundLogoImageIndex()
         ],
-        location: `${applicationStateContext.appDataDirPath()}logos\\${logoFileName}`,
+        location: `${applicationStateContext.appDataDirPath()}logos\\${logoFileName}`
       });
     } else {
       if (dataEntryContext.locatedLogo()) {
@@ -138,7 +138,7 @@ export function NewGame() {
         await copyFile(
           `${dataEntryContext.locatedLogo()}logos\\${logoFileName}`,
           {
-            dir: BaseDirectory.AppData,
+            dir: BaseDirectory.AppData
           }
         );
       }
@@ -151,7 +151,7 @@ export function NewGame() {
         link: dataEntryContext.foundIconImage()[
           dataEntryContext.foundIconImageIndex()
         ],
-        location: `${applicationStateContext.appDataDirPath()}icons\\${iconFileName}`,
+        location: `${applicationStateContext.appDataDirPath()}icons\\${iconFileName}`
       });
     } else {
       if (dataEntryContext.locatedIcon()) {
@@ -164,7 +164,7 @@ export function NewGame() {
         await copyFile(
           `${dataEntryContext.locatedIcon()}icons\\${iconFileName}`,
           {
-            dir: BaseDirectory.AppData,
+            dir: BaseDirectory.AppData
           }
         );
       }
@@ -179,7 +179,7 @@ export function NewGame() {
           gridImage: gridImageFileName,
           logo: logoFileName,
           icon: iconFileName,
-          favourite: dataEntryContext.favouriteGame(),
+          favourite: dataEntryContext.favouriteGame()
         };
 
         return data;
@@ -198,9 +198,9 @@ export function NewGame() {
         filters: [
           {
             name: "Executable",
-            extensions: ["exe", "lnk", "url"],
-          },
-        ],
+            extensions: ["exe", "lnk", "url"]
+          }
+        ]
       })
     );
   }
@@ -212,9 +212,9 @@ export function NewGame() {
         filters: [
           {
             name: "Image",
-            extensions: ["png", "jpg", "jpeg", "webp"],
-          },
-        ],
+            extensions: ["png", "jpg", "jpeg", "webp"]
+          }
+        ]
       })
     );
   }
@@ -226,9 +226,9 @@ export function NewGame() {
         filters: [
           {
             name: "Image",
-            extensions: ["png", "jpg", "jpeg", "webp"],
-          },
-        ],
+            extensions: ["png", "jpg", "jpeg", "webp"]
+          }
+        ]
       })
     );
   }
@@ -240,9 +240,9 @@ export function NewGame() {
         filters: [
           {
             name: "Image",
-            extensions: ["png", "jpg", "jpeg", "webp"],
-          },
-        ],
+            extensions: ["png", "jpg", "jpeg", "webp"]
+          }
+        ]
       })
     );
   }
@@ -255,9 +255,9 @@ export function NewGame() {
         filters: [
           {
             name: "Image",
-            extensions: ["png", "jpg", "jpeg", "ico"],
-          },
-        ],
+            extensions: ["png", "jpg", "jpeg", "ico"]
+          }
+        ]
       })
     );
   }
@@ -471,7 +471,9 @@ export function NewGame() {
                   ? `${dataEntryContext.foundGridImageIndex()} / ${
                       dataEntryContext.foundGridImage().length - 1
                     } ${translateText("scroll")}`
-                  : translateText("loading")
+                  : `${dataEntryContext.foundGridImageIndex()} / ${
+                      dataEntryContext.foundGridImage().length - 1
+                    } ${translateText("loading")}`
                 : translateText("grid/cover")
             }>
             <img
@@ -481,9 +483,9 @@ export function NewGame() {
                       dataEntryContext.foundGridImageIndex()
                     ]
                   : dataEntryContext.locatedGridImage()
-                  ? convertFileSrc(dataEntryContext.locatedGridImage())
-                  : // this is a gif which is completely empty
-                    "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                    ? convertFileSrc(dataEntryContext.locatedGridImage())
+                    : // this is a gif which is completely empty
+                      "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
               }
               alt=""
               class={`absolute inset-0 w-full h-full ${
@@ -556,7 +558,9 @@ export function NewGame() {
                       ? `${dataEntryContext.foundHeroImageIndex()} / ${
                           dataEntryContext.foundHeroImage().length - 1
                         } ${translateText("scroll")}`
-                      : translateText("loading")
+                      : `${dataEntryContext.foundHeroImageIndex()} / ${
+                          dataEntryContext.foundHeroImage().length - 1
+                        } ${translateText("loading")}`
                     : translateText("hero")
                 }>
                 <img
@@ -566,9 +570,9 @@ export function NewGame() {
                           dataEntryContext.foundHeroImageIndex()
                         ]
                       : dataEntryContext.locatedHeroImage()
-                      ? convertFileSrc(dataEntryContext.locatedHeroImage())
-                      : // this is a gif which is completely empty
-                        "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                        ? convertFileSrc(dataEntryContext.locatedHeroImage())
+                        : // this is a gif which is completely empty
+                          "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
                   }
                   alt=""
                   class={`w-full h-full aspect-[96/31] ${
@@ -585,9 +589,9 @@ export function NewGame() {
                           dataEntryContext.foundHeroImageIndex()
                         ]
                       : dataEntryContext.locatedHeroImage()
-                      ? convertFileSrc(dataEntryContext.locatedHeroImage())
-                      : // this is a gif which is completely empty
-                        "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                        ? convertFileSrc(dataEntryContext.locatedHeroImage())
+                        : // this is a gif which is completely empty
+                          "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
                   }
                   onLoad={() => {
                     setShowHeroImageLoading(false);
@@ -663,7 +667,9 @@ export function NewGame() {
                       ? `${dataEntryContext.foundLogoImageIndex()} / ${
                           dataEntryContext.foundLogoImage().length - 1
                         } ${translateText("scroll")}`
-                      : translateText("loading")
+                      : `${dataEntryContext.foundLogoImageIndex()} / ${
+                          dataEntryContext.foundLogoImage().length - 1
+                        } ${translateText("loading")}`
                     : translateText("logo")
                 }>
                 <img
@@ -673,9 +679,9 @@ export function NewGame() {
                           dataEntryContext.foundLogoImageIndex()
                         ]
                       : dataEntryContext.locatedLogo()
-                      ? convertFileSrc(dataEntryContext.locatedLogo())
-                      : // this is a gif which is completely empty
-                        "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                        ? convertFileSrc(dataEntryContext.locatedLogo())
+                        : // this is a gif which is completely empty
+                          "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
                   }
                   alt=""
                   class={`!object-scale-down w-full h-full  ${
@@ -753,7 +759,9 @@ export function NewGame() {
                       ? `${dataEntryContext.foundIconImageIndex()} / ${
                           dataEntryContext.foundIconImage().length - 1
                         } ${translateText("scroll")}`
-                      : translateText("loading")
+                      : `${dataEntryContext.foundIconImageIndex()} / ${
+                          dataEntryContext.foundIconImage().length - 1
+                        } ${translateText("loading")}`
                     : translateText("icon")
                 }>
                 <img
@@ -763,9 +771,9 @@ export function NewGame() {
                           dataEntryContext.foundIconImageIndex()
                         ]
                       : dataEntryContext.locatedIcon()
-                      ? convertFileSrc(dataEntryContext.locatedIcon())
-                      : // this is a gif which is completely empty
-                        "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                        ? convertFileSrc(dataEntryContext.locatedIcon())
+                        : // this is a gif which is completely empty
+                          "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
                   }
                   alt=""
                   class={`!object-scale-down h-[40px] w-[40px]  ${
@@ -846,15 +854,15 @@ export function NewGame() {
                   onClick={async () => {
                     dataEntryContext.gameName() === undefined
                       ? invoke("open_location", {
-                          location: "https://www.steamgriddb.com/",
+                          location: "https://www.steamgriddb.com/"
                         })
                       : dataEntryContext.gameName() === ""
-                      ? invoke("open_location", {
-                          location: "https://www.steamgriddb.com/",
-                        })
-                      : invoke("open_location", {
-                          location: `https://www.steamgriddb.com/search/grids?term=${dataEntryContext.gameName()}`,
-                        });
+                        ? invoke("open_location", {
+                            location: "https://www.steamgriddb.com/"
+                          })
+                        : invoke("open_location", {
+                            location: `https://www.steamgriddb.com/search/grids?term=${dataEntryContext.gameName()}`
+                          });
                   }}>
                   <Switch>
                     <Match
@@ -895,27 +903,27 @@ export function NewGame() {
                 {dataEntryContext.locatedGame() === undefined
                   ? translateText("locate game")
                   : dataEntryContext
-                      .locatedGame()
-                      .toString()
-                      .split("\\")
-                      .slice(-1)
-                      .toString().length > 17
-                  ? `...${dataEntryContext
-                      .locatedGame()
-                      .toString()
-                      .split("\\")
-                      .slice(-1)
-                      .toString()
-                      .slice(0, 7)}...${dataEntryContext
-                      .locatedGame()
-                      .toString()
-                      .slice(-7)}`
-                  : `...${dataEntryContext
-                      .locatedGame()
-                      .toString()
-                      .split("\\")
-                      .slice(-1)
-                      .toString()}`}
+                        .locatedGame()
+                        .toString()
+                        .split("\\")
+                        .slice(-1)
+                        .toString().length > 17
+                    ? `...${dataEntryContext
+                        .locatedGame()
+                        .toString()
+                        .split("\\")
+                        .slice(-1)
+                        .toString()
+                        .slice(0, 7)}...${dataEntryContext
+                        .locatedGame()
+                        .toString()
+                        .slice(-7)}`
+                    : `...${dataEntryContext
+                        .locatedGame()
+                        .toString()
+                        .split("\\")
+                        .slice(-1)
+                        .toString()}`}
               </button>
             </div>
           </div>
@@ -942,9 +950,8 @@ export function NewGame() {
               <button
                 type="button"
                 onClick={() => {
-                  document.getElementById(
-                    "SGDBGamesContainer"
-                  ).scrollLeft -= 40;
+                  document.getElementById("SGDBGamesContainer").scrollLeft -=
+                    40;
                 }}
                 class="tooltip-delayed-bottom"
                 data-tooltip={translateText("scroll left")}>
@@ -974,9 +981,8 @@ export function NewGame() {
               <button
                 type="button"
                 onClick={() => {
-                  document.getElementById(
-                    "SGDBGamesContainer"
-                  ).scrollLeft += 40;
+                  document.getElementById("SGDBGamesContainer").scrollLeft +=
+                    40;
                 }}
                 class="tooltip-delayed-bottom"
                 data-tooltip={translateText("scroll right")}>
