@@ -36,8 +36,6 @@ export function GameCardSideBar(props) {
         await selectedDataContext.setSelectedGame(
           globalContext.libraryData.games[props.gameName]
         );
-        openDialog("gamePopup");
-
         if (e.ctrlKey) {
           openGame(globalContext.libraryData.games[props.gameName].location);
         }
