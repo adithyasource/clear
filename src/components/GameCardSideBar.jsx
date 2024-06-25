@@ -19,7 +19,11 @@ export function GameCardSideBar(props) {
       class={`!flex gap-[5px] bg-transparent ${
         props.index === 0 ? "mt-4" : "mt-5"
       }  sideBarGame cursor-grab p-0`}
-      data-tooltip={translateText("play")}
+      data-tooltip={
+        globalContext.libraryData.games[props.gameName].location
+          ? translateText("play")
+          : translateText("no game file")
+      }
       draggable={true}
       onDragStart={(e) => {
         setTimeout(() => {
