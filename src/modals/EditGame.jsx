@@ -9,7 +9,7 @@ import {
   generateRandomString,
   translateText,
   updateData,
-  closeDialog,
+  closeDialog
 } from "../Globals";
 import { Close, OpenExternal, SaveDisk, TrashDelete } from "../libraries/Icons";
 
@@ -18,7 +18,7 @@ import {
   SelectedDataContext,
   ApplicationStateContext,
   DataUpdateContext,
-  UIContext,
+  UIContext
 } from "../Globals";
 import { triggerToast } from "../Globals";
 
@@ -36,9 +36,9 @@ export function EditGame() {
         filters: [
           {
             name: "Executable",
-            extensions: ["exe", "lnk"],
-          },
-        ],
+            extensions: ["exe", "lnk"]
+          }
+        ]
       })
     );
   }
@@ -50,9 +50,9 @@ export function EditGame() {
         filters: [
           {
             name: "Image",
-            extensions: ["png", "jpg", "jpeg", "webp"],
-          },
-        ],
+            extensions: ["png", "jpg", "jpeg", "webp"]
+          }
+        ]
       })
     );
   }
@@ -64,9 +64,9 @@ export function EditGame() {
         filters: [
           {
             name: "Image",
-            extensions: ["png", "jpg", "jpeg", "webp"],
-          },
-        ],
+            extensions: ["png", "jpg", "jpeg", "webp"]
+          }
+        ]
       })
     );
   }
@@ -78,9 +78,9 @@ export function EditGame() {
         filters: [
           {
             name: "Image",
-            extensions: ["png", "jpg", "jpeg", "webp"],
-          },
-        ],
+            extensions: ["png", "jpg", "jpeg", "webp"]
+          }
+        ]
       })
     );
   }
@@ -92,9 +92,9 @@ export function EditGame() {
         filters: [
           {
             name: "Image",
-            extensions: ["png", "jpg", "jpeg", "ico"],
-          },
-        ],
+            extensions: ["png", "jpg", "jpeg", "ico"]
+          }
+        ]
       })
     );
   }
@@ -181,7 +181,7 @@ export function EditGame() {
         await copyFile(
           `${dataUpdateContext.editedLocatedGridImage()}grids\\${gridImageFileName}`,
           {
-            dir: BaseDirectory.AppData,
+            dir: BaseDirectory.AppData
           }
         ).then(() => {
           dataUpdateContext.setEditedLocatedGridImage(gridImageFileName);
@@ -206,7 +206,7 @@ export function EditGame() {
         await copyFile(
           `${dataUpdateContext.editedLocatedHeroImage()}heroes\\${heroImageFileName}`,
           {
-            dir: BaseDirectory.AppData,
+            dir: BaseDirectory.AppData
           }
         ).then(() => {
           dataUpdateContext.setEditedLocatedHeroImage(heroImageFileName);
@@ -231,7 +231,7 @@ export function EditGame() {
         await copyFile(
           `${dataUpdateContext.editedLocatedLogo()}logos\\${logoFileName}`,
           {
-            dir: BaseDirectory.AppData,
+            dir: BaseDirectory.AppData
           }
         ).then(() => {
           dataUpdateContext.setEditedLocatedLogo(logoFileName);
@@ -256,7 +256,7 @@ export function EditGame() {
         await copyFile(
           `${dataUpdateContext.editedLocatedIcon()}icons\\${iconFileName}`,
           {
-            dir: BaseDirectory.AppData,
+            dir: BaseDirectory.AppData
           }
         ).then(() => {
           dataUpdateContext.setEditedLocatedIcon(iconFileName);
@@ -271,7 +271,7 @@ export function EditGame() {
       gridImage: dataUpdateContext.editedLocatedGridImage(),
       logo: dataUpdateContext.editedLocatedLogo(),
       icon: dataUpdateContext.editedLocatedIcon(),
-      favourite: dataUpdateContext.editedFavouriteGame(),
+      favourite: dataUpdateContext.editedFavouriteGame()
     });
 
     for (const folder of Object.values(globalContext.libraryData.folders)) {
@@ -344,6 +344,8 @@ export function EditGame() {
         dataUpdateContext.setEditedLocatedIcon(undefined);
         uiContext.setShowDeleteConfirm(false);
         dataUpdateContext.setEditedlocatedGame(undefined);
+
+        uiContext.setShowEditGameModal(false);
         getData();
       }}
       class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible">
@@ -766,7 +768,7 @@ export function EditGame() {
                         .selectedGame()
                         .location.split("\\")
                         .slice(0, -1)
-                        .join("\\"),
+                        .join("\\")
                     });
                   }}
                   class="standardButton group relative !w-max bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"

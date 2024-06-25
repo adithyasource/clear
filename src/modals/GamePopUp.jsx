@@ -3,16 +3,24 @@ import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { closeDialog, openDialog, openGame, translateText } from "../Globals";
 import { Close, Play, Settings } from "../libraries/Icons";
 
-import { SelectedDataContext, ApplicationStateContext } from "../Globals";
+import {
+  SelectedDataContext,
+  ApplicationStateContext,
+  UIContext
+} from "../Globals";
 
 export function GamePopUp() {
   const selectedDataContext = useContext(SelectedDataContext);
   const applicationStateContext = useContext(ApplicationStateContext);
+  const uiContext = useContext(UIContext);
 
   return (
     <dialog
       data-gamePopup
       class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible"
+      onClose={() => {
+        uiContext.setShowGamePopUpModal(false);
+      }}
       onDragStart={(e) => {
         e.preventDefault();
       }}>

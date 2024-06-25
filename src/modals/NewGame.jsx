@@ -19,7 +19,8 @@ import {
   GlobalContext,
   SelectedDataContext,
   ApplicationStateContext,
-  DataEntryContext
+  DataEntryContext,
+  UIContext
 } from "../Globals";
 import { triggerToast } from "../Globals";
 
@@ -28,6 +29,7 @@ export function NewGame() {
   const selectedDataContext = useContext(SelectedDataContext);
   const applicationStateContext = useContext(ApplicationStateContext);
   const dataEntryContext = useContext(DataEntryContext);
+  const uiContext = useContext(UIContext);
 
   const [showGridImageLoading, setShowGridImageLoading] = createSignal(false);
   const [showHeroImageLoading, setShowHeroImageLoading] = createSignal(false);
@@ -361,6 +363,8 @@ export function NewGame() {
         dataEntryContext.setFoundIconImage(undefined);
         selectedDataContext.setSelectedGameId(undefined);
         applicationStateContext.setSGDBGames(undefined);
+
+        uiContext.setShowNewGameModal(false);
       }}
       class="backdrop:bg-transparent !p-0 overflow-visible">
       <div class="flex h-screen  w-screen flex-col  items-center justify-center gap-3 bg-[#d1d1d1cc] dark:bg-[#121212cc]">

@@ -50,6 +50,14 @@ const [showImportAndOverwriteConfirm, setShowImportAndOverwriteConfirm] =
   createSignal(false);
 const [showNewVersionAvailable, setShowNewVersionAvailable] =
   createSignal(false);
+const [showNewGameModal, setShowNewGameModal] = createSignal(false);
+const [showEditGameModal, setShowEditGameModal] = createSignal(false);
+const [showNewFolderModal, setShowNewFolderModal] = createSignal(false);
+const [showEditFolderModal, setShowEditFolderModal] = createSignal(false);
+const [showGamePopUpModal, setShowGamePopUpModal] = createSignal(false);
+const [showNotepadModal, setShowNotepadModal] = createSignal(false);
+const [showSettingsModal, setShowSettingsModal] = createSignal(false);
+const [showLoadingModal, setShowLoadingModal] = createSignal(false);
 
 // * Selected Data Signals
 const [selectedGame, setSelectedGame] = createSignal({});
@@ -130,7 +138,23 @@ export function UIContextProvider(props) {
     showImportAndOverwriteConfirm,
     setShowImportAndOverwriteConfirm,
     showNewVersionAvailable,
-    setShowNewVersionAvailable
+    setShowNewVersionAvailable,
+    showNewGameModal,
+    setShowNewGameModal,
+    showEditGameModal,
+    setShowEditGameModal,
+    showNewFolderModal,
+    setShowNewFolderModal,
+    showEditFolderModal,
+    setShowEditFolderModal,
+    showGamePopUpModal,
+    setShowGamePopUpModal,
+    showNotepadModal,
+    setShowNotepadModal,
+    showSettingsModal,
+    setShowSettingsModal,
+    showLoadingModal,
+    setShowLoadingModal
   };
 
   return (
@@ -570,6 +594,40 @@ export function triggerToast(message) {
 }
 
 export function openDialog(dialogData) {
+  switch (dialogData) {
+    case "newGameModal":
+      setShowNewGameModal(true);
+      break;
+
+    case "editGameModal":
+      setShowEditGameModal(true);
+      break;
+
+    case "newFolderModal":
+      setShowNewFolderModal(true);
+      break;
+
+    case "editFolderModal":
+      setShowEditFolderModal(true);
+      break;
+
+    case "gamePopup":
+      setShowGamePopUpModal(true);
+      break;
+
+    case "notepadModal":
+      setShowNotepadModal(true);
+      break;
+
+    case "settingsModal":
+      setShowSettingsModal(true);
+      break;
+
+    case "loadingModal":
+      setShowLoadingModal(true);
+      break;
+  }
+
   const dialogRef = document.querySelector(`[data-${dialogData}]`);
 
   dialogRef.classList.remove("hideDialog");
@@ -581,6 +639,42 @@ export function openDialog(dialogData) {
 }
 
 export function closeDialog(dialogData, ref) {
+  function updateModalShowState() {
+    switch (dialogData) {
+      case "newGameModal":
+        setShowNewGameModal(false);
+        break;
+
+      case "editGameModal":
+        setShowEditGameModal(false);
+        break;
+
+      case "newFolderModal":
+        setShowNewFolderModal(false);
+        break;
+
+      case "editFolderModal":
+        setShowEditFolderModal(false);
+        break;
+
+      case "gamePopup":
+        setShowGamePopUpModal(false);
+        break;
+
+      case "notepadModal":
+        setShowNotepadModal(false);
+        break;
+
+      case "settingsModal":
+        setShowSettingsModal(false);
+        break;
+
+      case "loadingModal":
+        setShowLoadingModal(false);
+        break;
+    }
+  }
+
   if (ref !== undefined) {
     ref.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
@@ -590,6 +684,7 @@ export function closeDialog(dialogData, ref) {
         ref.classList.add("hideDialog");
         setTimeout(() => {
           ref.close();
+          updateModalShowState();
         }, 200);
       }
     });
@@ -600,6 +695,7 @@ export function closeDialog(dialogData, ref) {
     dialogRef.classList.add("hideDialog");
     setTimeout(() => {
       dialogRef.close();
+      updateModalShowState();
     }, 200);
   }
 }

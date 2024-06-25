@@ -7,7 +7,7 @@ import {
   GlobalContext,
   SelectedDataContext,
   DataUpdateContext,
-  UIContext,
+  UIContext
 } from "../Globals";
 import { triggerToast } from "../Globals";
 
@@ -58,7 +58,7 @@ export function EditFolder() {
         data.folders[dataUpdateContext.editedFolderName()] = {
           ...selectedDataContext.selectedFolder(),
           name: dataUpdateContext.editedFolderName(),
-          hide: dataUpdateContext.editedHideFolder(),
+          hide: dataUpdateContext.editedHideFolder()
         };
 
         return data;
@@ -107,6 +107,7 @@ export function EditFolder() {
     <dialog
       data-editFolderModal
       onClose={() => {
+        uiContext.setShowEditFolderModal(false);
         getData();
       }}
       class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible">

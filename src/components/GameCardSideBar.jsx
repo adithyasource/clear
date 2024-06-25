@@ -1,6 +1,6 @@
 import { Show, useContext } from "solid-js";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
-import { openDialog, openGame, translateText } from "../Globals";
+import { openGame, translateText } from "../Globals";
 
 import {
   GlobalContext,

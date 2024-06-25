@@ -1,4 +1,4 @@
-import { For, Show, onMount, useContext } from "solid-js";
+import { For, Show, onMount, useContext, Switch, Match } from "solid-js";
 import { invoke } from "@tauri-apps/api/tauri";
 import { fuzzysearch } from "./libraries/fuzzysearch";
 
@@ -97,8 +97,6 @@ function App() {
       if (e.key === "Escape") {
         e.preventDefault();
 
-        console.log(anyDialogOpen);
-        console.log(currentlyOpenDialog);
         if (anyDialogOpen) {
           closeDialogImmediately(currentlyOpenDialog);
         }
@@ -169,7 +167,7 @@ function App() {
 
           case "KeyN":
             e.preventDefault();
-            if (document.querySelector("[data-newGameModal]").open) {
+            if (uiContext.showNewGameModal()) {
               closeDialog("newGameModal");
             } else {
               if (!anyDialogOpen) {
@@ -184,7 +182,7 @@ function App() {
 
           case "KeyM":
             e.preventDefault();
-            if (document.querySelector("[data-newFolderModal]").open) {
+            if (uiContext.showNewFolderModal()) {
               closeDialog("newFolderModal");
             } else {
               if (!anyDialogOpen) {
@@ -199,7 +197,7 @@ function App() {
 
           case "KeyL":
             e.preventDefault();
-            if (document.querySelector("[data-notepadModal]").open) {
+            if (uiContext.showNotepadModal()) {
               closeDialog("notepadModal");
             } else {
               if (!anyDialogOpen) {
@@ -213,7 +211,7 @@ function App() {
             break;
 
           case "Period":
-            if (document.querySelector("[data-settingsModal]").open) {
+            if (uiContext.showSettingsModal()) {
               closeDialog("settingsModal");
             } else {
               if (!anyDialogOpen) {
@@ -505,14 +503,32 @@ function App() {
       </div>
 
       <div id="abovePage">
-        <NewGame />
-        <EditGame />
-        <NewFolder />
-        <EditFolder />
-        <GamePopUp />
-        <Notepad />
-        <Settings />
-        <Loading />
+        <Switch>
+          <Match when={uiContext.showNewGameModal()}>
+            <NewGame />
+          </Match>
+          <Match when={uiContext.showEditGameModal()}>
+            <EditGame />
+          </Match>
+          <Match when={uiContext.showNewFolderModal()}>
+            <NewFolder />
+          </Match>
+          <Match when={uiContext.showEditFolderModal()}>
+            <EditFolder />
+          </Match>
+          <Match when={uiContext.showGamePopUpModal()}>
+            <GamePopUp />
+          </Match>
+          <Match when={uiContext.showNotepadModal()}>
+            <Notepad />
+          </Match>
+          <Match when={uiContext.showSettingsModal()}>
+            <Settings />
+          </Match>
+        </Switch>
+        <Show when={uiContext.showLoadingModal()}>
+          <Loading />
+        </Show>
       </div>
     </>
   );

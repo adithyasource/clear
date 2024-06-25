@@ -2,11 +2,12 @@ import { useContext } from "solid-js";
 import { closeDialog, getData, translateText, updateData } from "../Globals";
 import { Close } from "../libraries/Icons";
 
-import { GlobalContext, DataEntryContext } from "../Globals";
+import { GlobalContext, DataEntryContext, UIContext } from "../Globals";
 
 export function Notepad() {
   const globalContext = useContext(GlobalContext);
   const dataEntryContext = useContext(DataEntryContext);
+  const uiContext = useContext(UIContext);
 
   async function saveNotepad() {
     globalContext.setLibraryData("notepad", dataEntryContext.notepadValue());
@@ -25,6 +26,7 @@ export function Notepad() {
           dataEntryContext.setNotepadValue(
             globalContext.libraryData.notepad || ""
           );
+          uiContext.setShowNotepadModal(false);
         }}
         class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible">
         <div class="flex h-screen w-screen items-center justify-center align-middle bg-[#d1d1d166] dark:bg-[#12121266]">

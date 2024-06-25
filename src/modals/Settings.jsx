@@ -5,7 +5,7 @@ import {
   importSteamGames,
   translateText,
   updateData,
-  closeDialog,
+  closeDialog
 } from "../Globals";
 
 import { appDataDir } from "@tauri-apps/api/path";
@@ -38,6 +38,7 @@ export function Settings() {
         data-settingsModal
         onClose={() => {
           uiContext.setShowSettingsLanguageSelector(false);
+          uiContext.setShowSettingsModal(false);
         }}
         class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible">
         <div class="flex h-screen w-screen items-center justify-center align-middle bg-[#d1d1d166] dark:bg-[#12121266]">
@@ -252,7 +253,7 @@ export function Settings() {
                   class="standardButton !m-0 flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                   onClick={() => {
                     invoke("open_location", {
-                      location: "https://clear.adithya.zip/update",
+                      location: "https://clear.adithya.zip/update"
                     });
                   }}>
                   {translateText("new update available!")}
@@ -308,7 +309,7 @@ export function Settings() {
                     const appDataDirPath = await appDataDir();
 
                     invoke("open_location", {
-                      location: appDataDirPath,
+                      location: appDataDirPath
                     });
                   }}>
                   {translateText("open library location")}
@@ -334,7 +335,7 @@ export function Settings() {
                 type="button"
                 onClick={() => {
                   invoke("open_location", {
-                    location: "https://clear.adithya.zip/feedback",
+                    location: "https://clear.adithya.zip/feedback"
                   });
                 }}
                 class="cursor-pointer p-0 underline">
@@ -344,7 +345,7 @@ export function Settings() {
                 type="button"
                 onClick={() => {
                   invoke("open_location", {
-                    location: "https://clear.adithya.zip/",
+                    location: "https://clear.adithya.zip/"
                   });
                 }}
                 class="cursor-pointer p-0 underline">
@@ -356,7 +357,7 @@ export function Settings() {
                   type="button"
                   onClick={() => {
                     invoke("open_location", {
-                      location: "https://adithya.zip/",
+                      location: "https://adithya.zip/"
                     });
                   }}
                   class="cursor-pointer p-0 underline">
@@ -368,7 +369,7 @@ export function Settings() {
                 type="button"
                 onClick={() => {
                   invoke("open_location", {
-                    location: "https://ko-fi.com/adithyasource",
+                    location: "https://ko-fi.com/adithyasource"
                   });
                 }}
                 class="cursor-pointer p-0 underline">

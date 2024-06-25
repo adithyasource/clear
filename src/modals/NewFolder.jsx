@@ -7,6 +7,7 @@ import {
   GlobalContext,
   ApplicationStateContext,
   DataEntryContext,
+  UIContext
 } from "../Globals";
 import { triggerToast } from "../Globals";
 
@@ -14,6 +15,7 @@ export function NewFolder() {
   const globalContext = useContext(GlobalContext);
   const applicationStateContext = useContext(ApplicationStateContext);
   const dataEntryContext = useContext(DataEntryContext);
+  const uiContext = useContext(UIContext);
 
   async function addFolder() {
     if (
@@ -47,7 +49,7 @@ export function NewFolder() {
           name: dataEntryContext.folderName(),
           hide: dataEntryContext.hideFolder(),
           games: [],
-          index: applicationStateContext.currentFolders().length,
+          index: applicationStateContext.currentFolders().length
         };
 
         return data;
@@ -64,6 +66,7 @@ export function NewFolder() {
       onClose={() => {
         dataEntryContext.setFolderName(undefined);
         dataEntryContext.setHideFolder(undefined);
+        uiContext.setShowNewFolderModal(false);
         getData();
       }}
       class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible">
