@@ -1,6 +1,6 @@
 import { Show, useContext } from "solid-js";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
-import { openGame, translateText } from "../Globals";
+import { openDialog, openGame, translateText } from "../Globals";
 
 import {
   GlobalContext,
@@ -33,12 +33,14 @@ export function GameCardSideBar(props) {
         e.srcElement.classList.remove("dragging");
       }}
       onClick={async (e) => {
+        if (e.ctrlKey) {
+          openGame(globalContext.libraryData.games[props.gameName].location);
+          return;
+        }
         await selectedDataContext.setSelectedGame(
           globalContext.libraryData.games[props.gameName]
         );
-        if (e.ctrlKey) {
-          openGame(globalContext.libraryData.games[props.gameName].location);
-        }
+        openDialog("gamePopup");
       }}>
       <Show when={globalContext.libraryData.games[props.gameName].icon}>
         <img
