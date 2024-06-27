@@ -1,21 +1,22 @@
-import { useContext } from "solid-js";
+import { useContext, createSignal } from "solid-js";
 import { closeDialog, getData, translateText, updateData } from "../Globals";
 import { Close } from "../libraries/Icons";
 
-import { GlobalContext, DataEntryContext, UIContext } from "../Globals";
+import { GlobalContext, UIContext } from "../Globals";
 
 export function Notepad() {
   const globalContext = useContext(GlobalContext);
-  const dataEntryContext = useContext(DataEntryContext);
   const uiContext = useContext(UIContext);
 
+  const [notepadValue, setNotepadValue] = createSignal("");
+
   async function saveNotepad() {
-    globalContext.setLibraryData("notepad", dataEntryContext.notepadValue());
+    globalContext.setLibraryData("notepad", notepadValue());
     await updateData();
   }
 
   setTimeout(() => {
-    dataEntryContext.setNotepadValue(globalContext.libraryData.notepad || "");
+    setNotepadValue(globalContext.libraryData.notepad || "");
   }, 50);
 
   return (
@@ -23,9 +24,7 @@ export function Notepad() {
       <dialog
         data-notepadModal
         onClose={() => {
-          dataEntryContext.setNotepadValue(
-            globalContext.libraryData.notepad || ""
-          );
+          setNotepadValue(globalContext.libraryData.notepad || "");
           uiContext.setShowNotepadModal(false);
         }}
         class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible">
@@ -51,13 +50,13 @@ export function Notepad() {
             </div>
             <textarea
               onInput={(e) => {
-                dataEntryContext.setNotepadValue(e.target.value);
+                setNotepadValue(e.target.value);
                 saveNotepad();
               }}
               class="mt-6 h-[40vh] w-full resize-none bg-transparent focus:outline-none"
               placeholder={translateText("write anything you want over here!")}
               spellcheck="false"
-              value={dataEntryContext.notepadValue()}
+              value={notepadValue()}
             />
           </div>
         </div>

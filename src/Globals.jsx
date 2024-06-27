@@ -17,7 +17,6 @@ export const GlobalContext = createContext();
 export const UIContext = createContext();
 export const SelectedDataContext = createContext();
 export const ApplicationStateContext = createContext();
-export const DataEntryContext = createContext();
 export const DataUpdateContext = createContext();
 export const SteamDataContext = createContext();
 
@@ -74,26 +73,6 @@ const [latestVersion, setLatestVersion] = createSignal("");
 const [appDataDirPath, setAppDataDirPath] = createSignal({});
 const [windowWidth, setWindowWidth] = createSignal(window.innerWidth);
 const [SGDBGames, setSGDBGames] = createSignal();
-
-// * Add Data Signals
-const [gameName, setGameName] = createSignal("");
-const [favouriteGame, setFavouriteGame] = createSignal(false);
-const [locatedHeroImage, setLocatedHeroImage] = createSignal();
-const [locatedGridImage, setLocatedGridImage] = createSignal();
-const [locatedLogo, setLocatedLogo] = createSignal();
-const [locatedIcon, setLocatedIcon] = createSignal();
-const [locatedGame, setlocatedGame] = createSignal();
-const [folderName, setFolderName] = createSignal();
-const [hideFolder, setHideFolder] = createSignal(false);
-const [foundGridImage, setFoundGridImage] = createSignal(false);
-const [foundHeroImage, setFoundHeroImage] = createSignal(false);
-const [foundLogoImage, setFoundLogoImage] = createSignal(false);
-const [foundIconImage, setFoundIconImage] = createSignal(false);
-const [foundGridImageIndex, setFoundGridImageIndex] = createSignal(0);
-const [foundHeroImageIndex, setFoundHeroImageIndex] = createSignal(0);
-const [foundLogoImageIndex, setFoundLogoImageIndex] = createSignal(0);
-const [foundIconImageIndex, setFoundIconImageIndex] = createSignal(0);
-const [notepadValue, setNotepadValue] = createSignal("");
 
 // * Update Data Signals
 const [editedGameName, setEditedGameName] = createSignal();
@@ -205,53 +184,6 @@ export function ApplicationStateContextProvider(props) {
     <ApplicationStateContext.Provider value={context}>
       {props.children}
     </ApplicationStateContext.Provider>
-  );
-}
-
-export function DataEntryContextProvider(props) {
-  const context = {
-    gameName,
-    setGameName,
-    favouriteGame,
-    setFavouriteGame,
-    locatedHeroImage,
-    setLocatedHeroImage,
-    locatedGridImage,
-    setLocatedGridImage,
-    locatedLogo,
-    setLocatedLogo,
-    locatedIcon,
-    setLocatedIcon,
-    locatedGame,
-    setlocatedGame,
-    folderName,
-    setFolderName,
-    hideFolder,
-    setHideFolder,
-    foundGridImage,
-    setFoundGridImage,
-    foundHeroImage,
-    setFoundHeroImage,
-    foundLogoImage,
-    setFoundLogoImage,
-    foundIconImage,
-    setFoundIconImage,
-    foundGridImageIndex,
-    setFoundGridImageIndex,
-    foundHeroImageIndex,
-    setFoundHeroImageIndex,
-    foundLogoImageIndex,
-    setFoundLogoImageIndex,
-    foundIconImageIndex,
-    setFoundIconImageIndex,
-    notepadValue,
-    setNotepadValue
-  };
-
-  return (
-    <DataEntryContext.Provider value={context}>
-      {props.children}
-    </DataEntryContext.Provider>
   );
 }
 
@@ -691,6 +623,7 @@ export function closeDialog(dialogData, ref) {
   } else {
     const dialogRef = document.querySelector(`[data-${dialogData}]`);
 
+    console.log(dialogRef);
     dialogRef.classList.remove("showDialog");
     dialogRef.classList.add("hideDialog");
     setTimeout(() => {

@@ -1,53 +1,45 @@
-import { Show, useContext } from "solid-js";
+import { Show, useContext, createSignal } from "solid-js";
 import { produce } from "solid-js/store";
 import { closeDialog, getData, translateText, updateData } from "../Globals";
 import { Close, SaveDisk } from "../libraries/Icons";
 
-import {
-  GlobalContext,
-  ApplicationStateContext,
-  DataEntryContext,
-  UIContext
-} from "../Globals";
+import { GlobalContext, ApplicationStateContext, UIContext } from "../Globals";
 import { triggerToast } from "../Globals";
 
 export function NewFolder() {
   const globalContext = useContext(GlobalContext);
   const applicationStateContext = useContext(ApplicationStateContext);
-  const dataEntryContext = useContext(DataEntryContext);
   const uiContext = useContext(UIContext);
 
+  const [folderName, setFolderName] = createSignal();
+  const [hideFolder, setHideFolder] = createSignal(false);
+
   async function addFolder() {
-    if (
-      dataEntryContext.folderName() === "" ||
-      dataEntryContext.folderName() === undefined
-    ) {
+    if (folderName() === "" || folderName() === undefined) {
       triggerToast(translateText("no folder name"));
       return;
     }
 
     let folderNameAlreadyExists = false;
 
-    for (const folderName of Object.keys(globalContext.libraryData.folders)) {
-      if (dataEntryContext.folderName() === folderName) {
+    for (const name of Object.keys(globalContext.libraryData.folders)) {
+      if (folderName() === name) {
         folderNameAlreadyExists = true;
       }
     }
 
     if (folderNameAlreadyExists) {
       triggerToast(
-        `${dataEntryContext.folderName()} ${translateText(
-          "is already in your library"
-        )}`
+        `${folderName()} ${translateText("is already in your library")}`
       );
       return;
     }
 
     globalContext.setLibraryData(
       produce((data) => {
-        data.folders[dataEntryContext.folderName()] = {
-          name: dataEntryContext.folderName(),
-          hide: dataEntryContext.hideFolder(),
+        data.folders[folderName()] = {
+          name: folderName(),
+          hide: hideFolder(),
           games: [],
           index: applicationStateContext.currentFolders().length
         };
@@ -64,8 +56,8 @@ export function NewFolder() {
     <dialog
       data-newFolderModal
       onClose={() => {
-        dataEntryContext.setFolderName(undefined);
-        dataEntryContext.setHideFolder(undefined);
+        setFolderName(undefined);
+        setHideFolder(undefined);
         uiContext.setShowNewFolderModal(false);
         getData();
       }}
@@ -87,11 +79,11 @@ export function NewFolder() {
               <button
                 type="button"
                 onClick={() => {
-                  dataEntryContext.setHideFolder((x) => !x);
+                  setHideFolder((x) => !x);
                 }}
                 class="relative cursor-pointer">
                 <Show
-                  when={dataEntryContext.hideFolder()}
+                  when={hideFolder()}
                   fallback={
                     <div class="">{translateText("hide in expanded view")}</div>
                   }>
@@ -130,9 +122,9 @@ export function NewFolder() {
               id=""
               class="w-full bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               onInput={(e) => {
-                dataEntryContext.setFolderName(e.currentTarget.value);
+                setFolderName(e.currentTarget.value);
               }}
-              value={dataEntryContext.folderName() || ""}
+              value={folderName() || ""}
               placeholder={translateText("name of folder")}
             />
           </div>

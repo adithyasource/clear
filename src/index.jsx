@@ -7,7 +7,6 @@ import {
   UIContextProvider,
   SelectedDataContextProvider,
   ApplicationStateContextProvider,
-  DataEntryContextProvider,
   DataUpdateContextProvider,
   SteamDataContextProvider
 } from "./Globals";
@@ -18,13 +17,11 @@ render(
       <UIContextProvider>
         <SelectedDataContextProvider>
           <ApplicationStateContextProvider>
-            <DataEntryContextProvider>
-              <DataUpdateContextProvider>
-                <SteamDataContextProvider>
-                  <App />
-                </SteamDataContextProvider>
-              </DataUpdateContextProvider>
-            </DataEntryContextProvider>
+            <DataUpdateContextProvider>
+              <SteamDataContextProvider>
+                <App />
+              </SteamDataContextProvider>
+            </DataUpdateContextProvider>
           </ApplicationStateContextProvider>
         </SelectedDataContextProvider>
       </UIContextProvider>
