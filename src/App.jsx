@@ -267,6 +267,17 @@ function App() {
 
     invoke("show_window");
     addEventListeners();
+
+    // check if new version is available and set variable
+    fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?version=a`).then((res) =>
+      res.json().then((jsonres) => {
+        applicationStateContext.setLatestVersion(jsonres.clearVersion);
+        applicationStateContext.latestVersion().replaceAll(".", "") >
+        applicationStateContext.appVersion().replaceAll(".", "")
+          ? uiContext.setShowNewVersionAvailable(true)
+          : uiContext.setShowNewVersionAvailable(false);
+      })
+    );
   });
 
   return (

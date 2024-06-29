@@ -1,5 +1,5 @@
-import { Show, useContext } from "solid-js";
-import { translateText, changeLanguage } from "../Globals";
+import { Show, useContext, createSignal } from "solid-js";
+import { translateText, updateData } from "../Globals";
 
 import { GlobalContext, UIContext } from "../Globals";
 
@@ -7,13 +7,23 @@ export function LanguageSelector(props) {
   const globalContext = useContext(GlobalContext);
   const uiContext = useContext(UIContext);
 
+  const [showLanguageSelector, setShowLanguageSelector] = createSignal(false);
+
+  async function changeLanguage(lang) {
+    globalContext.setLibraryData("userSettings", "language", lang);
+
+    await updateData();
+    setShowLanguageSelector(false);
+    uiContext.setShowSettingsLanguageSelector(false);
+  }
+
   return (
     <button
       type="button"
       onClick={() => {
         props.onSettingsPage
           ? uiContext.setShowSettingsLanguageSelector((x) => !x)
-          : uiContext.setShowLanguageSelector((x) => !x);
+          : setShowLanguageSelector((x) => !x);
 
         document.getElementById("firstDropdownItem").focus();
       }}
@@ -43,7 +53,7 @@ export function LanguageSelector(props) {
         when={
           props.onSettingsPage
             ? uiContext.showSettingsLanguageSelector()
-            : uiContext.showLanguageSelector()
+            : showLanguageSelector()
         }>
         <div
           role="button"
@@ -54,13 +64,13 @@ export function LanguageSelector(props) {
           onMouseLeave={() => {
             props.onSettingsPage
               ? uiContext.setShowSettingsLanguageSelector(false)
-              : uiContext.setShowLanguageSelector(false);
+              : setShowLanguageSelector(false);
           }}
           onKeyDown={(e) => {
             if (e.key === "Escape") {
               props.onSettingsPage
                 ? uiContext.setShowSettingsLanguageSelector(false)
-                : uiContext.setShowLanguageSelector(false);
+                : setShowLanguageSelector(false);
             }
           }}>
           <button
@@ -110,7 +120,7 @@ export function LanguageSelector(props) {
               if (e.key === "Tab") {
                 props.onSettingsPage
                   ? uiContext.setShowSettingsLanguageSelector(false)
-                  : uiContext.setShowLanguageSelector(false);
+                  : setShowLanguageSelector(false);
               }
             }}
             class="p-0 text-left text-[#12121280] duration-150 motion-reduce:duration-0 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"

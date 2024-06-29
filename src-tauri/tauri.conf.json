@@ -46,8 +46,7 @@
         "fileDropEnabled": false,
         "minHeight": 390,
         "minWidth": 640,
-        "theme": "Dark",
-        "visible": false
+        "theme": "Dark"
       }
     ]
   }

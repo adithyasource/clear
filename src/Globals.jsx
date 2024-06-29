@@ -17,7 +17,6 @@ export const GlobalContext = createContext();
 export const UIContext = createContext();
 export const SelectedDataContext = createContext();
 export const ApplicationStateContext = createContext();
-export const DataUpdateContext = createContext();
 export const SteamDataContext = createContext();
 
 // * Global Store
@@ -40,10 +39,8 @@ export const [libraryData, setLibraryData] = createStore({
 });
 
 // * UI
-const [showContentSkipButton, setShowContentSkipButton] = createSignal(false);
 const [showSettingsLanguageSelector, setShowSettingsLanguageSelector] =
   createSignal(false);
-const [showLanguageSelector, setShowLanguageSelector] = createSignal(false);
 const [showDeleteConfirm, setShowDeleteConfirm] = createSignal(false);
 const [showImportAndOverwriteConfirm, setShowImportAndOverwriteConfirm] =
   createSignal(false);
@@ -66,24 +63,13 @@ const [selectedGameId, setSelectedGameId] = createSignal();
 // * Application State Signals
 const [currentGames, setCurrentGames] = createSignal([]);
 const [currentFolders, setCurrentFolders] = createSignal([]);
+
 const [searchValue, setSearchValue] = createSignal();
 const [toastMessage, setToastMessage] = createSignal("");
 const [appVersion, setAppVersion] = createSignal("1.1.0");
 const [latestVersion, setLatestVersion] = createSignal("");
 const [appDataDirPath, setAppDataDirPath] = createSignal({});
 const [windowWidth, setWindowWidth] = createSignal(window.innerWidth);
-const [SGDBGames, setSGDBGames] = createSignal();
-
-// * Update Data Signals
-const [editedGameName, setEditedGameName] = createSignal();
-const [editedFavouriteGame, setEditedFavouriteGame] = createSignal();
-const [editedLocatedHeroImage, setEditedLocatedHeroImage] = createSignal();
-const [editedLocatedGridImage, setEditedLocatedGridImage] = createSignal();
-const [editedLocatedLogo, setEditedLocatedLogo] = createSignal();
-const [editedLocatedIcon, setEditedLocatedIcon] = createSignal();
-const [editedLocatedGame, setEditedlocatedGame] = createSignal();
-const [editedFolderName, setEditedFolderName] = createSignal();
-const [editedHideFolder, setEditedHideFolder] = createSignal();
 
 // * Steam Data Signals
 const [totalSteamGames, setTotalSteamGames] = createSignal(0);
@@ -106,12 +92,8 @@ export function GlobalContextProvider(props) {
 
 export function UIContextProvider(props) {
   const context = {
-    showContentSkipButton,
-    setShowContentSkipButton,
     showSettingsLanguageSelector,
     setShowSettingsLanguageSelector,
-    showLanguageSelector,
-    setShowLanguageSelector,
     showDeleteConfirm,
     setShowDeleteConfirm,
     showImportAndOverwriteConfirm,
@@ -175,44 +157,13 @@ export function ApplicationStateContextProvider(props) {
     appDataDirPath,
     setAppDataDirPath,
     windowWidth,
-    setWindowWidth,
-    SGDBGames,
-    setSGDBGames
+    setWindowWidth
   };
 
   return (
     <ApplicationStateContext.Provider value={context}>
       {props.children}
     </ApplicationStateContext.Provider>
-  );
-}
-
-export function DataUpdateContextProvider(props) {
-  const context = {
-    editedGameName,
-    setEditedGameName,
-    editedFavouriteGame,
-    setEditedFavouriteGame,
-    editedLocatedHeroImage,
-    setEditedLocatedHeroImage,
-    editedLocatedGridImage,
-    setEditedLocatedGridImage,
-    editedLocatedLogo,
-    setEditedLocatedLogo,
-    editedLocatedIcon,
-    setEditedLocatedIcon,
-    editedLocatedGame,
-    setEditedlocatedGame,
-    editedFolderName,
-    setEditedFolderName,
-    editedHideFolder,
-    setEditedHideFolder
-  };
-
-  return (
-    <DataUpdateContext.Provider value={context}>
-      {props.children}
-    </DataUpdateContext.Provider>
   );
 }
 
@@ -333,14 +284,6 @@ export function generateRandomString() {
   }
 
   return result;
-}
-
-export async function changeLanguage(lang) {
-  setLibraryData("userSettings", "language", lang);
-
-  await updateData();
-  setShowLanguageSelector(false);
-  setShowSettingsLanguageSelector(false);
 }
 
 export async function importSteamGames() {

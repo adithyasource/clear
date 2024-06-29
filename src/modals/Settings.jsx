@@ -20,18 +20,6 @@ export function Settings() {
   const uiContext = useContext(UIContext);
   const applicationStateContext = useContext(ApplicationStateContext);
 
-  onMount(() => {
-    fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?version=a`).then((res) =>
-      res.json().then((jsonres) => {
-        applicationStateContext.setLatestVersion(jsonres.clearVersion);
-        applicationStateContext.latestVersion().replaceAll(".", "") >
-        applicationStateContext.appVersion().replaceAll(".", "")
-          ? uiContext.setShowNewVersionAvailable(true)
-          : uiContext.setShowNewVersionAvailable(false);
-      })
-    );
-  });
-
   return (
     <>
       <dialog

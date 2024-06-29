@@ -50,6 +50,8 @@ export function NewGame() {
   const [foundLogoImageIndex, setFoundLogoImageIndex] = createSignal(0);
   const [foundIconImageIndex, setFoundIconImageIndex] = createSignal(0);
 
+  const [SGDBGames, setSGDBGames] = createSignal();
+
   async function addGame() {
     if (gameName() === "" || gameName() === undefined) {
       triggerToast(translateText("no game name"));
@@ -250,7 +252,7 @@ export function NewGame() {
   }
 
   async function searchGameName() {
-    applicationStateContext.setSGDBGames(undefined);
+    setSGDBGames(undefined);
 
     let searchedGameData;
 
@@ -268,7 +270,7 @@ export function NewGame() {
       if (searchedGameData.data.length === 0) {
         triggerToast(translateText("couldn't find that game :("));
       } else {
-        applicationStateContext.setSGDBGames(searchedGameData.data);
+        setSGDBGames(searchedGameData.data);
       }
     } else {
       triggerToast(translateText("you're not connected to the internet :("));
@@ -345,7 +347,7 @@ export function NewGame() {
         setFoundLogoImage(undefined);
         setFoundIconImage(undefined);
         selectedDataContext.setSelectedGameId(undefined);
-        applicationStateContext.setSGDBGames(undefined);
+        setSGDBGames(undefined);
 
         uiContext.setShowNewGameModal(false);
       }}
@@ -406,7 +408,7 @@ export function NewGame() {
             onClick={locateGridImage}
             onScroll={() => {}}
             onWheel={(e) => {
-              if (applicationStateContext.SGDBGames()) {
+              if (SGDBGames()) {
                 if (e.deltaY <= 0) {
                   setFoundGridImageIndex((i) =>
                     i === foundGridImage().length - 1 ? 0 : i + 1
@@ -425,7 +427,7 @@ export function NewGame() {
               }
             }}
             onKeyDown={(e) => {
-              if (applicationStateContext.SGDBGames()) {
+              if (SGDBGames()) {
                 if (e.key === "ArrowRight") {
                   setFoundGridImageIndex((i) =>
                     i === foundGridImage().length - 1 ? 0 : i + 1
@@ -487,7 +489,7 @@ export function NewGame() {
                 onClick={locateHeroImage}
                 onScroll={() => {}}
                 onWheel={(e) => {
-                  if (applicationStateContext.SGDBGames()) {
+                  if (SGDBGames()) {
                     if (e.deltaY <= 0) {
                       setFoundHeroImageIndex((i) =>
                         i === foundHeroImage().length - 1 ? 0 : i + 1
@@ -506,7 +508,7 @@ export function NewGame() {
                   }
                 }}
                 onKeyDown={(e) => {
-                  if (applicationStateContext.SGDBGames()) {
+                  if (SGDBGames()) {
                     if (e.key === "ArrowRight") {
                       setFoundHeroImageIndex((i) =>
                         i === foundHeroImage().length - 1 ? 0 : i + 1
@@ -585,7 +587,7 @@ export function NewGame() {
                 }}
                 onScroll={() => {}}
                 onWheel={(e) => {
-                  if (applicationStateContext.SGDBGames()) {
+                  if (SGDBGames()) {
                     if (e.deltaY <= 0) {
                       setFoundLogoImageIndex((i) =>
                         i === foundLogoImage().length - 1 ? 0 : i + 1
@@ -604,7 +606,7 @@ export function NewGame() {
                   }
                 }}
                 onKeyDown={(e) => {
-                  if (applicationStateContext.SGDBGames()) {
+                  if (SGDBGames()) {
                     if (e.key === "ArrowRight") {
                       setFoundLogoImageIndex((i) =>
                         i === foundLogoImage().length - 1 ? 0 : i + 1
@@ -672,7 +674,7 @@ export function NewGame() {
                 }}
                 onScroll={() => {}}
                 onWheel={(e) => {
-                  if (applicationStateContext.SGDBGames()) {
+                  if (SGDBGames()) {
                     if (e.deltaY <= 0) {
                       setFoundIconImageIndex((i) =>
                         i === foundIconImage().length - 1 ? 0 : i + 1
@@ -691,7 +693,7 @@ export function NewGame() {
                   }
                 }}
                 onKeyDown={(e) => {
-                  if (applicationStateContext.SGDBGames()) {
+                  if (SGDBGames()) {
                     if (e.key === "ArrowRight") {
                       setFoundIconImageIndex((i) =>
                         i === foundIconImage().length - 1 ? 0 : i + 1
@@ -771,7 +773,7 @@ export function NewGame() {
 
                     searchGameName();
                     selectedDataContext.setSelectedGameId(undefined);
-                    applicationStateContext.setSGDBGames(undefined);
+                    setSGDBGames(undefined);
                     setFoundGridImage(undefined);
                     setFoundHeroImage(undefined);
                     setFoundLogoImage(undefined);
@@ -882,8 +884,7 @@ export function NewGame() {
           </span>
           <Show
             when={
-              applicationStateContext.SGDBGames() &&
-              selectedDataContext.selectedGameId() === undefined
+              SGDBGames() && selectedDataContext.selectedGameId() === undefined
             }>
             <span class="opacity-80">
               {translateText("select the official name of your game")}
@@ -891,7 +892,7 @@ export function NewGame() {
           </Show>
         </div>
 
-        <Show when={applicationStateContext.SGDBGames()}>
+        <Show when={SGDBGames()}>
           <Show when={selectedDataContext.selectedGameId() === undefined}>
             <div class="gameInput flex w-[84rem] bg-[#E8E8E8cc] backdrop-blur-[10px] dark:bg-[#272727cc] max-large:w-[61rem]">
               <button
@@ -907,7 +908,7 @@ export function NewGame() {
               <div
                 id="SGDBGamesContainer"
                 class="SGDBGamesContainer flex gap-[5px] overflow-x-auto scroll-smooth">
-                <For each={applicationStateContext.SGDBGames()}>
+                <For each={SGDBGames()}>
                   {(foundGame) => {
                     return (
                       <button

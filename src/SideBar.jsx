@@ -1,4 +1,4 @@
-import { For, Show, onMount, useContext } from "solid-js";
+import { For, Show, onMount, useContext, createSignal } from "solid-js";
 import { produce } from "solid-js/store";
 import {
   getData,
@@ -23,7 +23,6 @@ import {
   GlobalContext,
   SelectedDataContext,
   ApplicationStateContext,
-  DataUpdateContext,
   UIContext
 } from "./Globals";
 import { GameCardSideBar } from "./components/GameCardSideBar";
@@ -33,7 +32,8 @@ export function SideBar() {
   const uiContext = useContext(UIContext);
   const selectedDataContext = useContext(SelectedDataContext);
   const applicationStateContext = useContext(ApplicationStateContext);
-  const dataUpdateContext = useContext(DataUpdateContext);
+
+  const [showContentSkipButton, setShowContentSkipButton] = createSignal(false);
 
   let scrollY = " ";
 
@@ -176,18 +176,18 @@ export function SideBar() {
               data-tooltip={translateText("close sidebar")}
               onKeyDown={(e) => {
                 if (e.key === "Tab" && e.shiftKey === false) {
-                  uiContext.setShowContentSkipButton(true);
+                  setShowContentSkipButton(true);
                 }
               }}>
               <ChevronArrows />
             </button>
           </div>
-          <Show when={uiContext.showContentSkipButton()}>
+          <Show when={showContentSkipButton()}>
             <button
               type="button"
               class="standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
-                uiContext.setShowContentSkipButton(false);
+                setShowContentSkipButton(false);
 
                 const firstGameCard = document.getElementById("firstGameCard");
 
@@ -199,11 +199,11 @@ export function SideBar() {
               }}
               onKeyDown={(e) => {
                 if (e.key === "Tab") {
-                  uiContext.setShowContentSkipButton(false);
+                  setShowContentSkipButton(false);
                 }
               }}
               onBlur={() => {
-                uiContext.setShowContentSkipButton(false);
+                setShowContentSkipButton(false);
               }}>
               {translateText("skip to games")}
             </button>
@@ -454,17 +454,17 @@ export function SideBar() {
                           onClick={() => {
                             openDialog("editFolderModal");
                             selectedDataContext.setSelectedFolder(folder);
-                            dataUpdateContext.setEditedFolderName(
+                            setEditedFolderName(
                               selectedDataContext.selectedFolder().name
                             );
-                            dataUpdateContext.setEditedHideFolder(
+                            setEditedHideFolder(
                               selectedDataContext.selectedFolder().hide
                             );
                           }}
                           onKeyDown={(e) => {
                             if (index() === 0) {
                               if (e.key === "Tab" && e.shiftKey === true) {
-                                uiContext.setShowContentSkipButton(true);
+                                setShowContentSkipButton(true);
                               }
                             }
                           }}
@@ -551,10 +551,10 @@ export function SideBar() {
                           openDialog("editFolderModal");
                           selectedDataContext.setSelectedFolder(folder);
 
-                          dataUpdateContext.setEditedFolderName(
+                          setEditedFolderName(
                             selectedDataContext.selectedFolder().name
                           );
-                          dataUpdateContext.setEditedHideFolder(
+                          setEditedHideFolder(
                             selectedDataContext.selectedFolder().hide
                           );
                         }}

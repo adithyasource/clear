@@ -1,45 +1,37 @@
 import { produce } from "solid-js/store";
-import { Switch, useContext, Match, Show } from "solid-js";
+import { Switch, useContext, Match, Show, createSignal } from "solid-js";
 import { closeDialog, getData, translateText, updateData } from "../Globals";
 import { Close, SaveDisk, TrashDelete } from "../libraries/Icons";
 
-import {
-  GlobalContext,
-  SelectedDataContext,
-  DataUpdateContext,
-  UIContext
-} from "../Globals";
+import { GlobalContext, SelectedDataContext, UIContext } from "../Globals";
 import { triggerToast } from "../Globals";
 
 export function EditFolder() {
   const globalContext = useContext(GlobalContext);
   const uiContext = useContext(UIContext);
   const selectedDataContext = useContext(SelectedDataContext);
-  const dataUpdateContext = useContext(DataUpdateContext);
+
+  const [editedFolderName, setEditedFolderName] = createSignal();
+  const [editedHideFolder, setEditedHideFolder] = createSignal();
 
   async function editFolder() {
-    if (dataUpdateContext.editedFolderName() === "") {
+    if (editedFolderName() === "") {
       triggerToast(translateText("no folder name"));
       return;
     }
 
-    if (
-      selectedDataContext.selectedFolder().name !==
-      dataUpdateContext.editedFolderName()
-    ) {
+    if (selectedDataContext.selectedFolder().name !== editedFolderName()) {
       let folderNameAlreadyExists = false;
 
       for (const folderName of Object.keys(globalContext.libraryData.folders)) {
-        if (dataUpdateContext.editedFolderName() === folderName) {
+        if (editedFolderName() === folderName) {
           folderNameAlreadyExists = true;
         }
       }
 
       if (folderNameAlreadyExists) {
         triggerToast(
-          `${dataUpdateContext.editedFolderName()} ${translateText(
-            "is already in your library"
-          )}`
+          `${editedFolderName()} ${translateText("is already in your library")}`
         );
         return;
       }
@@ -55,10 +47,10 @@ export function EditFolder() {
 
     globalContext.setLibraryData(
       produce((data) => {
-        data.folders[dataUpdateContext.editedFolderName()] = {
+        data.folders[editedFolderName()] = {
           ...selectedDataContext.selectedFolder(),
-          name: dataUpdateContext.editedFolderName(),
-          hide: dataUpdateContext.editedHideFolder()
+          name: editedFolderName(),
+          hide: editedHideFolder()
         };
 
         return data;
@@ -130,20 +122,17 @@ export function EditFolder() {
               <button
                 type="button"
                 onClick={() => {
-                  if (dataUpdateContext.editedHideFolder() === undefined) {
-                    dataUpdateContext.setEditedHideFolder(
+                  if (editedHideFolder() === undefined) {
+                    setEditedHideFolder(
                       !selectedDataContext.selectedGame().hide
                     );
                   } else {
-                    dataUpdateContext.setEditedHideFolder(
-                      !dataUpdateContext.editedHideFolder()
-                    );
+                    setEditedHideFolder(!editedHideFolder());
                   }
                 }}
                 class="relative cursor-pointer">
                 <Switch>
-                  <Match
-                    when={dataUpdateContext.editedHideFolder() === undefined}>
+                  <Match when={editedHideFolder() === undefined}>
                     <Show
                       when={selectedDataContext.selectedFolder().hide}
                       fallback={
@@ -162,7 +151,7 @@ export function EditFolder() {
                     </Show>
                   </Match>
 
-                  <Match when={dataUpdateContext.editedHideFolder() === true}>
+                  <Match when={editedHideFolder() === true}>
                     <div class="relative">
                       <div class="">
                         {translateText("hide in expanded view")}
@@ -173,7 +162,7 @@ export function EditFolder() {
                     </div>
                   </Match>
 
-                  <Match when={dataUpdateContext.editedHideFolder() === false}>
+                  <Match when={editedHideFolder() === false}>
                     <div class="">{translateText("hide in expanded view")}</div>
                   </Match>
                 </Switch>
@@ -228,7 +217,7 @@ export function EditFolder() {
               id=""
               class="w-full bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               onInput={(e) => {
-                dataUpdateContext.setEditedFolderName(e.currentTarget.value);
+                setEditedFolderName(e.currentTarget.value);
               }}
               placeholder={translateText("name of folder")}
               value={selectedDataContext.selectedFolder().name}
