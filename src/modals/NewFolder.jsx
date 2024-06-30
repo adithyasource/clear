@@ -1,6 +1,6 @@
 import { Show, useContext, createSignal } from "solid-js";
 import { produce } from "solid-js/store";
-import { closeDialog, getData, translateText, updateData } from "../Globals";
+import { closeDialog, translateText, updateData } from "../Globals";
 import { Close, SaveDisk } from "../libraries/Icons";
 
 import { GlobalContext, ApplicationStateContext, UIContext } from "../Globals";
@@ -60,7 +60,7 @@ export function NewFolder() {
       }}
       class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible">
       <div class="flex h-screen w-screen items-center justify-center align-middle bg-[#d1d1d166] dark:bg-[#12121266]">
-        <div class="w-[50%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
+        <div class="w-[60%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
           <div
             class={`flex justify-between ${
               globalContext.libraryData.userSettings.language !== "en"

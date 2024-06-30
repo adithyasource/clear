@@ -454,12 +454,6 @@ export function SideBar() {
                           onClick={() => {
                             openDialog("editFolderModal");
                             selectedDataContext.setSelectedFolder(folder);
-                            setEditedFolderName(
-                              selectedDataContext.selectedFolder().name
-                            );
-                            setEditedHideFolder(
-                              selectedDataContext.selectedFolder().hide
-                            );
                           }}
                           onKeyDown={(e) => {
                             if (index() === 0) {
@@ -550,13 +544,6 @@ export function SideBar() {
                         onClick={() => {
                           openDialog("editFolderModal");
                           selectedDataContext.setSelectedFolder(folder);
-
-                          setEditedFolderName(
-                            selectedDataContext.selectedFolder().name
-                          );
-                          setEditedHideFolder(
-                            selectedDataContext.selectedFolder().hide
-                          );
                         }}
                         data-tooltip={translateText("edit")}>
                         <Edit />

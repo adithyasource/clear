@@ -3,7 +3,6 @@ import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
 import { BaseDirectory, copyFile } from "@tauri-apps/api/fs";
 
 import {
-  getData,
   generateRandomString,
   translateText,
   updateData,
