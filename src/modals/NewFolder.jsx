@@ -56,10 +56,7 @@ export function NewFolder() {
     <dialog
       data-newFolderModal
       onClose={() => {
-        setFolderName(undefined);
-        setHideFolder(undefined);
         uiContext.setShowNewFolderModal(false);
-        getData();
       }}
       class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible">
       <div class="flex h-screen w-screen items-center justify-center align-middle bg-[#d1d1d166] dark:bg-[#12121266]">
@@ -106,11 +103,23 @@ export function NewFolder() {
                 type="button"
                 class="standardButton flex !w-max !h-full items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
                 onClick={() => {
-                  closeDialog("newFolderModal");
-                  getData();
+                  if (uiContext.showCloseConfirm()) {
+                    closeDialog("newFolderModal");
+                  } else {
+                    uiContext.setShowCloseConfirm(true);
+                  }
+                  setTimeout(() => {
+                    uiContext.setShowCloseConfirm(false);
+                  }, 1500);
                 }}
                 data-tooltip={translateText("close")}>
-                <Close />
+                {uiContext.showCloseConfirm() ? (
+                  <span class="text-[#FF3636] whitespace-nowrap">
+                    {translateText("hit again to confirm")}
+                  </span>
+                ) : (
+                  <Close />
+                )}
               </button>
             </div>
           </div>

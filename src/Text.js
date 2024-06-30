@@ -607,5 +607,12 @@ export const textLanguages = {
     hi: "",
     ru: "",
     fr: ""
+  },
+  "hit again to confirm": {
+    jp: "",
+    es: "",
+    hi: "",
+    ru: "",
+    fr: ""
   }
 };

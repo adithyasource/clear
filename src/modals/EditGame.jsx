@@ -317,17 +317,7 @@ export function EditGame() {
         e.preventDefault();
       }}
       onClose={() => {
-        setEditedFavouriteGame();
-        setEditedGameName(undefined);
-        setEditedLocatedGridImage(undefined);
-        setEditedLocatedHeroImage(undefined);
-        setEditedLocatedLogo(undefined);
-        setEditedLocatedIcon(undefined);
-        uiContext.setShowDeleteConfirm(false);
-        setEditedlocatedGame(undefined);
-
         uiContext.setShowEditGameModal(false);
-        getData();
       }}
       class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible">
       <div class="flex h-screen w-screen flex-col items-center justify-center gap-3 bg-[#d1d1d1cc] dark:bg-[#121212cc]">
@@ -410,11 +400,23 @@ export function EditGame() {
               type="button"
               class="standardButton flex items-center !w-max !h-full !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
               onClick={() => {
-                closeDialog("editGameModal");
-                getData();
+                if (uiContext.showCloseConfirm()) {
+                  closeDialog("editGameModal");
+                } else {
+                  uiContext.setShowCloseConfirm(true);
+                }
+                setTimeout(() => {
+                  uiContext.setShowCloseConfirm(false);
+                }, 1500);
               }}
               data-tooltip={translateText("close")}>
-              <Close />
+              {uiContext.showCloseConfirm() ? (
+                <span class="text-[#FF3636] whitespace-nowrap">
+                  {translateText("hit again to confirm")}
+                </span>
+              ) : (
+                <Close />
+              )}
             </button>
           </div>
         </div>

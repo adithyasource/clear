@@ -96,9 +96,27 @@ function App() {
 
       if (e.key === "Escape") {
         e.preventDefault();
-
         if (anyDialogOpen) {
-          closeDialogImmediately(currentlyOpenDialog);
+          if (
+            [
+              "data-newgamemodal",
+              "data-newfoldermodal",
+              "data-editfoldermodal",
+              "data-editgamemodal"
+            ].includes(currentlyOpenDialog.getAttributeNames()[0])
+          ) {
+            if (uiContext.showCloseConfirm()) {
+              closeDialogImmediately(currentlyOpenDialog);
+            } else {
+              uiContext.setShowCloseConfirm(true);
+
+              setTimeout(() => {
+                uiContext.setShowCloseConfirm(false);
+              }, 1500);
+            }
+          } else {
+            closeDialogImmediately(currentlyOpenDialog);
+          }
         }
       }
 

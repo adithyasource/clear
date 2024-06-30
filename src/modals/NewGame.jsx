@@ -335,20 +335,6 @@ export function NewGame() {
         e.preventDefault();
       }}
       onClose={() => {
-        setFavouriteGame();
-        setGameName("");
-        setLocatedGridImage("");
-        setLocatedHeroImage("");
-        setLocatedLogo("");
-        setlocatedGame(undefined);
-        setLocatedIcon("");
-        setFoundGridImage(undefined);
-        setFoundHeroImage(undefined);
-        setFoundLogoImage(undefined);
-        setFoundIconImage(undefined);
-        selectedDataContext.setSelectedGameId(undefined);
-        setSGDBGames(undefined);
-
         uiContext.setShowNewGameModal(false);
       }}
       class="backdrop:bg-transparent !p-0 overflow-visible">
@@ -391,11 +377,23 @@ export function NewGame() {
               type="button"
               class="standardButton flex items-center !w-max !h-full !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
               onClick={() => {
-                closeDialog("newGameModal");
-                getData();
+                if (uiContext.showCloseConfirm()) {
+                  closeDialog("newGameModal");
+                } else {
+                  uiContext.setShowCloseConfirm(true);
+                }
+                setTimeout(() => {
+                  uiContext.setShowCloseConfirm(false);
+                }, 1500);
               }}
               data-tooltip={translateText("close")}>
-              <Close />
+              {uiContext.showCloseConfirm() ? (
+                <span class="text-[#FF3636] whitespace-nowrap">
+                  {translateText("hit again to confirm")}
+                </span>
+              ) : (
+                <Close />
+              )}
             </button>
           </div>
         </div>

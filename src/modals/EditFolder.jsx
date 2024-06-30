@@ -1,6 +1,6 @@
 import { produce } from "solid-js/store";
 import { Switch, useContext, Match, Show, createSignal } from "solid-js";
-import { closeDialog, getData, translateText, updateData } from "../Globals";
+import { closeDialog, translateText, updateData } from "../Globals";
 import { Close, SaveDisk, TrashDelete } from "../libraries/Icons";
 
 import { GlobalContext, SelectedDataContext, UIContext } from "../Globals";
@@ -100,7 +100,6 @@ export function EditFolder() {
       data-editFolderModal
       onClose={() => {
         uiContext.setShowEditFolderModal(false);
-        getData();
       }}
       class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible">
       <div class="flex h-screen w-screen items-center justify-center align-middle bg-[#d1d1d166] dark:bg-[#12121266]">
@@ -200,11 +199,23 @@ export function EditFolder() {
                 type="button"
                 class="standardButton flex !w-max !h-full items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
                 onClick={() => {
-                  closeDialog("editFolderModal");
-                  getData();
+                  if (uiContext.showCloseConfirm()) {
+                    closeDialog("editFolderModal");
+                  } else {
+                    uiContext.setShowCloseConfirm(true);
+                  }
+                  setTimeout(() => {
+                    uiContext.setShowCloseConfirm(false);
+                  }, 1500);
                 }}
                 data-tooltip={translateText("close")}>
-                <Close />
+                {uiContext.showCloseConfirm() ? (
+                  <span class="text-[#FF3636] whitespace-nowrap">
+                    {translateText("hit again to confirm")}
+                  </span>
+                ) : (
+                  <Close />
+                )}
               </button>
             </div>
           </div>
