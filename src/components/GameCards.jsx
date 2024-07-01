@@ -39,7 +39,7 @@ export function GameCards(props) {
                 globalContext.libraryData.games[gameName]
               );
 
-              openDialog("gamePopup");
+              openDialog("gamePopUp");
             }}>
             <Show
               when={globalContext.libraryData.games[gameName].favourite}

@@ -243,11 +243,11 @@ export async function getData() {
         document.documentElement.classList.add("dark");
       }
 
-      closeDialog("newGameModal");
-      closeDialog("newFolderModal");
-      closeDialog("gamePopup");
-      closeDialog("editGameModal");
-      closeDialog("editFolderModal");
+      closeDialog("newGame");
+      closeDialog("newFolder");
+      closeDialog("gamePopUp");
+      closeDialog("editGame");
+      closeDialog("editFolder");
     } else createEmptyLibrary();
   } else {
     createEmptyLibrary();
@@ -290,7 +290,7 @@ export function generateRandomString() {
 }
 
 export async function importSteamGames() {
-  openDialog("loadingModal");
+  openDialog("loading");
 
   const connectedToInternet = await checkIfConnectedToInternet();
 
@@ -298,7 +298,7 @@ export async function importSteamGames() {
     const steamVDFData = await invoke("read_steam_vdf");
 
     if (steamVDFData === "error") {
-      closeDialog("loadingModal");
+      closeDialog("loading");
 
       triggerToast(
         translateText(
@@ -417,13 +417,13 @@ export async function importSteamGames() {
     );
 
     await updateData().then(() => {
-      closeDialog("loadingModal");
-      closeDialog("settingsModal");
+      closeDialog("loading");
+      closeDialog("settings");
       setTotalImportedSteamGames(0);
       setTotalSteamGames(0);
     });
   } else {
-    closeDialog("loadingModal");
+    closeDialog("loading");
     triggerToast(translateText("you're not connected to the internet :("));
   }
 }
@@ -473,40 +473,42 @@ export function triggerToast(message) {
 
 export function openDialog(dialogData) {
   switch (dialogData) {
-    case "newGameModal":
+    case "newGame":
       setShowNewGameModal(true);
       break;
 
-    case "editGameModal":
+    case "editGame":
       setShowEditGameModal(true);
       break;
 
-    case "newFolderModal":
+    case "newFolder":
       setShowNewFolderModal(true);
       break;
 
-    case "editFolderModal":
+    case "editFolder":
       setShowEditFolderModal(true);
       break;
 
-    case "gamePopup":
+    case "gamePopUp":
       setShowGamePopUpModal(true);
       break;
 
-    case "notepadModal":
+    case "notepad":
       setShowNotepadModal(true);
       break;
 
-    case "settingsModal":
+    case "settings":
       setShowSettingsModal(true);
       break;
 
-    case "loadingModal":
+    case "loading":
       setShowLoadingModal(true);
       break;
   }
 
-  const dialogRef = document.querySelector(`[data-${dialogData}]`);
+  const dialogRef = document.querySelector(`[data-modal="${dialogData}"]`);
+  console.log(dialogData);
+  console.log(dialogRef);
 
   dialogRef.classList.remove("hideDialog");
   dialogRef.showModal();
@@ -519,35 +521,35 @@ export function openDialog(dialogData) {
 export function closeDialog(dialogData, ref) {
   function updateModalShowState() {
     switch (dialogData) {
-      case "newGameModal":
+      case "newGame":
         setShowNewGameModal(false);
         break;
 
-      case "editGameModal":
+      case "editGame":
         setShowEditGameModal(false);
         break;
 
-      case "newFolderModal":
+      case "newFolder":
         setShowNewFolderModal(false);
         break;
 
-      case "editFolderModal":
+      case "editFolder":
         setShowEditFolderModal(false);
         break;
 
-      case "gamePopup":
+      case "gamePopUp":
         setShowGamePopUpModal(false);
         break;
 
-      case "notepadModal":
+      case "notepad":
         setShowNotepadModal(false);
         break;
 
-      case "settingsModal":
+      case "settings":
         setShowSettingsModal(false);
         break;
 
-      case "loadingModal":
+      case "loading":
         setShowLoadingModal(false);
         break;
     }
@@ -567,7 +569,7 @@ export function closeDialog(dialogData, ref) {
       }
     });
   } else {
-    const dialogRef = document.querySelector(`[data-${dialogData}]`);
+    const dialogRef = document.querySelector(`[data-modal="${dialogData}"]`);
 
     console.log(dialogRef);
     dialogRef.classList.remove("showDialog");

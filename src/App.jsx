@@ -98,12 +98,9 @@ function App() {
         e.preventDefault();
         if (anyDialogOpen) {
           if (
-            [
-              "data-newgamemodal",
-              "data-newfoldermodal",
-              "data-editfoldermodal",
-              "data-editgamemodal"
-            ].includes(currentlyOpenDialog.getAttributeNames()[0])
+            ["newGame", "editGame", "newFolder", "editFolder"].includes(
+              currentlyOpenDialog.getAttribute("data-modal")
+            )
           ) {
             if (uiContext.showCloseConfirm()) {
               closeDialogImmediately(currentlyOpenDialog);
@@ -186,10 +183,10 @@ function App() {
           case "KeyN":
             e.preventDefault();
             if (uiContext.showNewGameModal()) {
-              closeDialog("newGameModal");
+              closeDialog("newGame");
             } else {
               if (!anyDialogOpen) {
-                openDialog("newGameModal");
+                openDialog("newGame");
               } else {
                 triggerToast(
                   translateText("close current dialog before opening another")
@@ -201,10 +198,10 @@ function App() {
           case "KeyM":
             e.preventDefault();
             if (uiContext.showNewFolderModal()) {
-              closeDialog("newFolderModal");
+              closeDialog("newFolder");
             } else {
               if (!anyDialogOpen) {
-                openDialog("newFolderModal");
+                openDialog("newFolder");
               } else {
                 triggerToast(
                   translateText("close current dialog before opening another")
@@ -216,10 +213,10 @@ function App() {
           case "KeyL":
             e.preventDefault();
             if (uiContext.showNotepadModal()) {
-              closeDialog("notepadModal");
+              closeDialog("notepad");
             } else {
               if (!anyDialogOpen) {
-                openDialog("notepadModal");
+                openDialog("notepad");
               } else {
                 triggerToast(
                   translateText("close current dialog before opening another")
@@ -230,11 +227,11 @@ function App() {
 
           case "Period":
             if (uiContext.showSettingsModal()) {
-              closeDialog("settingsModal");
+              closeDialog("settings");
             } else {
               if (!anyDialogOpen) {
                 e.preventDefault();
-                openDialog("settingsModal");
+                openDialog("settings");
               } else {
                 triggerToast(
                   translateText("close current dialog before opening another")

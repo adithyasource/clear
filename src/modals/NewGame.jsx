@@ -77,7 +77,7 @@ export function NewGame() {
     let logoFileName;
     let iconFileName;
 
-    openDialog("loadingModal");
+    openDialog("loading");
 
     if (foundGridImage()) {
       gridImageFileName = `${generateRandomString()}.png`;
@@ -176,7 +176,7 @@ export function NewGame() {
 
     await updateData();
 
-    closeDialog("loadingModal");
+    closeDialog("loading");
   }
 
   async function locateGame() {
@@ -329,7 +329,7 @@ export function NewGame() {
 
   return (
     <dialog
-      data-newGameModal
+      data-modal="newGame"
       onDragStart={(e) => {
         e.preventDefault();
       }}
@@ -377,7 +377,7 @@ export function NewGame() {
               class="standardButton flex items-center !w-max !h-full !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
               onClick={() => {
                 if (uiContext.showCloseConfirm()) {
-                  closeDialog("newGameModal");
+                  closeDialog("newGame");
                 } else {
                   uiContext.setShowCloseConfirm(true);
                 }
@@ -914,7 +914,6 @@ export function NewGame() {
                         onClick={() => {
                           selectedDataContext.setSelectedGameId(undefined);
                           selectedDataContext.setSelectedGameId(foundGame.id);
-                          document.querySelector("[data-newGameModal]").focus();
                           getGameAssets();
                         }}>
                         {foundGame.name}

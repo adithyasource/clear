@@ -22,7 +22,7 @@ export function Notepad() {
   return (
     <>
       <dialog
-        data-notepadModal
+        data-modal="notepad"
         onClose={() => {
           setNotepadValue(globalContext.libraryData.notepad || "");
           uiContext.setShowNotepadModal(false);
@@ -41,7 +41,7 @@ export function Notepad() {
                 type="button"
                 class="standardButton !w-max aspect-square !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
                 onClick={() => {
-                  closeDialog("notepadModal");
+                  closeDialog("notepad");
                   getData();
                 }}
                 data-tooltip={translateText("close")}>

@@ -16,7 +16,7 @@ export function GamePopUp() {
 
   return (
     <dialog
-      data-gamePopup
+      data-modal="gamePopUp"
       class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible"
       onClose={() => {
         uiContext.setShowGamePopUpModal(false);
@@ -64,8 +64,8 @@ export function GamePopUp() {
               type="button"
               class="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
               onClick={() => {
-                closeDialog("gamePopup");
-                openDialog("editGameModal");
+                closeDialog("gamePopUp");
+                openDialog("editGame");
               }}
               data-tooltip={translateText("settings")}>
               <Settings />
@@ -74,7 +74,7 @@ export function GamePopUp() {
               type="button"
               class="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
               onClick={() => {
-                closeDialog("gamePopup");
+                closeDialog("gamePopUp");
               }}
               data-tooltip={translateText("close")}>
               <Close />

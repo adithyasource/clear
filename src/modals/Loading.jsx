@@ -10,7 +10,7 @@ export function Loading() {
 
   return (
     <dialog
-      data-loadingModal
+      data-modal="loading"
       onClose={() => {
         uiContext.setShowLoadingModal(false);
       }}

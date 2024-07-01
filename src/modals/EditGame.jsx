@@ -281,7 +281,7 @@ export function EditGame() {
 
     await updateData();
     selectedDataContext.setSelectedGame({});
-    closeDialog("editGameModal");
+    closeDialog("editGame");
   }
 
   async function deleteGame() {
@@ -312,7 +312,7 @@ export function EditGame() {
 
   return (
     <dialog
-      data-editGameModal
+      data-modal="editGame"
       onDragStart={(e) => {
         e.preventDefault();
       }}
@@ -401,7 +401,7 @@ export function EditGame() {
               class="standardButton flex items-center !w-max !h-full !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
               onClick={() => {
                 if (uiContext.showCloseConfirm()) {
-                  closeDialog("editGameModal");
+                  closeDialog("editGame");
                 } else {
                   uiContext.setShowCloseConfirm(true);
                 }

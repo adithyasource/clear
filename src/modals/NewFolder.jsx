@@ -49,12 +49,12 @@ export function NewFolder() {
     );
 
     await updateData();
-    closeDialog("newFolderModal");
+    closeDialog("newFolder");
   }
 
   return (
     <dialog
-      data-newFolderModal
+      data-modal="newFolder"
       onClose={() => {
         uiContext.setShowNewFolderModal(false);
       }}
@@ -104,7 +104,7 @@ export function NewFolder() {
                 class="standardButton flex !w-max !h-full items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
                 onClick={() => {
                   if (uiContext.showCloseConfirm()) {
-                    closeDialog("newFolderModal");
+                    closeDialog("newFolder");
                   } else {
                     uiContext.setShowCloseConfirm(true);
                   }

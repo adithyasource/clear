@@ -44,7 +44,7 @@ export function GameCardSideBar(props) {
         await selectedDataContext.setSelectedGame(
           globalContext.libraryData.games[props.gameName]
         );
-        openDialog("gamePopup");
+        openDialog("gamePopUp");
       }}>
       <Show when={globalContext.libraryData.games[props.gameName].icon}>
         <img

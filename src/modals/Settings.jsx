@@ -23,7 +23,7 @@ export function Settings() {
   return (
     <>
       <dialog
-        data-settingsModal
+        data-modal="settings"
         onClose={() => {
           uiContext.setShowSettingsLanguageSelector(false);
           uiContext.setShowSettingsModal(false);
@@ -42,7 +42,7 @@ export function Settings() {
                 type="button"
                 class="standardButton !w-max aspect-square !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
                 onClick={() => {
-                  closeDialog("settingsModal");
+                  closeDialog("settings");
                   getData();
                 }}
                 data-tooltip={translateText("close")}>

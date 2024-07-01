@@ -59,7 +59,7 @@ export function EditFolder() {
 
     await updateData();
 
-    closeDialog("editFolderModal");
+    closeDialog("editFolder");
   }
 
   async function deleteFolder() {
@@ -97,7 +97,7 @@ export function EditFolder() {
 
   return (
     <dialog
-      data-editFolderModal
+      data-modal="editFolder"
       onClose={() => {
         uiContext.setShowEditFolderModal(false);
       }}
@@ -200,7 +200,7 @@ export function EditFolder() {
                 class="standardButton flex !w-max !h-full items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
                 onClick={() => {
                   if (uiContext.showCloseConfirm()) {
-                    closeDialog("editFolderModal");
+                    closeDialog("editFolder");
                   } else {
                     uiContext.setShowCloseConfirm(true);
                   }

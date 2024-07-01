@@ -452,7 +452,7 @@ export function SideBar() {
                           type="button"
                           class="w-[25.25px] p-2 duration-150 motion-reduce:duration-0 hover:bg-[#D6D6D6] dark:hover:bg-[#232323] tooltip-delayed-bottom"
                           onClick={() => {
-                            openDialog("editFolderModal");
+                            openDialog("editFolder");
                             selectedDataContext.setSelectedFolder(folder);
                           }}
                           onKeyDown={(e) => {
@@ -542,7 +542,7 @@ export function SideBar() {
                         type="button"
                         class="w-[25.25px] p-2 duration-150 motion-reduce:duration-0 hover:bg-[#D6D6D6] dark:hover:bg-[#232323] tooltip-delayed-bottom"
                         onClick={() => {
-                          openDialog("editFolderModal");
+                          openDialog("editFolder");
                           selectedDataContext.setSelectedFolder(folder);
                         }}
                         data-tooltip={translateText("edit")}>
@@ -619,7 +619,7 @@ export function SideBar() {
               type="button"
               class="standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
-                openDialog("newGameModal");
+                openDialog("newGame");
               }}>
               {translateText("add game")}
               <div class="opacity-50">
@@ -630,7 +630,7 @@ export function SideBar() {
               type="button"
               class="standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
-                openDialog("newFolderModal");
+                openDialog("newFolder");
               }}>
               {translateText("add folder")}
               <div class="opacity-50">
@@ -651,7 +651,7 @@ export function SideBar() {
                 uiContext.showNewVersionAvailable() ? "!w-[80%]" : ""
               } whitespace-nowrap`}
               onClick={() => {
-                openDialog("notepadModal");
+                openDialog("notepad");
               }}>
               {translateText("notepad")}
               <div class="opacity-50">
@@ -662,7 +662,7 @@ export function SideBar() {
               type="button"
               class=" standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
-                openDialog("settingsModal");
+                openDialog("settings");
               }}>
               {translateText("settings")}
               <Show when={uiContext.showNewVersionAvailable()}>
