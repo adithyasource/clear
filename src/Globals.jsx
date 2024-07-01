@@ -19,9 +19,9 @@ export const SelectedDataContext = createContext();
 export const ApplicationStateContext = createContext();
 export const SteamDataContext = createContext();
 
-// * Global Store
+// * global Store
 export const [libraryData, setLibraryData] = createStore({
-  // Default Values
+  // default values
   games: {},
   folders: {},
   notepad: "",
@@ -38,7 +38,7 @@ export const [libraryData, setLibraryData] = createStore({
   }
 });
 
-// * UI
+// * ui
 const [showSettingsLanguageSelector, setShowSettingsLanguageSelector] =
   createSignal(false);
 const [showDeleteConfirm, setShowDeleteConfirm] = createSignal(false);
@@ -56,12 +56,12 @@ const [showNotepadModal, setShowNotepadModal] = createSignal(false);
 const [showSettingsModal, setShowSettingsModal] = createSignal(false);
 const [showLoadingModal, setShowLoadingModal] = createSignal(false);
 
-// * Selected Data Signals
+// * selected data signals
 const [selectedGame, setSelectedGame] = createSignal({});
 const [selectedFolder, setSelectedFolder] = createSignal([]);
 const [selectedGameId, setSelectedGameId] = createSignal();
 
-// * Application State Signals
+// * application state signals
 const [currentGames, setCurrentGames] = createSignal([]);
 const [currentFolders, setCurrentFolders] = createSignal([]);
 
@@ -72,11 +72,11 @@ const [latestVersion, setLatestVersion] = createSignal("");
 const [appDataDirPath, setAppDataDirPath] = createSignal({});
 const [windowWidth, setWindowWidth] = createSignal(window.innerWidth);
 
-// * Steam Data Signals
+// * steam data signals
 const [totalSteamGames, setTotalSteamGames] = createSignal(0);
 const [totalImportedSteamGames, setTotalImportedSteamGames] = createSignal(0);
 
-// * Exporting Context Providers
+// * exporting context providers
 
 export function GlobalContextProvider(props) {
   const context = {
@@ -185,7 +185,7 @@ export function SteamDataContextProvider(props) {
   );
 }
 
-// * Global Functions
+// * global functions
 
 export async function createEmptyLibrary() {
   await createDir("heroes", {
@@ -235,7 +235,7 @@ export async function getData() {
 
       console.log("data fetched");
 
-      // ? Checks currentTheme and adds it to the document classList for Tailwind
+      // ? checks currenttheme and adds it to the document classlist for tailwind
 
       if (libraryData.userSettings.currentTheme === "light") {
         document.documentElement.classList.remove("dark");

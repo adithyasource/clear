@@ -1,4 +1,4 @@
-// Prevents additional console window on Windows in release, DO NOT REMOVE!!
+// prevents additional console window on windows in release, do not remove!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use std::fs;

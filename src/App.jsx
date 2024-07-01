@@ -252,7 +252,7 @@ function App() {
             }
             break;
 
-          // ? Disabling Misc WebView Shortcuts
+          // ? disabling misc webview shortcuts
 
           case "KeyR":
             e.preventDefault();

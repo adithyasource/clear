@@ -1,4 +1,4 @@
-// * Fuzzy search from https://github.com/bevacqua/fuzzysearch
+// * fuzzy search from https://github.com/bevacqua/fuzzysearch
 
 export function fuzzysearch(needle, haystack) {
   const hlen = haystack.length;
