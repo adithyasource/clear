@@ -45,6 +45,10 @@ export function EditFolder() {
       })
     );
 
+    if (!editedFolderName()) {
+      setEditedFolderName(selectedDataContext.selectedFolder().name);
+    }
+
     globalContext.setLibraryData(
       produce((data) => {
         data.folders[editedFolderName()] = {

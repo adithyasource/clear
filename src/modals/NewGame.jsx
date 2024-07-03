@@ -177,6 +177,7 @@ export function NewGame() {
     await updateData();
 
     closeDialog("loading");
+    closeDialog("newGame");
   }
 
   async function locateGame() {

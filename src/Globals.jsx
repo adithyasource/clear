@@ -242,12 +242,6 @@ export async function getData() {
       } else {
         document.documentElement.classList.add("dark");
       }
-
-      closeDialog("newGame");
-      closeDialog("newFolder");
-      closeDialog("gamePopUp");
-      closeDialog("editGame");
-      closeDialog("editFolder");
     } else createEmptyLibrary();
   } else {
     createEmptyLibrary();

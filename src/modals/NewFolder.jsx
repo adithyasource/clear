@@ -49,6 +49,7 @@ export function NewFolder() {
     );
 
     await updateData();
+
     closeDialog("newFolder");
   }
 

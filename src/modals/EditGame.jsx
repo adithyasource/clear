@@ -5,7 +5,6 @@ import { BaseDirectory, copyFile } from "@tauri-apps/api/fs";
 import { open } from "@tauri-apps/api/dialog";
 import { invoke } from "@tauri-apps/api";
 import {
-  getData,
   generateRandomString,
   translateText,
   updateData,
