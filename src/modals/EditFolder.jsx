@@ -62,7 +62,6 @@ export function EditFolder() {
     );
 
     await updateData();
-
     closeDialog("editFolder");
   }
 
@@ -97,6 +96,7 @@ export function EditFolder() {
     );
 
     await updateData();
+    closeDialog("editFolder");
   }
 
   return (

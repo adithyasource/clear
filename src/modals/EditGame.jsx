@@ -279,7 +279,6 @@ export function EditGame() {
     }
 
     await updateData();
-    selectedDataContext.setSelectedGame({});
     closeDialog("editGame");
   }
 
@@ -307,6 +306,7 @@ export function EditGame() {
     }
 
     await updateData();
+    closeDialog("editGame");
   }
 
   return (
