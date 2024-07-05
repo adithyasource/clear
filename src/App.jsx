@@ -14,7 +14,8 @@ import {
   closeDialog,
   triggerToast,
   toggleSideBar,
-  closeDialogImmediately
+  closeDialogImmediately,
+  checkIfConnectedToInternet
 } from "./Globals";
 
 import "./App.css";
@@ -284,15 +285,20 @@ function App() {
     addEventListeners();
 
     // check if new version is available and set variable
-    fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?version=a`).then((res) =>
-      res.json().then((jsonres) => {
-        applicationStateContext.setLatestVersion(jsonres.clearVersion);
-        applicationStateContext.latestVersion().replaceAll(".", "") >
-        applicationStateContext.appVersion().replaceAll(".", "")
-          ? uiContext.setShowNewVersionAvailable(true)
-          : uiContext.setShowNewVersionAvailable(false);
-      })
-    );
+
+    if (await checkIfConnectedToInternet()) {
+      fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?version=a`).then((res) =>
+        res.json().then((jsonres) => {
+          applicationStateContext.setLatestVersion(jsonres.clearVersion);
+          applicationStateContext.latestVersion().replaceAll(".", "") >
+          applicationStateContext.appVersion().replaceAll(".", "")
+            ? uiContext.setShowNewVersionAvailable(true)
+            : uiContext.setShowNewVersionAvailable(false);
+        })
+      );
+    } else {
+      triggerToast("not connected to the internet :(");
+    }
   });
 
   return (

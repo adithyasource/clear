@@ -592,14 +592,9 @@ export async function toggleSideBar() {
 }
 
 export async function checkIfConnectedToInternet() {
-  let connectedToInternet = false;
+  let connectedToInternet = await invoke("check_connection");
 
-  try {
-    await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?version=a`);
-    connectedToInternet = true;
-  } catch {
-    connectedToInternet = false;
-  }
+  connectedToInternet = connectedToInternet === "true";
 
   return connectedToInternet;
 }

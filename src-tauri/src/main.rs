@@ -52,6 +52,20 @@ fn download_image(link: &str, location: &str) {
         .output();
 }
 
+#[tauri::command]
+fn check_connection() -> String {
+    let command_str = "ping -n 1 www.google.com > nul && echo true || echo false";
+
+    let output = Command::new("cmd")
+        .args(&["/C", command_str])
+        .output()
+        .expect("failed to execute process");
+
+    let output_str = String::from_utf8_lossy(&output.stdout);
+
+    output_str.trim().to_string()
+}
+
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
@@ -59,7 +73,8 @@ fn main() {
             close_app,
             read_steam_vdf,
             show_window,
-            download_image
+            download_image,
+            check_connection
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
