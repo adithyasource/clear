@@ -596,5 +596,9 @@ export async function checkIfConnectedToInternet() {
 
   connectedToInternet = connectedToInternet === "true";
 
+  if (!connectedToInternet) {
+    triggerToast("not connected to the internet :(");
+  }
+
   return connectedToInternet;
 }

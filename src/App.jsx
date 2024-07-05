@@ -284,20 +284,29 @@ function App() {
     invoke("show_window");
     addEventListeners();
 
-    // check if new version is available and set variable
-
     if (await checkIfConnectedToInternet()) {
-      fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?version=a`).then((res) =>
-        res.json().then((jsonres) => {
-          applicationStateContext.setLatestVersion(jsonres.clearVersion);
-          applicationStateContext.latestVersion().replaceAll(".", "") >
-          applicationStateContext.appVersion().replaceAll(".", "")
-            ? uiContext.setShowNewVersionAvailable(true)
-            : uiContext.setShowNewVersionAvailable(false);
-        })
-      );
-    } else {
-      triggerToast("not connected to the internet :(");
+      // check if new version is available and set variable
+      let response;
+
+      try {
+        response = await fetch(
+          `${import.meta.env.VITE_CLEAR_API_URL}/?version=a`
+        );
+      } catch (error) {
+        triggerToast(
+          `could not check if newer version available: ${error.message.toLowerCase()}`
+        );
+      }
+
+      if (response) {
+        const clearVersion = await response.json();
+
+        applicationStateContext.setLatestVersion(clearVersion.clearVersion);
+        applicationStateContext.latestVersion().replaceAll(".", "") >
+        applicationStateContext.appVersion().replaceAll(".", "")
+          ? uiContext.setShowNewVersionAvailable(true)
+          : uiContext.setShowNewVersionAvailable(false);
+      }
     }
   });
 
