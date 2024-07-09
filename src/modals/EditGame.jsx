@@ -34,6 +34,8 @@ export function EditGame() {
   const [editedLocatedIcon, setEditedLocatedIcon] = createSignal();
   const [editedLocatedGame, setEditedlocatedGame] = createSignal();
 
+  const [showDeleteConfirm, setShowDeleteConfirm] = createSignal(false);
+
   async function locateEditedGame() {
     setEditedlocatedGame(
       await open({
@@ -379,17 +381,15 @@ export function EditGame() {
             <button
               type="button"
               onClick={() => {
-                uiContext.showDeleteConfirm()
-                  ? deleteGame()
-                  : uiContext.setShowDeleteConfirm(true);
+                showDeleteConfirm() ? deleteGame() : setShowDeleteConfirm(true);
 
                 setTimeout(() => {
-                  uiContext.setShowDeleteConfirm(false);
+                  setShowDeleteConfirm(false);
                 }, 1500);
               }}
               class="standardButton flex items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] ">
               <span class="w-max text-[#FF3636]">
-                {uiContext.showDeleteConfirm()
+                {showDeleteConfirm()
                   ? translateText("confirm?")
                   : translateText("delete")}
               </span>

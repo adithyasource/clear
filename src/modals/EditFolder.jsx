@@ -14,6 +14,8 @@ export function EditFolder() {
   const [editedFolderName, setEditedFolderName] = createSignal();
   const [editedHideFolder, setEditedHideFolder] = createSignal();
 
+  const [showDeleteConfirm, setShowDeleteConfirm] = createSignal(false);
+
   async function editFolder() {
     if (editedFolderName() === "") {
       triggerToast(translateText("no folder name"));
@@ -182,17 +184,17 @@ export function EditFolder() {
               <button
                 type="button"
                 onClick={() => {
-                  uiContext.showDeleteConfirm()
+                  showDeleteConfirm()
                     ? deleteFolder()
-                    : uiContext.setShowDeleteConfirm(true);
+                    : setShowDeleteConfirm(true);
 
                   setTimeout(() => {
-                    uiContext.setShowDeleteConfirm(false);
+                    setShowDeleteConfirm(false);
                   }, 1500);
                 }}
                 class="standardButton flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]">
                 <span class="text-[#FF3636]">
-                  {uiContext.showDeleteConfirm()
+                  {showDeleteConfirm()
                     ? translateText("confirm?")
                     : translateText("delete")}
                 </span>

@@ -41,7 +41,6 @@ export const [libraryData, setLibraryData] = createStore({
 // * ui
 const [showSettingsLanguageSelector, setShowSettingsLanguageSelector] =
   createSignal(false);
-const [showDeleteConfirm, setShowDeleteConfirm] = createSignal(false);
 const [showCloseConfirm, setShowCloseConfirm] = createSignal(false);
 const [showImportAndOverwriteConfirm, setShowImportAndOverwriteConfirm] =
   createSignal(false);
@@ -95,8 +94,6 @@ export function UIContextProvider(props) {
   const context = {
     showSettingsLanguageSelector,
     setShowSettingsLanguageSelector,
-    showDeleteConfirm,
-    setShowDeleteConfirm,
     showCloseConfirm,
     setShowCloseConfirm,
     showImportAndOverwriteConfirm,
