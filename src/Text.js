@@ -614,5 +614,12 @@ export const textLanguages = {
     hi: "",
     ru: "",
     fr: ""
+  },
+  "arrow keys": {
+    jp: "",
+    es: "",
+    hi: "",
+    ru: "",
+    fr: ""
   }
 };

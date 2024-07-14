@@ -54,6 +54,7 @@ const [showGamePopUpModal, setShowGamePopUpModal] = createSignal(false);
 const [showNotepadModal, setShowNotepadModal] = createSignal(false);
 const [showSettingsModal, setShowSettingsModal] = createSignal(false);
 const [showLoadingModal, setShowLoadingModal] = createSignal(false);
+const [userIsTabbing, setUserIsTabbing] = createSignal(false);
 
 // * selected data signals
 const [selectedGame, setSelectedGame] = createSignal({});
@@ -115,7 +116,9 @@ export function UIContextProvider(props) {
     showSettingsModal,
     setShowSettingsModal,
     showLoadingModal,
-    setShowLoadingModal
+    setShowLoadingModal,
+    userIsTabbing,
+    setUserIsTabbing
   };
 
   return (

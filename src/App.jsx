@@ -50,6 +50,9 @@ function App() {
         document.body.classList.add("user-is-tabbing");
         window.removeEventListener("keydown", handleFirstTab);
         window.addEventListener("mousedown", handleMouseDown);
+        uiContext.setUserIsTabbing(
+          document.body.classList.contains("user-is-tabbing")
+        );
       }
     }
 
@@ -57,6 +60,9 @@ function App() {
       document.body.classList.remove("user-is-tabbing");
       window.removeEventListener("mousedown", handleMouseDown);
       window.addEventListener("keydown", handleFirstTab);
+      uiContext.setUserIsTabbing(
+        document.body.classList.contains("user-is-tabbing")
+      );
     }
 
     window.addEventListener("keydown", handleFirstTab);

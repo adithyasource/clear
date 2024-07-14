@@ -426,14 +426,14 @@ export function NewGame() {
             }}
             onKeyDown={(e) => {
               if (SGDBGames()) {
-                if (e.key === "ArrowRight") {
+                if (e.key === "ArrowRight" || e.key === "ArrowUp") {
                   setFoundGridImageIndex((i) =>
                     i === foundGridImage().length - 1 ? 0 : i + 1
                   );
                   setShowGridImageLoading(true);
                 }
 
-                if (e.key === "ArrowLeft") {
+                if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
                   if (foundGridImageIndex() !== 0) {
                     setFoundGridImageIndex((i) => i - 1);
                     setShowGridImageLoading(true);
@@ -451,9 +451,13 @@ export function NewGame() {
             data-tooltip={
               foundGridImage()
                 ? showGridImageLoading() === false
-                  ? `${foundGridImageIndex()} / ${
-                      foundGridImage().length - 1
-                    } ${translateText("scroll")}`
+                  ? uiContext.userIsTabbing()
+                    ? `${foundGridImageIndex()} / ${
+                        foundGridImage().length - 1
+                      } ${translateText("arrow keys")}`
+                    : `${foundGridImageIndex()} / ${
+                        foundGridImage().length - 1
+                      } ${translateText("scroll")}`
                   : `${foundGridImageIndex()} / ${
                       foundGridImage().length - 1
                     } ${translateText("loading")}`
@@ -507,14 +511,14 @@ export function NewGame() {
                 }}
                 onKeyDown={(e) => {
                   if (SGDBGames()) {
-                    if (e.key === "ArrowRight") {
+                    if (e.key === "ArrowRight" || e.key === "ArrowUp") {
                       setFoundHeroImageIndex((i) =>
                         i === foundHeroImage().length - 1 ? 0 : i + 1
                       );
                       setShowHeroImageLoading(true);
                     }
 
-                    if (e.key === "ArrowLeft") {
+                    if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
                       if (foundHeroImageIndex() !== 0) {
                         setFoundHeroImageIndex((i) => i - 1);
                         setShowHeroImageLoading(true);
@@ -532,9 +536,13 @@ export function NewGame() {
                 data-tooltip={
                   foundHeroImage()
                     ? showHeroImageLoading() === false
-                      ? `${foundHeroImageIndex()} / ${
-                          foundHeroImage().length - 1
-                        } ${translateText("scroll")}`
+                      ? uiContext.userIsTabbing()
+                        ? `${foundHeroImageIndex()} / ${
+                            foundHeroImage().length - 1
+                          } ${translateText("arrow keys")}`
+                        : `${foundHeroImageIndex()} / ${
+                            foundHeroImage().length - 1
+                          } ${translateText("scroll")}`
                       : `${foundHeroImageIndex()} / ${
                           foundHeroImage().length - 1
                         } ${translateText("loading")}`
@@ -605,14 +613,14 @@ export function NewGame() {
                 }}
                 onKeyDown={(e) => {
                   if (SGDBGames()) {
-                    if (e.key === "ArrowRight") {
+                    if (e.key === "ArrowRight" || e.key === "ArrowUp") {
                       setFoundLogoImageIndex((i) =>
                         i === foundLogoImage().length - 1 ? 0 : i + 1
                       );
                       setShowLogoImageLoading(true);
                     }
 
-                    if (e.key === "ArrowLeft") {
+                    if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
                       if (foundLogoImageIndex() !== 0) {
                         setFoundLogoImageIndex((i) => i - 1);
                         setShowLogoImageLoading(true);
@@ -632,9 +640,13 @@ export function NewGame() {
                 data-tooltip={
                   foundLogoImage()
                     ? showLogoImageLoading() === false
-                      ? `${foundLogoImageIndex()} / ${
-                          foundLogoImage().length - 1
-                        } ${translateText("scroll")}`
+                      ? uiContext.userIsTabbing()
+                        ? `${foundLogoImageIndex()} / ${
+                            foundLogoImage().length - 1
+                          } ${translateText("arrow keys")}`
+                        : `${foundLogoImageIndex()} / ${
+                            foundLogoImage().length - 1
+                          } ${translateText("scroll")}`
                       : `${foundLogoImageIndex()} / ${
                           foundLogoImage().length - 1
                         } ${translateText("loading")}`
@@ -692,14 +704,14 @@ export function NewGame() {
                 }}
                 onKeyDown={(e) => {
                   if (SGDBGames()) {
-                    if (e.key === "ArrowRight") {
+                    if (e.key === "ArrowRight" || e.key === "ArrowUp") {
                       setFoundIconImageIndex((i) =>
                         i === foundIconImage().length - 1 ? 0 : i + 1
                       );
                       setShowIconImageLoading(true);
                     }
 
-                    if (e.key === "ArrowLeft") {
+                    if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
                       if (foundIconImageIndex() !== 0) {
                         setFoundIconImageIndex((i) => i - 1);
                         setShowIconImageLoading(true);
@@ -717,9 +729,13 @@ export function NewGame() {
                 data-tooltip={
                   foundIconImage()
                     ? showIconImageLoading() === false
-                      ? `${foundIconImageIndex()} / ${
-                          foundIconImage().length - 1
-                        } ${translateText("scroll")}`
+                      ? uiContext.userIsTabbing()
+                        ? `${foundIconImageIndex()} / ${
+                            foundIconImage().length - 1
+                          } ${translateText("arrow keys")}`
+                        : `${foundIconImageIndex()} / ${
+                            foundIconImage().length - 1
+                          } ${translateText("scroll")}`
                       : `${foundIconImageIndex()} / ${
                           foundIconImage().length - 1
                         } ${translateText("loading")}`
