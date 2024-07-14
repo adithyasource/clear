@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* * Tailwind Styles (for inaccessable selectors in html) */
+/* * tailwind styles (for inaccessable selectors in html) */
 
 @layer components {
   html,
@@ -23,7 +23,7 @@
   }
 }
 
-/* * Styling Scrollbars */
+/* * styling scrollbars */
 
 #sideBarFolders:hover::-webkit-scrollbar {
   width: 5px;
@@ -51,7 +51,7 @@
   background-color: #00000000;
 }
 
-/* * Animation Keyframes */
+/* * animation keyframes */
 
 @keyframes dialogFadeIn {
   from {
@@ -122,7 +122,7 @@
   }
 }
 
-/* * Setting Base Styles */
+/* * setting base styles */
 
 * {
   padding: 0;
@@ -197,7 +197,7 @@ body {
   height: 10px;
 }
 
-/* * Elements with Animations */
+/* * elements with animations */
 
 .standardButton {
   display: flex;
