@@ -45,11 +45,11 @@ fn download_image(link: &str, location: &str) {
     let command_str = format!("Invoke-WebRequest '{}' -Outfile '{}'", link, location);
 
     let _ = Command::new("powershell")
-        .args(&[command_str])
+        .arg(command_str)
         .stdout(Stdio::null())
         .stderr(Stdio::null())
         .creation_flags(0x08000000)
-        .output();
+        .spawn();
 }
 
 #[tauri::command]
