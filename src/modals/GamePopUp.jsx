@@ -41,7 +41,7 @@ export function GamePopUp() {
               fallback={
                 <button
                   type="button"
-                  class="!flex standardButton w-max bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b] tooltip-bottom cursor-not-allowed"
+                  class="!flex standardButton w-max bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b] tooltip-bottom cursor-not-allowed focus:!bg-[#d6d6d6] focus:backdrop-blur-[5px] dark:focus:!bg-[#2b2b2b]"
                   data-tooltip={translateText("no game file")}>
                   <div class="!w-max opacity-50">{translateText("play")}</div>
                   <div class="opacity-50">
@@ -51,7 +51,7 @@ export function GamePopUp() {
               }>
               <button
                 type="button"
-                class="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
+                class="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] focus:!bg-[#d6d6d6] hover:backdrop-blur-[5px] focus:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b] dark:focus:!bg-[#2b2b2b]"
                 onClick={() => {
                   openGame(selectedDataContext.selectedGame().location);
                 }}>
@@ -62,7 +62,7 @@ export function GamePopUp() {
 
             <button
               type="button"
-              class="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
+              class="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom focus:!bg-[#d6d6d6] focus:backdrop-blur-[5px] dark:focus:!bg-[#2b2b2b]"
               onClick={() => {
                 closeDialog("gamePopUp");
                 openDialog("editGame");
@@ -72,7 +72,7 @@ export function GamePopUp() {
             </button>
             <button
               type="button"
-              class="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
+              class="standardButton bg-[#E8E8E8] !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] hover:backdrop-blur-[5px] dark:bg-[#232323] dark:!text-white  dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom focus:!bg-[#d6d6d6] focus:backdrop-blur-[5px] dark:focus:!bg-[#2b2b2b]"
               onClick={() => {
                 closeDialog("gamePopUp");
               }}
