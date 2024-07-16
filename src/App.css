@@ -382,4 +382,18 @@ body.user-is-tabbing {
       normalFadeIn 0s,
       normalFadeOut 0s 1.3s;
   }
+
+  [class*="tooltip-delayed-"]:hover::after {
+    animation: normalFadeIn 0s ease 0.4s forwards;
+  }
+
+  body.user-is-tabbing {
+    [class*="tooltip-"]:focus::after {
+      animation: normalFadeIn 0s ease forwards;
+    }
+
+    [class*="tooltip-delayed-"]:focus::after {
+      animation: normalFadeIn 0s ease 0.4s forwards;
+    }
+  }
 }
