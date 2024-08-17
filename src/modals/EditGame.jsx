@@ -173,7 +173,8 @@ export function EditGame() {
         }`;
 
         await copyFile(
-          `${editedLocatedGridImage()}grids\\${gridImageFileName}`,
+          editedLocatedGridImage(),
+          `grids\\${gridImageFileName}`,
           {
             dir: BaseDirectory.AppData
           }
@@ -196,7 +197,8 @@ export function EditGame() {
         }`;
 
         await copyFile(
-          `${editedLocatedHeroImage()}heroes\\${heroImageFileName}`,
+          editedLocatedHeroImage(),
+          `heroes\\${heroImageFileName}`,
           {
             dir: BaseDirectory.AppData
           }
@@ -218,7 +220,7 @@ export function EditGame() {
           ]
         }`;
 
-        await copyFile(`${editedLocatedLogo()}logos\\${logoFileName}`, {
+        await copyFile(editedLocatedLogo(), `logos\\${logoFileName}`, {
           dir: BaseDirectory.AppData
         }).then(() => {
           setEditedLocatedLogo(logoFileName);
@@ -238,7 +240,7 @@ export function EditGame() {
           ]
         }`;
 
-        await copyFile(`${editedLocatedIcon()}icons\\${iconFileName}`, {
+        await copyFile(editedLocatedIcon(), `icons\\${iconFileName}`, {
           dir: BaseDirectory.AppData
         }).then(() => {
           setEditedLocatedIcon(iconFileName);

@@ -93,7 +93,7 @@ export function NewGame() {
           ]
         }`;
 
-        await copyFile(`${locatedGridImage()}grids\\${gridImageFileName}`, {
+        await copyFile(locatedGridImage(), `grids\\${gridImageFileName}`, {
           dir: BaseDirectory.AppData
         });
       }
@@ -114,7 +114,7 @@ export function NewGame() {
           ]
         }`;
 
-        await copyFile(`${locatedHeroImage()}heroes\\${heroImageFileName}`, {
+        await copyFile(locatedHeroImage(), `heroes\\${heroImageFileName}`, {
           dir: BaseDirectory.AppData
         });
       }
@@ -133,7 +133,7 @@ export function NewGame() {
           locatedLogo().split(".")[locatedLogo().split(".").length - 1]
         }`;
 
-        await copyFile(`${locatedLogo()}logos\\${logoFileName}`, {
+        await copyFile(locatedLogo(), `logos\\${logoFileName}`, {
           dir: BaseDirectory.AppData
         });
       }
@@ -152,7 +152,7 @@ export function NewGame() {
           locatedIcon().split(".")[locatedIcon().split(".").length - 1]
         }`;
 
-        await copyFile(`${locatedIcon()}icons\\${iconFileName}`, {
+        await copyFile(locatedIcon(), `icons\\${iconFileName}`, {
           dir: BaseDirectory.AppData
         });
       }
