@@ -111,10 +111,14 @@ function App() {
           ) {
             if (uiContext.showCloseConfirm()) {
               closeDialogImmediately(currentlyOpenDialog);
+
+              uiContext.setShowCloseConfirm(false);
             } else {
               uiContext.setShowCloseConfirm(true);
 
-              setTimeout(() => {
+              const closeConfirmTimer = setTimeout(() => {
+                clearTimeout(closeConfirmTimer);
+
                 uiContext.setShowCloseConfirm(false);
               }, 1500);
             }
