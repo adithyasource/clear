@@ -87,11 +87,10 @@ export function NewGame() {
       });
     } else {
       if (locatedGridImage()) {
-        gridImageFileName = `${generateRandomString()}.${
-          locatedGridImage().split(".")[
-            locatedGridImage().split(".").length - 1
-          ]
-        }`;
+        gridImageFileName = `${generateRandomString()}.${locatedGridImage().split(".")[
+          locatedGridImage().split(".").length - 1
+        ]
+          }`;
 
         await copyFile(locatedGridImage(), `grids\\${gridImageFileName}`, {
           dir: BaseDirectory.AppData
@@ -108,11 +107,10 @@ export function NewGame() {
       });
     } else {
       if (locatedHeroImage()) {
-        heroImageFileName = `${generateRandomString()}.${
-          locatedHeroImage().split(".")[
-            locatedHeroImage().split(".").length - 1
-          ]
-        }`;
+        heroImageFileName = `${generateRandomString()}.${locatedHeroImage().split(".")[
+          locatedHeroImage().split(".").length - 1
+        ]
+          }`;
 
         await copyFile(locatedHeroImage(), `heroes\\${heroImageFileName}`, {
           dir: BaseDirectory.AppData
@@ -129,9 +127,8 @@ export function NewGame() {
       });
     } else {
       if (locatedLogo()) {
-        logoFileName = `${generateRandomString()}.${
-          locatedLogo().split(".")[locatedLogo().split(".").length - 1]
-        }`;
+        logoFileName = `${generateRandomString()}.${locatedLogo().split(".")[locatedLogo().split(".").length - 1]
+          }`;
 
         await copyFile(locatedLogo(), `logos\\${logoFileName}`, {
           dir: BaseDirectory.AppData
@@ -148,9 +145,8 @@ export function NewGame() {
       });
     } else {
       if (locatedIcon()) {
-        iconFileName = `${generateRandomString()}.${
-          locatedIcon().split(".")[locatedIcon().split(".").length - 1]
-        }`;
+        iconFileName = `${generateRandomString()}.${locatedIcon().split(".")[locatedIcon().split(".").length - 1]
+          }`;
 
         await copyFile(locatedIcon(), `icons\\${iconFileName}`, {
           dir: BaseDirectory.AppData
@@ -284,8 +280,7 @@ export function NewGame() {
     setFoundIconImage(undefined);
 
     await fetch(
-      `${
-        import.meta.env.VITE_CLEAR_API_URL
+      `${import.meta.env.VITE_CLEAR_API_URL
       }/?assets=${selectedDataContext.selectedGameId()}`
     ).then((res) =>
       res.json().then(async (jsonres) => {
@@ -404,7 +399,7 @@ export function NewGame() {
           <button
             type="button"
             onClick={locateGridImage}
-            onScroll={() => {}}
+            onScroll={() => { }}
             onWheel={(e) => {
               if (SGDBGames()) {
                 if (e.deltaY <= 0) {
@@ -452,15 +447,12 @@ export function NewGame() {
               foundGridImage()
                 ? showGridImageLoading() === false
                   ? uiContext.userIsTabbing()
-                    ? `${foundGridImageIndex()} / ${
-                        foundGridImage().length - 1
-                      } ${translateText("arrow keys")}`
-                    : `${foundGridImageIndex()} / ${
-                        foundGridImage().length - 1
-                      } ${translateText("scroll")}`
-                  : `${foundGridImageIndex()} / ${
-                      foundGridImage().length - 1
-                    } ${translateText("loading")}`
+                    ? `${foundGridImageIndex()} / ${foundGridImage().length - 1
+                    } ${translateText("arrow keys")}`
+                    : `${foundGridImageIndex()} / ${foundGridImage().length - 1
+                    } ${translateText("scroll")}`
+                  : `${foundGridImageIndex()} / ${foundGridImage().length - 1
+                  } ${translateText("loading")}`
                 : translateText("grid/cover")
             }>
             <img
@@ -470,12 +462,11 @@ export function NewGame() {
                   : locatedGridImage()
                     ? convertFileSrc(locatedGridImage())
                     : // this is a gif which is completely empty
-                      "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                    "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
               }
               alt=""
-              class={`absolute inset-0 w-full h-full ${
-                showGridImageLoading() ? "opacity-0" : ""
-              }  `}
+              class={`absolute inset-0 w-full h-full ${showGridImageLoading() ? "opacity-0" : ""
+                }  `}
               onLoad={() => {
                 setShowGridImageLoading(false);
               }}
@@ -489,7 +480,7 @@ export function NewGame() {
               <button
                 type="button"
                 onClick={locateHeroImage}
-                onScroll={() => {}}
+                onScroll={() => { }}
                 onWheel={(e) => {
                   if (SGDBGames()) {
                     if (e.deltaY <= 0) {
@@ -537,15 +528,12 @@ export function NewGame() {
                   foundHeroImage()
                     ? showHeroImageLoading() === false
                       ? uiContext.userIsTabbing()
-                        ? `${foundHeroImageIndex()} / ${
-                            foundHeroImage().length - 1
-                          } ${translateText("arrow keys")}`
-                        : `${foundHeroImageIndex()} / ${
-                            foundHeroImage().length - 1
-                          } ${translateText("scroll")}`
-                      : `${foundHeroImageIndex()} / ${
-                          foundHeroImage().length - 1
-                        } ${translateText("loading")}`
+                        ? `${foundHeroImageIndex()} / ${foundHeroImage().length - 1
+                        } ${translateText("arrow keys")}`
+                        : `${foundHeroImageIndex()} / ${foundHeroImage().length - 1
+                        } ${translateText("scroll")}`
+                      : `${foundHeroImageIndex()} / ${foundHeroImage().length - 1
+                      } ${translateText("loading")}`
                     : translateText("hero")
                 }>
                 <img
@@ -555,12 +543,11 @@ export function NewGame() {
                       : locatedHeroImage()
                         ? convertFileSrc(locatedHeroImage())
                         : // this is a gif which is completely empty
-                          "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                        "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
                   }
                   alt=""
-                  class={`w-full h-full aspect-[96/31] ${
-                    showHeroImageLoading() ? "opacity-0" : ""
-                  }`}
+                  class={`w-full h-full aspect-[96/31] ${showHeroImageLoading() ? "opacity-0" : ""
+                    }`}
                   onLoad={() => {
                     setShowHeroImageLoading(false);
                   }}
@@ -572,7 +559,7 @@ export function NewGame() {
                       : locatedHeroImage()
                         ? convertFileSrc(locatedHeroImage())
                         : // this is a gif which is completely empty
-                          "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                        "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
                   }
                   onLoad={() => {
                     setShowHeroImageLoading(false);
@@ -591,7 +578,7 @@ export function NewGame() {
                   setLocatedLogo(undefined);
                   setFoundLogoImage(undefined);
                 }}
-                onScroll={() => {}}
+                onScroll={() => { }}
                 onWheel={(e) => {
                   if (SGDBGames()) {
                     if (e.deltaY <= 0) {
@@ -631,25 +618,21 @@ export function NewGame() {
                   }
                 }}
                 class={`bottom-[70px] left-[20px] !absolute z-[100] h-[90px] w-[250px] !p-[2px] cursor-pointer max-large:h-[90px] max-large:w-[243px] tooltip-center
-                  ${
-                    foundLogoImage() || locatedLogo()
-                      ? "hover:outline-dashed !outline-[2px] !outline-[#E8E8E880] !outline:dark:bg-[#27272780] hover:bg-[#E8E8E84D] hover:dark:bg-[#2727274D] focus:bg-[#E8E8E84D] focus:dark:bg-[#2727274D]"
-                      : "bg-[#E8E8E8] dark:!bg-[#272727]"
+                  ${foundLogoImage() || locatedLogo()
+                    ? "hover:outline-dashed !outline-[2px] !outline-[#E8E8E880] !outline:dark:bg-[#27272780] hover:bg-[#E8E8E84D] hover:dark:bg-[#2727274D] focus:bg-[#E8E8E84D] focus:dark:bg-[#2727274D]"
+                    : "bg-[#E8E8E8] dark:!bg-[#272727]"
                   }
                     `}
                 data-tooltip={
                   foundLogoImage()
                     ? showLogoImageLoading() === false
                       ? uiContext.userIsTabbing()
-                        ? `${foundLogoImageIndex()} / ${
-                            foundLogoImage().length - 1
-                          } ${translateText("arrow keys")}`
-                        : `${foundLogoImageIndex()} / ${
-                            foundLogoImage().length - 1
-                          } ${translateText("scroll")}`
-                      : `${foundLogoImageIndex()} / ${
-                          foundLogoImage().length - 1
-                        } ${translateText("loading")}`
+                        ? `${foundLogoImageIndex()} / ${foundLogoImage().length - 1
+                        } ${translateText("arrow keys")}`
+                        : `${foundLogoImageIndex()} / ${foundLogoImage().length - 1
+                        } ${translateText("scroll")}`
+                      : `${foundLogoImageIndex()} / ${foundLogoImage().length - 1
+                      } ${translateText("loading")}`
                     : translateText("logo")
                 }>
                 <img
@@ -659,12 +642,11 @@ export function NewGame() {
                       : locatedLogo()
                         ? convertFileSrc(locatedLogo())
                         : // this is a gif which is completely empty
-                          "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                        "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
                   }
                   alt=""
-                  class={`!object-scale-down w-full h-full  ${
-                    showLogoImageLoading() ? "opacity-0" : ""
-                  }`}
+                  class={`!object-scale-down w-full h-full  ${showLogoImageLoading() ? "opacity-0" : ""
+                    }`}
                   onLoad={() => {
                     setShowLogoImageLoading(false);
                   }}
@@ -682,7 +664,7 @@ export function NewGame() {
                   setLocatedIcon(undefined);
                   setFoundIconImage(undefined);
                 }}
-                onScroll={() => {}}
+                onScroll={() => { }}
                 onWheel={(e) => {
                   if (SGDBGames()) {
                     if (e.deltaY <= 0) {
@@ -721,24 +703,20 @@ export function NewGame() {
                     }
                   }
                 }}
-                class={`group relative p-0 tooltip-bottom ${
-                  foundIconImage() || locatedIcon()
-                    ? "hover:outline-dashed !outline-[2px] !outline-[#E8E8E880] !outline:dark:bg-[#27272780]"
-                    : "bg-[#E8E8E8] dark:!bg-[#272727]"
-                }`}
+                class={`group relative p-0 tooltip-bottom ${foundIconImage() || locatedIcon()
+                  ? "hover:outline-dashed !outline-[2px] !outline-[#E8E8E880] !outline:dark:bg-[#27272780]"
+                  : "bg-[#E8E8E8] dark:!bg-[#272727]"
+                  }`}
                 data-tooltip={
                   foundIconImage()
                     ? showIconImageLoading() === false
                       ? uiContext.userIsTabbing()
-                        ? `${foundIconImageIndex()} / ${
-                            foundIconImage().length - 1
-                          } ${translateText("arrow keys")}`
-                        : `${foundIconImageIndex()} / ${
-                            foundIconImage().length - 1
-                          } ${translateText("scroll")}`
-                      : `${foundIconImageIndex()} / ${
-                          foundIconImage().length - 1
-                        } ${translateText("loading")}`
+                        ? `${foundIconImageIndex()} / ${foundIconImage().length - 1
+                        } ${translateText("arrow keys")}`
+                        : `${foundIconImageIndex()} / ${foundIconImage().length - 1
+                        } ${translateText("scroll")}`
+                      : `${foundIconImageIndex()} / ${foundIconImage().length - 1
+                      } ${translateText("loading")}`
                     : translateText("icon")
                 }>
                 <img
@@ -748,12 +726,11 @@ export function NewGame() {
                       : locatedIcon()
                         ? convertFileSrc(locatedIcon())
                         : // this is a gif which is completely empty
-                          "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                        "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
                   }
                   alt=""
-                  class={`!object-scale-down h-[40px] w-[40px]  ${
-                    showIconImageLoading() ? "opacity-0" : ""
-                  }`}
+                  class={`!object-scale-down h-[40px] w-[40px]  ${showIconImageLoading() ? "opacity-0" : ""
+                    }`}
                   onLoad={() => {
                     setShowIconImageLoading(false);
                   }}
@@ -797,7 +774,7 @@ export function NewGame() {
                     <Match
                       when={
                         globalContext.libraryData.userSettings.language ===
-                          "fr" && applicationStateContext.windowWidth() >= 1500
+                        "fr" && applicationStateContext.windowWidth() >= 1500
                       }>
                       {translateText("auto find assets")}
                     </Match>
@@ -805,7 +782,7 @@ export function NewGame() {
                     <Match
                       when={
                         globalContext.libraryData.userSettings.language ===
-                          "fr" && applicationStateContext.windowWidth() <= 1500
+                        "fr" && applicationStateContext.windowWidth() <= 1500
                       }>
                       <p class="w-[70px] text-clip text-[10px]">
                         {translateText("auto find assets")}
@@ -826,21 +803,21 @@ export function NewGame() {
                   onClick={async () => {
                     gameName() === undefined
                       ? invoke("open_location", {
-                          location: "https://www.steamgriddb.com/"
-                        })
+                        location: "https://www.steamgriddb.com/"
+                      })
                       : gameName() === ""
                         ? invoke("open_location", {
-                            location: "https://www.steamgriddb.com/"
-                          })
+                          location: "https://www.steamgriddb.com/"
+                        })
                         : invoke("open_location", {
-                            location: `https://www.steamgriddb.com/search/grids?term=${gameName()}`
-                          });
+                          location: `https://www.steamgriddb.com/search/grids?term=${gameName()}`
+                        });
                   }}>
                   <Switch>
                     <Match
                       when={
                         globalContext.libraryData.userSettings.language ===
-                          "fr" && applicationStateContext.windowWidth() >= 1500
+                        "fr" && applicationStateContext.windowWidth() >= 1500
                       }>
                       {translateText("find assets")}
                     </Match>
@@ -848,7 +825,7 @@ export function NewGame() {
                     <Match
                       when={
                         globalContext.libraryData.userSettings.language ===
-                          "fr" && applicationStateContext.windowWidth() <= 1500
+                        "fr" && applicationStateContext.windowWidth() <= 1500
                       }>
                       <p class="w-[100px] text-clip text-[10px]">
                         {translateText("find assets")}
@@ -875,18 +852,18 @@ export function NewGame() {
                 {locatedGame() === undefined
                   ? translateText("locate game")
                   : locatedGame().toString().split("\\").slice(-1).toString()
-                        .length > 17
+                    .length > 17
                     ? `...${locatedGame()
-                        .toString()
-                        .split("\\")
-                        .slice(-1)
-                        .toString()
-                        .slice(0, 7)}...${locatedGame().toString().slice(-7)}`
+                      .toString()
+                      .split("\\")
+                      .slice(-1)
+                      .toString()
+                      .slice(0, 7)}...${locatedGame().toString().slice(-7)}`
                     : `...${locatedGame()
-                        .toString()
-                        .split("\\")
-                        .slice(-1)
-                        .toString()}`}
+                      .toString()
+                      .split("\\")
+                      .slice(-1)
+                      .toString()}`}
               </button>
             </div>
           </div>

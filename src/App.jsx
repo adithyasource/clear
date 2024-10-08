@@ -313,7 +313,7 @@ function App() {
 
         applicationStateContext.setLatestVersion(clearVersion.clearVersion);
         applicationStateContext.latestVersion().replaceAll(".", "") >
-        applicationStateContext.appVersion().replaceAll(".", "")
+          applicationStateContext.appVersion().replaceAll(".", "")
           ? uiContext.setShowNewVersionAvailable(true)
           : uiContext.setShowNewVersionAvailable(false);
       }
@@ -359,12 +359,11 @@ function App() {
           }>
           <div
             class={` absolute flex h-[100vh] w-full flex-col items-center justify-center
-            overflow-y-scroll py-[20px] pr-[30px]  ${
-              globalContext.libraryData.userSettings.showSideBar &&
-              applicationStateContext.windowWidth() >= 1000
+            overflow-y-scroll py-[20px] pr-[30px]  ${globalContext.libraryData.userSettings.showSideBar &&
+                applicationStateContext.windowWidth() >= 1000
                 ? "pl-[23%] large:pl-[17%]"
                 : "pl-[30px] large:pl-[30px]"
-            }`}>
+              }`}>
             <div class="!z-50">
               <p class="text-[#000000] dark:text-[#ffffff80] ">
                 {translateText("hey there! thank you so much for using clear")}
@@ -424,12 +423,11 @@ function App() {
           </div>
         </Show>
         <div
-          class={`absolute h-[100vh] w-full overflow-y-scroll !rounded-[0px] py-[20px] pr-[30px] ${
-            globalContext.libraryData.userSettings.showSideBar &&
+          class={`absolute h-[100vh] w-full overflow-y-scroll !rounded-[0px] py-[20px] pr-[30px] ${globalContext.libraryData.userSettings.showSideBar &&
             applicationStateContext.windowWidth() >= 1000
-              ? "pl-[23%] large:pl-[17%]"
-              : "pl-[30px] large:pl-[30px]"
-          }`}>
+            ? "pl-[23%] large:pl-[17%]"
+            : "pl-[30px] large:pl-[30px]"
+            }`}>
           <Show
             when={
               applicationStateContext.searchValue() === "" ||
@@ -451,25 +449,24 @@ function App() {
                         </p>
                       </Show>
                       <div
-                        class={`foldersDiv mt-4 grid gap-5 ${
-                          globalContext.libraryData.userSettings.zoomLevel === 0
-                            ? globalContext.libraryData.userSettings.showSideBar
-                              ? "grid-cols-4 medium:grid-cols-5 large:grid-cols-7"
-                              : "grid-cols-4 medium:grid-cols-6 large:grid-cols-8"
+                        class={`foldersDiv mt-4 grid gap-5 ${globalContext.libraryData.userSettings.zoomLevel === 0
+                          ? globalContext.libraryData.userSettings.showSideBar
+                            ? "grid-cols-4 medium:grid-cols-5 large:grid-cols-7"
+                            : "grid-cols-4 medium:grid-cols-6 large:grid-cols-8"
+                          : globalContext.libraryData.userSettings
+                            .zoomLevel === 1
+                            ? globalContext.libraryData.userSettings
+                              .showSideBar
+                              ? "grid-cols-3 medium:grid-cols-4 large:grid-cols-6"
+                              : "grid-cols-3 medium:grid-cols-5 large:grid-cols-7"
                             : globalContext.libraryData.userSettings
-                                  .zoomLevel === 1
+                              .zoomLevel === 2
                               ? globalContext.libraryData.userSettings
-                                  .showSideBar
-                                ? "grid-cols-3 medium:grid-cols-4 large:grid-cols-6"
-                                : "grid-cols-3 medium:grid-cols-5 large:grid-cols-7"
-                              : globalContext.libraryData.userSettings
-                                    .zoomLevel === 2
-                                ? globalContext.libraryData.userSettings
-                                    .showSideBar
-                                  ? "grid-cols-2 medium:grid-cols-3 large:grid-cols-5"
-                                  : "grid-cols-2 medium:grid-cols-4 large:grid-cols-6"
-                                : ""
-                        }`}>
+                                .showSideBar
+                                ? "grid-cols-2 medium:grid-cols-3 large:grid-cols-5"
+                                : "grid-cols-2 medium:grid-cols-4 large:grid-cols-6"
+                              : ""
+                          }`}>
                         <GameCards gamesList={folder.games} />
                       </div>
                     </div>
@@ -512,22 +509,21 @@ function App() {
               return (
                 <div>
                   <div
-                    class={`foldersDiv mt-4 grid gap-5 ${
-                      globalContext.libraryData.userSettings.zoomLevel === 0
+                    class={`foldersDiv mt-4 grid gap-5 ${globalContext.libraryData.userSettings.zoomLevel === 0
+                      ? globalContext.libraryData.userSettings.showSideBar
+                        ? "grid-cols-4 medium:grid-cols-5 large:grid-cols-7"
+                        : "grid-cols-4 medium:grid-cols-6 large:grid-cols-8"
+                      : globalContext.libraryData.userSettings.zoomLevel === 1
                         ? globalContext.libraryData.userSettings.showSideBar
-                          ? "grid-cols-4 medium:grid-cols-5 large:grid-cols-7"
-                          : "grid-cols-4 medium:grid-cols-6 large:grid-cols-8"
-                        : globalContext.libraryData.userSettings.zoomLevel === 1
+                          ? "grid-cols-3 medium:grid-cols-4 large:grid-cols-6"
+                          : "grid-cols-3 medium:grid-cols-5 large:grid-cols-7"
+                        : globalContext.libraryData.userSettings.zoomLevel ===
+                          2
                           ? globalContext.libraryData.userSettings.showSideBar
-                            ? "grid-cols-3 medium:grid-cols-4 large:grid-cols-6"
-                            : "grid-cols-3 medium:grid-cols-5 large:grid-cols-7"
-                          : globalContext.libraryData.userSettings.zoomLevel ===
-                              2
-                            ? globalContext.libraryData.userSettings.showSideBar
-                              ? "grid-cols-2 medium:grid-cols-3 large:grid-cols-5"
-                              : "grid-cols-2 medium:grid-cols-4 large:grid-cols-6"
-                            : ""
-                    }`}>
+                            ? "grid-cols-2 medium:grid-cols-3 large:grid-cols-5"
+                            : "grid-cols-2 medium:grid-cols-4 large:grid-cols-6"
+                          : ""
+                      }`}>
                     <GameCards gamesList={searchResults} />
                   </div>
                   <div class="items-center">

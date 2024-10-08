@@ -27,8 +27,7 @@ export function GamePopUp() {
       <div class="flex h-screen w-screen flex-col items-center justify-center px-[40px] bg-[#d1d1d166] dark:bg-[#12121266] ">
         <img
           src={convertFileSrc(
-            `${applicationStateContext.appDataDirPath()}heroes\\${
-              selectedDataContext.selectedGame().heroImage
+            `${applicationStateContext.appDataDirPath()}heroes\\${selectedDataContext.selectedGame().heroImage
             }`
           )}
           alt=""
@@ -87,8 +86,7 @@ export function GamePopUp() {
             }>
             <img
               src={convertFileSrc(
-                `${applicationStateContext.appDataDirPath()}heroes\\${
-                  selectedDataContext.selectedGame().heroImage
+                `${applicationStateContext.appDataDirPath()}heroes\\${selectedDataContext.selectedGame().heroImage
                 }`
               )}
               alt=""
@@ -104,8 +102,7 @@ export function GamePopUp() {
               }>
               <img
                 src={convertFileSrc(
-                  `${applicationStateContext.appDataDirPath()}logos\\${
-                    selectedDataContext.selectedGame().logo
+                  `${applicationStateContext.appDataDirPath()}logos\\${selectedDataContext.selectedGame().logo
                   }`
                 )}
                 alt=""

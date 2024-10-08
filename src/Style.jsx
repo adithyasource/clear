@@ -10,29 +10,29 @@ export function Style() {
       .titleBarText {
         font-family: ${globalContext.libraryData.userSettings.fontName ===
         "sans serif"
-          ? "Segoe UI"
-          : globalContext.libraryData.userSettings.fontName === "serif"
-            ? "Times New Roman"
-            : "IBM Plex Mono, Consolas"};
+        ? "Segoe UI"
+        : globalContext.libraryData.userSettings.fontName === "serif"
+          ? "Times New Roman"
+          : "IBM Plex Mono, Consolas"};
       }
 
       * {
         font-family: ${globalContext.libraryData.userSettings.fontName ===
         "sans serif"
-          ? "Helvetica, Arial, sans-serif"
-          : globalContext.libraryData.userSettings.fontName === "serif"
-            ? "Times New Roman"
-            : "IBM Plex Mono, Consolas"};
+        ? "Helvetica, Arial, sans-serif"
+        : globalContext.libraryData.userSettings.fontName === "serif"
+          ? "Times New Roman"
+          : "IBM Plex Mono, Consolas"};
         color: ${globalContext.libraryData.userSettings.currentTheme === "light"
-          ? "#000000"
-          : "#ffffff"};
+        ? "#000000"
+        : "#ffffff"};
       }
 
       *:not(body, svg, #loading, .sideBarGame, .gameIconImage),
       [class*="tooltip-"]:after {
         border-radius: ${globalContext.libraryData.userSettings.roundedBorders
-          ? "6px"
-          : "0px"};
+        ? "6px"
+        : "0px"};
       }
 
       .currentlyDragging {
@@ -46,8 +46,8 @@ export function Style() {
       body.user-is-tabbing select:focus {
         outline: 1px solid
           ${globalContext.libraryData.userSettings.currentTheme === "light"
-            ? "#000000"
-            : "#ffffff"};
+        ? "#000000"
+        : "#ffffff"};
       }
     `}</style>
   );

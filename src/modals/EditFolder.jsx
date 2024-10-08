@@ -111,11 +111,10 @@ export function EditFolder() {
       <div class="flex h-screen w-screen items-center justify-center align-middle bg-[#d1d1d166] dark:bg-[#12121266]">
         <div class="w-[60%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
           <div
-            class={`flex justify-between ${
-              globalContext.libraryData.userSettings.language !== "en"
+            class={`flex justify-between ${globalContext.libraryData.userSettings.language !== "en"
                 ? "flex-col large:flex-row"
                 : ""
-            } `}>
+              } `}>
             <div>
               <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">
                 {translateText("edit")}{" "}

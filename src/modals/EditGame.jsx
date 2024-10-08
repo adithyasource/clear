@@ -166,11 +166,10 @@ export function EditGame() {
       if (editedLocatedGridImage() === null) {
         setEditedLocatedGridImage(undefined);
       } else {
-        const gridImageFileName = `${generateRandomString()}.${
-          editedLocatedGridImage().split(".")[
-            editedLocatedGridImage().split(".").length - 1
+        const gridImageFileName = `${generateRandomString()}.${editedLocatedGridImage().split(".")[
+          editedLocatedGridImage().split(".").length - 1
           ]
-        }`;
+          }`;
 
         await copyFile(
           editedLocatedGridImage(),
@@ -190,11 +189,10 @@ export function EditGame() {
       if (editedLocatedHeroImage() === null) {
         setEditedLocatedHeroImage(undefined);
       } else {
-        const heroImageFileName = `${generateRandomString()}.${
-          editedLocatedHeroImage().split(".")[
-            editedLocatedHeroImage().split(".").length - 1
+        const heroImageFileName = `${generateRandomString()}.${editedLocatedHeroImage().split(".")[
+          editedLocatedHeroImage().split(".").length - 1
           ]
-        }`;
+          }`;
 
         await copyFile(
           editedLocatedHeroImage(),
@@ -214,11 +212,10 @@ export function EditGame() {
       if (editedLocatedLogo() === null) {
         setEditedLocatedLogo(undefined);
       } else {
-        const logoFileName = `${generateRandomString()}.${
-          editedLocatedLogo().split(".")[
-            editedLocatedLogo().split(".").length - 1
+        const logoFileName = `${generateRandomString()}.${editedLocatedLogo().split(".")[
+          editedLocatedLogo().split(".").length - 1
           ]
-        }`;
+          }`;
 
         await copyFile(editedLocatedLogo(), `logos\\${logoFileName}`, {
           dir: BaseDirectory.AppData
@@ -234,11 +231,10 @@ export function EditGame() {
       if (editedLocatedIcon() === null) {
         setEditedLocatedIcon(undefined);
       } else {
-        const iconFileName = `${generateRandomString()}.${
-          editedLocatedIcon().split(".")[
-            editedLocatedIcon().split(".").length - 1
+        const iconFileName = `${generateRandomString()}.${editedLocatedIcon().split(".")[
+          editedLocatedIcon().split(".").length - 1
           ]
-        }`;
+          }`;
 
         await copyFile(editedLocatedIcon(), `icons\\${iconFileName}`, {
           dir: BaseDirectory.AppData
@@ -435,8 +431,7 @@ export function EditGame() {
                 <img
                   class="absolute inset-0 aspect-[2/3]"
                   src={convertFileSrc(
-                    `${applicationStateContext.appDataDirPath()}grids\\${
-                      selectedDataContext.selectedGame().gridImage
+                    `${applicationStateContext.appDataDirPath()}grids\\${selectedDataContext.selectedGame().gridImage
                     }`
                   )}
                   alt=""
@@ -485,8 +480,7 @@ export function EditGame() {
                   class="absolute inset-0 overflow-hidden">
                   <img
                     src={convertFileSrc(
-                      `${applicationStateContext.appDataDirPath()}heroes\\${
-                        selectedDataContext.selectedGame().heroImage
+                      `${applicationStateContext.appDataDirPath()}heroes\\${selectedDataContext.selectedGame().heroImage
                       }`
                     )}
                     alt=""
@@ -494,8 +488,7 @@ export function EditGame() {
                   />
                   <img
                     src={convertFileSrc(
-                      `${applicationStateContext.appDataDirPath()}heroes\\${
-                        selectedDataContext.selectedGame().heroImage
+                      `${applicationStateContext.appDataDirPath()}heroes\\${selectedDataContext.selectedGame().heroImage
                       }`
                     )}
                     alt=""
@@ -532,11 +525,10 @@ export function EditGame() {
                   onContextMenu={() => {
                     setEditedLocatedLogo(null);
                   }}
-                  class={`panelButton group absolute bottom-[60px] left-[20px] cursor-pointer  !bg-[#27272700] bg-[#f1f1f1] dark:bg-[#1c1c1c] max-large:bottom-[40px] ${
-                    selectedDataContext.selectedGame().logo
+                  class={`panelButton group absolute bottom-[60px] left-[20px] cursor-pointer  !bg-[#27272700] bg-[#f1f1f1] dark:bg-[#1c1c1c] max-large:bottom-[40px] ${selectedDataContext.selectedGame().logo
                       ? ""
                       : "!h-[65px] !w-[200px]"
-                  } `}
+                    } `}
                   data-tooltip={translateText("logo")}>
                   <Show
                     when={editedLocatedLogo()}
@@ -561,18 +553,16 @@ export function EditGame() {
                 onContextMenu={() => {
                   setEditedLocatedLogo(null);
                 }}
-                class={`panelButton group absolute bottom-[70px] left-[20px] cursor-pointer  !bg-[#27272700] bg-[#f1f1f1] dark:bg-[#1c1c1c] ${
-                  selectedDataContext.selectedGame().logo
+                class={`panelButton group absolute bottom-[70px] left-[20px] cursor-pointer  !bg-[#27272700] bg-[#f1f1f1] dark:bg-[#1c1c1c] ${selectedDataContext.selectedGame().logo
                     ? ""
                     : "!h-[65px] !w-[200px]"
-                } `}
+                  } `}
                 data-tooltip={translateText("logo")}>
                 <Switch>
                   <Match when={editedLocatedLogo() === undefined}>
                     <img
                       src={convertFileSrc(
-                        `${applicationStateContext.appDataDirPath()}logos\\${
-                          selectedDataContext.selectedGame().logo
+                        `${applicationStateContext.appDataDirPath()}logos\\${selectedDataContext.selectedGame().logo
                         }`
                       )}
                       alt=""
@@ -615,8 +605,7 @@ export function EditGame() {
                       }>
                       <img
                         src={convertFileSrc(
-                          `${applicationStateContext.appDataDirPath()}icons\\${
-                            selectedDataContext.selectedGame().icon
+                          `${applicationStateContext.appDataDirPath()}icons\\${selectedDataContext.selectedGame().icon
                           }`
                         )}
                         alt=""
@@ -672,21 +661,21 @@ export function EditGame() {
                         .slice(-1)
                         .toString().length > 17
                         ? `...${selectedDataContext
-                            .selectedGame()
-                            .location.toString()
-                            .split("\\")
-                            .slice(-1)
-                            .toString()
-                            .slice(0, 7)}...${selectedDataContext
+                          .selectedGame()
+                          .location.toString()
+                          .split("\\")
+                          .slice(-1)
+                          .toString()
+                          .slice(0, 7)}...${selectedDataContext
                             .selectedGame()
                             .location.toString()
                             .slice(-7)}`
                         : `...${selectedDataContext
-                            .selectedGame()
-                            .location.toString()
-                            .split("\\")
-                            .slice(-1)
-                            .toString()}`}
+                          .selectedGame()
+                          .location.toString()
+                          .split("\\")
+                          .slice(-1)
+                          .toString()}`}
                     </Show>
                   </Match>
                   <Match when={editedLocatedGame() === null}>
@@ -699,18 +688,18 @@ export function EditGame() {
                       .slice(-1)
                       .toString().length > 17
                       ? `...${editedLocatedGame()
-                          .toString()
-                          .split("\\")
-                          .slice(-1)
-                          .toString()
-                          .slice(0, 7)}...${editedLocatedGame()
+                        .toString()
+                        .split("\\")
+                        .slice(-1)
+                        .toString()
+                        .slice(0, 7)}...${editedLocatedGame()
                           .toString()
                           .slice(-7)}`
                       : `...${editedLocatedGame()
-                          .toString()
-                          .split("\\")
-                          .slice(-1)
-                          .toString()}`}
+                        .toString()
+                        .split("\\")
+                        .slice(-1)
+                        .toString()}`}
                   </Match>
                 </Switch>
               </button>
@@ -719,7 +708,7 @@ export function EditGame() {
                 when={
                   selectedDataContext.selectedGame().location &&
                   selectedDataContext.selectedGame().location.split("//")[0] !==
-                    "steam:"
+                  "steam:"
                 }>
                 <button
                   type="button"

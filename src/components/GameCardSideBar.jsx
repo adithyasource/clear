@@ -16,9 +16,8 @@ export function GameCardSideBar(props) {
   return (
     <button
       type="button"
-      class={`!flex gap-[5px] bg-transparent ${
-        props.index === 0 ? "mt-4" : "mt-5"
-      }  sideBarGame cursor-grab p-0`}
+      class={`!flex gap-[5px] bg-transparent ${props.index === 0 ? "mt-4" : "mt-5"
+        }  sideBarGame cursor-grab p-0`}
       data-tooltip={
         globalContext.libraryData.games[props.gameName].location
           ? translateText("play")
@@ -49,8 +48,7 @@ export function GameCardSideBar(props) {
       <Show when={globalContext.libraryData.games[props.gameName].icon}>
         <img
           src={convertFileSrc(
-            `${applicationStateContext.appDataDirPath()}icons\\${
-              globalContext.libraryData.games[props.gameName].icon
+            `${applicationStateContext.appDataDirPath()}icons\\${globalContext.libraryData.games[props.gameName].icon
             }`
           )}
           alt=""

@@ -291,11 +291,10 @@ export function SideBar() {
                 await updateData();
               }
             }}
-            class={` ${
-              globalContext.libraryData.userSettings.language === "fr"
-                ? "medium:h-[calc(100vh-330px)] large:h-[calc(100vh-275px)]"
-                : "h-[calc(100vh-275px)]"
-            } overflow-auto mt-[20px]`}>
+            class={` ${globalContext.libraryData.userSettings.language === "fr"
+              ? "medium:h-[calc(100vh-330px)] large:h-[calc(100vh-275px)]"
+              : "h-[calc(100vh-275px)]"
+              } overflow-auto mt-[20px]`}>
             <p class="mt-[5px]" />
             <For each={applicationStateContext.currentFolders()}>
               {(folderName, index) => {
@@ -640,16 +639,14 @@ export function SideBar() {
           </div>
 
           <div
-            class={`flex ${
-              globalContext.libraryData.userSettings.language === "fr"
-                ? "flex-col gap-0 medium:flex-col medium:gap-0 large:flex-row large:gap-3"
-                : "gap-3"
-            }`}>
+            class={`flex ${globalContext.libraryData.userSettings.language === "fr"
+              ? "flex-col gap-0 medium:flex-col medium:gap-0 large:flex-row large:gap-3"
+              : "gap-3"
+              }`}>
             <button
               type="button"
-              class={`standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] ${
-                uiContext.showNewVersionAvailable() ? "!w-[80%]" : ""
-              } whitespace-nowrap`}
+              class={`standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] ${uiContext.showNewVersionAvailable() ? "!w-[80%]" : ""
+                } whitespace-nowrap`}
               onClick={() => {
                 openDialog("notepad");
               }}>

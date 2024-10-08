@@ -58,9 +58,8 @@ export function LanguageSelector(props) {
         <div
           role="button"
           tabIndex="0"
-          class={`absolute z-[100000] flex flex-col gap-4 border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-3 dark:border-[#ffffff1f] dark:bg-[#121212] ${
-            props.onSettingsPage ? "top-[150%]" : "left-[1%] top-[120%]"
-          }`}
+          class={`absolute z-[100000] flex flex-col gap-4 border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-3 dark:border-[#ffffff1f] dark:bg-[#121212] ${props.onSettingsPage ? "top-[150%]" : "left-[1%] top-[120%]"
+            }`}
           onMouseLeave={() => {
             props.onSettingsPage
               ? uiContext.setShowSettingsLanguageSelector(false)

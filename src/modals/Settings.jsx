@@ -1,4 +1,4 @@
-import { Show, onMount, useContext } from "solid-js";
+import { Show, useContext } from "solid-js";
 import { invoke } from "@tauri-apps/api/tauri";
 import {
   getData,
@@ -207,15 +207,15 @@ export function Settings() {
                 onClick={async () => {
                   globalContext.libraryData.userSettings.currentTheme === "dark"
                     ? globalContext.setLibraryData(
-                        "userSettings",
-                        "currentTheme",
-                        "light"
-                      )
+                      "userSettings",
+                      "currentTheme",
+                      "light"
+                    )
                     : globalContext.setLibraryData(
-                        "userSettings",
-                        "currentTheme",
-                        "dark"
-                      );
+                      "userSettings",
+                      "currentTheme",
+                      "dark"
+                    );
 
                   await updateData();
                 }}

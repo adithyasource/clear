@@ -450,7 +450,7 @@ export async function updateData() {
   ).then(getData());
 }
 
-let toastTimeout = setTimeout(() => {}, 0);
+let toastTimeout = setTimeout(() => { }, 0);
 
 export function triggerToast(message) {
   document.querySelector(".toast").hidePopover();
