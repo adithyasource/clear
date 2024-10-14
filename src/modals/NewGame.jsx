@@ -1,6 +1,6 @@
 import { Match, Show, Switch, createSignal, useContext, For } from "solid-js";
-import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
-import { BaseDirectory, copyFile } from "@tauri-apps/api/fs";
+import { convertFileSrc, invoke } from "@tauri-apps/api/core";
+import { BaseDirectory, copyFile } from "@tauri-apps/plugin-fs";
 
 import {
   generateRandomString,
@@ -10,7 +10,7 @@ import {
   openDialog
 } from "../Globals";
 
-import { open } from "@tauri-apps/api/dialog";
+import { open } from "@tauri-apps/plugin-dialog";
 import { ChevronArrow, Close, SaveDisk } from "../libraries/Icons";
 import { produce } from "solid-js/store";
 
@@ -83,7 +83,7 @@ export function NewGame() {
       gridImageFileName = `${generateRandomString()}.png`;
       invoke("download_image", {
         link: foundGridImage()[foundGridImageIndex()],
-        location: `${applicationStateContext.appDataDirPath()}grids\\${gridImageFileName}`
+        location: `${applicationStateContext.appDataDirPath()}\\grids\\${gridImageFileName}`
       });
     } else {
       if (locatedGridImage()) {
@@ -103,7 +103,7 @@ export function NewGame() {
 
       invoke("download_image", {
         link: foundHeroImage()[foundHeroImageIndex()],
-        location: `${applicationStateContext.appDataDirPath()}heroes\\${heroImageFileName}`
+        location: `${applicationStateContext.appDataDirPath()}\\heroes\\${heroImageFileName}`
       });
     } else {
       if (locatedHeroImage()) {
@@ -123,7 +123,7 @@ export function NewGame() {
 
       invoke("download_image", {
         link: foundLogoImage()[foundLogoImageIndex()],
-        location: `${applicationStateContext.appDataDirPath()}logos\\${logoFileName}`
+        location: `${applicationStateContext.appDataDirPath()}\\logos\\${logoFileName}`
       });
     } else {
       if (locatedLogo()) {
@@ -141,7 +141,7 @@ export function NewGame() {
 
       invoke("download_image", {
         link: foundIconImage()[foundIconImageIndex()],
-        location: `${applicationStateContext.appDataDirPath()}icons\\${iconFileName}`
+        location: `${applicationStateContext.appDataDirPath()}\\icons\\${iconFileName}`
       });
     } else {
       if (locatedIcon()) {

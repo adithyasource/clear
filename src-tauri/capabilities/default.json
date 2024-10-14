@@ -1,0 +1,18 @@
+{
+  "identifier": "main-capability",
+  "description": "Capability for the main window",
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "fs:default",
+    {
+      "identifier": "fs:allow-write-text-file",
+      "allow": [
+        {
+          "path": "$APPDATA/*"
+        }
+      ]
+    }
+  ]
+}

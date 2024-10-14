@@ -1,5 +1,5 @@
 import { Show, useContext } from "solid-js";
-import { convertFileSrc } from "@tauri-apps/api/tauri";
+import { convertFileSrc } from "@tauri-apps/api/core";
 import { closeDialog, openDialog, openGame, translateText } from "../Globals";
 import { Close, Play, Settings } from "../libraries/Icons";
 

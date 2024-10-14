@@ -1,5 +1,5 @@
 import { For, Show, onMount, useContext, Switch, Match } from "solid-js";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 import { fuzzysearch } from "./libraries/fuzzysearch";
 
 import {

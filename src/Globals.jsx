@@ -1,14 +1,14 @@
 import { createContext, createSignal } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 import {
   BaseDirectory,
-  createDir,
+  mkdir,
   exists,
   readTextFile,
   writeTextFile
-} from "@tauri-apps/api/fs";
+} from "@tauri-apps/plugin-fs";
 import { appDataDir } from "@tauri-apps/api/path";
 import { textLanguages } from "./Text";
 import { parseVDF } from "./libraries/parseVDF";
@@ -188,19 +188,19 @@ export function SteamDataContextProvider(props) {
 // * global functions
 
 export async function createEmptyLibrary() {
-  await createDir("heroes", {
+  await mkdir("heroes", {
     dir: BaseDirectory.AppData,
     recursive: true
   });
-  await createDir("grids", {
+  await mkdir("grids", {
     dir: BaseDirectory.AppData,
     recursive: true
   });
-  await createDir("logos", {
+  await mkdir("logos", {
     dir: BaseDirectory.AppData,
     recursive: true
   });
-  await createDir("icons", {
+  await mkdir("icons", {
     dir: BaseDirectory.AppData,
     recursive: true
   });
@@ -211,9 +211,9 @@ export async function createEmptyLibrary() {
 export async function getData() {
   setAppDataDirPath(await appDataDir());
 
-  if (await exists("data.json", { dir: BaseDirectory.AppData })) {
+  if (await exists("data.json", { baseDir: BaseDirectory.AppData })) {
     const getLibraryData = await readTextFile("data.json", {
-      dir: BaseDirectory.AppData
+      baseDir: BaseDirectory.AppData
     });
 
     // ! potential footgun here cause you're not checking if games are empty
@@ -353,7 +353,7 @@ export async function importSteamGames() {
       if (assetsData.grids.length !== 0) {
         await invoke("download_image", {
           link: assetsData.grids[0],
-          location: `${appDataDirPath()}grids\\${gridImageFileName}`
+          location: `${appDataDirPath()}\\grids\\${gridImageFileName}`
         });
       } else {
         gridImageFileName = undefined;
@@ -361,7 +361,7 @@ export async function importSteamGames() {
       if (assetsData.heroes.length !== 0) {
         await invoke("download_image", {
           link: assetsData.heroes[0],
-          location: `${appDataDirPath()}heroes\\${heroImageFileName}`
+          location: `${appDataDirPath()}\\heroes\\${heroImageFileName}`
         });
       } else {
         heroImageFileName = undefined;
@@ -369,7 +369,7 @@ export async function importSteamGames() {
       if (assetsData.logos.length !== 0) {
         await invoke("download_image", {
           link: assetsData.logos[0],
-          location: `${appDataDirPath()}logos\\${logoImageFileName}`
+          location: `${appDataDirPath()}\\logos\\${logoImageFileName}`
         });
       } else {
         logoImageFileName = undefined;
@@ -377,7 +377,7 @@ export async function importSteamGames() {
       if (assetsData.icons.length !== 0) {
         await invoke("download_image", {
           link: assetsData.icons[0],
-          location: `${appDataDirPath()}icons\\${iconImageFileName}`
+          location: `${appDataDirPath()}\\icons\\${iconImageFileName}`
         });
       } else {
         iconImageFileName = undefined;
@@ -440,12 +440,10 @@ export function translateText(text) {
 
 export async function updateData() {
   await writeTextFile(
+    "data.json",
+    JSON.stringify(libraryData, null, 4),
     {
-      path: "data.json",
-      contents: JSON.stringify(libraryData, null, 4)
-    },
-    {
-      dir: BaseDirectory.AppData
+      baseDir: BaseDirectory.AppData
     }
   ).then(getData());
 }

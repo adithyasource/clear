@@ -1,9 +1,9 @@
 import { Match, Show, Switch, useContext, createSignal } from "solid-js";
 import { produce } from "solid-js/store";
-import { convertFileSrc } from "@tauri-apps/api/tauri";
-import { BaseDirectory, copyFile } from "@tauri-apps/api/fs";
-import { open } from "@tauri-apps/api/dialog";
-import { invoke } from "@tauri-apps/api";
+import { convertFileSrc } from "@tauri-apps/api/core";
+import { BaseDirectory, copyFile } from "@tauri-apps/plugin-fs";
+import { open } from "@tauri-apps/plugin-dialog";
+import { invoke } from "@tauri-apps/api/core";
 import {
   generateRandomString,
   translateText,
@@ -168,7 +168,7 @@ export function EditGame() {
       } else {
         const gridImageFileName = `${generateRandomString()}.${editedLocatedGridImage().split(".")[
           editedLocatedGridImage().split(".").length - 1
-          ]
+        ]
           }`;
 
         await copyFile(
@@ -191,7 +191,7 @@ export function EditGame() {
       } else {
         const heroImageFileName = `${generateRandomString()}.${editedLocatedHeroImage().split(".")[
           editedLocatedHeroImage().split(".").length - 1
-          ]
+        ]
           }`;
 
         await copyFile(
@@ -214,7 +214,7 @@ export function EditGame() {
       } else {
         const logoFileName = `${generateRandomString()}.${editedLocatedLogo().split(".")[
           editedLocatedLogo().split(".").length - 1
-          ]
+        ]
           }`;
 
         await copyFile(editedLocatedLogo(), `logos\\${logoFileName}`, {
@@ -233,7 +233,7 @@ export function EditGame() {
       } else {
         const iconFileName = `${generateRandomString()}.${editedLocatedIcon().split(".")[
           editedLocatedIcon().split(".").length - 1
-          ]
+        ]
           }`;
 
         await copyFile(editedLocatedIcon(), `icons\\${iconFileName}`, {
@@ -431,7 +431,7 @@ export function EditGame() {
                 <img
                   class="absolute inset-0 aspect-[2/3]"
                   src={convertFileSrc(
-                    `${applicationStateContext.appDataDirPath()}grids\\${selectedDataContext.selectedGame().gridImage
+                    `${applicationStateContext.appDataDirPath()}\\grids\\${selectedDataContext.selectedGame().gridImage
                     }`
                   )}
                   alt=""
@@ -480,7 +480,7 @@ export function EditGame() {
                   class="absolute inset-0 overflow-hidden">
                   <img
                     src={convertFileSrc(
-                      `${applicationStateContext.appDataDirPath()}heroes\\${selectedDataContext.selectedGame().heroImage
+                      `${applicationStateContext.appDataDirPath()}\\heroes\\${selectedDataContext.selectedGame().heroImage
                       }`
                     )}
                     alt=""
@@ -488,7 +488,7 @@ export function EditGame() {
                   />
                   <img
                     src={convertFileSrc(
-                      `${applicationStateContext.appDataDirPath()}heroes\\${selectedDataContext.selectedGame().heroImage
+                      `${applicationStateContext.appDataDirPath()}\\heroes\\${selectedDataContext.selectedGame().heroImage
                       }`
                     )}
                     alt=""
@@ -526,8 +526,8 @@ export function EditGame() {
                     setEditedLocatedLogo(null);
                   }}
                   class={`panelButton group absolute bottom-[60px] left-[20px] cursor-pointer  !bg-[#27272700] bg-[#f1f1f1] dark:bg-[#1c1c1c] max-large:bottom-[40px] ${selectedDataContext.selectedGame().logo
-                      ? ""
-                      : "!h-[65px] !w-[200px]"
+                    ? ""
+                    : "!h-[65px] !w-[200px]"
                     } `}
                   data-tooltip={translateText("logo")}>
                   <Show
@@ -554,15 +554,15 @@ export function EditGame() {
                   setEditedLocatedLogo(null);
                 }}
                 class={`panelButton group absolute bottom-[70px] left-[20px] cursor-pointer  !bg-[#27272700] bg-[#f1f1f1] dark:bg-[#1c1c1c] ${selectedDataContext.selectedGame().logo
-                    ? ""
-                    : "!h-[65px] !w-[200px]"
+                  ? ""
+                  : "!h-[65px] !w-[200px]"
                   } `}
                 data-tooltip={translateText("logo")}>
                 <Switch>
                   <Match when={editedLocatedLogo() === undefined}>
                     <img
                       src={convertFileSrc(
-                        `${applicationStateContext.appDataDirPath()}logos\\${selectedDataContext.selectedGame().logo
+                        `${applicationStateContext.appDataDirPath()}\\logos\\${selectedDataContext.selectedGame().logo
                         }`
                       )}
                       alt=""
@@ -605,7 +605,7 @@ export function EditGame() {
                       }>
                       <img
                         src={convertFileSrc(
-                          `${applicationStateContext.appDataDirPath()}icons\\${selectedDataContext.selectedGame().icon
+                          `${applicationStateContext.appDataDirPath()}\\icons\\${selectedDataContext.selectedGame().icon
                           }`
                         )}
                         alt=""
