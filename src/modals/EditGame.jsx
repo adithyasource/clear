@@ -8,7 +8,8 @@ import {
   generateRandomString,
   translateText,
   updateData,
-  closeDialog
+  closeDialog,
+  locationJoin
 } from "../Globals";
 import { Close, OpenExternal, SaveDisk, TrashDelete } from "../libraries/Icons";
 
@@ -168,12 +169,12 @@ export function EditGame() {
       } else {
         const gridImageFileName = `${generateRandomString()}.${editedLocatedGridImage().split(".")[
           editedLocatedGridImage().split(".").length - 1
-          ]
+        ]
           }`;
 
         await copyFile(
           editedLocatedGridImage(),
-          `grids\\${gridImageFileName}`,
+          locationJoin(["grids", gridImageFileName]),
           {
             dir: BaseDirectory.AppData
           }
@@ -191,12 +192,12 @@ export function EditGame() {
       } else {
         const heroImageFileName = `${generateRandomString()}.${editedLocatedHeroImage().split(".")[
           editedLocatedHeroImage().split(".").length - 1
-          ]
+        ]
           }`;
 
         await copyFile(
           editedLocatedHeroImage(),
-          `heroes\\${heroImageFileName}`,
+          locationJoin(["heroes", heroImageFileName]),
           {
             dir: BaseDirectory.AppData
           }
@@ -214,10 +215,10 @@ export function EditGame() {
       } else {
         const logoFileName = `${generateRandomString()}.${editedLocatedLogo().split(".")[
           editedLocatedLogo().split(".").length - 1
-          ]
+        ]
           }`;
 
-        await copyFile(editedLocatedLogo(), `logos\\${logoFileName}`, {
+        await copyFile(editedLocatedLogo(), locationJoin(["logos", logoFileName]), {
           dir: BaseDirectory.AppData
         }).then(() => {
           setEditedLocatedLogo(logoFileName);
@@ -233,10 +234,10 @@ export function EditGame() {
       } else {
         const iconFileName = `${generateRandomString()}.${editedLocatedIcon().split(".")[
           editedLocatedIcon().split(".").length - 1
-          ]
+        ]
           }`;
 
-        await copyFile(editedLocatedIcon(), `icons\\${iconFileName}`, {
+        await copyFile(editedLocatedIcon(), locationJoin(["icons", iconFileName]), {
           dir: BaseDirectory.AppData
         }).then(() => {
           setEditedLocatedIcon(iconFileName);
@@ -431,8 +432,7 @@ export function EditGame() {
                 <img
                   class="absolute inset-0 aspect-[2/3]"
                   src={convertFileSrc(
-                    `${applicationStateContext.appDataDirPath()}grids\\${selectedDataContext.selectedGame().gridImage
-                    }`
+                    locationJoin([applicationStateContext.appDataDirPath(), "grids", selectedDataContext.selectedGame().gridImage])
                   )}
                   alt=""
                 />
@@ -480,16 +480,14 @@ export function EditGame() {
                   class="absolute inset-0 overflow-hidden">
                   <img
                     src={convertFileSrc(
-                      `${applicationStateContext.appDataDirPath()}heroes\\${selectedDataContext.selectedGame().heroImage
-                      }`
+                      locationJoin([applicationStateContext.appDataDirPath(), "heroes", selectedDataContext.selectedGame().heroImage])
                     )}
                     alt=""
                     class="absolute inset-0  aspect-[96/31]  h-full  "
                   />
                   <img
                     src={convertFileSrc(
-                      `${applicationStateContext.appDataDirPath()}heroes\\${selectedDataContext.selectedGame().heroImage
-                      }`
+                      locationJoin([applicationStateContext.appDataDirPath(), "heroes", selectedDataContext.selectedGame().heroImage])
                     )}
                     alt=""
                     class="absolute inset-0 -z-10  aspect-[96/31] h-full  opacity-[0.6] blur-[80px]"
@@ -526,8 +524,8 @@ export function EditGame() {
                     setEditedLocatedLogo(null);
                   }}
                   class={`panelButton group absolute bottom-[60px] left-[20px] cursor-pointer  !bg-[#27272700] bg-[#f1f1f1] dark:bg-[#1c1c1c] max-large:bottom-[40px] ${selectedDataContext.selectedGame().logo
-                      ? ""
-                      : "!h-[65px] !w-[200px]"
+                    ? ""
+                    : "!h-[65px] !w-[200px]"
                     } `}
                   data-tooltip={translateText("logo")}>
                   <Show
@@ -554,16 +552,15 @@ export function EditGame() {
                   setEditedLocatedLogo(null);
                 }}
                 class={`panelButton group absolute bottom-[70px] left-[20px] cursor-pointer  !bg-[#27272700] bg-[#f1f1f1] dark:bg-[#1c1c1c] ${selectedDataContext.selectedGame().logo
-                    ? ""
-                    : "!h-[65px] !w-[200px]"
+                  ? ""
+                  : "!h-[65px] !w-[200px]"
                   } `}
                 data-tooltip={translateText("logo")}>
                 <Switch>
                   <Match when={editedLocatedLogo() === undefined}>
                     <img
                       src={convertFileSrc(
-                        `${applicationStateContext.appDataDirPath()}logos\\${selectedDataContext.selectedGame().logo
-                        }`
+                        locationJoin([applicationStateContext.appDataDirPath(), "logos", selectedDataContext.selectedGame().logo])
                       )}
                       alt=""
                       class="relative max-h-[100px] max-w-[400px] max-large:max-h-[70px] max-large:max-w-[300px]"
@@ -605,8 +602,7 @@ export function EditGame() {
                       }>
                       <img
                         src={convertFileSrc(
-                          `${applicationStateContext.appDataDirPath()}icons\\${selectedDataContext.selectedGame().icon
-                          }`
+                          locationJoin([applicationStateContext.appDataDirPath(), "icons", selectedDataContext.selectedGame().icon])
                         )}
                         alt=""
                         class="h-[40px] w-[40px] "

@@ -7,7 +7,8 @@ import {
   translateText,
   updateData,
   closeDialog,
-  openDialog
+  openDialog,
+  locationJoin
 } from "../Globals";
 
 import { open } from "@tauri-apps/api/dialog";
@@ -83,7 +84,7 @@ export function NewGame() {
       gridImageFileName = `${generateRandomString()}.png`;
       invoke("download_image", {
         link: foundGridImage()[foundGridImageIndex()],
-        location: `${applicationStateContext.appDataDirPath()}grids\\${gridImageFileName}`
+        location: locationJoin([applicationStateContext.appDataDirPath(), "grids", gridImageFileName])
       });
     } else {
       if (locatedGridImage()) {
@@ -92,7 +93,7 @@ export function NewGame() {
         ]
           }`;
 
-        await copyFile(locatedGridImage(), `grids\\${gridImageFileName}`, {
+        await copyFile(locatedGridImage(), locationJoin(["grids", gridImageFileName]), {
           dir: BaseDirectory.AppData
         });
       }
@@ -103,7 +104,7 @@ export function NewGame() {
 
       invoke("download_image", {
         link: foundHeroImage()[foundHeroImageIndex()],
-        location: `${applicationStateContext.appDataDirPath()}heroes\\${heroImageFileName}`
+        location: locationJoin([applicationStateContext.appDataDirPath(), "heroes", heroImageFileName])
       });
     } else {
       if (locatedHeroImage()) {
@@ -112,7 +113,7 @@ export function NewGame() {
         ]
           }`;
 
-        await copyFile(locatedHeroImage(), `heroes\\${heroImageFileName}`, {
+        await copyFile(locatedHeroImage(), locationJoin(["heroes", heroImageFileName]), {
           dir: BaseDirectory.AppData
         });
       }
@@ -123,14 +124,14 @@ export function NewGame() {
 
       invoke("download_image", {
         link: foundLogoImage()[foundLogoImageIndex()],
-        location: `${applicationStateContext.appDataDirPath()}logos\\${logoFileName}`
+        location: locationJoin([applicationStateContext.appDataDirPath(), "logos", logoFileName])
       });
     } else {
       if (locatedLogo()) {
         logoFileName = `${generateRandomString()}.${locatedLogo().split(".")[locatedLogo().split(".").length - 1]
           }`;
 
-        await copyFile(locatedLogo(), `logos\\${logoFileName}`, {
+        await copyFile(locatedLogo(), locationJoin(["logos", logoFileName]), {
           dir: BaseDirectory.AppData
         });
       }
@@ -141,14 +142,14 @@ export function NewGame() {
 
       invoke("download_image", {
         link: foundIconImage()[foundIconImageIndex()],
-        location: `${applicationStateContext.appDataDirPath()}icons\\${iconFileName}`
+        location: locationJoin([applicationStateContext.appDataDirPath(), "icons", iconFileName])
       });
     } else {
       if (locatedIcon()) {
         iconFileName = `${generateRandomString()}.${locatedIcon().split(".")[locatedIcon().split(".").length - 1]
           }`;
 
-        await copyFile(locatedIcon(), `icons\\${iconFileName}`, {
+        await copyFile(locatedIcon(), locationJoin(["icons", iconFileName]), {
           dir: BaseDirectory.AppData
         });
       }

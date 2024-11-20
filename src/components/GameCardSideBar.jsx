@@ -1,6 +1,6 @@
 import { Show, useContext } from "solid-js";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
-import { openDialog, openGame, translateText } from "../Globals";
+import { locationJoin, openDialog, openGame, translateText } from "../Globals";
 
 import {
   GlobalContext,
@@ -48,8 +48,7 @@ export function GameCardSideBar(props) {
       <Show when={globalContext.libraryData.games[props.gameName].icon}>
         <img
           src={convertFileSrc(
-            `${applicationStateContext.appDataDirPath()}icons\\${globalContext.libraryData.games[props.gameName].icon
-            }`
+            locationJoin([applicationStateContext.appDataDirPath(), "icons", globalContext.libraryData.games[props.gameName].icon])
           )}
           alt=""
           class="aspect-square h-[16px] gameIconImage"

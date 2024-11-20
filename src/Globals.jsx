@@ -355,7 +355,7 @@ export async function importSteamGames() {
       if (assetsData.grids.length !== 0) {
         await invoke("download_image", {
           link: assetsData.grids[0],
-          location: `${appDataDirPath()}grids\\${gridImageFileName}`
+          location: locationJoin([appDataDirPath(), "grids", gridImageFileName])
         });
       } else {
         gridImageFileName = undefined;
@@ -363,7 +363,7 @@ export async function importSteamGames() {
       if (assetsData.heroes.length !== 0) {
         await invoke("download_image", {
           link: assetsData.heroes[0],
-          location: `${appDataDirPath()}heroes\\${heroImageFileName}`
+          location: locationJoin([appDataDirPath(), "heroes", heroImageFileName])
         });
       } else {
         heroImageFileName = undefined;
@@ -371,7 +371,7 @@ export async function importSteamGames() {
       if (assetsData.logos.length !== 0) {
         await invoke("download_image", {
           link: assetsData.logos[0],
-          location: `${appDataDirPath()}logos\\${logoImageFileName}`
+          location: locationJoin([appDataDirPath(), "logos", logoImageFileName])
         });
       } else {
         logoImageFileName = undefined;
@@ -379,7 +379,7 @@ export async function importSteamGames() {
       if (assetsData.icons.length !== 0) {
         await invoke("download_image", {
           link: assetsData.icons[0],
-          location: `${appDataDirPath()}icons\\${iconImageFileName}`
+          location: locationJoin([appDataDirPath(), "icons", iconImageFileName])
         });
       } else {
         iconImageFileName = undefined;
@@ -609,13 +609,9 @@ export function locationJoin(locationsList) {
   let location = ""
 
   if (systemPlatform() === "windows") {
-    for (const item of locationsList) {
-      location += `${item}\\`
-    }
+    location = locationsList.join("\\")
   } else {
-    for (const item of locationsList) {
-      location += `${item}/`
-    }
+    location = locationsList.join("/")
   }
 
   return location

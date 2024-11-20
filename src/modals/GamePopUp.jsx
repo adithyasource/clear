@@ -1,6 +1,6 @@
 import { Show, useContext } from "solid-js";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
-import { closeDialog, openDialog, openGame, translateText } from "../Globals";
+import { closeDialog, locationJoin, openDialog, openGame, translateText } from "../Globals";
 import { Close, Play, Settings } from "../libraries/Icons";
 
 import {
@@ -27,8 +27,7 @@ export function GamePopUp() {
       <div class="flex h-screen w-screen flex-col items-center justify-center px-[40px] bg-[#d1d1d166] dark:bg-[#12121266] ">
         <img
           src={convertFileSrc(
-            `${applicationStateContext.appDataDirPath()}heroes\\${selectedDataContext.selectedGame().heroImage
-            }`
+            locationJoin([applicationStateContext.appDataDirPath(), "heroes", selectedDataContext.selectedGame().heroImage])
           )}
           alt=""
           class="absolute -z-10 h-[350px] opacity-[0.4] blur-[80px] max-large:h-[270px]"
@@ -86,8 +85,7 @@ export function GamePopUp() {
             }>
             <img
               src={convertFileSrc(
-                `${applicationStateContext.appDataDirPath()}heroes\\${selectedDataContext.selectedGame().heroImage
-                }`
+                locationJoin([applicationStateContext.appDataDirPath(), "heroes", selectedDataContext.selectedGame().heroImage])
               )}
               alt=""
               class="aspect-[96/31] h-[350px] max-large:h-[270px]"
@@ -102,8 +100,7 @@ export function GamePopUp() {
               }>
               <img
                 src={convertFileSrc(
-                  `${applicationStateContext.appDataDirPath()}logos\\${selectedDataContext.selectedGame().logo
-                  }`
+                  locationJoin([applicationStateContext.appDataDirPath(), "logos", selectedDataContext.selectedGame().logo])
                 )}
                 alt=""
                 class=" relative aspect-auto max-h-[100px] max-w-[400px] max-large:max-h-[70px] max-large:max-w-[300px]"

@@ -2,7 +2,6 @@
   "build": {
     "beforeDevCommand": "pnpm run dev",
     "beforeBuildCommand": "pnpm run build",
-    "beforeBundleCommand": ".\\scripts\\beforeBundle.bat",
     "devPath": "http://localhost:1420",
     "distDir": "../dist",
     "withGlobalTauri": false
@@ -40,7 +39,9 @@
       "active": true,
       "targets": [
         "nsis",
-        "msi"
+        "msi",
+        "app",
+        "dmg"
       ],
       "identifier": "com.adithya.clear",
       "icon": [
