@@ -1,12 +1,10 @@
 // prevents additional console window on windows in release, do not remove!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::fs;
 use std::env;
+use std::fs;
 use std::process::{Command, Stdio};
 use tauri::{Manager, Window};
-#[cfg(target_os = "windows")]
-use std::os::windows::process::CommandExt;
 
 #[tauri::command]
 fn open_location(location: &str) {
@@ -26,10 +24,7 @@ fn open_location(location: &str) {
         command.creation_flags(0x08000000);
     }
 
-    let _ = command
-        .stdout(Stdio::null())
-        .stderr(Stdio::null())
-        .spawn();
+    let _ = command.stdout(Stdio::null()).stderr(Stdio::null()).spawn();
 }
 
 #[tauri::command]
@@ -68,11 +63,11 @@ fn download_image(link: &str, location: &str) {
 
     let mut command = if cfg!(target_os = "windows") {
         let mut cmd = Command::new("powershell");
-        cmd.arg("-Command").arg(command_str); 
+        cmd.arg("-Command").arg(command_str);
         cmd
     } else {
         let mut cmd = Command::new("curl");
-        cmd.args(&["-o", location, link]); 
+        cmd.args(&["-o", location, link]);
         cmd
     };
 
@@ -82,23 +77,31 @@ fn download_image(link: &str, location: &str) {
         command.creation_flags(0x08000000);
     }
 
-    let _ = command
-        .stdout(Stdio::null())
-        .stderr(Stdio::null())
-        .spawn();
+    let _ = command.stdout(Stdio::null()).stderr(Stdio::null()).spawn();
 }
 
 #[tauri::command]
 fn check_connection() -> String {
-    let command_str = if cfg!(target_os = "windows") {
-        "ping -n 1 www.google.com > nul && echo true || echo false"
+    let (command, args) = if cfg!(target_os = "windows") {
+        (
+            "cmd",
+            vec![
+                "/C",
+                "ping -n 1 www.google.com > nul && echo true || echo false",
+            ],
+        )
     } else {
-        "ping -c 1 www.google.com > /dev/null && echo true || echo false"
+        (
+            "sh",
+            vec![
+                "-c",
+                "ping -c 1 www.google.com > /dev/null && echo true || echo false",
+            ],
+        )
     };
 
-    let output = Command::new("sh")
-        .arg("-c")
-        .arg(command_str)
+    let output = Command::new(command)
+        .args(args)
         .output()
         .expect("failed to execute process");
 
