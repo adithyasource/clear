@@ -64,10 +64,10 @@ const [selectedGameId, setSelectedGameId] = createSignal();
 // * application state signals
 const [currentGames, setCurrentGames] = createSignal([]);
 const [currentFolders, setCurrentFolders] = createSignal([]);
-
 const [searchValue, setSearchValue] = createSignal();
 const [toastMessage, setToastMessage] = createSignal("");
 const [appVersion, setAppVersion] = createSignal("1.1.0");
+const [systemPlatform, setSystemPlatform] = createSignal("");
 const [latestVersion, setLatestVersion] = createSignal("");
 const [appDataDirPath, setAppDataDirPath] = createSignal({});
 const [windowWidth, setWindowWidth] = createSignal(window.innerWidth);
@@ -155,6 +155,8 @@ export function ApplicationStateContextProvider(props) {
     setToastMessage,
     appVersion,
     setAppVersion,
+    systemPlatform,
+    setSystemPlatform,
     latestVersion,
     setLatestVersion,
     appDataDirPath,
@@ -601,4 +603,20 @@ export async function checkIfConnectedToInternet() {
   }
 
   return connectedToInternet;
+}
+
+export function locationJoin(locationsList) {
+  let location = ""
+
+  if (systemPlatform() === "windows") {
+    for (const item of locationsList) {
+      location += `${item}\\`
+    }
+  } else {
+    for (const item of locationsList) {
+      location += `${item}/`
+    }
+  }
+
+  return location
 }

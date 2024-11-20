@@ -2,6 +2,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use std::fs;
+use std::env;
 use std::process::{Command, Stdio};
 use tauri::{Manager, Window};
 #[cfg(target_os = "windows")]
@@ -34,6 +35,12 @@ fn open_location(location: &str) {
 #[tauri::command]
 fn close_app() {
     std::process::exit(0x0);
+}
+
+#[tauri::command]
+fn get_platform() -> String {
+    let platform = env::consts::OS;
+    return platform.to_string();
 }
 
 #[tauri::command]
@@ -107,7 +114,8 @@ fn main() {
             read_steam_vdf,
             show_window,
             download_image,
-            check_connection
+            check_connection,
+            get_platform
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

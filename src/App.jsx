@@ -1,6 +1,7 @@
 import { For, Show, onMount, useContext, Switch, Match } from "solid-js";
 import { invoke } from "@tauri-apps/api/tauri";
 import { fuzzysearch } from "./libraries/fuzzysearch";
+import { appDataDir } from '@tauri-apps/api/path';
 
 import {
   GlobalContext,
@@ -15,7 +16,8 @@ import {
   triggerToast,
   toggleSideBar,
   closeDialogImmediately,
-  checkIfConnectedToInternet
+  checkIfConnectedToInternet,
+  locationJoin
 } from "./Globals";
 
 import "./App.css";
@@ -294,6 +296,8 @@ function App() {
     invoke("show_window");
     addEventListeners();
 
+    applicationStateContext.setSystemPlatform(await invoke("get_platform"))
+
     if (await checkIfConnectedToInternet()) {
       // check if new version is available and set variable
       let response;
@@ -318,6 +322,7 @@ function App() {
           : uiContext.setShowNewVersionAvailable(false);
       }
     }
+
   });
 
   return (
