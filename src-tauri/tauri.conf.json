@@ -22,21 +22,31 @@
         "copyFile": true,
         "exists": true,
         "createDir": true,
-        "scope": ["$APPDATA/**"]
+        "scope": [
+          "$APPDATA/**"
+        ]
       },
       "dialog": {
         "open": true
       },
       "protocol": {
         "asset": true,
-        "assetScope": ["**"]
+        "assetScope": [
+          "**"
+        ]
       }
     },
     "bundle": {
       "active": true,
-      "targets": ["nsis", "msi"],
+      "targets": [
+        "nsis",
+        "msi"
+      ],
       "identifier": "com.adithya.clear",
-      "icon": ["icons/128x128.png", "icons/icon.ico"]
+      "icon": [
+        "icons/128x128.png",
+        "icons/icon.ico"
+      ]
     },
     "windows": [
       {
