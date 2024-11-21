@@ -272,4 +272,5 @@ def handleRequest():
     return "hey there, how'd you end up here? this is the main website: https://clear.adithya.zip"
 
 
+# activate venv source .venv/bin/activate
 # command to run python -m flask run --debug --port 1337
