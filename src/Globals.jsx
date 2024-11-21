@@ -606,13 +606,27 @@ export async function checkIfConnectedToInternet() {
 }
 
 export function locationJoin(locationsList) {
-  let location = ""
-
   if (systemPlatform() === "windows") {
-    location = locationsList.join("\\")
-  } else {
-    location = locationsList.join("/")
+    return locationsList.join("\\")
   }
 
-  return location
+  return locationsList.join("/")
+}
+
+export function getExecutableFileName(location) {
+
+  if (systemPlatform() === "windows") {
+    return location.toString().split("\\").slice(-1)
+  }
+
+  return location.toString().split("/").slice(-1)
+}
+
+export function getExecutableParentFolder(location) {
+
+  if (systemPlatform() === "windows") {
+    return location.toString().split("\\").slice(0, -1).join("\\")
+  }
+
+  return location.toString().split("/").slice(0, -1).join("/")
 }

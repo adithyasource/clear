@@ -1,7 +1,6 @@
 import { For, Show, onMount, useContext, Switch, Match } from "solid-js";
 import { invoke } from "@tauri-apps/api/tauri";
 import { fuzzysearch } from "./libraries/fuzzysearch";
-import { appDataDir } from '@tauri-apps/api/path';
 
 import {
   GlobalContext,
@@ -17,7 +16,6 @@ import {
   toggleSideBar,
   closeDialogImmediately,
   checkIfConnectedToInternet,
-  locationJoin
 } from "./Globals";
 
 import "./App.css";

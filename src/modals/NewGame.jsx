@@ -8,7 +8,8 @@ import {
   updateData,
   closeDialog,
   openDialog,
-  locationJoin
+  locationJoin,
+  getExecutableFileName,
 } from "../Globals";
 
 import { open } from "@tauri-apps/api/dialog";
@@ -184,7 +185,7 @@ export function NewGame() {
         filters: [
           {
             name: "Executable",
-            extensions: ["exe", "lnk", "url"]
+            extensions: ["exe", "lnk", "url", "app"]
           }
         ]
       })
@@ -463,11 +464,10 @@ export function NewGame() {
                   : locatedGridImage()
                     ? convertFileSrc(locatedGridImage())
                     : // this is a gif which is completely empty
-                    "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
               }
               alt=""
-              class={`absolute inset-0 w-full h-full ${showGridImageLoading() ? "opacity-0" : ""
-                }  `}
+              class={`relative inset-0 w-full ${showGridImageLoading() ? "opacity-0" : ""}  `}
               onLoad={() => {
                 setShowGridImageLoading(false);
               }}
@@ -544,7 +544,7 @@ export function NewGame() {
                       : locatedHeroImage()
                         ? convertFileSrc(locatedHeroImage())
                         : // this is a gif which is completely empty
-                        "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                   }
                   alt=""
                   class={`w-full h-full aspect-[96/31] ${showHeroImageLoading() ? "opacity-0" : ""
@@ -560,7 +560,7 @@ export function NewGame() {
                       : locatedHeroImage()
                         ? convertFileSrc(locatedHeroImage())
                         : // this is a gif which is completely empty
-                        "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                   }
                   onLoad={() => {
                     setShowHeroImageLoading(false);
@@ -643,7 +643,7 @@ export function NewGame() {
                       : locatedLogo()
                         ? convertFileSrc(locatedLogo())
                         : // this is a gif which is completely empty
-                        "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                   }
                   alt=""
                   class={`!object-scale-down w-full h-full  ${showLogoImageLoading() ? "opacity-0" : ""
@@ -727,7 +727,7 @@ export function NewGame() {
                       : locatedIcon()
                         ? convertFileSrc(locatedIcon())
                         : // this is a gif which is completely empty
-                        "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                   }
                   alt=""
                   class={`!object-scale-down h-[40px] w-[40px]  ${showIconImageLoading() ? "opacity-0" : ""
@@ -852,19 +852,7 @@ export function NewGame() {
                 class="standardButton !mt-0 !w-max bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]">
                 {locatedGame() === undefined
                   ? translateText("locate game")
-                  : locatedGame().toString().split("\\").slice(-1).toString()
-                    .length > 17
-                    ? `...${locatedGame()
-                      .toString()
-                      .split("\\")
-                      .slice(-1)
-                      .toString()
-                      .slice(0, 7)}...${locatedGame().toString().slice(-7)}`
-                    : `...${locatedGame()
-                      .toString()
-                      .split("\\")
-                      .slice(-1)
-                      .toString()}`}
+                  : getExecutableFileName(locatedGame())}
               </button>
             </div>
           </div>

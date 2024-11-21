@@ -9,7 +9,9 @@ import {
   translateText,
   updateData,
   closeDialog,
-  locationJoin
+  locationJoin,
+  getExecutableFileName,
+  getExecutableParentFolder
 } from "../Globals";
 import { Close, OpenExternal, SaveDisk, TrashDelete } from "../libraries/Icons";
 
@@ -44,7 +46,7 @@ export function EditGame() {
         filters: [
           {
             name: "Executable",
-            extensions: ["exe", "lnk"]
+            extensions: ["exe", "lnk", "url", "app"]
           }
         ]
       })
@@ -650,52 +652,14 @@ export function EditGame() {
                     <Show
                       when={selectedDataContext.selectedGame().location}
                       fallback={translateText("locate game")}>
-                      {selectedDataContext
-                        .selectedGame()
-                        .location.toString()
-                        .split("\\")
-                        .slice(-1)
-                        .toString().length > 17
-                        ? `...${selectedDataContext
-                          .selectedGame()
-                          .location.toString()
-                          .split("\\")
-                          .slice(-1)
-                          .toString()
-                          .slice(0, 7)}...${selectedDataContext
-                            .selectedGame()
-                            .location.toString()
-                            .slice(-7)}`
-                        : `...${selectedDataContext
-                          .selectedGame()
-                          .location.toString()
-                          .split("\\")
-                          .slice(-1)
-                          .toString()}`}
+                      {getExecutableFileName(selectedDataContext.selectedGame().location)}
                     </Show>
                   </Match>
                   <Match when={editedLocatedGame() === null}>
                     {translateText("locate game")}
                   </Match>
                   <Match when={editedLocatedGame()}>
-                    {editedLocatedGame()
-                      .toString()
-                      .split("\\")
-                      .slice(-1)
-                      .toString().length > 17
-                      ? `...${editedLocatedGame()
-                        .toString()
-                        .split("\\")
-                        .slice(-1)
-                        .toString()
-                        .slice(0, 7)}...${editedLocatedGame()
-                          .toString()
-                          .slice(-7)}`
-                      : `...${editedLocatedGame()
-                        .toString()
-                        .split("\\")
-                        .slice(-1)
-                        .toString()}`}
+                    {getExecutableFileName(editedLocatedGame())}
                   </Match>
                 </Switch>
               </button>
@@ -710,11 +674,7 @@ export function EditGame() {
                   type="button"
                   onClick={() => {
                     invoke("open_location", {
-                      location: selectedDataContext
-                        .selectedGame()
-                        .location.split("\\")
-                        .slice(0, -1)
-                        .join("\\")
+                      location: getExecutableParentFolder(selectedDataContext.selectedGame().location)
                     });
                   }}
                   class="standardButton group relative !w-max bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
