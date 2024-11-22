@@ -408,3 +408,27 @@ body.user-is-tabbing {
     }
   }
 }
+
+/* dynamic styles */
+
+* {
+  font-family: var(--font-family);
+  color: var(--text-color)
+}
+
+*:not(body, svg, #loading, .sideBarGame, .gameIconImage),
+[class*="tooltip-"]:after {
+  border-radius: var(--border-radius);
+}
+
+.currentlyDragging {
+  box-shadow: 0 -3px 0 0 #646464;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+body.user-is-tabbing button:focus,
+body.user-is-tabbing input:focus,
+body.user-is-tabbing select:focus {
+  outline: 1px solid var(--outline-color);
+}

@@ -1,4 +1,4 @@
-import { For, Show, onMount, useContext, Switch, Match } from "solid-js";
+import { For, Show, onMount, useContext, Switch, Match, createEffect } from "solid-js";
 import { invoke } from "@tauri-apps/api/tauri";
 import { fuzzysearch } from "./libraries/fuzzysearch";
 
@@ -33,12 +33,42 @@ import { ChevronArrows, EmptyTray, Steam } from "./libraries/Icons";
 import { GameCards } from "./components/GameCards";
 import { LanguageSelector } from "./components/LanguageSelector";
 import { Hotkeys } from "./components/HotKeys";
-import { Style } from "./Style";
 
 function App() {
   const globalContext = useContext(GlobalContext);
   const uiContext = useContext(UIContext);
   const applicationStateContext = useContext(ApplicationStateContext);
+
+  // setting up effects for dynamic styles
+  createEffect(() => {
+    document.body.style.setProperty("--text-color", globalContext.libraryData.userSettings.currentTheme === "light" ? "#000000" : "#ffffff");
+  })
+
+  createEffect(() => {
+    let fontFamily
+
+    switch (globalContext.libraryData.userSettings.fontName) {
+      case "sans serif":
+        fontFamily = "Helvetica, Arial, sans-serif"
+        break
+      case "serif":
+        fontFamily = "Times New Roman"
+        break
+      case "mono":
+        fontFamily = "IBM Plex Mono, Consolas"
+        break
+    }
+
+    document.body.style.setProperty("--font-family", fontFamily);
+  })
+
+  createEffect(() => {
+    document.body.style.setProperty("--border-radius", globalContext.libraryData.userSettings.roundedBorders ? "6px" : "0px");
+  })
+
+  createEffect(() => {
+    document.body.style.setProperty("--outline-color", globalContext.libraryData.userSettings.currentTheme === "light" ? "#000000" : "#ffffff");
+  });
 
   async function closeApp() {
     invoke("close_app");
@@ -552,8 +582,6 @@ function App() {
           </Show>
         </div>
       </div>
-
-      <Style />
 
       <div
         popover
