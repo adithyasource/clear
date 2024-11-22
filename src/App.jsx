@@ -128,7 +128,16 @@ function App() {
         }
       }
 
-      if (e.ctrlKey) {
+      let modifierKeyPrefix = "ctrlKey"
+
+      if (
+        navigator.platform.indexOf("Mac") === 0 ||
+        navigator.platform === "iPhone"
+      ) {
+        modifierKeyPrefix = "metaKey";
+      }
+
+      if (e[modifierKeyPrefix]) {
         for (const sideBarGame of document.querySelectorAll(".sideBarGame")) {
           sideBarGame.classList.add("tooltip-right");
           sideBarGame.style.cursor = "pointer";
@@ -236,7 +245,7 @@ function App() {
             }
             break;
 
-          case "Period":
+          case "Comma":
             if (uiContext.showSettingsModal()) {
               closeDialog("settings");
             } else {

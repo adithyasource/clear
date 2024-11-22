@@ -2,6 +2,16 @@ import { Show } from "solid-js";
 import { translateText } from "../Globals";
 
 export function Hotkeys(props) {
+
+  let modifierKeyPrefix = "ctrl"
+
+  if (
+    navigator.platform.indexOf("Mac") === 0 ||
+    navigator.platform === "iPhone"
+  ) {
+    modifierKeyPrefix = "⌘";
+  }
+
   return (
     <>
       <div
@@ -9,7 +19,7 @@ export function Hotkeys(props) {
           } mt-[35px] gap-y-4`}>
         <div class="flex items-center gap-3">
           <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
-            ctrl + n
+            {modifierKeyPrefix} + n
           </div>
 
           {translateText("new game")}
@@ -17,35 +27,35 @@ export function Hotkeys(props) {
 
         <div class="flex items-center gap-3">
           <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
-            ctrl + .
+            {modifierKeyPrefix} + .
           </div>
 
           {translateText("open settings")}
         </div>
         <div class="flex items-center gap-3">
           <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
-            ctrl + f
+            {modifierKeyPrefix} + f
           </div>
 
           {translateText("search bar")}
         </div>
         <div class="flex items-center gap-3">
           <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
-            ctrl + m
+            {modifierKeyPrefix} + m
           </div>
 
           {translateText("new folder")}
         </div>
         <div class="flex items-center gap-3">
           <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
-            ctrl + l
+            {modifierKeyPrefix} + l
           </div>
 
           {translateText("open notepad")}
         </div>
         <div class="flex items-center gap-3">
           <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
-            ctrl + \\
+            {modifierKeyPrefix} + \\
           </div>
 
           {translateText("hide sidebar")}
@@ -54,14 +64,14 @@ export function Hotkeys(props) {
         <Show when={props.onSettingsPage}>
           <div class="flex items-center gap-3">
             <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
-              ctrl + w
+              {modifierKeyPrefix} + w
             </div>
 
             {translateText("close app")}
           </div>
           <div class="flex items-center gap-3">
             <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
-              ctrl - / =
+              {modifierKeyPrefix} - / =
             </div>
 
             {translateText("change zoom")}
@@ -69,7 +79,7 @@ export function Hotkeys(props) {
 
           <div class="flex items-center gap-3">
             <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
-              ctrl + click
+              {modifierKeyPrefix} + click
             </div>
 
             {translateText("quick open game")}
@@ -81,21 +91,21 @@ export function Hotkeys(props) {
         <div class="mt-[35px] grid gap-y-4">
           <div class="flex items-center gap-3">
             <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
-              ctrl + f
+              {modifierKeyPrefix} + f
             </div>
 
             {translateText("search bar")}
           </div>
           <div class="flex items-center gap-3">
             <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
-              ctrl + \\
+              {modifierKeyPrefix} + \\
             </div>
 
             {translateText("hide sidebar")}
           </div>
           <div class="flex items-center gap-3">
             <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
-              ctrl + click
+              {modifierKeyPrefix} + click
             </div>
 
             {translateText("quick open game")}
