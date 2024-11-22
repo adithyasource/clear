@@ -8,7 +8,7 @@
     "build": "cross-env GENERATE_SOURCEMAP=false vite build",
     "serve": "vite preview",
     "tauri": "tauri",
-    "finalbuild": "cargo tauri build --target x86_64-pc-windows-msvc -- -Z build-std=std,panic_abort -Z build-std-features=panic_immediate_abort"
+    "windows_build": "cargo tauri build --target x86_64-pc-windows-msvc -- -Z build-std=std,panic_abort -Z build-std-features=panic_immediate_abort"
   },
   "license": "UNLICENSE",
   "dependencies": {

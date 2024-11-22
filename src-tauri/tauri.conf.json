@@ -40,8 +40,8 @@
       "targets": [
         "nsis",
         "msi",
-        "app",
-        "dmg"
+        "dmg",
+        "app"
       ],
       "identifier": "com.adithya.clear",
       "icon": [
