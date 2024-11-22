@@ -1,4 +1,4 @@
-import { Match, Show, Switch, useContext, createSignal } from "solid-js";
+import { Match, Show, Switch, useContext, createSignal, onMount } from "solid-js";
 import { produce } from "solid-js/store";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { BaseDirectory, copyFile } from "@tauri-apps/api/fs";
@@ -11,7 +11,8 @@ import {
   closeDialog,
   locationJoin,
   getExecutableFileName,
-  getExecutableParentFolder
+  getExecutableParentFolder,
+  closeDialogImmediately
 } from "../Globals";
 import { Close, OpenExternal, SaveDisk, TrashDelete } from "../libraries/Icons";
 
@@ -36,6 +37,8 @@ export function EditGame() {
   const [editedLocatedLogo, setEditedLocatedLogo] = createSignal();
   const [editedLocatedIcon, setEditedLocatedIcon] = createSignal();
   const [editedLocatedGame, setEditedlocatedGame] = createSignal();
+
+  const [showCloseConfirm, setShowCloseConfirm] = createSignal(false);
 
   const [showDeleteConfirm, setShowDeleteConfirm] = createSignal(false);
 
@@ -312,6 +315,27 @@ export function EditGame() {
     closeDialog("editGame");
   }
 
+  onMount(() => {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        if (showCloseConfirm()) {
+          closeDialogImmediately(document.querySelector("[data-modal='editGame']"));
+
+          setShowCloseConfirm(false);
+        } else {
+          setShowCloseConfirm(true);
+
+          const closeConfirmTimer = setTimeout(() => {
+            clearTimeout(closeConfirmTimer);
+
+            setShowCloseConfirm(false);
+          }, 1500);
+        }
+      }
+    })
+  })
+
   return (
     <dialog
       data-modal="editGame"
@@ -400,17 +424,17 @@ export function EditGame() {
               type="button"
               class="standardButton flex items-center !w-max !h-full !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
               onClick={() => {
-                if (uiContext.showCloseConfirm()) {
+                if (showCloseConfirm()) {
                   closeDialog("editGame");
                 } else {
-                  uiContext.setShowCloseConfirm(true);
+                  setShowCloseConfirm(true);
                 }
                 setTimeout(() => {
-                  uiContext.setShowCloseConfirm(false);
+                  setShowCloseConfirm(false);
                 }, 1500);
               }}
               data-tooltip={translateText("close")}>
-              {uiContext.showCloseConfirm() ? (
+              {showCloseConfirm() ? (
                 <span class="text-[#FF3636] whitespace-nowrap">
                   {translateText("hit again to confirm")}
                 </span>

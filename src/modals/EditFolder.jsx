@@ -1,6 +1,6 @@
 import { produce } from "solid-js/store";
-import { Switch, useContext, Match, Show, createSignal } from "solid-js";
-import { closeDialog, translateText, updateData } from "../Globals";
+import { Switch, useContext, Match, Show, createSignal, onMount } from "solid-js";
+import { closeDialog, closeDialogImmediately, translateText, updateData } from "../Globals";
 import { Close, SaveDisk, TrashDelete } from "../libraries/Icons";
 
 import { GlobalContext, SelectedDataContext, UIContext } from "../Globals";
@@ -13,6 +13,8 @@ export function EditFolder() {
 
   const [editedFolderName, setEditedFolderName] = createSignal();
   const [editedHideFolder, setEditedHideFolder] = createSignal();
+
+  const [showCloseConfirm, setShowCloseConfirm] = createSignal(false);
 
   const [showDeleteConfirm, setShowDeleteConfirm] = createSignal(false);
 
@@ -101,6 +103,27 @@ export function EditFolder() {
     closeDialog("editFolder");
   }
 
+  onMount(() => {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        if (showCloseConfirm()) {
+          closeDialogImmediately(document.querySelector("[data-modal='editFolder']"));
+
+          setShowCloseConfirm(false);
+        } else {
+          setShowCloseConfirm(true);
+
+          const closeConfirmTimer = setTimeout(() => {
+            clearTimeout(closeConfirmTimer);
+
+            setShowCloseConfirm(false);
+          }, 1500);
+        }
+      }
+    })
+  })
+
   return (
     <dialog
       data-modal="editFolder"
@@ -112,8 +135,8 @@ export function EditFolder() {
         <div class="w-[60%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
           <div
             class={`flex justify-between ${globalContext.libraryData.userSettings.language !== "en"
-                ? "flex-col large:flex-row"
-                : ""
+              ? "flex-col large:flex-row"
+              : ""
               } `}>
             <div>
               <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">
@@ -204,17 +227,17 @@ export function EditFolder() {
                 type="button"
                 class="standardButton flex !w-max !h-full items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
                 onClick={() => {
-                  if (uiContext.showCloseConfirm()) {
+                  if (showCloseConfirm()) {
                     closeDialog("editFolder");
                   } else {
-                    uiContext.setShowCloseConfirm(true);
+                    setShowCloseConfirm(true);
                   }
                   setTimeout(() => {
-                    uiContext.setShowCloseConfirm(false);
+                    setShowCloseConfirm(false);
                   }, 1500);
                 }}
                 data-tooltip={translateText("close")}>
-                {uiContext.showCloseConfirm() ? (
+                {showCloseConfirm() ? (
                   <span class="text-[#FF3636] whitespace-nowrap">
                     {translateText("hit again to confirm")}
                   </span>

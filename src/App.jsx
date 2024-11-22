@@ -135,24 +135,10 @@ function App() {
         e.preventDefault();
         if (anyDialogOpen) {
           if (
-            ["newGame", "editGame", "newFolder", "editFolder"].includes(
+            !["newGame", "editGame", "newFolder", "editFolder"].includes(
               currentlyOpenDialog.getAttribute("data-modal")
             )
           ) {
-            if (uiContext.showCloseConfirm()) {
-              closeDialogImmediately(currentlyOpenDialog);
-
-              uiContext.setShowCloseConfirm(false);
-            } else {
-              uiContext.setShowCloseConfirm(true);
-
-              const closeConfirmTimer = setTimeout(() => {
-                clearTimeout(closeConfirmTimer);
-
-                uiContext.setShowCloseConfirm(false);
-              }, 1500);
-            }
-          } else {
             closeDialogImmediately(currentlyOpenDialog);
           }
         }

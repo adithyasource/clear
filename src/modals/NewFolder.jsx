@@ -1,6 +1,6 @@
-import { Show, useContext, createSignal } from "solid-js";
+import { Show, useContext, createSignal, onMount } from "solid-js";
 import { produce } from "solid-js/store";
-import { closeDialog, translateText, updateData } from "../Globals";
+import { closeDialog, closeDialogImmediately, translateText, updateData } from "../Globals";
 import { Close, SaveDisk } from "../libraries/Icons";
 
 import { GlobalContext, ApplicationStateContext, UIContext } from "../Globals";
@@ -13,6 +13,8 @@ export function NewFolder() {
 
   const [folderName, setFolderName] = createSignal();
   const [hideFolder, setHideFolder] = createSignal(false);
+
+  const [showCloseConfirm, setShowCloseConfirm] = createSignal(false);
 
   async function addFolder() {
     if (folderName() === "" || folderName() === undefined) {
@@ -52,6 +54,27 @@ export function NewFolder() {
 
     closeDialog("newFolder");
   }
+
+  onMount(() => {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        if (showCloseConfirm()) {
+          closeDialogImmediately(document.querySelector("[data-modal='newFolder']"));
+
+          setShowCloseConfirm(false);
+        } else {
+          setShowCloseConfirm(true);
+
+          const closeConfirmTimer = setTimeout(() => {
+            clearTimeout(closeConfirmTimer);
+
+            setShowCloseConfirm(false);
+          }, 1500);
+        }
+      }
+    })
+  })
 
   return (
     <dialog
@@ -103,17 +126,17 @@ export function NewFolder() {
                 type="button"
                 class="standardButton flex !w-max !h-full items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
                 onClick={() => {
-                  if (uiContext.showCloseConfirm()) {
+                  if (showCloseConfirm()) {
                     closeDialog("newFolder");
                   } else {
-                    uiContext.setShowCloseConfirm(true);
+                    setShowCloseConfirm(true);
                   }
                   setTimeout(() => {
-                    uiContext.setShowCloseConfirm(false);
+                    setShowCloseConfirm(false);
                   }, 1500);
                 }}
                 data-tooltip={translateText("close")}>
-                {uiContext.showCloseConfirm() ? (
+                {showCloseConfirm() ? (
                   <span class="text-[#FF3636] whitespace-nowrap">
                     {translateText("hit again to confirm")}
                   </span>
