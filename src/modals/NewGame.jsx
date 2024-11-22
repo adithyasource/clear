@@ -444,7 +444,7 @@ export function NewGame() {
               setLocatedGridImage(undefined);
               setFoundGridImage(undefined);
             }}
-            class="aspect-[2/3] h-full cursor-pointer overflow-hidden bg-[#f1f1f1] dark:bg-[#1c1c1c] tooltip-center"
+            class="aspect-[2/3] h-[400px] cursor-pointer overflow-hidden bg-[#f1f1f1] dark:bg-[#1c1c1c] tooltip-center max-large:h-[300px] p-0"
             data-tooltip={
               foundGridImage()
                 ? showGridImageLoading() === false
