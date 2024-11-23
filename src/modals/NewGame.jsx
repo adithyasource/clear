@@ -179,6 +179,13 @@ export function NewGame() {
 
     closeDialog("loading");
     closeDialog("newGame");
+
+
+    setTimeout(() => {
+      // scrolling to the bottom where uncategorized games are
+      const sideBarFolders = document.getElementById("sideBarFolders")
+      sideBarFolders.scrollTop = sideBarFolders.scrollHeight;
+    }, 100)
   }
 
   async function locateGame() {
