@@ -289,6 +289,14 @@ export function EditGame() {
   }
 
   async function deleteGame() {
+    console.log(locationJoin([applicationStateContext.appDataDirPath(), "heroes", selectedDataContext.selectedGame().heroImage]))
+    await invoke("delete_assets", {
+      heroImage: locationJoin([applicationStateContext.appDataDirPath(), "heroes", selectedDataContext.selectedGame().heroImage]),
+      gridImage: locationJoin([applicationStateContext.appDataDirPath(), "grids", selectedDataContext.selectedGame().gridImage]),
+      logo: locationJoin([applicationStateContext.appDataDirPath(), "logos", selectedDataContext.selectedGame().logo]),
+      icon: locationJoin([applicationStateContext.appDataDirPath(), "icons", selectedDataContext.selectedGame().icon]),
+    })
+
     globalContext.setLibraryData((data) => {
       delete data.games[selectedDataContext.selectedGame().name];
       return data;

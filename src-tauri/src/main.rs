@@ -81,6 +81,31 @@ fn download_image(link: &str, location: &str) {
 }
 
 #[tauri::command]
+fn delete_assets(hero_image: &str, grid_image: &str, logo: &str, icon: &str) {
+    let files = [hero_image, grid_image, logo, icon];
+
+    for file in files.iter() {
+        let mut command = if cfg!(target_os = "windows") {
+            let mut cmd = Command::new("cmd");
+            cmd.arg("/C").arg(format!("del /Q \"{}\"", file));
+            cmd
+        } else {
+            let mut cmd = Command::new("rm");
+            cmd.arg("-f").arg(file);
+            cmd
+        };
+
+        #[cfg(target_os = "windows")]
+        {
+            use std::os::windows::process::CommandExt;
+            command.creation_flags(0x08000000);
+        }
+
+        let _ = command.stdout(Stdio::null()).stderr(Stdio::null()).spawn();
+    }
+}
+
+#[tauri::command]
 fn check_connection() -> String {
     let (command, args) = if cfg!(target_os = "windows") {
         (
@@ -118,7 +143,8 @@ fn main() {
             show_window,
             download_image,
             check_connection,
-            get_platform
+            get_platform,
+            delete_assets
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
