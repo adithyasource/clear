@@ -86,8 +86,10 @@ fn delete_assets(hero_image: &str, grid_image: &str, logo: &str, icon: &str) {
 
     for file in files.iter() {
         let mut command = if cfg!(target_os = "windows") {
-            let mut cmd = Command::new("cmd");
-            cmd.arg("/C").arg(format!("del /Q \"{}\"", file));
+            let command_str = format!(" Remove-Item -Force \"{}\"", file);
+
+            let mut cmd = Command::new("powershell");
+            cmd.arg("-Command").arg(command_str);
             cmd
         } else {
             let mut cmd = Command::new("rm");
