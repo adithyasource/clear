@@ -272,5 +272,10 @@ def handleRequest():
     return "hey there, how'd you end up here? this is the main website: https://clear.adithya.zip"
 
 
+if __name__ == "__main__":
+    from waitress import serve
+
+    serve(app, host="0.0.0.0", port=1337)
+
 # activate venv source .venv/bin/activate
-# command to run python -m flask run --debug --port 1337
+# command to run python app.py
