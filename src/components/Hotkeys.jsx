@@ -27,7 +27,7 @@ export function Hotkeys(props) {
 
         <div class="flex items-center gap-3">
           <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
-            {modifierKeyPrefix} + .
+            {modifierKeyPrefix} + ,
           </div>
 
           {translateText("open settings")}
