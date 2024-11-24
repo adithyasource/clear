@@ -32,7 +32,7 @@ import { Loading } from "./modals/Loading";
 import { ChevronArrows, EmptyTray, Steam } from "./libraries/Icons";
 import { GameCards } from "./components/GameCards";
 import { LanguageSelector } from "./components/LanguageSelector";
-import { Hotkeys } from "./components/HotKeys";
+import { Hotkeys } from "./components/Hotkeys";
 
 function App() {
   const globalContext = useContext(GlobalContext);

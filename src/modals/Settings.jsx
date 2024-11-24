@@ -13,7 +13,7 @@ import { Close, Steam } from "../libraries/Icons";
 
 import { GlobalContext, ApplicationStateContext, UIContext } from "../Globals";
 import { LanguageSelector } from "../components/LanguageSelector";
-import { Hotkeys } from "../components/HotKeys";
+import { Hotkeys } from "../components/Hotkeys";
 
 export function Settings() {
   const globalContext = useContext(GlobalContext);
