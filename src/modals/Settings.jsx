@@ -256,19 +256,21 @@ export function Settings() {
               <div>
                 <button
                   type="button"
-                  class="standardButton tooltip-bottom !flex !w-max !gap-3 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] "
-                  data-tooltip={translateText("might not work perfectly!")}
+                  class={`standardButton tooltip-bottom !flex !w-max !gap-3 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] ${applicationStateContext.systemPlatform() === "macos" ? "opacity-50" : ""}`}
+                  data-tooltip={applicationStateContext.systemPlatform() === "windows" ? translateText("might not work perfectly!") : translateText("not implemented on macOS yet! sorry :(")}
                   onClick={() => {
-                    if (globalContext.libraryData.folders.steam !== undefined) {
-                      uiContext.showImportAndOverwriteConfirm()
-                        ? importSteamGames()
-                        : uiContext.setShowImportAndOverwriteConfirm(true);
+                    if (applicationStateContext.systemPlatform() === "windows") {
+                      if (globalContext.libraryData.folders.steam !== undefined) {
+                        uiContext.showImportAndOverwriteConfirm()
+                          ? importSteamGames()
+                          : uiContext.setShowImportAndOverwriteConfirm(true);
 
-                      setTimeout(() => {
-                        uiContext.setShowImportAndOverwriteConfirm(false);
-                      }, 2500);
-                    } else {
-                      importSteamGames();
+                        setTimeout(() => {
+                          uiContext.setShowImportAndOverwriteConfirm(false);
+                        }, 2500);
+                      } else {
+                        importSteamGames();
+                      }
                     }
                   }}>
                   <Show

@@ -621,5 +621,12 @@ export const textLanguages = {
     hi: "",
     ru: "",
     fr: ""
+  },
+  "not implemented on macOS yet! sorry :(": {
+    jp: "",
+    es: "",
+    hi: "",
+    ru: "",
+    fr: ""
   }
 };

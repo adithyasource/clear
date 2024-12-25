@@ -86,7 +86,7 @@ export function NewGame() {
 
     if (foundGridImage()) {
       gridImageFileName = `${generateRandomString()}.png`;
-      invoke("download_image", {
+      await invoke("download_image", {
         link: foundGridImage()[foundGridImageIndex()],
         location: locationJoin([applicationStateContext.appDataDirPath(), "grids", gridImageFileName])
       });
@@ -106,7 +106,7 @@ export function NewGame() {
     if (foundHeroImage()) {
       heroImageFileName = `${generateRandomString()}.png`;
 
-      invoke("download_image", {
+      await invoke("download_image", {
         link: foundHeroImage()[foundHeroImageIndex()],
         location: locationJoin([applicationStateContext.appDataDirPath(), "heroes", heroImageFileName])
       });
@@ -126,7 +126,7 @@ export function NewGame() {
     if (foundLogoImage()) {
       logoFileName = `${generateRandomString()}.png`;
 
-      invoke("download_image", {
+      await invoke("download_image", {
         link: foundLogoImage()[foundLogoImageIndex()],
         location: locationJoin([applicationStateContext.appDataDirPath(), "logos", logoFileName])
       });
@@ -144,7 +144,7 @@ export function NewGame() {
     if (foundIconImage()) {
       iconFileName = `${generateRandomString()}.png`;
 
-      invoke("download_image", {
+      await invoke("download_image", {
         link: foundIconImage()[foundIconImageIndex()],
         location: locationJoin([applicationStateContext.appDataDirPath(), "icons", iconFileName])
       });
@@ -179,7 +179,6 @@ export function NewGame() {
 
     closeDialog("loading");
     closeDialog("newGame");
-
 
     setTimeout(() => {
       // scrolling to the bottom where uncategorized games are
