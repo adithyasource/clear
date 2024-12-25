@@ -11,7 +11,6 @@ import {
   translateText,
   updateData,
   openDialog,
-  closeDialog,
   triggerToast,
   toggleSideBar,
   closeDialogImmediately,
@@ -39,33 +38,22 @@ function App() {
   const uiContext = useContext(UIContext);
   const applicationStateContext = useContext(ApplicationStateContext);
 
-  // setting up effects for dynamic styles
+  // setting up effects for styles that can be changed in settings
   createEffect(() => {
     document.body.style.setProperty("--text-color", globalContext.libraryData.userSettings.currentTheme === "light" ? "#000000" : "#ffffff");
   })
-
   createEffect(() => {
     let fontFamily
-
     switch (globalContext.libraryData.userSettings.fontName) {
-      case "sans serif":
-        fontFamily = "Helvetica, Arial, sans-serif"
-        break
-      case "serif":
-        fontFamily = "Times New Roman"
-        break
-      case "mono":
-        fontFamily = "IBM Plex Mono, Consolas"
-        break
+      case "sans serif": fontFamily = "Helvetica, Arial, sans-serif"; break
+      case "serif": fontFamily = "Times New Roman"; break
+      case "mono": fontFamily = "IBM Plex Mono, Consolas"; break
     }
-
     document.body.style.setProperty("--font-family", fontFamily);
   })
-
   createEffect(() => {
     document.body.style.setProperty("--border-radius", globalContext.libraryData.userSettings.roundedBorders ? "6px" : "0px");
   })
-
   createEffect(() => {
     document.body.style.setProperty("--outline-color", globalContext.libraryData.userSettings.currentTheme === "light" ? "#000000" : "#ffffff");
   });
@@ -75,6 +63,8 @@ function App() {
   }
 
   function addEventListeners() {
+    // adds user-is-tabbing to body whenever tab is used
+    // used for changing tooltip delay
     function handleFirstTab(e) {
       if (e.key === "Tab") {
         document.body.classList.add("user-is-tabbing");
@@ -85,7 +75,6 @@ function App() {
         );
       }
     }
-
     function handleMouseDown() {
       document.body.classList.remove("user-is-tabbing");
       window.removeEventListener("mousedown", handleMouseDown);
@@ -94,34 +83,20 @@ function App() {
         document.body.classList.contains("user-is-tabbing")
       );
     }
-
     window.addEventListener("keydown", handleFirstTab);
 
+    // disabling right click
     document.addEventListener("contextmenu", (event) => event.preventDefault());
 
+    // storing window width in application state context
     window.addEventListener("resize", () => {
       applicationStateContext.setWindowWidth(window.innerWidth);
     });
 
-    document.addEventListener("keyup", () => {
-      for (const sideBarGame of document.querySelectorAll(".sideBarGame")) {
-        sideBarGame.style.cursor = "grab";
-      }
-
-      for (const sideBarGame of document.querySelectorAll(".sideBarGame")) {
-        sideBarGame.classList.remove("tooltip-right");
-      }
-
-      for (const gameCard of document.querySelectorAll(".gameCard")) {
-        gameCard.classList.remove("tooltip-center");
-      }
-    });
-
+    // keyboard handling
     document.addEventListener("keydown", (e) => {
       const allDialogs = document.querySelectorAll("dialog");
-
       let anyDialogOpen = false;
-
       let currentlyOpenDialog;
 
       for (const dialog of allDialogs) {
@@ -134,167 +109,125 @@ function App() {
       if (e.key === "Escape") {
         e.preventDefault();
         if (anyDialogOpen) {
-          if (
-            !["newGame", "editGame", "newFolder", "editFolder"].includes(
-              currentlyOpenDialog.getAttribute("data-modal")
-            )
-          ) {
+          if (!["newGame", "editGame", "newFolder", "editFolder"].includes(currentlyOpenDialog.getAttribute("data-modal"))) {
             closeDialogImmediately(currentlyOpenDialog);
           }
         }
       }
 
+      // modifier key is ctrl for windows / if on mac, it changes to meta key (cmd)
       let modifierKeyPrefix = "ctrlKey"
-
-      if (
-        navigator.platform.indexOf("Mac") === 0 ||
-        navigator.platform === "iPhone"
-      ) {
+      if (navigator.platform.indexOf("Mac") === 0 || navigator.platform === "iPhone") {
         modifierKeyPrefix = "metaKey";
       }
 
+      // if ctrl/cmd key is held down
       if (e[modifierKeyPrefix]) {
+
+        // "play" tooltip added to sidebar game and game card if user is also hovering on a specific element
         for (const sideBarGame of document.querySelectorAll(".sideBarGame")) {
           sideBarGame.classList.add("tooltip-right");
           sideBarGame.style.cursor = "pointer";
         }
-
         for (const gameCard of document.querySelectorAll(".gameCard")) {
           gameCard.classList.add("tooltip-center");
         }
 
+        // if ctrl/cmd + another key held down
         switch (e.code) {
+          // increase game card zoom level
           case "Equal":
-            globalContext.setLibraryData(
-              "userSettings",
-              "zoomLevel",
-              (zoomLevel) => {
-                let newZoomLevel = zoomLevel;
-                if (zoomLevel !== 2) {
-                  newZoomLevel += 1;
-                } else {
-                  newZoomLevel = 2;
-                }
-
-                return newZoomLevel;
-              }
-            );
+            globalContext.setLibraryData("userSettings", "zoomLevel", (zoomLevel) => {
+              return zoomLevel += 1 ? zoomLevel !== 2 : 2;
+            });
             updateData();
             break;
 
+          // decrease game card zoom level
           case "Minus":
-            globalContext.setLibraryData(
-              "userSettings",
-              "zoomLevel",
-              (zoomLevel) => {
-                let newZoomLevel = zoomLevel;
-                if (zoomLevel !== 0) {
-                  newZoomLevel -= 1;
-                } else {
-                  newZoomLevel = 0;
-                }
-
-                return newZoomLevel;
-              }
-            );
+            globalContext.setLibraryData("userSettings", "zoomLevel", (zoomLevel) => {
+              return zoomLevel -= 1 ? zoomLevel !== 0 : 0;
+            });
             updateData();
             break;
 
+          // close the app
           case "KeyW":
             e.preventDefault();
             closeApp();
             break;
 
+          // focuses game search bar
           case "KeyF":
             if (!anyDialogOpen) {
               e.preventDefault();
               document.querySelector("#searchInput").focus();
             } else {
-              triggerToast(
-                translateText("close current dialog before opening another")
-              );
+              triggerToast(translateText("close current dialog before opening another"));
             }
             break;
 
+          // opens new game modal
           case "KeyN":
             e.preventDefault();
             if (!anyDialogOpen) {
               openDialog("newGame");
             } else {
               if (!uiContext.showNewGameModal()) {
-                triggerToast(
-                  translateText("close current dialog before opening another")
-                );
+                triggerToast(translateText("close current dialog before opening another"));
               }
             }
             break;
 
+          // opens new folder modal
           case "KeyM":
             e.preventDefault();
             if (!anyDialogOpen) {
               openDialog("newFolder");
             } else {
               if (!uiContext.showNewFolderModal()) {
-                triggerToast(
-                  translateText("close current dialog before opening another")
-                );
+                triggerToast(translateText("close current dialog before opening another"));
               }
             }
             break;
 
+          // opens notepad modal
           case "KeyL":
             e.preventDefault();
             if (!anyDialogOpen) {
               openDialog("notepad");
             } else {
               if (!uiContext.showNotepadModal()) {
-                triggerToast(
-                  translateText("close current dialog before opening another")
-                );
+                triggerToast(translateText("close current dialog before opening another"));
               }
             }
             break;
 
+          // opens settings modal
           case "Comma":
             if (!anyDialogOpen) {
               e.preventDefault();
               openDialog("settings");
             } else {
               if (!uiContext.showSettingsModal()) {
-                triggerToast(
-                  translateText("close current dialog before opening another")
-                );
+                triggerToast(translateText("close current dialog before opening another"));
               }
             }
             break;
 
+          // toggles sidebar
           case "Backslash":
             if (!anyDialogOpen) {
               e.preventDefault();
               toggleSideBar();
               document.querySelector("#searchInput").blur();
             } else {
-              triggerToast(
-                translateText("close current dialog before toggling sidebar")
-              );
+              triggerToast(translateText("close current dialog before toggling sidebar"));
             }
             break;
 
-          // ? disabling misc webview shortcuts
-
-          case "KeyR":
-            e.preventDefault();
-            break;
-
-          case "KeyG":
-            e.preventDefault();
-            break;
-
-          case "KeyP":
-            e.preventDefault();
-            break;
-
-          case "KeyU":
+          // disabling misc webview shortcuts
+          case "KeyR": case "KeyG": case "KeyP": case "KeyU":
             e.preventDefault();
             break;
         }
@@ -302,39 +235,48 @@ function App() {
     });
   }
 
-  getData();
+  document.addEventListener("keyup", () => {
+    // resets sidebar cursor back to grab when ctrl/cmd is let go of
+    for (const sideBarGame of document.querySelectorAll(".sideBarGame")) {
+      sideBarGame.style.cursor = "grab";
+    }
+
+    // hides "play" tooltip from sidebar game / game card when ctrl/cmd is let go of
+    for (const sideBarGame of document.querySelectorAll(".sideBarGame")) {
+      sideBarGame.classList.remove("tooltip-right");
+    }
+    for (const gameCard of document.querySelectorAll(".gameCard")) {
+      gameCard.classList.remove("tooltip-center");
+    }
+  });
 
   onMount(async () => {
+    // fetches library data and populates the ui
+    getData();
+
     // loading app by default in dark mode so there's no bright flash of white while getData fetches preferences
     document.documentElement.classList.add("dark");
 
+    // only shows the window after the ui has been rendered
     invoke("show_window");
-    addEventListeners();
 
+    addEventListeners();
     applicationStateContext.setSystemPlatform(await invoke("get_platform"))
 
     if (await checkIfConnectedToInternet()) {
-      // check if new version is available and set variable
-      let response;
-
       try {
-        response = await fetch(
-          `${import.meta.env.VITE_CLEAR_API_URL}/?version=a`
-        );
-      } catch (error) {
-        triggerToast(
-          `could not check if newer version available: ${error.message.toLowerCase()}`
-        );
-      }
-
-      if (response) {
+        // checks latest version and stores it in variable
+        response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?version=a`);
         const clearVersion = await response.json();
-
         applicationStateContext.setLatestVersion(clearVersion.clearVersion);
+
+        // shows new version indicators if update is available
         applicationStateContext.latestVersion().replaceAll(".", "") >
           applicationStateContext.appVersion().replaceAll(".", "")
           ? uiContext.setShowNewVersionAvailable(true)
           : uiContext.setShowNewVersionAvailable(false);
+      } catch (error) {
+        triggerToast(`could not check if newer version available: ${error.message.toLowerCase()}`);
       }
     }
 
@@ -355,7 +297,7 @@ function App() {
           }>
           <button
             type="button"
-            class="!absolute right-[31px] top-[32px] z-20 w-[25.25px]  cursor-pointer p-2 duration-150 motion-reduce:duration-0 hover:bg-[#D6D6D6] dark:hover:bg-[#232323] tooltip-delayed-left"
+            class="!absolute right-[31px] top-[32px] z-20 w-[25.25px] cursor-pointer p-2 duration-150 motion-reduce:duration-0 hover:bg-[#D6D6D6] dark:hover:bg-[#232323] tooltip-delayed-left"
             onClick={() => {
               toggleSideBar();
             }}
