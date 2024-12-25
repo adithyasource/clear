@@ -327,8 +327,6 @@ export async function importSteamGames() {
     await updateData();
 
     for (const steamId of steamGameIds) {
-      console.log(steamId);
-
       let gameData = await fetch(
         `${import.meta.env.VITE_CLEAR_API_URL}/?steamID=${steamId}`
       );
@@ -500,8 +498,6 @@ export function openDialog(dialogData) {
   }
 
   const dialogRef = document.querySelector(`[data-modal="${dialogData}"]`);
-  console.log(dialogData);
-  console.log(dialogRef);
 
   dialogRef.classList.remove("hideDialog");
   dialogRef.showModal();
@@ -564,7 +560,6 @@ export function closeDialog(dialogData, ref) {
   } else {
     const dialogRef = document.querySelector(`[data-modal="${dialogData}"]`);
 
-    console.log(dialogRef);
     dialogRef.classList.remove("showDialog");
     dialogRef.classList.add("hideDialog");
     setTimeout(() => {

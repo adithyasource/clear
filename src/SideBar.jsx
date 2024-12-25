@@ -284,7 +284,6 @@ export function SideBar() {
                     getData();
                   }, 100);
                 } catch (error) {
-                  console.log(error);
                   getData();
                 }
 

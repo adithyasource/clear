@@ -117,7 +117,7 @@ function App() {
 
       // modifier key is ctrl for windows / if on mac, it changes to meta key (cmd)
       let modifierKeyPrefix = "ctrlKey"
-      if (navigator.platform.indexOf("Mac") === 0 || navigator.platform === "iPhone") {
+      if (applicationStateContext.systemPlatform() === "macos") {
         modifierKeyPrefix = "metaKey";
       }
 
@@ -266,7 +266,7 @@ function App() {
     if (await checkIfConnectedToInternet()) {
       try {
         // checks latest version and stores it in variable
-        response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?version=a`);
+        let response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?version=a`);
         const clearVersion = await response.json();
         applicationStateContext.setLatestVersion(clearVersion.clearVersion);
 
