@@ -38,9 +38,7 @@ export function SideBar() {
   let scrollY = " ";
 
   async function moveFolder(folderName, toPosition) {
-    const pastPositionOfFolder = applicationStateContext
-      .currentFolders()
-      .indexOf(folderName);
+    const pastPositionOfFolder = applicationStateContext.currentFolders().indexOf(folderName);
 
     applicationStateContext.currentFolders().splice(pastPositionOfFolder, 1);
 
@@ -48,13 +46,9 @@ export function SideBar() {
       applicationStateContext.currentFolders().push(folderName);
     } else {
       if (toPosition > pastPositionOfFolder) {
-        applicationStateContext
-          .currentFolders()
-          .splice(toPosition - 1, 0, folderName);
+        applicationStateContext.currentFolders().splice(toPosition - 1, 0, folderName);
       } else {
-        applicationStateContext
-          .currentFolders()
-          .splice(toPosition, 0, folderName);
+        applicationStateContext.currentFolders().splice(toPosition, 0, folderName);
       }
     }
 
@@ -63,13 +57,7 @@ export function SideBar() {
         if (currentFolderName === folderName) {
           globalContext.setLibraryData(
             produce((data) => {
-              Object.values(data.folders)[
-                Object.keys(globalContext.libraryData.folders).indexOf(
-                  folderName
-                )
-              ].index = applicationStateContext
-                .currentFolders()
-                .indexOf(currentFolderName);
+              Object.values(data.folders)[Object.keys(globalContext.libraryData.folders).indexOf(folderName)].index = applicationStateContext.currentFolders().indexOf(currentFolderName);
 
               return data;
             })
@@ -81,22 +69,12 @@ export function SideBar() {
     await updateData();
   }
 
-  async function moveGameInCurrentFolder(
-    gameName,
-    toPosition,
-    currentFolderName
-  ) {
-    const pastPositionOfGame =
-      globalContext.libraryData.folders[currentFolderName].games.indexOf(
-        gameName
-      );
+  async function moveGameInCurrentFolder(gameName, toPosition, currentFolderName) {
+    const pastPositionOfGame = globalContext.libraryData.folders[currentFolderName].games.indexOf(gameName);
 
     globalContext.setLibraryData(
       produce((data) => {
-        data.folders[currentFolderName].games.splice(
-          data.folders[currentFolderName].games.indexOf(gameName),
-          1
-        );
+        data.folders[currentFolderName].games.splice(data.folders[currentFolderName].games.indexOf(gameName), 1);
         return data;
       })
     );
@@ -112,22 +90,14 @@ export function SideBar() {
       if (toPosition > pastPositionOfGame) {
         globalContext.setLibraryData(
           produce((data) => {
-            data.folders[currentFolderName].games.splice(
-              toPosition - 1,
-              0,
-              gameName
-            );
+            data.folders[currentFolderName].games.splice(toPosition - 1, 0, gameName);
             return data;
           })
         );
       } else {
         globalContext.setLibraryData(
           produce((data) => {
-            data.folders[currentFolderName].games.splice(
-              toPosition,
-              0,
-              gameName
-            );
+            data.folders[currentFolderName].games.splice(toPosition, 0, gameName);
             return data;
           })
         );
@@ -136,6 +106,36 @@ export function SideBar() {
 
     await updateData();
   }
+
+  async function moveGameToAnotherFolder(gameName, toPosition, currentFolderName, destinationFolderName) {
+    if (currentFolderName !== "uncategorized") {
+      globalContext.setLibraryData(
+        produce((data) => {
+          data.folders[currentFolderName].games.splice(data.folders[currentFolderName].games.indexOf(gameName), 1);
+          return data;
+        })
+      );
+    }
+
+    if (toPosition === -1) {
+      globalContext.setLibraryData(
+        produce((data) => {
+          data.folders[destinationFolderName].games.push(gameName);
+          return data;
+        })
+      );
+    } else {
+      globalContext.setLibraryData(
+        produce((data) => {
+          data.folders[destinationFolderName].games.splice(toPosition, 0, gameName);
+          return data;
+        })
+      );
+    }
+
+    await updateData();
+  }
+
 
   function folderContainerDragOverHandler(e) {
     e.preventDefault();
@@ -194,6 +194,8 @@ export function SideBar() {
   function gamesFolderDragOverHandler(e) {
     e.preventDefault();
 
+    console.log("dragging over game")
+
     if (document.querySelectorAll(".sideBarFolder:is(.dragging)")[0] === undefined) {
       const siblings = [...e.srcElement.querySelectorAll(".sideBarGame:not(.dragging)")];
 
@@ -218,58 +220,33 @@ export function SideBar() {
     }
   }
 
-  async function gamesFolderDropHandler(e, folder, folderName) {
-    const gameName = e.dataTransfer.getData("gameName");
-    const oldFolderName =
-      e.dataTransfer.getData("oldFolderName");
+  async function gamesFolderDropHandler(e, folderName) {
+    const oldFolderName = e.dataTransfer.getData("oldFolderName");
 
     if (document.querySelectorAll(".sideBarFolder:is(.dragging)")[0] === undefined) {
-      if (oldFolderName === folderName) {
-        const draggingItem = document.querySelector(".dragging");
-        const siblings = [...e.srcElement.querySelectorAll(".sideBarGame:not(.dragging)")];
+      const draggingItem = document.querySelector(".dragging");
+      const siblings = [...e.srcElement.querySelectorAll(".sideBarGame:not(.dragging)")];
 
-        const nextSibling = siblings.find((sibling) => {
-          let compensatedY = "";
-          compensatedY = e.clientY + scrollY;
+      const nextSibling = siblings.find((sibling) => {
+        let compensatedY = "";
+        compensatedY = e.clientY + scrollY;
 
-          return (compensatedY <= sibling.offsetTop + sibling.offsetHeight / 2);
-        });
+        return (compensatedY <= sibling.offsetTop + sibling.offsetHeight / 2);
+      });
 
-        try {
-          const currentDraggingItem = draggingItem.textContent;
+      try {
+        const currentDraggingItem = draggingItem.textContent;
 
-          const nextSiblingItem = nextSibling.textContent;
+        const nextSiblingItem = nextSibling.textContent;
 
+        if (oldFolderName === folderName) {
           moveGameInCurrentFolder(currentDraggingItem, globalContext.libraryData.folders[folderName].games.indexOf(nextSiblingItem), folderName);
-
-          setTimeout(() => {
-            getData();
-          }, 100);
-        } catch (error) {
-          getData();
+        } else {
+          moveGameToAnotherFolder(currentDraggingItem, globalContext.libraryData.folders[folderName].games.indexOf(nextSiblingItem), oldFolderName, folderName);
         }
-        return;
+      } catch (error) {
+        getData();
       }
-
-      if (oldFolderName !== "uncategorized") {
-        const index = globalContext.libraryData.folders[oldFolderName].games.indexOf(gameName);
-
-        // ! [test this]
-
-        globalContext.setLibraryData(
-          produce((data) => {
-            data.folders[oldFolderName].games.splice(index, 1);
-            return data;
-          })
-        );
-      }
-
-      globalContext.setLibraryData(
-        produce((data) => {
-          data.folders[folder.name].games.push(gameName);
-          return data;
-        })
-      );
 
       await updateData();
     }
@@ -348,6 +325,8 @@ export function SideBar() {
             </button>
           </Show>
 
+          {/* container for all the folders */}
+
           <div
             id="sideBarFolders"
             class={` ${globalContext.libraryData.userSettings.language === "fr"
@@ -381,7 +360,6 @@ export function SideBar() {
                       setTimeout(() => {
                         e.srcElement.classList.add("dragging")
                       }, 0);
-
                       e.dataTransfer.setData("folderName", folderName);
                     }}
                     onDragEnd={(e) => {
@@ -393,7 +371,7 @@ export function SideBar() {
                       gamesFolderDragOverHandler(e);
                     }}
                     onDrop={async (e) => {
-                      await gamesFolderDropHandler(e, folder, folderName);
+                      await gamesFolderDropHandler(e, folderName);
                     }}
                   >
 
