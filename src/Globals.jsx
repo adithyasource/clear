@@ -607,11 +607,9 @@ export function locationJoin(locationsList) {
 
 export function getExecutableFileName(location) {
 
-  if (systemPlatform() === "windows") {
-    return location.toString().split("\\").slice(-1)
-  }
-
-  return location.toString().split("/").slice(-1)
+  // splits both / and \ paths since a library created on windows can be 
+  // viewed on macos and vice versa
+  return location.toString().split("\\").slice(-1).toString().split("/").slice(-1)
 }
 
 export function getExecutableParentFolder(location) {
