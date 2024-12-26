@@ -103,8 +103,6 @@ export function SideBar() {
         );
       }
     }
-
-    await updateData();
   }
 
   async function moveGameToAnotherFolder(gameName, toPosition, currentFolderName, destinationFolderName) {
@@ -132,8 +130,6 @@ export function SideBar() {
         })
       );
     }
-
-    await updateData();
   }
 
 
@@ -234,22 +230,19 @@ export function SideBar() {
         return (compensatedY <= sibling.offsetTop + sibling.offsetHeight / 2);
       });
 
-      try {
-        const currentDraggingItem = draggingItem.textContent;
+      const currentDraggingItem = draggingItem.textContent;
 
-        const nextSiblingItem = nextSibling.textContent;
+      const nextSiblingItem = nextSibling.textContent;
 
-        if (oldFolderName === folderName) {
-          moveGameInCurrentFolder(currentDraggingItem, globalContext.libraryData.folders[folderName].games.indexOf(nextSiblingItem), folderName);
-        } else {
-          moveGameToAnotherFolder(currentDraggingItem, globalContext.libraryData.folders[folderName].games.indexOf(nextSiblingItem), oldFolderName, folderName);
-        }
-      } catch (error) {
-        getData();
+      if (oldFolderName === folderName) {
+        moveGameInCurrentFolder(currentDraggingItem, globalContext.libraryData.folders[folderName].games.indexOf(nextSiblingItem), folderName);
+      } else {
+        moveGameToAnotherFolder(currentDraggingItem, globalContext.libraryData.folders[folderName].games.indexOf(nextSiblingItem), oldFolderName, folderName);
       }
 
-      await updateData();
     }
+
+    await updateData();
   }
 
   onMount(() => {
