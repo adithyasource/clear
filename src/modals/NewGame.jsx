@@ -386,7 +386,7 @@ export function NewGame() {
                 }>
                 <div class="relative">
                   <div class="!w-max">{translateText("favourite")}</div>
-                  <div class="absolute inset-0 -z-10 !w-max opacity-70 blur-[5px]">
+                  <div class="absolute inset-0 !w-max opacity-70 blur-[5px]">
                     {translateText("favourite")}
                   </div>
                 </div>
