@@ -151,10 +151,10 @@ function App() {
       }
 
       // modifier key is ctrl for windows / if on mac, it changes to meta key (cmd)
-      let modifierKeyPrefix = "ctrlKey";
-      if (applicationStateContext.systemPlatform() === "macos") {
-        modifierKeyPrefix = "metaKey";
-      }
+      const modifierKeyPrefix =
+        applicationStateContext.systemPlatform() === "windows"
+          ? "ctrlKey"
+          : "metaKey";
 
       // if ctrl/cmd key is held down
       if (e[modifierKeyPrefix]) {

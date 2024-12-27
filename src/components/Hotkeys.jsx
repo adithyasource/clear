@@ -1,18 +1,14 @@
 // importing globals
-import { translateText } from "../Globals";
+import { ApplicationStateContext, translateText } from "../Globals";
 
 // importing code snippets and library functions
-import { Show } from "solid-js";
+import { Show, useContext } from "solid-js";
 
 export function Hotkeys(props) {
-  let modifierKeyPrefix = "ctrl";
+  const applicationStateContext = useContext(ApplicationStateContext);
 
-  if (
-    navigator.platform.indexOf("Mac") === 0 ||
-    navigator.platform === "iPhone"
-  ) {
-    modifierKeyPrefix = "⌘";
-  }
+  const modifierKeyPrefix =
+    applicationStateContext.systemPlatform() === "windows" ? "ctrl" : "⌘";
 
   return (
     <>
