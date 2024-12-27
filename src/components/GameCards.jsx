@@ -25,7 +25,7 @@ export function GameCards(props) {
           <button
             type="button"
             class="gameCard group relative w-full cursor-pointer bg-transparent p-0"
-            id={`${index() === 0 ? "firstGameCard" : ""}`}
+            id={index() === 0 ? "firstGameCard" : ""}
             data-tooltip={
               globalContext.libraryData.games[gameName].location ? translateText("play") : translateText("no game file")
             }

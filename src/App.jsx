@@ -49,6 +49,7 @@ function App() {
       globalContext.libraryData.userSettings.currentTheme === "light" ? "#000000" : "#ffffff",
     );
   });
+
   createEffect(() => {
     let fontFamily;
     switch (globalContext.libraryData.userSettings.fontName) {
@@ -64,12 +65,14 @@ function App() {
     }
     document.body.style.setProperty("--font-family", fontFamily);
   });
+
   createEffect(() => {
     document.body.style.setProperty(
       "--border-radius",
       globalContext.libraryData.userSettings.roundedBorders ? "6px" : "0px",
     );
   });
+
   createEffect(() => {
     document.body.style.setProperty(
       "--outline-color",
@@ -114,6 +117,7 @@ function App() {
       let anyDialogOpen = false;
       let currentlyOpenDialog;
 
+      // checks if any dialogs are open
       for (const dialog of allDialogs) {
         if (dialog.open) {
           anyDialogOpen = true;
@@ -121,6 +125,7 @@ function App() {
         }
       }
 
+      // if currently open dialog does not contain data that needs confirmation before being dismissed, close immediately upon escape
       if (e.key === "Escape") {
         e.preventDefault();
         if (anyDialogOpen) {
@@ -335,14 +340,14 @@ function App() {
           }
         >
           <div
-            class={` absolute flex h-[100vh] w-full flex-col items-center justify-center
-            overflow-y-scroll py-[20px] pr-[30px]  ${globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
+            class={`absolute flex h-[100vh] w-full flex-col items-center justify-center overflow-y-scroll py-[20px] pr-[30px]
+              ${globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
                 ? "pl-[23%] large:pl-[17%]"
                 : "pl-[30px] large:pl-[30px]"
               }`}
           >
             <div class="!z-50">
-              <p class="text-[#000000] dark:text-[#ffffff80] ">
+              <p class="text-[#000000] dark:text-[#ffffff80]">
                 {translateText("hey there! thank you so much for using clear")}
                 <br />
                 <br />- {translateText("add some new games using the sidebar buttons")}
@@ -396,7 +401,8 @@ function App() {
           </div>
         </Show>
         <div
-          class={`absolute h-[100vh] w-full overflow-y-scroll !rounded-[0px] py-[20px] pr-[30px] ${globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
+          class={`absolute h-[100vh] w-full overflow-y-scroll !rounded-[0px] py-[20px] pr-[30px]
+            ${globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
               ? "pl-[23%] large:pl-[17%]"
               : "pl-[30px] large:pl-[30px]"
             }`}
@@ -415,7 +421,8 @@ function App() {
                         <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">{folder.name}</p>
                       </Show>
                       <div
-                        class={`foldersDiv mt-4 grid gap-5 ${globalContext.libraryData.userSettings.zoomLevel === 0
+                        class={`foldersDiv mt-4 grid gap-5
+                          ${globalContext.libraryData.userSettings.zoomLevel === 0
                             ? globalContext.libraryData.userSettings.showSideBar
                               ? "grid-cols-4 medium:grid-cols-5 large:grid-cols-7"
                               : "grid-cols-4 medium:grid-cols-6 large:grid-cols-8"
@@ -465,7 +472,8 @@ function App() {
               return (
                 <div>
                   <div
-                    class={`foldersDiv mt-4 grid gap-5 ${globalContext.libraryData.userSettings.zoomLevel === 0
+                    class={`foldersDiv mt-4 grid gap-5
+                      ${globalContext.libraryData.userSettings.zoomLevel === 0
                         ? globalContext.libraryData.userSettings.showSideBar
                           ? "grid-cols-4 medium:grid-cols-5 large:grid-cols-7"
                           : "grid-cols-4 medium:grid-cols-6 large:grid-cols-8"

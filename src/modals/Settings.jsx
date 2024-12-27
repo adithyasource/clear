@@ -92,7 +92,7 @@ export function Settings() {
                 >
                   <div class="relative">
                     <div class="">{translateText("game title")}</div>
-                    <div class="absolute inset-0 opacity-70 blur-[5px]  ">{translateText("game title")}</div>
+                    <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("game title")}</div>
                   </div>
                 </Show>
               </button>
@@ -111,7 +111,7 @@ export function Settings() {
                 >
                   <div class="relative">
                     <div class="">{translateText("folder title")}</div>
-                    <div class="absolute inset-0 opacity-70 blur-[5px]  ">{translateText("folder title")}</div>
+                    <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("folder title")}</div>
                   </div>
                 </Show>
               </button>
@@ -140,16 +140,15 @@ export function Settings() {
               <button
                 type="button"
                 onClick={async () => {
-                  if (globalContext.libraryData.userSettings.fontName === "sans serif") {
-                    globalContext.setLibraryData("userSettings", "fontName", "serif");
-                  } else {
-                    if (globalContext.libraryData.userSettings.fontName === "serif") {
+                  switch (globalContext.libraryData.userSettings.fontName) {
+                    case "sans serif":
+                      globalContext.setLibraryData("userSettings", "fontName", "serif");
+                      break;
+                    case "serif":
                       globalContext.setLibraryData("userSettings", "fontName", "mono");
-                    } else {
-                      if (globalContext.libraryData.userSettings.fontName === "mono") {
-                        globalContext.setLibraryData("userSettings", "fontName", "sans serif");
-                      }
-                    }
+                      break;
+                    case "mono":
+                      globalContext.setLibraryData("userSettings", "fontName", "sans serif");
                   }
 
                   await updateData();
@@ -203,7 +202,8 @@ export function Settings() {
               <div>
                 <button
                   type="button"
-                  class={`standardButton tooltip-bottom !flex !w-max !gap-3 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] ${applicationStateContext.systemPlatform() === "macos" ? "opacity-50" : ""}`}
+                  class={`standardButton tooltip-bottom !flex !w-max !gap-3 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]
+                    ${applicationStateContext.systemPlatform() === "macos" ? "opacity-50" : ""}`}
                   data-tooltip={
                     applicationStateContext.systemPlatform() === "windows"
                       ? translateText("might not work perfectly!")

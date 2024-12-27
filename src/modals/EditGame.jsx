@@ -385,7 +385,7 @@ export function EditGame() {
             <button
               type="button"
               onClick={updateGame}
-              class="standardButton flex items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] "
+              class="standardButton flex items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
             >
               <div class="!w-max"> {translateText("save")}</div>
               <SaveDisk />
@@ -399,7 +399,7 @@ export function EditGame() {
                   setShowDeleteConfirm(false);
                 }, 1500);
               }}
-              class="standardButton flex items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] "
+              class="standardButton flex items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
             >
               <span class="w-max text-[#FF3636]">
                 {showDeleteConfirm() ? translateText("confirm?") : translateText("delete")}
@@ -452,18 +452,18 @@ export function EditGame() {
                   )}
                   alt=""
                 />
-                <span class=" absolute left-[35%] top-[47%] opacity-0  group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]">
+                <span class="absolute left-[35%] top-[47%] opacity-0  group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]">
                   {translateText("grid/cover")}
                 </span>
               </Match>
               <Match when={editedLocatedGridImage()}>
                 <img class="absolute inset-0 aspect-[2/3]" src={convertFileSrc(editedLocatedGridImage())} alt="" />
-                <span class=" absolute left-[35%] top-[47%] opacity-0  group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]">
+                <span class="absolute left-[35%] top-[47%] opacity-0  group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]">
                   {translateText("grid/cover")}
                 </span>
               </Match>
               <Match when={editedLocatedGridImage() === null}>
-                <span class=" absolute left-[35%] top-[47%] opacity-0  group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]">
+                <span class="absolute left-[35%] top-[47%] opacity-0  group-hover:opacity-100 max-large:left-[30%] max-large:top-[45%]">
                   {translateText("grid/cover")}
                 </span>
               </Match>
@@ -496,7 +496,7 @@ export function EditGame() {
                       ]),
                     )}
                     alt=""
-                    class="absolute inset-0  aspect-[96/31]  h-full  "
+                    class="absolute inset-0 aspect-[96/31] h-full"
                   />
                   <img
                     src={convertFileSrc(
@@ -507,24 +507,24 @@ export function EditGame() {
                       ]),
                     )}
                     alt=""
-                    class="absolute inset-0 -z-10  aspect-[96/31] h-full  opacity-[0.6] blur-[80px]"
+                    class="absolute inset-0 -z-10 aspect-[96/31] h-full opacity-[0.6] blur-[80px]"
                   />
                 </Match>
                 <Match when={editedLocatedHeroImage()} class="absolute inset-0 overflow-hidden">
                   <img
                     src={convertFileSrc(editedLocatedHeroImage())}
                     alt=""
-                    class="absolute inset-0  aspect-[96/31] h-full "
+                    class="absolute inset-0 aspect-[96/31] h-full"
                   />
                   <img
                     src={convertFileSrc(editedLocatedHeroImage())}
                     alt=""
-                    class="absolute inset-0 -z-10 aspect-[96/31]  h-full  opacity-[0.6] blur-[80px]"
+                    class="absolute inset-0 -z-10 aspect-[96/31] h-full opacity-[0.6] blur-[80px]"
                   />
                 </Match>
               </Switch>
 
-              <span class=" absolute left-[45%] top-[47%] opacity-0 group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%]">
+              <span class="absolute left-[45%] top-[47%] opacity-0 group-hover:opacity-100 max-large:left-[42%] max-large:top-[45%]">
                 {translateText("hero")}
               </span>
             </button>
@@ -538,8 +538,8 @@ export function EditGame() {
                   onContextMenu={() => {
                     setEditedLocatedLogo(null);
                   }}
-                  class={`panelButton group absolute bottom-[60px] left-[20px] cursor-pointer  !bg-[#27272700] bg-[#f1f1f1] dark:bg-[#1c1c1c] max-large:bottom-[40px] ${selectedDataContext.selectedGame().logo ? "" : "!h-[65px] !w-[200px]"
-                    } `}
+                  class={`panelButton group absolute bottom-[60px] left-[20px] cursor-pointer  !bg-[#27272700] bg-[#f1f1f1] dark:bg-[#1c1c1c] max-large:bottom-[40px]
+                    ${selectedDataContext.selectedGame().logo ? "" : "!h-[65px] !w-[200px]"} `}
                   data-tooltip={translateText("logo")}
                 >
                   <Show
@@ -567,8 +567,8 @@ export function EditGame() {
                 onContextMenu={() => {
                   setEditedLocatedLogo(null);
                 }}
-                class={`panelButton group absolute bottom-[70px] left-[20px] cursor-pointer  !bg-[#27272700] bg-[#f1f1f1] dark:bg-[#1c1c1c] ${selectedDataContext.selectedGame().logo ? "" : "!h-[65px] !w-[200px]"
-                  } `}
+                class={`panelButton group absolute bottom-[70px] left-[20px] cursor-pointer  !bg-[#27272700] bg-[#f1f1f1] dark:bg-[#1c1c1c]
+                  ${selectedDataContext.selectedGame().logo ? "" : "!h-[65px] !w-[200px]"} `}
                 data-tooltip={translateText("logo")}
               >
                 <Switch>
@@ -633,7 +633,7 @@ export function EditGame() {
                     </Show>
                   </Match>
                   <Match when={editedLocatedIcon()}>
-                    <img src={convertFileSrc(editedLocatedIcon())} alt="" class="h-[40px] w-[40px] " />
+                    <img src={convertFileSrc(editedLocatedIcon())} alt="" class="h-[40px] w-[40px]" />
                   </Match>
                   <Match when={editedLocatedIcon() === null}>
                     <div class="h-[40px] w-[40px] !bg-[#E8E8E8] dark:!bg-[#272727]" />
@@ -694,7 +694,7 @@ export function EditGame() {
                 >
                   <OpenExternal />
 
-                  <span class=" absolute left-[-150%] top-[120%] opacity-0 group-hover:opacity-100">
+                  <span class="absolute left-[-150%] top-[120%] opacity-0 group-hover:opacity-100">
                     {translateText("open containing folder")}
                   </span>
                 </button>
@@ -703,7 +703,7 @@ export function EditGame() {
           </div>
         </div>
         <div class="flex w-[84rem] justify-between max-large:w-[61rem]">
-          <span class=" opacity-50">{translateText("right click to empty image selection")}</span>
+          <span class="opacity-50">{translateText("right click to empty image selection")}</span>
         </div>
       </div>
     </dialog>

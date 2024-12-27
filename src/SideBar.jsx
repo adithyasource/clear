@@ -337,10 +337,11 @@ export function SideBar() {
 
           <div
             id="sideBarFolders"
-            class={` ${globalContext.libraryData.userSettings.language === "fr"
+            class={`overflow-auto mt-[20px]
+              ${globalContext.libraryData.userSettings.language === "fr"
                 ? "medium:h-[calc(100vh-330px)] large:h-[calc(100vh-275px)]"
                 : "h-[calc(100vh-275px)]"
-              } overflow-auto mt-[20px]`}
+              } `}
             // drag over and drop are triggered when folders inside are dragged over and dropped in the sidebar
             onDragOver={(e) => {
               folderContainerDragOverHandler(e);
@@ -378,7 +379,7 @@ export function SideBar() {
                       await gamesFolderDropHandler(e, folderName);
                     }}
                   >
-                    <div class="flex cursor-move items-center gap-[10px]  ">
+                    <div class="flex cursor-move items-center gap-[10px]">
                       <Show
                         when={folder.games.length > 0}
                         fallback={<s class="cursor-move break-all text-black dark:text-white">{folder.name}</s>}
@@ -500,7 +501,8 @@ export function SideBar() {
           </div>
 
           <div
-            class={`flex ${globalContext.libraryData.userSettings.language === "fr"
+            class={`flex
+              ${globalContext.libraryData.userSettings.language === "fr"
                 ? "flex-col gap-0 medium:flex-col medium:gap-0 large:flex-row large:gap-3"
                 : "gap-3"
               }`}
@@ -519,7 +521,7 @@ export function SideBar() {
             </button>
             <button
               type="button"
-              class=" standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+              class="standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               onClick={() => {
                 openDialog("settings");
               }}

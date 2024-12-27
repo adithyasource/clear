@@ -18,6 +18,24 @@ export function LanguageSelector(props) {
     uiContext.setShowSettingsLanguageSelector(false);
   }
 
+  function returnLanguageFullName(shortName) {
+    switch (shortName) {
+      case "en":
+        return "english";
+      case "jp":
+        return "日本語";
+      case "es":
+        return "Español";
+      case "hi":
+        return "हिंदी";
+      case "ru":
+        return "русский";
+      case "fr":
+        return "Français";
+    }
+    return "english";
+  }
+
   return (
     <button
       type="button"
@@ -36,19 +54,7 @@ export function LanguageSelector(props) {
     >
       <span class="text-[#12121280] dark:text-[#ffffff80]">[{translateText("language")}]</span>
       &nbsp;
-      {globalContext.libraryData.userSettings.language === "en"
-        ? "english"
-        : globalContext.libraryData.userSettings.language === "jp"
-          ? "日本語"
-          : globalContext.libraryData.userSettings.language === "es"
-            ? "Español"
-            : globalContext.libraryData.userSettings.language === "hi"
-              ? "हिंदी"
-              : globalContext.libraryData.userSettings.language === "ru"
-                ? "русский"
-                : globalContext.libraryData.userSettings.language === "fr"
-                  ? "Français"
-                  : "english"}
+      {returnLanguageFullName(globalContext.libraryData.userSettings.language)}
       <Show when={props.onSettingsPage ? uiContext.showSettingsLanguageSelector() : showLanguageSelector()}>
         <div
           class={`absolute z-[100000] flex flex-col gap-4 border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-3 dark:border-[#ffffff1f] dark:bg-[#121212] ${props.onSettingsPage ? "top-[150%]" : "left-[1%] top-[120%]"

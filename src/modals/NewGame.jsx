@@ -339,7 +339,7 @@ export function NewGame() {
       }}
       class="backdrop:bg-transparent !p-0 overflow-visible"
     >
-      <div class="flex h-screen  w-screen flex-col  items-center justify-center gap-3 bg-[#d1d1d1cc] dark:bg-[#121212cc]">
+      <div class="flex h-screen w-screen flex-col items-center justify-center gap-3 bg-[#d1d1d1cc] dark:bg-[#121212cc]">
         <div class="flex w-[84rem] justify-between max-large:w-[61rem]">
           <div>
             <p class="text-[25px] text-[#00000080] dark:text-[#ffffff80]">{translateText("add new game")}</p>
@@ -677,7 +677,8 @@ export function NewGame() {
                     }
                   }
                 }}
-                class={`group relative p-0 tooltip-bottom ${foundIconImage() || locatedIcon()
+                class={`group relative p-0 tooltip-bottom 
+                  ${foundIconImage() || locatedIcon()
                     ? "hover:outline-dashed !outline-[2px] !outline-[#E8E8E880] !outline:dark:bg-[#27272780]"
                     : "bg-[#E8E8E8] dark:!bg-[#272727]"
                   }`}
@@ -701,7 +702,8 @@ export function NewGame() {
                         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                   }
                   alt=""
-                  class={`!object-scale-down h-[40px] w-[40px]  ${showIconImageLoading() ? "opacity-0" : ""}`}
+                  class={`!object-scale-down h-[40px] w-[40px]
+                    ${showIconImageLoading() ? "opacity-0" : ""}`}
                   onLoad={() => {
                     setShowIconImageLoading(false);
                   }}
@@ -727,7 +729,7 @@ export function NewGame() {
                 />
                 <button
                   type="button"
-                  class="standardButton !mr-2 !mt-0  !w-max cursor-pointer bg-[#f1f1f1] px-3 py-1 !text-black text-[#ffffff80] hover:!bg-[#d6d6d6] dark:!bg-[#1c1c1c] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
+                  class="standardButton !mr-2 !mt-0 !w-max cursor-pointer bg-[#f1f1f1] px-3 py-1 !text-black text-[#ffffff80] hover:!bg-[#d6d6d6] dark:!bg-[#1c1c1c] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                   onClick={async () => {
                     if (gameName() === "" || gameName() === undefined) {
                       triggerToast(translateText("no game name"));
@@ -769,7 +771,7 @@ export function NewGame() {
                 </button>
                 <button
                   type="button"
-                  class="standardButton  !mr-2 !mt-0  !w-max cursor-pointer bg-[#f1f1f1] px-3 py-1 !text-black text-[#ffffff80] hover:!bg-[#d6d6d6] dark:bg-[#1c1c1c] dark:!text-white  dark:hover:!bg-[#2b2b2b]"
+                  class="standardButton !mr-2 !mt-0 !w-max cursor-pointer bg-[#f1f1f1] px-3 py-1 !text-black text-[#ffffff80] hover:!bg-[#d6d6d6] dark:bg-[#1c1c1c] dark:!text-white dark:hover:!bg-[#2b2b2b]"
                   onClick={async () => {
                     gameName() === undefined
                       ? invoke("open_location", {

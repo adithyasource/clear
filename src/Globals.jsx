@@ -15,7 +15,7 @@ export const SelectedDataContext = createContext();
 export const ApplicationStateContext = createContext();
 export const SteamDataContext = createContext();
 
-// * global Store
+// creating store for library data
 export const [libraryData, setLibraryData] = createStore({
   // default values
   games: {},
@@ -34,7 +34,7 @@ export const [libraryData, setLibraryData] = createStore({
   },
 });
 
-// * ui
+// ui signals
 const [showSettingsLanguageSelector, setShowSettingsLanguageSelector] = createSignal(false);
 const [showImportAndOverwriteConfirm, setShowImportAndOverwriteConfirm] = createSignal(false);
 const [showNewVersionAvailable, setShowNewVersionAvailable] = createSignal(false);
@@ -48,12 +48,12 @@ const [showSettingsModal, setShowSettingsModal] = createSignal(false);
 const [showLoadingModal, setShowLoadingModal] = createSignal(false);
 const [userIsTabbing, setUserIsTabbing] = createSignal(false);
 
-// * selected data signals
+// selected data signals
 const [selectedGame, setSelectedGame] = createSignal({});
 const [selectedFolder, setSelectedFolder] = createSignal([]);
 const [selectedGameId, setSelectedGameId] = createSignal();
 
-// * application state signals
+// application state signals
 const [currentGames, setCurrentGames] = createSignal([]);
 const [currentFolders, setCurrentFolders] = createSignal([]);
 const [searchValue, setSearchValue] = createSignal();
@@ -64,11 +64,11 @@ const [latestVersion, setLatestVersion] = createSignal("");
 const [appDataDirPath, setAppDataDirPath] = createSignal({});
 const [windowWidth, setWindowWidth] = createSignal(window.innerWidth);
 
-// * steam data signals
+// steam data signals
 const [totalSteamGames, setTotalSteamGames] = createSignal(0);
 const [totalImportedSteamGames, setTotalImportedSteamGames] = createSignal(0);
 
-// * exporting context providers
+// adding signals to and exporting their respective context providers
 
 export function GlobalContextProvider(props) {
   const context = {
@@ -159,7 +159,7 @@ export function SteamDataContextProvider(props) {
   return <SteamDataContext.Provider value={context}>{props.children}</SteamDataContext.Provider>;
 }
 
-// * global functions
+// global helper functions
 
 export async function createEmptyLibrary() {
   await createDir("heroes", {
@@ -190,7 +190,7 @@ export async function getData() {
       dir: BaseDirectory.AppData,
     });
 
-    // ! potential footgun here cause you're not checking if games are empty
+    // WARN potential footgun here cause you're not checking if games are empty
     if (getLibraryData !== "" && JSON.parse(getLibraryData).folders !== "") {
       setCurrentGames("");
       setCurrentFolders("");
@@ -209,8 +209,7 @@ export async function getData() {
 
       console.log("data fetched");
 
-      // ? checks currenttheme and adds it to the document classlist for tailwind
-
+      // checks current theme and adds it to the document classlist for tailwind
       if (libraryData.userSettings.currentTheme === "light") {
         document.documentElement.classList.remove("dark");
       } else {
@@ -285,7 +284,7 @@ export async function importSteamGames() {
 
     const allGameNames = [];
 
-    // ! check if this works
+    // WARN check if this works
     setLibraryData((data) => {
       data.folders.steam = undefined;
       return data;
@@ -301,6 +300,7 @@ export async function importSteamGames() {
       const gameSGDBID = gameData.data.id;
       const name = gameData.data.name;
       allGameNames.push(name);
+
       let gridImageFileName = `${generateRandomString()}.png`;
       let heroImageFileName = `${generateRandomString()}.png`;
       let logoImageFileName = `${generateRandomString()}.png`;
