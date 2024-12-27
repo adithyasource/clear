@@ -1,6 +1,6 @@
+// importing code snippets and library functions
 import { createContext, createSignal } from "solid-js";
 import { createStore, produce } from "solid-js/store";
-
 import { invoke } from "@tauri-apps/api/tauri";
 import {
   BaseDirectory,
@@ -10,8 +10,10 @@ import {
   writeTextFile,
 } from "@tauri-apps/api/fs";
 import { appDataDir } from "@tauri-apps/api/path";
-import { textLanguages } from "./Text";
 import { parseVDF } from "./libraries/parseVDF";
+
+// importing text snippets for different languages
+import { textLanguages } from "./Text";
 
 export const GlobalContext = createContext();
 export const UIContext = createContext();

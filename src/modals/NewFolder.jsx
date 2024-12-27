@@ -1,15 +1,21 @@
-import { Show, useContext, createSignal, onMount } from "solid-js";
-import { produce } from "solid-js/store";
+// importing globals
 import {
+  GlobalContext,
+  ApplicationStateContext,
+  UIContext,
   closeDialog,
   closeDialogImmediately,
   translateText,
   updateData,
+  triggerToast,
 } from "../Globals";
-import { Close, SaveDisk } from "../libraries/Icons";
 
-import { GlobalContext, ApplicationStateContext, UIContext } from "../Globals";
-import { triggerToast } from "../Globals";
+// importing code snippets and library functions
+import { Show, useContext, createSignal, onMount } from "solid-js";
+import { produce } from "solid-js/store";
+
+// importing style related files
+import { Close, SaveDisk } from "../libraries/Icons";
 
 export function NewFolder() {
   const globalContext = useContext(GlobalContext);

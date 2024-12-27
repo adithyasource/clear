@@ -1,5 +1,8 @@
-import { Show } from "solid-js";
+// importing globals
 import { translateText } from "../Globals";
+
+// importing code snippets and library functions
+import { Show } from "solid-js";
 
 export function Hotkeys(props) {
   let modifierKeyPrefix = "ctrl";

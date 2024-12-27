@@ -1,6 +1,8 @@
-import { Show, useContext } from "solid-js";
-import { invoke } from "@tauri-apps/api/tauri";
+// importing globals
 import {
+  GlobalContext,
+  ApplicationStateContext,
+  UIContext,
   getData,
   importSteamGames,
   translateText,
@@ -8,12 +10,17 @@ import {
   closeDialog,
 } from "../Globals";
 
-import { appDataDir } from "@tauri-apps/api/path";
-import { Close, Steam } from "../libraries/Icons";
-
-import { GlobalContext, ApplicationStateContext, UIContext } from "../Globals";
+// importing components
 import { LanguageSelector } from "../components/LanguageSelector";
 import { Hotkeys } from "../components/Hotkeys";
+
+// importing code snippets and library functions
+import { Show, useContext } from "solid-js";
+import { invoke } from "@tauri-apps/api/tauri";
+import { appDataDir } from "@tauri-apps/api/path";
+
+// importing style related files
+import { Close, Steam } from "../libraries/Icons";
 
 export function Settings() {
   const globalContext = useContext(GlobalContext);

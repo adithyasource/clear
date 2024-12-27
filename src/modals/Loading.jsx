@@ -1,8 +1,11 @@
-import { useContext, Show } from "solid-js";
-import { translateText } from "../Globals";
-import { Loading as LoadingIcon } from "../libraries/Icons";
+// importing globals
+import { SteamDataContext, UIContext, translateText } from "../Globals";
 
-import { SteamDataContext, UIContext } from "../Globals";
+// importing code snippets and library functions
+import { useContext, Show } from "solid-js";
+
+// importing style related files
+import { Loading as LoadingIcon } from "../libraries/Icons";
 
 export function Loading() {
   const steamDataContext = useContext(SteamDataContext);

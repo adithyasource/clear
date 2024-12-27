@@ -1,19 +1,21 @@
-import { Show, useContext } from "solid-js";
-import { convertFileSrc } from "@tauri-apps/api/tauri";
+// importing globals
 import {
+  SelectedDataContext,
+  ApplicationStateContext,
+  UIContext,
   closeDialog,
   locationJoin,
   openDialog,
   openGame,
   translateText,
 } from "../Globals";
-import { Close, Play, Settings } from "../libraries/Icons";
 
-import {
-  SelectedDataContext,
-  ApplicationStateContext,
-  UIContext,
-} from "../Globals";
+// importing code snippets and library functions
+import { Show, useContext } from "solid-js";
+import { convertFileSrc } from "@tauri-apps/api/tauri";
+
+// importing style related files
+import { Close, Play, Settings } from "../libraries/Icons";
 
 export function GamePopUp() {
   const selectedDataContext = useContext(SelectedDataContext);

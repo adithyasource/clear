@@ -1,3 +1,21 @@
+// importing globals
+import {
+  GlobalContext,
+  SelectedDataContext,
+  ApplicationStateContext,
+  UIContext,
+  generateRandomString,
+  translateText,
+  updateData,
+  closeDialog,
+  locationJoin,
+  getExecutableFileName,
+  getExecutableParentFolder,
+  closeDialogImmediately,
+  triggerToast,
+} from "../Globals";
+
+// importing code snippets and library functions
 import {
   Match,
   Show,
@@ -11,25 +29,9 @@ import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { BaseDirectory, copyFile } from "@tauri-apps/api/fs";
 import { open } from "@tauri-apps/api/dialog";
 import { invoke } from "@tauri-apps/api";
-import {
-  generateRandomString,
-  translateText,
-  updateData,
-  closeDialog,
-  locationJoin,
-  getExecutableFileName,
-  getExecutableParentFolder,
-  closeDialogImmediately,
-} from "../Globals";
-import { Close, OpenExternal, SaveDisk, TrashDelete } from "../libraries/Icons";
 
-import {
-  GlobalContext,
-  SelectedDataContext,
-  ApplicationStateContext,
-  UIContext,
-} from "../Globals";
-import { triggerToast } from "../Globals";
+// importing style related files
+import { Close, OpenExternal, SaveDisk, TrashDelete } from "../libraries/Icons";
 
 export function EditGame() {
   const globalContext = useContext(GlobalContext);

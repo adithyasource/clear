@@ -1,4 +1,16 @@
-import { produce } from "solid-js/store";
+// importing globals
+import {
+  GlobalContext,
+  SelectedDataContext,
+  UIContext,
+  closeDialog,
+  closeDialogImmediately,
+  translateText,
+  updateData,
+  triggerToast,
+} from "../Globals";
+
+// importing code snippets and library functions
 import {
   Switch,
   useContext,
@@ -7,16 +19,10 @@ import {
   createSignal,
   onMount,
 } from "solid-js";
-import {
-  closeDialog,
-  closeDialogImmediately,
-  translateText,
-  updateData,
-} from "../Globals";
-import { Close, SaveDisk, TrashDelete } from "../libraries/Icons";
+import { produce } from "solid-js/store";
 
-import { GlobalContext, SelectedDataContext, UIContext } from "../Globals";
-import { triggerToast } from "../Globals";
+// importing style related files
+import { Close, SaveDisk, TrashDelete } from "../libraries/Icons";
 
 export function EditFolder() {
   const globalContext = useContext(GlobalContext);

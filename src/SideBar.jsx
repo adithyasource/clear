@@ -1,6 +1,9 @@
-import { For, Show, onMount, useContext, createSignal } from "solid-js";
-import { produce } from "solid-js/store";
+// importing globals
 import {
+  GlobalContext,
+  SelectedDataContext,
+  ApplicationStateContext,
+  UIContext,
   getData,
   openDialog,
   toggleSideBar,
@@ -8,6 +11,15 @@ import {
   triggerToast,
   updateData,
 } from "./Globals";
+
+// importing components
+import { GameCardSideBar } from "./components/GameCardSideBar";
+
+// importing code snippets and library functions
+import { For, Show, onMount, useContext, createSignal } from "solid-js";
+import { produce } from "solid-js/store";
+
+// importing style related files
 import {
   ChevronArrows,
   Edit,
@@ -18,14 +30,6 @@ import {
   UpdateDownload,
   Settings,
 } from "./libraries/Icons";
-
-import {
-  GlobalContext,
-  SelectedDataContext,
-  ApplicationStateContext,
-  UIContext,
-} from "./Globals";
-import { GameCardSideBar } from "./components/GameCardSideBar";
 
 export function SideBar() {
   const globalContext = useContext(GlobalContext);

@@ -1,15 +1,4 @@
-import {
-  For,
-  Show,
-  onMount,
-  useContext,
-  Switch,
-  Match,
-  createEffect,
-} from "solid-js";
-import { invoke } from "@tauri-apps/api/tauri";
-import { fuzzysearch } from "./libraries/fuzzysearch";
-
+// importing globals
 import {
   GlobalContext,
   ApplicationStateContext,
@@ -25,8 +14,7 @@ import {
   checkIfConnectedToInternet,
 } from "./Globals";
 
-import "./App.css";
-
+// importing components
 import { SideBar } from "./SideBar";
 import { EditFolder } from "./modals/EditFolder";
 import { EditGame } from "./modals/EditGame";
@@ -40,6 +28,22 @@ import { ChevronArrows, EmptyTray, Steam } from "./libraries/Icons";
 import { GameCards } from "./components/GameCards";
 import { LanguageSelector } from "./components/LanguageSelector";
 import { Hotkeys } from "./components/Hotkeys";
+
+// importing code snippets and library functions
+import {
+  For,
+  Show,
+  onMount,
+  useContext,
+  Switch,
+  Match,
+  createEffect,
+} from "solid-js";
+import { invoke } from "@tauri-apps/api/tauri";
+import { fuzzysearch } from "./libraries/fuzzysearch";
+
+// importing style related files
+import "./App.css";
 
 function App() {
   const globalContext = useContext(GlobalContext);

@@ -1,3 +1,21 @@
+// importing globals
+import {
+  GlobalContext,
+  SelectedDataContext,
+  ApplicationStateContext,
+  UIContext,
+  generateRandomString,
+  translateText,
+  updateData,
+  closeDialog,
+  openDialog,
+  locationJoin,
+  getExecutableFileName,
+  closeDialogImmediately,
+  triggerToast,
+} from "../Globals";
+
+// importing code snippets and library functions
 import {
   Match,
   Show,
@@ -9,29 +27,11 @@ import {
 } from "solid-js";
 import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
 import { BaseDirectory, copyFile } from "@tauri-apps/api/fs";
-
-import {
-  generateRandomString,
-  translateText,
-  updateData,
-  closeDialog,
-  openDialog,
-  locationJoin,
-  getExecutableFileName,
-  closeDialogImmediately,
-} from "../Globals";
-
 import { open } from "@tauri-apps/api/dialog";
-import { ChevronArrow, Close, SaveDisk } from "../libraries/Icons";
 import { produce } from "solid-js/store";
 
-import {
-  GlobalContext,
-  SelectedDataContext,
-  ApplicationStateContext,
-  UIContext,
-} from "../Globals";
-import { triggerToast } from "../Globals";
+// importing style related files
+import { ChevronArrow, Close, SaveDisk } from "../libraries/Icons";
 
 export function NewGame() {
   const globalContext = useContext(GlobalContext);

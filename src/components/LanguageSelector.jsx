@@ -1,7 +1,13 @@
-import { Show, useContext, createSignal } from "solid-js";
-import { translateText, updateData } from "../Globals";
+// importing globals
+import {
+  GlobalContext,
+  UIContext,
+  translateText,
+  updateData,
+} from "../Globals";
 
-import { GlobalContext, UIContext } from "../Globals";
+// importing code snippets and library functions
+import { Show, useContext, createSignal } from "solid-js";
 
 export function LanguageSelector(props) {
   const globalContext = useContext(GlobalContext);

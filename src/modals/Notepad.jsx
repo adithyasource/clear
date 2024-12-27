@@ -1,8 +1,18 @@
-import { useContext, createSignal } from "solid-js";
-import { closeDialog, getData, translateText, updateData } from "../Globals";
-import { Close } from "../libraries/Icons";
+// importing globals
+import {
+  GlobalContext,
+  UIContext,
+  closeDialog,
+  getData,
+  translateText,
+  updateData,
+} from "../Globals";
 
-import { GlobalContext, UIContext } from "../Globals";
+// importing code snippets and library functions
+import { useContext, createSignal } from "solid-js";
+
+// importing style related files
+import { Close } from "../libraries/Icons";
 
 export function Notepad() {
   const globalContext = useContext(GlobalContext);
