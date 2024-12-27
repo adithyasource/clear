@@ -175,7 +175,7 @@ function App() {
               "userSettings",
               "zoomLevel",
               (zoomLevel) => {
-                return (zoomLevel += 1 ? zoomLevel !== 2 : 2);
+                return zoomLevel !== 2 ? zoomLevel + 1 : 2;
               },
             );
             updateData();
@@ -187,7 +187,7 @@ function App() {
               "userSettings",
               "zoomLevel",
               (zoomLevel) => {
-                return (zoomLevel -= 1 ? zoomLevel !== 0 : 0);
+                return zoomLevel !== 0 ? zoomLevel - 1 : 0;
               },
             );
             updateData();
