@@ -24,13 +24,9 @@
 
 if there are any features or bug fixes you'd like to suggest, please open a new issue in the "Issue" tab.
 
-## contributions + translations
+## contributing (+ getting started) / translations
 
-if you'd like to contribute to the code or help translating 'clear', read [CONTRIBUTING.md](https://github.com/adithyasource/clear/blob/main/CONTRIBUTING.md)
-
-## getting started
-
-if you would like to setup the dev environment for the code or build an executable of the app for yourself, read the "getting started" section in [CONTRIBUTING.md](https://github.com/adithyasource/clear/blob/main/CONTRIBUTING.md)
+if you'd like to contribute to the code or help translating "clear", guidelines and getting started guides are outlined in [CONTRIBUTING.md](https://github.com/adithyasource/clear/blob/main/CONTRIBUTING.md)
 
 ## other repos for clear
 
