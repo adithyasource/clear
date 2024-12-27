@@ -21,12 +21,9 @@ export function GameCardSideBar(props) {
   return (
     <button
       type="button"
-      class={`!flex gap-[5px] bg-transparent ${props.index === 0 ? "mt-4" : "mt-5"
-        }  sideBarGame cursor-grab p-0`}
+      class={`!flex gap-[5px] bg-transparent ${props.index === 0 ? "mt-4" : "mt-5"}  sideBarGame cursor-grab p-0`}
       data-tooltip={
-        globalContext.libraryData.games[props.gameName].location
-          ? translateText("play")
-          : translateText("no game file")
+        globalContext.libraryData.games[props.gameName].location ? translateText("play") : translateText("no game file")
       }
       draggable={true}
       onDragStart={(e) => {
@@ -45,9 +42,7 @@ export function GameCardSideBar(props) {
           openGame(globalContext.libraryData.games[props.gameName].location);
           return;
         }
-        await selectedDataContext.setSelectedGame(
-          globalContext.libraryData.games[props.gameName],
-        );
+        await selectedDataContext.setSelectedGame(globalContext.libraryData.games[props.gameName]);
         openDialog("gamePopUp");
       }}
     >

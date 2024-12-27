@@ -70,8 +70,7 @@ export function parseVDF(text) {
       let val = m[6] !== undefined ? m[6] : m[8];
 
       if (val === undefined) {
-        if (stack[stack.length - 1][key] === undefined)
-          stack[stack.length - 1][key] = {};
+        if (stack[stack.length - 1][key] === undefined) stack[stack.length - 1][key] = {};
         stack.push(stack[stack.length - 1][key]);
         expect = true;
       } else {
@@ -92,8 +91,7 @@ export function parseVDF(text) {
     }
   }
 
-  if (stack.length !== 1)
-    throw new SyntaxError("VDF | Parse: Open parentheses somewhere");
+  if (stack.length !== 1) throw new SyntaxError("VDF | Parse: Open parentheses somewhere");
 
   return object;
 }

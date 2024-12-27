@@ -11,14 +11,7 @@ import {
 } from "../Globals";
 
 // importing code snippets and library functions
-import {
-  Switch,
-  useContext,
-  Match,
-  Show,
-  createSignal,
-  onMount,
-} from "solid-js";
+import { Switch, useContext, Match, Show, createSignal, onMount } from "solid-js";
 import { produce } from "solid-js/store";
 
 // importing style related files
@@ -52,9 +45,7 @@ export function EditFolder() {
       }
 
       if (folderNameAlreadyExists) {
-        triggerToast(
-          `${editedFolderName()} ${translateText("is already in your library")}`,
-        );
+        triggerToast(`${editedFolderName()} ${translateText("is already in your library")}`);
         return;
       }
     }
@@ -88,17 +79,8 @@ export function EditFolder() {
   }
 
   async function deleteFolder() {
-    for (
-      let x = 0;
-      x < Object.keys(globalContext.libraryData.folders).length;
-      x++
-    ) {
-      if (
-        x >
-        globalContext.libraryData.folders[
-          selectedDataContext.selectedFolder().name
-        ].index
-      ) {
+    for (let x = 0; x < Object.keys(globalContext.libraryData.folders).length; x++) {
+      if (x > globalContext.libraryData.folders[selectedDataContext.selectedFolder().name].index) {
         globalContext.setLibraryData(
           produce((data) => {
             Object.values(data.folders)[x].index -= 1;
@@ -126,9 +108,7 @@ export function EditFolder() {
       if (e.key === "Escape") {
         e.preventDefault();
         if (showCloseConfirm()) {
-          closeDialogImmediately(
-            document.querySelector("[data-modal='editFolder']"),
-          );
+          closeDialogImmediately(document.querySelector("[data-modal='editFolder']"));
 
           setShowCloseConfirm(false);
         } else {
@@ -155,15 +135,12 @@ export function EditFolder() {
       <div class="flex h-screen w-screen items-center justify-center align-middle bg-[#d1d1d166] dark:bg-[#12121266]">
         <div class="w-[60%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
           <div
-            class={`flex justify-between ${globalContext.libraryData.userSettings.language !== "en"
-                ? "flex-col large:flex-row"
-                : ""
+            class={`flex justify-between ${globalContext.libraryData.userSettings.language !== "en" ? "flex-col large:flex-row" : ""
               } `}
           >
             <div>
               <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">
-                {translateText("edit")}{" "}
-                {selectedDataContext.selectedFolder().name}
+                {translateText("edit")} {selectedDataContext.selectedFolder().name}
               </p>
             </div>
 
@@ -172,9 +149,7 @@ export function EditFolder() {
                 type="button"
                 onClick={() => {
                   if (editedHideFolder() === undefined) {
-                    setEditedHideFolder(
-                      !selectedDataContext.selectedGame().hide,
-                    );
+                    setEditedHideFolder(!selectedDataContext.selectedGame().hide);
                   } else {
                     setEditedHideFolder(!editedHideFolder());
                   }
@@ -185,16 +160,10 @@ export function EditFolder() {
                   <Match when={editedHideFolder() === undefined}>
                     <Show
                       when={selectedDataContext.selectedFolder().hide}
-                      fallback={
-                        <div class="">
-                          {translateText("hide in expanded view")}
-                        </div>
-                      }
+                      fallback={<div class="">{translateText("hide in expanded view")}</div>}
                     >
                       <div class="relative">
-                        <div class="">
-                          {translateText("hide in expanded view")}
-                        </div>
+                        <div class="">{translateText("hide in expanded view")}</div>
                         <div class="absolute inset-0 opacity-70 blur-[5px]">
                           {translateText("hide in expanded view")}
                         </div>
@@ -204,12 +173,8 @@ export function EditFolder() {
 
                   <Match when={editedHideFolder() === true}>
                     <div class="relative">
-                      <div class="">
-                        {translateText("hide in expanded view")}
-                      </div>
-                      <div class="absolute inset-0 opacity-70 blur-[5px]">
-                        {translateText("hide in expanded view")}
-                      </div>
+                      <div class="">{translateText("hide in expanded view")}</div>
+                      <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("hide in expanded view")}</div>
                     </div>
                   </Match>
 
@@ -231,9 +196,7 @@ export function EditFolder() {
               <button
                 type="button"
                 onClick={() => {
-                  showDeleteConfirm()
-                    ? deleteFolder()
-                    : setShowDeleteConfirm(true);
+                  showDeleteConfirm() ? deleteFolder() : setShowDeleteConfirm(true);
 
                   setTimeout(() => {
                     setShowDeleteConfirm(false);
@@ -242,9 +205,7 @@ export function EditFolder() {
                 class="standardButton flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               >
                 <span class="text-[#FF3636]">
-                  {showDeleteConfirm()
-                    ? translateText("confirm?")
-                    : translateText("delete")}
+                  {showDeleteConfirm() ? translateText("confirm?") : translateText("delete")}
                 </span>
                 <TrashDelete />
               </button>
@@ -265,9 +226,7 @@ export function EditFolder() {
                 data-tooltip={translateText("close")}
               >
                 {showCloseConfirm() ? (
-                  <span class="text-[#FF3636] whitespace-nowrap">
-                    {translateText("hit again to confirm")}
-                  </span>
+                  <span class="text-[#FF3636] whitespace-nowrap">{translateText("hit again to confirm")}</span>
                 ) : (
                   <Close />
                 )}

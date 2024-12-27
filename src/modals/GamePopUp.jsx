@@ -98,9 +98,7 @@ export function GamePopUp() {
           </div>
           <Show
             when={selectedDataContext.selectedGame().heroImage}
-            fallback={
-              <div class="aspect-[96/31] h-[350px] bg-[#f1f1f1] dark:bg-[#1c1c1c] max-large:h-[270px]" />
-            }
+            fallback={<div class="aspect-[96/31] h-[350px] bg-[#f1f1f1] dark:bg-[#1c1c1c] max-large:h-[270px]" />}
           >
             <img
               src={convertFileSrc(

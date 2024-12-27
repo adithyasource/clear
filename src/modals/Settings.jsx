@@ -41,9 +41,7 @@ export function Settings() {
           <div class="w-[70%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
             <div class="flex justify-between">
               <div>
-                <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">
-                  {translateText("settings")}
-                </p>
+                <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">{translateText("settings")}</p>
               </div>
 
               <button
@@ -63,11 +61,7 @@ export function Settings() {
               <button
                 type="button"
                 onClick={async () => {
-                  globalContext.setLibraryData(
-                    "userSettings",
-                    "roundedBorders",
-                    (x) => !x,
-                  );
+                  globalContext.setLibraryData("userSettings", "roundedBorders", (x) => !x);
 
                   await updateData();
                 }}
@@ -75,26 +69,18 @@ export function Settings() {
               >
                 <Show
                   when={globalContext.libraryData.userSettings.roundedBorders}
-                  fallback={
-                    <div class="">{translateText("rounded borders")}</div>
-                  }
+                  fallback={<div class="">{translateText("rounded borders")}</div>}
                 >
                   <div class="relative ">
                     <div class="">{translateText("rounded borders")}</div>
-                    <div class="absolute inset-0 opacity-70 blur-[5px]">
-                      {translateText("rounded borders")}
-                    </div>
+                    <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("rounded borders")}</div>
                   </div>
                 </Show>
               </button>
               <button
                 type="button"
                 onClick={async () => {
-                  globalContext.setLibraryData(
-                    "userSettings",
-                    "gameTitle",
-                    (x) => !x,
-                  );
+                  globalContext.setLibraryData("userSettings", "gameTitle", (x) => !x);
 
                   await updateData();
                 }}
@@ -106,20 +92,14 @@ export function Settings() {
                 >
                   <div class="relative">
                     <div class="">{translateText("game title")}</div>
-                    <div class="absolute inset-0 opacity-70 blur-[5px]  ">
-                      {translateText("game title")}
-                    </div>
+                    <div class="absolute inset-0 opacity-70 blur-[5px]  ">{translateText("game title")}</div>
                   </div>
                 </Show>
               </button>
               <button
                 type="button"
                 onClick={async () => {
-                  globalContext.setLibraryData(
-                    "userSettings",
-                    "folderTitle",
-                    (x) => !x,
-                  );
+                  globalContext.setLibraryData("userSettings", "folderTitle", (x) => !x);
 
                   await updateData();
                 }}
@@ -131,20 +111,14 @@ export function Settings() {
                 >
                   <div class="relative">
                     <div class="">{translateText("folder title")}</div>
-                    <div class="absolute inset-0 opacity-70 blur-[5px]  ">
-                      {translateText("folder title")}
-                    </div>
+                    <div class="absolute inset-0 opacity-70 blur-[5px]  ">{translateText("folder title")}</div>
                   </div>
                 </Show>
               </button>
               <button
                 type="button"
                 onClick={async () => {
-                  globalContext.setLibraryData(
-                    "userSettings",
-                    "quitAfterOpen",
-                    (x) => !x,
-                  );
+                  globalContext.setLibraryData("userSettings", "quitAfterOpen", (x) => !x);
 
                   await updateData();
                 }}
@@ -152,16 +126,10 @@ export function Settings() {
               >
                 <Show
                   when={globalContext.libraryData.userSettings.quitAfterOpen}
-                  fallback={
-                    <div class="">
-                      {translateText("quit after opening game")}
-                    </div>
-                  }
+                  fallback={<div class="">{translateText("quit after opening game")}</div>}
                 >
                   <div class="relative">
-                    <div class="">
-                      {translateText("quit after opening game")}
-                    </div>
+                    <div class="">{translateText("quit after opening game")}</div>
                     <div class="absolute inset-0 opacity-70 blur-[5px]  ">
                       {translateText("quit after opening game")}
                     </div>
@@ -172,35 +140,14 @@ export function Settings() {
               <button
                 type="button"
                 onClick={async () => {
-                  if (
-                    globalContext.libraryData.userSettings.fontName ===
-                    "sans serif"
-                  ) {
-                    globalContext.setLibraryData(
-                      "userSettings",
-                      "fontName",
-                      "serif",
-                    );
+                  if (globalContext.libraryData.userSettings.fontName === "sans serif") {
+                    globalContext.setLibraryData("userSettings", "fontName", "serif");
                   } else {
-                    if (
-                      globalContext.libraryData.userSettings.fontName ===
-                      "serif"
-                    ) {
-                      globalContext.setLibraryData(
-                        "userSettings",
-                        "fontName",
-                        "mono",
-                      );
+                    if (globalContext.libraryData.userSettings.fontName === "serif") {
+                      globalContext.setLibraryData("userSettings", "fontName", "mono");
                     } else {
-                      if (
-                        globalContext.libraryData.userSettings.fontName ===
-                        "mono"
-                      ) {
-                        globalContext.setLibraryData(
-                          "userSettings",
-                          "fontName",
-                          "sans serif",
-                        );
+                      if (globalContext.libraryData.userSettings.fontName === "mono") {
+                        globalContext.setLibraryData("userSettings", "fontName", "sans serif");
                       }
                     }
                   }
@@ -209,41 +156,25 @@ export function Settings() {
                 }}
                 class="flex cursor-pointer gap-2 p-0 text-left"
               >
-                <span class="text-[#12121280] dark:text-[#ffffff80]">
-                  [{translateText("font")}]
-                </span>
+                <span class="text-[#12121280] dark:text-[#ffffff80]">[{translateText("font")}]</span>
                 <div class="">
-                  {translateText(
-                    globalContext.libraryData.userSettings.fontName,
-                  ) || translateText("sans serif")}
+                  {translateText(globalContext.libraryData.userSettings.fontName) || translateText("sans serif")}
                 </div>
               </button>
               <button
                 type="button"
                 onClick={async () => {
                   globalContext.libraryData.userSettings.currentTheme === "dark"
-                    ? globalContext.setLibraryData(
-                      "userSettings",
-                      "currentTheme",
-                      "light",
-                    )
-                    : globalContext.setLibraryData(
-                      "userSettings",
-                      "currentTheme",
-                      "dark",
-                    );
+                    ? globalContext.setLibraryData("userSettings", "currentTheme", "light")
+                    : globalContext.setLibraryData("userSettings", "currentTheme", "dark");
 
                   await updateData();
                 }}
                 class="flex cursor-pointer gap-2 p-0 text-left"
               >
-                <span class="text-[#12121280] dark:text-[#ffffff80]">
-                  [{translateText("theme")}]
-                </span>
+                <span class="text-[#12121280] dark:text-[#ffffff80]">[{translateText("theme")}]</span>
                 <div class="">
-                  {translateText(
-                    globalContext.libraryData.userSettings.currentTheme,
-                  ) || translateText("dark")}
+                  {translateText(globalContext.libraryData.userSettings.currentTheme) || translateText("dark")}
                 </div>
               </button>
               <div class="relative flex cursor-pointer gap-2">
@@ -263,9 +194,7 @@ export function Settings() {
                   }}
                 >
                   {translateText("new update available!")}
-                  <span class="text-[#12121280] dark:text-[#ffffff80]">
-                    v{applicationStateContext.latestVersion()}
-                  </span>
+                  <span class="text-[#12121280] dark:text-[#ffffff80]">v{applicationStateContext.latestVersion()}</span>
                 </button>
               </div>
             </Show>
@@ -281,12 +210,8 @@ export function Settings() {
                       : translateText("not implemented on macOS yet! sorry :(")
                   }
                   onClick={() => {
-                    if (
-                      applicationStateContext.systemPlatform() === "windows"
-                    ) {
-                      if (
-                        globalContext.libraryData.folders.steam !== undefined
-                      ) {
+                    if (applicationStateContext.systemPlatform() === "windows") {
+                      if (globalContext.libraryData.folders.steam !== undefined) {
                         uiContext.showImportAndOverwriteConfirm()
                           ? importSteamGames()
                           : uiContext.setShowImportAndOverwriteConfirm(true);
@@ -309,9 +234,7 @@ export function Settings() {
                       fallback={translateText("import Steam games")}
                     >
                       <span class="text-[#FF3636]">
-                        {translateText(
-                          "current 'steam' folder will be overwritten. confirm?",
-                        )}
+                        {translateText("current 'steam' folder will be overwritten. confirm?")}
                       </span>
                     </Show>
                   </Show>
@@ -335,9 +258,7 @@ export function Settings() {
                   {translateText("open library location")}
                 </button>
                 <span class="w-[50%] text-[#12121280] dark:text-[#ffffff80]">
-                  {translateText(
-                    "these are all the files that the app stores on your pc",
-                  )}
+                  {translateText("these are all the files that the app stores on your pc")}
                 </span>
               </div>
             </div>
@@ -347,9 +268,7 @@ export function Settings() {
             <div class="mt-[35px] flex justify-between ">
               <div>
                 clear{" "}
-                <span class="text-[#12121280] dark:text-[#ffffff80]">
-                  v{applicationStateContext.appVersion()}
-                </span>
+                <span class="text-[#12121280] dark:text-[#ffffff80]">v{applicationStateContext.appVersion()}</span>
               </div>
               <button
                 type="button"
