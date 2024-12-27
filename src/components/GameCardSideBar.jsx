@@ -5,7 +5,7 @@ import { locationJoin, openDialog, openGame, translateText } from "../Globals";
 import {
   GlobalContext,
   SelectedDataContext,
-  ApplicationStateContext
+  ApplicationStateContext,
 } from "../Globals";
 
 export function GameCardSideBar(props) {
@@ -41,14 +41,19 @@ export function GameCardSideBar(props) {
           return;
         }
         await selectedDataContext.setSelectedGame(
-          globalContext.libraryData.games[props.gameName]
+          globalContext.libraryData.games[props.gameName],
         );
         openDialog("gamePopUp");
-      }}>
+      }}
+    >
       <Show when={globalContext.libraryData.games[props.gameName].icon}>
         <img
           src={convertFileSrc(
-            locationJoin([applicationStateContext.appDataDirPath(), "icons", globalContext.libraryData.games[props.gameName].icon])
+            locationJoin([
+              applicationStateContext.appDataDirPath(),
+              "icons",
+              globalContext.libraryData.games[props.gameName].icon,
+            ]),
           )}
           alt=""
           class="aspect-square h-[16px] gameIconImage"

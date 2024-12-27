@@ -31,7 +31,8 @@ export function LanguageSelector(props) {
         props.onSettingsPage
           ? "w-full p-0 text-left"
           : "standardButton relative flex !w-max cursor-pointer items-center !justify-between bg-[#E8E8E8] !p-4 !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
-      }>
+      }
+    >
       <span class="text-[#12121280] dark:text-[#ffffff80]">
         [{translateText("language")}]
       </span>
@@ -54,7 +55,8 @@ export function LanguageSelector(props) {
           props.onSettingsPage
             ? uiContext.showSettingsLanguageSelector()
             : showLanguageSelector()
-        }>
+        }
+      >
         <div
           role="button"
           tabIndex="0"
@@ -71,14 +73,16 @@ export function LanguageSelector(props) {
                 ? uiContext.setShowSettingsLanguageSelector(false)
                 : setShowLanguageSelector(false);
             }
-          }}>
+          }}
+        >
           <button
             type="button"
             class="p-0 text-left text-[#12121280] duration-150 motion-reduce:duration-0 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
             id="firstDropdownItem"
             onClick={() => {
               changeLanguage("en");
-            }}>
+            }}
+          >
             english
           </button>
           <button
@@ -86,7 +90,8 @@ export function LanguageSelector(props) {
             class="p-0 text-left text-[#12121280] duration-75 motion-reduce:duration-0 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
             onClick={() => {
               changeLanguage("fr");
-            }}>
+            }}
+          >
             Français [french]
           </button>
           <button
@@ -94,7 +99,8 @@ export function LanguageSelector(props) {
             class="p-0 text-left text-[#12121280] duration-75 motion-reduce:duration-0 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
             onClick={() => {
               changeLanguage("ru");
-            }}>
+            }}
+          >
             русский [russian]
           </button>
           <button
@@ -102,7 +108,8 @@ export function LanguageSelector(props) {
             class="p-0 text-left text-[#12121280] duration-150 motion-reduce:duration-0 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
             onClick={() => {
               changeLanguage("jp");
-            }}>
+            }}
+          >
             日本語 [japanese]
           </button>
           <button
@@ -110,7 +117,8 @@ export function LanguageSelector(props) {
             class="p-0 text-left text-[#12121280] duration-150 motion-reduce:duration-0 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
             onClick={() => {
               changeLanguage("es");
-            }}>
+            }}
+          >
             Español [spanish]
           </button>
           <button
@@ -125,7 +133,8 @@ export function LanguageSelector(props) {
             class="p-0 text-left text-[#12121280] duration-150 motion-reduce:duration-0 hover:text-[#121212cc] dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
             onClick={() => {
               changeLanguage("hi");
-            }}>
+            }}
+          >
             हिंदी [hindi]
           </button>
         </div>

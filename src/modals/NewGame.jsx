@@ -1,4 +1,12 @@
-import { Match, Show, Switch, createSignal, useContext, For, onMount } from "solid-js";
+import {
+  Match,
+  Show,
+  Switch,
+  createSignal,
+  useContext,
+  For,
+  onMount,
+} from "solid-js";
 import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
 import { BaseDirectory, copyFile } from "@tauri-apps/api/fs";
 
@@ -21,7 +29,7 @@ import {
   GlobalContext,
   SelectedDataContext,
   ApplicationStateContext,
-  UIContext
+  UIContext,
 } from "../Globals";
 import { triggerToast } from "../Globals";
 
@@ -72,7 +80,7 @@ export function NewGame() {
 
     if (gameNameAlreadyExists) {
       triggerToast(
-        `${gameName()} ${translateText("is already in your library")}`
+        `${gameName()} ${translateText("is already in your library")}`,
       );
       return;
     }
@@ -88,18 +96,26 @@ export function NewGame() {
       gridImageFileName = `${generateRandomString()}.png`;
       await invoke("download_image", {
         link: foundGridImage()[foundGridImageIndex()],
-        location: locationJoin([applicationStateContext.appDataDirPath(), "grids", gridImageFileName])
+        location: locationJoin([
+          applicationStateContext.appDataDirPath(),
+          "grids",
+          gridImageFileName,
+        ]),
       });
     } else {
       if (locatedGridImage()) {
         gridImageFileName = `${generateRandomString()}.${locatedGridImage().split(".")[
           locatedGridImage().split(".").length - 1
-        ]
+          ]
           }`;
 
-        await copyFile(locatedGridImage(), locationJoin(["grids", gridImageFileName]), {
-          dir: BaseDirectory.AppData
-        });
+        await copyFile(
+          locatedGridImage(),
+          locationJoin(["grids", gridImageFileName]),
+          {
+            dir: BaseDirectory.AppData,
+          },
+        );
       }
     }
 
@@ -108,18 +124,26 @@ export function NewGame() {
 
       await invoke("download_image", {
         link: foundHeroImage()[foundHeroImageIndex()],
-        location: locationJoin([applicationStateContext.appDataDirPath(), "heroes", heroImageFileName])
+        location: locationJoin([
+          applicationStateContext.appDataDirPath(),
+          "heroes",
+          heroImageFileName,
+        ]),
       });
     } else {
       if (locatedHeroImage()) {
         heroImageFileName = `${generateRandomString()}.${locatedHeroImage().split(".")[
           locatedHeroImage().split(".").length - 1
-        ]
+          ]
           }`;
 
-        await copyFile(locatedHeroImage(), locationJoin(["heroes", heroImageFileName]), {
-          dir: BaseDirectory.AppData
-        });
+        await copyFile(
+          locatedHeroImage(),
+          locationJoin(["heroes", heroImageFileName]),
+          {
+            dir: BaseDirectory.AppData,
+          },
+        );
       }
     }
 
@@ -128,7 +152,11 @@ export function NewGame() {
 
       await invoke("download_image", {
         link: foundLogoImage()[foundLogoImageIndex()],
-        location: locationJoin([applicationStateContext.appDataDirPath(), "logos", logoFileName])
+        location: locationJoin([
+          applicationStateContext.appDataDirPath(),
+          "logos",
+          logoFileName,
+        ]),
       });
     } else {
       if (locatedLogo()) {
@@ -136,7 +164,7 @@ export function NewGame() {
           }`;
 
         await copyFile(locatedLogo(), locationJoin(["logos", logoFileName]), {
-          dir: BaseDirectory.AppData
+          dir: BaseDirectory.AppData,
         });
       }
     }
@@ -146,7 +174,11 @@ export function NewGame() {
 
       await invoke("download_image", {
         link: foundIconImage()[foundIconImageIndex()],
-        location: locationJoin([applicationStateContext.appDataDirPath(), "icons", iconFileName])
+        location: locationJoin([
+          applicationStateContext.appDataDirPath(),
+          "icons",
+          iconFileName,
+        ]),
       });
     } else {
       if (locatedIcon()) {
@@ -154,7 +186,7 @@ export function NewGame() {
           }`;
 
         await copyFile(locatedIcon(), locationJoin(["icons", iconFileName]), {
-          dir: BaseDirectory.AppData
+          dir: BaseDirectory.AppData,
         });
       }
     }
@@ -168,11 +200,11 @@ export function NewGame() {
           gridImage: gridImageFileName,
           logo: logoFileName,
           icon: iconFileName,
-          favourite: favouriteGame()
+          favourite: favouriteGame(),
         };
 
         return data;
-      })
+      }),
     );
 
     await updateData();
@@ -182,9 +214,9 @@ export function NewGame() {
 
     setTimeout(() => {
       // scrolling to the bottom where uncategorized games are
-      const sideBarFolders = document.getElementById("sideBarFolders")
+      const sideBarFolders = document.getElementById("sideBarFolders");
       sideBarFolders.scrollTop = sideBarFolders.scrollHeight;
-    }, 100)
+    }, 100);
   }
 
   async function locateGame() {
@@ -194,10 +226,10 @@ export function NewGame() {
         filters: [
           {
             name: "Executable",
-            extensions: ["exe", "lnk", "url", "app"]
-          }
-        ]
-      })
+            extensions: ["exe", "lnk", "url", "app"],
+          },
+        ],
+      }),
     );
   }
   async function locateGridImage() {
@@ -208,10 +240,10 @@ export function NewGame() {
         filters: [
           {
             name: "Image",
-            extensions: ["png", "jpg", "jpeg", "webp"]
-          }
-        ]
-      })
+            extensions: ["png", "jpg", "jpeg", "webp"],
+          },
+        ],
+      }),
     );
   }
   async function locateHeroImage() {
@@ -222,10 +254,10 @@ export function NewGame() {
         filters: [
           {
             name: "Image",
-            extensions: ["png", "jpg", "jpeg", "webp"]
-          }
-        ]
-      })
+            extensions: ["png", "jpg", "jpeg", "webp"],
+          },
+        ],
+      }),
     );
   }
   async function locateLogo() {
@@ -236,10 +268,10 @@ export function NewGame() {
         filters: [
           {
             name: "Image",
-            extensions: ["png", "jpg", "jpeg", "webp"]
-          }
-        ]
-      })
+            extensions: ["png", "jpg", "jpeg", "webp"],
+          },
+        ],
+      }),
     );
   }
 
@@ -251,10 +283,10 @@ export function NewGame() {
         filters: [
           {
             name: "Image",
-            extensions: ["png", "jpg", "jpeg", "ico"]
-          }
-        ]
-      })
+            extensions: ["png", "jpg", "jpeg", "ico"],
+          },
+        ],
+      }),
     );
   }
 
@@ -265,7 +297,7 @@ export function NewGame() {
 
     try {
       searchedGameData = await fetch(
-        `${import.meta.env.VITE_CLEAR_API_URL}/?gameName=${gameName()}`
+        `${import.meta.env.VITE_CLEAR_API_URL}/?gameName=${gameName()}`,
       );
     } catch {
       searchedGameData = undefined;
@@ -292,7 +324,7 @@ export function NewGame() {
 
     await fetch(
       `${import.meta.env.VITE_CLEAR_API_URL
-      }/?assets=${selectedDataContext.selectedGameId()}`
+      }/?assets=${selectedDataContext.selectedGameId()}`,
     ).then((res) =>
       res.json().then(async (jsonres) => {
         const missingAssets = [];
@@ -320,17 +352,17 @@ export function NewGame() {
             const lastAssetType = missingAssets.splice(-1);
             triggerToast(
               `${translateText("couldn't find")} ${missingAssets.join(
-                ", "
-              )} & ${lastAssetType} :(`
+                ", ",
+              )} & ${lastAssetType} :(`,
             );
             return;
           }
 
           triggerToast(
-            `${translateText("couldn't find")} ${missingAssets[0]} :(`
+            `${translateText("couldn't find")} ${missingAssets[0]} :(`,
           );
         }
-      })
+      }),
     );
   }
 
@@ -339,7 +371,9 @@ export function NewGame() {
       if (e.key === "Escape") {
         e.preventDefault();
         if (showCloseConfirm()) {
-          closeDialogImmediately(document.querySelector("[data-modal='newGame']"));
+          closeDialogImmediately(
+            document.querySelector("[data-modal='newGame']"),
+          );
 
           setShowCloseConfirm(false);
         } else {
@@ -352,8 +386,8 @@ export function NewGame() {
           }, 1500);
         }
       }
-    })
-  })
+    });
+  });
 
   return (
     <dialog
@@ -364,7 +398,8 @@ export function NewGame() {
       onClose={() => {
         uiContext.setShowNewGameModal(false);
       }}
-      class="backdrop:bg-transparent !p-0 overflow-visible">
+      class="backdrop:bg-transparent !p-0 overflow-visible"
+    >
       <div class="flex h-screen  w-screen flex-col  items-center justify-center gap-3 bg-[#d1d1d1cc] dark:bg-[#121212cc]">
         <div class="flex w-[84rem] justify-between max-large:w-[61rem]">
           <div>
@@ -378,12 +413,14 @@ export function NewGame() {
               class="cursor-pointer"
               onClick={() => {
                 setFavouriteGame((x) => !x);
-              }}>
+              }}
+            >
               <Show
                 when={favouriteGame()}
                 fallback={
                   <div class="!w-max">{translateText("favourite")}</div>
-                }>
+                }
+              >
                 <div class="relative">
                   <div class="!w-max">{translateText("favourite")}</div>
                   <div class="absolute inset-0 !w-max opacity-70 blur-[5px]">
@@ -395,7 +432,8 @@ export function NewGame() {
             <button
               type="button"
               onClick={addGame}
-              class="standardButton flex items-center gap-1 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] ">
+              class="standardButton flex items-center gap-1 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] "
+            >
               <p class="!w-max">{translateText("save")}</p>
 
               <SaveDisk />
@@ -413,7 +451,8 @@ export function NewGame() {
                   setShowCloseConfirm(false);
                 }, 1500);
               }}
-              data-tooltip={translateText("close")}>
+              data-tooltip={translateText("close")}
+            >
               {showCloseConfirm() ? (
                 <span class="text-[#FF3636] whitespace-nowrap">
                   {translateText("hit again to confirm")}
@@ -436,7 +475,7 @@ export function NewGame() {
               if (SGDBGames()) {
                 if (e.deltaY <= 0) {
                   setFoundGridImageIndex((i) =>
-                    i === foundGridImage().length - 1 ? 0 : i + 1
+                    i === foundGridImage().length - 1 ? 0 : i + 1,
                   );
                   setShowGridImageLoading(true);
                 }
@@ -455,7 +494,7 @@ export function NewGame() {
               if (SGDBGames()) {
                 if (e.key === "ArrowRight" || e.key === "ArrowUp") {
                   setFoundGridImageIndex((i) =>
-                    i === foundGridImage().length - 1 ? 0 : i + 1
+                    i === foundGridImage().length - 1 ? 0 : i + 1,
                   );
                   setShowGridImageLoading(true);
                 }
@@ -486,7 +525,8 @@ export function NewGame() {
                   : `${foundGridImageIndex()} / ${foundGridImage().length - 1
                   } ${translateText("loading")}`
                 : translateText("grid/cover")
-            }>
+            }
+          >
             <img
               src={
                 foundGridImage()
@@ -516,7 +556,7 @@ export function NewGame() {
                   if (SGDBGames()) {
                     if (e.deltaY <= 0) {
                       setFoundHeroImageIndex((i) =>
-                        i === foundHeroImage().length - 1 ? 0 : i + 1
+                        i === foundHeroImage().length - 1 ? 0 : i + 1,
                       );
                       setShowHeroImageLoading(true);
                     }
@@ -535,7 +575,7 @@ export function NewGame() {
                   if (SGDBGames()) {
                     if (e.key === "ArrowRight" || e.key === "ArrowUp") {
                       setFoundHeroImageIndex((i) =>
-                        i === foundHeroImage().length - 1 ? 0 : i + 1
+                        i === foundHeroImage().length - 1 ? 0 : i + 1,
                       );
                       setShowHeroImageLoading(true);
                     }
@@ -566,7 +606,8 @@ export function NewGame() {
                       : `${foundHeroImageIndex()} / ${foundHeroImage().length - 1
                       } ${translateText("loading")}`
                     : translateText("hero")
-                }>
+                }
+              >
                 <img
                   src={
                     foundHeroImage()
@@ -614,7 +655,7 @@ export function NewGame() {
                   if (SGDBGames()) {
                     if (e.deltaY <= 0) {
                       setFoundLogoImageIndex((i) =>
-                        i === foundLogoImage().length - 1 ? 0 : i + 1
+                        i === foundLogoImage().length - 1 ? 0 : i + 1,
                       );
                       setShowLogoImageLoading(true);
                     }
@@ -633,7 +674,7 @@ export function NewGame() {
                   if (SGDBGames()) {
                     if (e.key === "ArrowRight" || e.key === "ArrowUp") {
                       setFoundLogoImageIndex((i) =>
-                        i === foundLogoImage().length - 1 ? 0 : i + 1
+                        i === foundLogoImage().length - 1 ? 0 : i + 1,
                       );
                       setShowLogoImageLoading(true);
                     }
@@ -665,7 +706,8 @@ export function NewGame() {
                       : `${foundLogoImageIndex()} / ${foundLogoImage().length - 1
                       } ${translateText("loading")}`
                     : translateText("logo")
-                }>
+                }
+              >
                 <img
                   src={
                     foundLogoImage()
@@ -700,7 +742,7 @@ export function NewGame() {
                   if (SGDBGames()) {
                     if (e.deltaY <= 0) {
                       setFoundIconImageIndex((i) =>
-                        i === foundIconImage().length - 1 ? 0 : i + 1
+                        i === foundIconImage().length - 1 ? 0 : i + 1,
                       );
                       setShowIconImageLoading(true);
                     }
@@ -719,7 +761,7 @@ export function NewGame() {
                   if (SGDBGames()) {
                     if (e.key === "ArrowRight" || e.key === "ArrowUp") {
                       setFoundIconImageIndex((i) =>
-                        i === foundIconImage().length - 1 ? 0 : i + 1
+                        i === foundIconImage().length - 1 ? 0 : i + 1,
                       );
                       setShowIconImageLoading(true);
                     }
@@ -735,8 +777,8 @@ export function NewGame() {
                   }
                 }}
                 class={`group relative p-0 tooltip-bottom ${foundIconImage() || locatedIcon()
-                  ? "hover:outline-dashed !outline-[2px] !outline-[#E8E8E880] !outline:dark:bg-[#27272780]"
-                  : "bg-[#E8E8E8] dark:!bg-[#272727]"
+                    ? "hover:outline-dashed !outline-[2px] !outline-[#E8E8E880] !outline:dark:bg-[#27272780]"
+                    : "bg-[#E8E8E8] dark:!bg-[#272727]"
                   }`}
                 data-tooltip={
                   foundIconImage()
@@ -749,7 +791,8 @@ export function NewGame() {
                       : `${foundIconImageIndex()} / ${foundIconImage().length - 1
                       } ${translateText("loading")}`
                     : translateText("icon")
-                }>
+                }
+              >
                 <img
                   src={
                     foundIconImage()
@@ -770,7 +813,8 @@ export function NewGame() {
 
               <div
                 class="gameInput flex items-center bg-[#E8E8E8cc] backdrop-blur-[10px] dark:bg-[#272727cc]"
-                style={{ "flex-grow": "1" }}>
+                style={{ "flex-grow": "1" }}
+              >
                 <input
                   aria-autocomplete="none"
                   type="text"
@@ -800,13 +844,15 @@ export function NewGame() {
                     setFoundHeroImage(undefined);
                     setFoundLogoImage(undefined);
                     setFoundIconImage(undefined);
-                  }}>
+                  }}
+                >
                   <Switch>
                     <Match
                       when={
                         globalContext.libraryData.userSettings.language ===
                         "fr" && applicationStateContext.windowWidth() >= 1500
-                      }>
+                      }
+                    >
                       {translateText("auto find assets")}
                     </Match>
 
@@ -814,7 +860,8 @@ export function NewGame() {
                       when={
                         globalContext.libraryData.userSettings.language ===
                         "fr" && applicationStateContext.windowWidth() <= 1500
-                      }>
+                      }
+                    >
                       <p class="w-[70px] text-clip text-[10px]">
                         {translateText("auto find assets")}
                       </p>
@@ -823,7 +870,8 @@ export function NewGame() {
                     <Match
                       when={
                         globalContext.libraryData.userSettings.language !== "fr"
-                      }>
+                      }
+                    >
                       {translateText("auto find assets")}
                     </Match>
                   </Switch>
@@ -834,22 +882,24 @@ export function NewGame() {
                   onClick={async () => {
                     gameName() === undefined
                       ? invoke("open_location", {
-                        location: "https://www.steamgriddb.com/"
+                        location: "https://www.steamgriddb.com/",
                       })
                       : gameName() === ""
                         ? invoke("open_location", {
-                          location: "https://www.steamgriddb.com/"
+                          location: "https://www.steamgriddb.com/",
                         })
                         : invoke("open_location", {
-                          location: `https://www.steamgriddb.com/search/grids?term=${gameName()}`
+                          location: `https://www.steamgriddb.com/search/grids?term=${gameName()}`,
                         });
-                  }}>
+                  }}
+                >
                   <Switch>
                     <Match
                       when={
                         globalContext.libraryData.userSettings.language ===
                         "fr" && applicationStateContext.windowWidth() >= 1500
-                      }>
+                      }
+                    >
                       {translateText("find assets")}
                     </Match>
 
@@ -857,7 +907,8 @@ export function NewGame() {
                       when={
                         globalContext.libraryData.userSettings.language ===
                         "fr" && applicationStateContext.windowWidth() <= 1500
-                      }>
+                      }
+                    >
                       <p class="w-[100px] text-clip text-[10px]">
                         {translateText("find assets")}
                       </p>
@@ -866,7 +917,8 @@ export function NewGame() {
                     <Match
                       when={
                         globalContext.libraryData.userSettings.language !== "fr"
-                      }>
+                      }
+                    >
                       {translateText("find assets")}
                     </Match>
                   </Switch>
@@ -879,7 +931,8 @@ export function NewGame() {
                 onContextMenu={() => {
                   setlocatedGame(undefined);
                 }}
-                class="standardButton !mt-0 !w-max bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]">
+                class="standardButton !mt-0 !w-max bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+              >
                 {locatedGame() === undefined
                   ? translateText("locate game")
                   : getExecutableFileName(locatedGame())}
@@ -895,7 +948,8 @@ export function NewGame() {
           <Show
             when={
               SGDBGames() && selectedDataContext.selectedGameId() === undefined
-            }>
+            }
+          >
             <span class="opacity-80">
               {translateText("select the official name of your game")}
             </span>
@@ -912,12 +966,14 @@ export function NewGame() {
                     40;
                 }}
                 class="tooltip-delayed-bottom"
-                data-tooltip={translateText("scroll left")}>
+                data-tooltip={translateText("scroll left")}
+              >
                 <ChevronArrow />
               </button>
               <div
                 id="SGDBGamesContainer"
-                class="SGDBGamesContainer flex gap-[5px] overflow-x-auto scroll-smooth">
+                class="SGDBGamesContainer flex gap-[5px] overflow-x-auto scroll-smooth"
+              >
                 <For each={SGDBGames()}>
                   {(foundGame) => {
                     return (
@@ -928,7 +984,8 @@ export function NewGame() {
                           selectedDataContext.setSelectedGameId(undefined);
                           selectedDataContext.setSelectedGameId(foundGame.id);
                           getGameAssets();
-                        }}>
+                        }}
+                      >
                         {foundGame.name}
                       </button>
                     );
@@ -942,7 +999,8 @@ export function NewGame() {
                     40;
                 }}
                 class="tooltip-delayed-bottom"
-                data-tooltip={translateText("scroll right")}>
+                data-tooltip={translateText("scroll right")}
+              >
                 <div class="rotate-180">
                   <ChevronArrow />
                 </div>

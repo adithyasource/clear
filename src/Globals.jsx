@@ -7,7 +7,7 @@ import {
   createDir,
   exists,
   readTextFile,
-  writeTextFile
+  writeTextFile,
 } from "@tauri-apps/api/fs";
 import { appDataDir } from "@tauri-apps/api/path";
 import { textLanguages } from "./Text";
@@ -34,8 +34,8 @@ export const [libraryData, setLibraryData] = createStore({
     fontName: "sans serif",
     language: "en",
     currentTheme: "dark",
-    zoomLevel: 1
-  }
+    zoomLevel: 1,
+  },
 });
 
 // * ui
@@ -80,7 +80,7 @@ const [totalImportedSteamGames, setTotalImportedSteamGames] = createSignal(0);
 export function GlobalContextProvider(props) {
   const context = {
     libraryData,
-    setLibraryData
+    setLibraryData,
   };
 
   return (
@@ -115,7 +115,7 @@ export function UIContextProvider(props) {
     showLoadingModal,
     setShowLoadingModal,
     userIsTabbing,
-    setUserIsTabbing
+    setUserIsTabbing,
   };
 
   return (
@@ -130,7 +130,7 @@ export function SelectedDataContextProvider(props) {
     selectedFolder,
     setSelectedFolder,
     selectedGameId,
-    setSelectedGameId
+    setSelectedGameId,
   };
 
   return (
@@ -159,7 +159,7 @@ export function ApplicationStateContextProvider(props) {
     appDataDirPath,
     setAppDataDirPath,
     windowWidth,
-    setWindowWidth
+    setWindowWidth,
   };
 
   return (
@@ -174,7 +174,7 @@ export function SteamDataContextProvider(props) {
     totalSteamGames,
     setTotalSteamGames,
     totalImportedSteamGames,
-    setTotalImportedSteamGames
+    setTotalImportedSteamGames,
   };
 
   return (
@@ -189,19 +189,19 @@ export function SteamDataContextProvider(props) {
 export async function createEmptyLibrary() {
   await createDir("heroes", {
     dir: BaseDirectory.AppData,
-    recursive: true
+    recursive: true,
   });
   await createDir("grids", {
     dir: BaseDirectory.AppData,
-    recursive: true
+    recursive: true,
   });
   await createDir("logos", {
     dir: BaseDirectory.AppData,
-    recursive: true
+    recursive: true,
   });
   await createDir("icons", {
     dir: BaseDirectory.AppData,
-    recursive: true
+    recursive: true,
   });
 
   updateData();
@@ -212,7 +212,7 @@ export async function getData() {
 
   if (await exists("data.json", { dir: BaseDirectory.AppData })) {
     const getLibraryData = await readTextFile("data.json", {
-      dir: BaseDirectory.AppData
+      dir: BaseDirectory.AppData,
     });
 
     // ! potential footgun here cause you're not checking if games are empty
@@ -254,7 +254,7 @@ export async function openGame(gameLocation) {
   }
 
   invoke("open_location", {
-    location: gameLocation
+    location: gameLocation,
   });
 
   if (
@@ -295,8 +295,8 @@ export async function importSteamGames() {
 
       triggerToast(
         translateText(
-          "sorry but there was an error \n reading your Steam library :("
-        )
+          "sorry but there was an error \n reading your Steam library :(",
+        ),
       );
 
       return;
@@ -328,7 +328,7 @@ export async function importSteamGames() {
 
     for (const steamId of steamGameIds) {
       let gameData = await fetch(
-        `${import.meta.env.VITE_CLEAR_API_URL}/?steamID=${steamId}`
+        `${import.meta.env.VITE_CLEAR_API_URL}/?steamID=${steamId}`,
       );
 
       gameData = await gameData.json();
@@ -342,7 +342,7 @@ export async function importSteamGames() {
       let iconImageFileName = `${generateRandomString()}.png`;
 
       let assetsData = await fetch(
-        `${import.meta.env.VITE_CLEAR_API_URL}/?assets=${gameSGDBID}&length=1`
+        `${import.meta.env.VITE_CLEAR_API_URL}/?assets=${gameSGDBID}&length=1`,
       );
 
       assetsData = await assetsData.json();
@@ -350,7 +350,11 @@ export async function importSteamGames() {
       if (assetsData.grids.length !== 0) {
         await invoke("download_image", {
           link: assetsData.grids[0],
-          location: locationJoin([appDataDirPath(), "grids", gridImageFileName])
+          location: locationJoin([
+            appDataDirPath(),
+            "grids",
+            gridImageFileName,
+          ]),
         });
       } else {
         gridImageFileName = undefined;
@@ -358,7 +362,11 @@ export async function importSteamGames() {
       if (assetsData.heroes.length !== 0) {
         await invoke("download_image", {
           link: assetsData.heroes[0],
-          location: locationJoin([appDataDirPath(), "heroes", heroImageFileName])
+          location: locationJoin([
+            appDataDirPath(),
+            "heroes",
+            heroImageFileName,
+          ]),
         });
       } else {
         heroImageFileName = undefined;
@@ -366,7 +374,11 @@ export async function importSteamGames() {
       if (assetsData.logos.length !== 0) {
         await invoke("download_image", {
           link: assetsData.logos[0],
-          location: locationJoin([appDataDirPath(), "logos", logoImageFileName])
+          location: locationJoin([
+            appDataDirPath(),
+            "logos",
+            logoImageFileName,
+          ]),
         });
       } else {
         logoImageFileName = undefined;
@@ -374,7 +386,11 @@ export async function importSteamGames() {
       if (assetsData.icons.length !== 0) {
         await invoke("download_image", {
           link: assetsData.icons[0],
-          location: locationJoin([appDataDirPath(), "icons", iconImageFileName])
+          location: locationJoin([
+            appDataDirPath(),
+            "icons",
+            iconImageFileName,
+          ]),
         });
       } else {
         iconImageFileName = undefined;
@@ -387,7 +403,7 @@ export async function importSteamGames() {
           gridImage: gridImageFileName,
           logo: logoImageFileName,
           icon: iconImageFileName,
-          favourite: false
+          favourite: false,
         };
         return data;
       });
@@ -401,10 +417,10 @@ export async function importSteamGames() {
           name: "steam",
           hide: false,
           games: allGameNames,
-          index: currentFolders().length
+          index: currentFolders().length,
         };
         return data;
-      })
+      }),
     );
 
     await updateData().then(() => {
@@ -439,11 +455,11 @@ export async function updateData() {
   await writeTextFile(
     {
       path: "data.json",
-      contents: JSON.stringify(libraryData, null, 4)
+      contents: JSON.stringify(libraryData, null, 4),
     },
     {
-      dir: BaseDirectory.AppData
-    }
+      dir: BaseDirectory.AppData,
+    },
   ).then(getData());
 }
 
@@ -599,24 +615,28 @@ export async function checkIfConnectedToInternet() {
 
 export function locationJoin(locationsList) {
   if (systemPlatform() === "windows") {
-    return locationsList.join("\\")
+    return locationsList.join("\\");
   }
 
-  return locationsList.join("/")
+  return locationsList.join("/");
 }
 
 export function getExecutableFileName(location) {
-
-  // splits both / and \ paths since a library created on windows can be 
+  // splits both / and \ paths since a library created on windows can be
   // viewed on macos and vice versa
-  return location.toString().split("\\").slice(-1).toString().split("/").slice(-1)
+  return location
+    .toString()
+    .split("\\")
+    .slice(-1)
+    .toString()
+    .split("/")
+    .slice(-1);
 }
 
 export function getExecutableParentFolder(location) {
-
   if (systemPlatform() === "windows") {
-    return location.toString().split("\\").slice(0, -1).join("\\")
+    return location.toString().split("\\").slice(0, -1).join("\\");
   }
 
-  return location.toString().split("/").slice(0, -1).join("/")
+  return location.toString().split("/").slice(0, -1).join("/");
 }

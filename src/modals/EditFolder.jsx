@@ -1,6 +1,18 @@
 import { produce } from "solid-js/store";
-import { Switch, useContext, Match, Show, createSignal, onMount } from "solid-js";
-import { closeDialog, closeDialogImmediately, translateText, updateData } from "../Globals";
+import {
+  Switch,
+  useContext,
+  Match,
+  Show,
+  createSignal,
+  onMount,
+} from "solid-js";
+import {
+  closeDialog,
+  closeDialogImmediately,
+  translateText,
+  updateData,
+} from "../Globals";
 import { Close, SaveDisk, TrashDelete } from "../libraries/Icons";
 
 import { GlobalContext, SelectedDataContext, UIContext } from "../Globals";
@@ -35,7 +47,7 @@ export function EditFolder() {
 
       if (folderNameAlreadyExists) {
         triggerToast(
-          `${editedFolderName()} ${translateText("is already in your library")}`
+          `${editedFolderName()} ${translateText("is already in your library")}`,
         );
         return;
       }
@@ -46,7 +58,7 @@ export function EditFolder() {
         delete data.folders[selectedDataContext.selectedFolder().name];
 
         return data;
-      })
+      }),
     );
 
     if (!editedFolderName()) {
@@ -58,11 +70,11 @@ export function EditFolder() {
         data.folders[editedFolderName()] = {
           ...selectedDataContext.selectedFolder(),
           name: editedFolderName(),
-          hide: editedHideFolder()
+          hide: editedHideFolder(),
         };
 
         return data;
-      })
+      }),
     );
 
     await updateData();
@@ -86,7 +98,7 @@ export function EditFolder() {
             Object.values(data.folders)[x].index -= 1;
 
             return data;
-          })
+          }),
         );
       }
     }
@@ -96,7 +108,7 @@ export function EditFolder() {
         delete data.folders[selectedDataContext.selectedFolder().name];
 
         return data;
-      })
+      }),
     );
 
     await updateData();
@@ -108,7 +120,9 @@ export function EditFolder() {
       if (e.key === "Escape") {
         e.preventDefault();
         if (showCloseConfirm()) {
-          closeDialogImmediately(document.querySelector("[data-modal='editFolder']"));
+          closeDialogImmediately(
+            document.querySelector("[data-modal='editFolder']"),
+          );
 
           setShowCloseConfirm(false);
         } else {
@@ -121,8 +135,8 @@ export function EditFolder() {
           }, 1500);
         }
       }
-    })
-  })
+    });
+  });
 
   return (
     <dialog
@@ -130,14 +144,16 @@ export function EditFolder() {
       onClose={() => {
         uiContext.setShowEditFolderModal(false);
       }}
-      class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible">
+      class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible"
+    >
       <div class="flex h-screen w-screen items-center justify-center align-middle bg-[#d1d1d166] dark:bg-[#12121266]">
         <div class="w-[60%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
           <div
             class={`flex justify-between ${globalContext.libraryData.userSettings.language !== "en"
-              ? "flex-col large:flex-row"
-              : ""
-              } `}>
+                ? "flex-col large:flex-row"
+                : ""
+              } `}
+          >
             <div>
               <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">
                 {translateText("edit")}{" "}
@@ -151,13 +167,14 @@ export function EditFolder() {
                 onClick={() => {
                   if (editedHideFolder() === undefined) {
                     setEditedHideFolder(
-                      !selectedDataContext.selectedGame().hide
+                      !selectedDataContext.selectedGame().hide,
                     );
                   } else {
                     setEditedHideFolder(!editedHideFolder());
                   }
                 }}
-                class="relative cursor-pointer">
+                class="relative cursor-pointer"
+              >
                 <Switch>
                   <Match when={editedHideFolder() === undefined}>
                     <Show
@@ -166,7 +183,8 @@ export function EditFolder() {
                         <div class="">
                           {translateText("hide in expanded view")}
                         </div>
-                      }>
+                      }
+                    >
                       <div class="relative">
                         <div class="">
                           {translateText("hide in expanded view")}
@@ -198,7 +216,8 @@ export function EditFolder() {
               <button
                 type="button"
                 onClick={editFolder}
-                class="standardButton flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]">
+                class="standardButton flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+              >
                 {translateText("save")}
                 <SaveDisk />
               </button>
@@ -214,7 +233,8 @@ export function EditFolder() {
                     setShowDeleteConfirm(false);
                   }, 1500);
                 }}
-                class="standardButton flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]">
+                class="standardButton flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+              >
                 <span class="text-[#FF3636]">
                   {showDeleteConfirm()
                     ? translateText("confirm?")
@@ -236,7 +256,8 @@ export function EditFolder() {
                     setShowCloseConfirm(false);
                   }, 1500);
                 }}
-                data-tooltip={translateText("close")}>
+                data-tooltip={translateText("close")}
+              >
                 {showCloseConfirm() ? (
                   <span class="text-[#FF3636] whitespace-nowrap">
                     {translateText("hit again to confirm")}

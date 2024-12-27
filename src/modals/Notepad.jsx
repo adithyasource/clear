@@ -27,7 +27,8 @@ export function Notepad() {
           setNotepadValue(globalContext.libraryData.notepad || "");
           uiContext.setShowNotepadModal(false);
         }}
-        class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible">
+        class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible"
+      >
         <div class="flex h-screen w-screen items-center justify-center align-middle bg-[#d1d1d166] dark:bg-[#12121266]">
           <div class="w-[50%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
             <div class="flex justify-between">
@@ -44,7 +45,8 @@ export function Notepad() {
                   closeDialog("notepad");
                   getData();
                 }}
-                data-tooltip={translateText("close")}>
+                data-tooltip={translateText("close")}
+              >
                 <Close />
               </button>
             </div>

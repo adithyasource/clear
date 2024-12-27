@@ -2,8 +2,7 @@ import { Show } from "solid-js";
 import { translateText } from "../Globals";
 
 export function Hotkeys(props) {
-
-  let modifierKeyPrefix = "ctrl"
+  let modifierKeyPrefix = "ctrl";
 
   if (
     navigator.platform.indexOf("Mac") === 0 ||
@@ -16,7 +15,8 @@ export function Hotkeys(props) {
     <>
       <div
         class={`grid ${props.onSettingsPage ? "grid-cols-3" : "grid-cols-2"
-          } mt-[35px] gap-y-4`}>
+          } mt-[35px] gap-y-4`}
+      >
         <div class="flex items-center gap-3">
           <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
             {modifierKeyPrefix} + n

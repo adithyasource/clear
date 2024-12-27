@@ -1,6 +1,11 @@
 import { Show, useContext, createSignal, onMount } from "solid-js";
 import { produce } from "solid-js/store";
-import { closeDialog, closeDialogImmediately, translateText, updateData } from "../Globals";
+import {
+  closeDialog,
+  closeDialogImmediately,
+  translateText,
+  updateData,
+} from "../Globals";
 import { Close, SaveDisk } from "../libraries/Icons";
 
 import { GlobalContext, ApplicationStateContext, UIContext } from "../Globals";
@@ -32,7 +37,7 @@ export function NewFolder() {
 
     if (folderNameAlreadyExists) {
       triggerToast(
-        `${folderName()} ${translateText("is already in your library")}`
+        `${folderName()} ${translateText("is already in your library")}`,
       );
       return;
     }
@@ -43,11 +48,11 @@ export function NewFolder() {
           name: folderName(),
           hide: hideFolder(),
           games: [],
-          index: applicationStateContext.currentFolders().length
+          index: applicationStateContext.currentFolders().length,
         };
 
         return data;
-      })
+      }),
     );
 
     await updateData();
@@ -60,7 +65,9 @@ export function NewFolder() {
       if (e.key === "Escape") {
         e.preventDefault();
         if (showCloseConfirm()) {
-          closeDialogImmediately(document.querySelector("[data-modal='newFolder']"));
+          closeDialogImmediately(
+            document.querySelector("[data-modal='newFolder']"),
+          );
 
           setShowCloseConfirm(false);
         } else {
@@ -73,8 +80,8 @@ export function NewFolder() {
           }, 1500);
         }
       }
-    })
-  })
+    });
+  });
 
   return (
     <dialog
@@ -82,14 +89,16 @@ export function NewFolder() {
       onClose={() => {
         uiContext.setShowNewFolderModal(false);
       }}
-      class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible">
+      class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible"
+    >
       <div class="flex h-screen w-screen items-center justify-center align-middle bg-[#d1d1d166] dark:bg-[#12121266]">
         <div class="w-[60%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
           <div
             class={`flex justify-between ${globalContext.libraryData.userSettings.language !== "en"
-              ? "flex-col large:flex-row"
-              : ""
-              } `}>
+                ? "flex-col large:flex-row"
+                : ""
+              } `}
+          >
             <div>
               <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">
                 {translateText("add new folder")}
@@ -101,12 +110,14 @@ export function NewFolder() {
                 onClick={() => {
                   setHideFolder((x) => !x);
                 }}
-                class="relative cursor-pointer">
+                class="relative cursor-pointer"
+              >
                 <Show
                   when={hideFolder()}
                   fallback={
                     <div class="">{translateText("hide in expanded view")}</div>
-                  }>
+                  }
+                >
                   <div class="relative">
                     <div class="">{translateText("hide in expanded view")}</div>
                     <div class="absolute inset-0 opacity-70 blur-[5px]">
@@ -118,7 +129,8 @@ export function NewFolder() {
               <button
                 type="button"
                 onClick={addFolder}
-                class="standardButton flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]">
+                class="standardButton flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+              >
                 {translateText("save")}
                 <SaveDisk />
               </button>
@@ -135,7 +147,8 @@ export function NewFolder() {
                     setShowCloseConfirm(false);
                   }, 1500);
                 }}
-                data-tooltip={translateText("close")}>
+                data-tooltip={translateText("close")}
+              >
                 {showCloseConfirm() ? (
                   <span class="text-[#FF3636] whitespace-nowrap">
                     {translateText("hit again to confirm")}

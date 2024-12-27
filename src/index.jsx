@@ -7,7 +7,7 @@ import {
   UIContextProvider,
   SelectedDataContextProvider,
   ApplicationStateContextProvider,
-  SteamDataContextProvider
+  SteamDataContextProvider,
 } from "./Globals";
 
 render(
@@ -24,5 +24,5 @@ render(
       </UIContextProvider>
     </GlobalContextProvider>
   ),
-  document.getElementById("root")
+  document.getElementById("root"),
 );
