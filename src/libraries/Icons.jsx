@@ -1,7 +1,7 @@
-// * icons from https://basicons.xyz/
+// icons from https://basicons.xyz/
 
-// ! use <title /> when no text equivalent is present
-// ! else use aria-hidden="true" to hide from assistive technologies
+// INFO use <title /> when no text equivalent is present
+// INFO else use aria-hidden="true" to hide from assistive technologies
 
 export function ChevronArrows() {
   return (

@@ -451,20 +451,7 @@ function App() {
                       </Show>
                       <div
                         class={`foldersDiv mt-4 grid gap-5
-                          ${globalContext.libraryData.userSettings.zoomLevel === 0
-                            ? globalContext.libraryData.userSettings.showSideBar
-                              ? "grid-cols-4 medium:grid-cols-5 large:grid-cols-7"
-                              : "grid-cols-4 medium:grid-cols-6 large:grid-cols-8"
-                            : globalContext.libraryData.userSettings.zoomLevel === 1
-                              ? globalContext.libraryData.userSettings.showSideBar
-                                ? "grid-cols-3 medium:grid-cols-4 large:grid-cols-6"
-                                : "grid-cols-3 medium:grid-cols-5 large:grid-cols-7"
-                              : globalContext.libraryData.userSettings.zoomLevel === 2
-                                ? globalContext.libraryData.userSettings.showSideBar
-                                  ? "grid-cols-2 medium:grid-cols-3 large:grid-cols-5"
-                                  : "grid-cols-2 medium:grid-cols-4 large:grid-cols-6"
-                                : ""
-                          }`}
+                          ${returnGridStyleForGameCard(globalContext.libraryData.userSettings.zoomLevel, globalContext.libraryData.userSettings.showSideBar)}`}
                       >
                         <GameCards gamesList={folder.games} />
                       </div>

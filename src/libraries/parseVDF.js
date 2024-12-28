@@ -1,4 +1,4 @@
-// * vdf parser from https://github.com/node-steam/vdf
+// vdf parser from https://github.com/node-steam/vdf
 
 export function parseVDF(text) {
   if (typeof text !== "string") {
