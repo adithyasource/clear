@@ -43,26 +43,30 @@ export function SideBar() {
 
   async function moveFolder(folderName, toPosition) {
     const pastPositionOfFolder = applicationStateContext.currentFolders().indexOf(folderName);
+    const currentFolders = applicationStateContext.currentFolders();
 
-    applicationStateContext.currentFolders().splice(pastPositionOfFolder, 1);
+    // removing folder from its past position
+    currentFolders.splice(pastPositionOfFolder, 1);
 
+    // pushing it into proper position relative to its past
     if (toPosition === -1) {
-      applicationStateContext.currentFolders().push(folderName);
+      currentFolders.push(folderName);
     } else {
       if (toPosition > pastPositionOfFolder) {
-        applicationStateContext.currentFolders().splice(toPosition - 1, 0, folderName);
+        currentFolders.splice(toPosition - 1, 0, folderName);
       } else {
-        applicationStateContext.currentFolders().splice(toPosition, 0, folderName);
+        currentFolders.splice(toPosition, 0, folderName);
       }
     }
 
-    for (const currentFolderName of applicationStateContext.currentFolders()) {
+    // reordering folders in library data based on new current folders order
+    for (const currentFolderName of currentFolders) {
       for (const folderName of Object.keys(globalContext.libraryData.folders)) {
         if (currentFolderName === folderName) {
           globalContext.setLibraryData(
             produce((data) => {
               Object.values(data.folders)[Object.keys(globalContext.libraryData.folders).indexOf(folderName)].index =
-                applicationStateContext.currentFolders().indexOf(currentFolderName);
+                currentFolders.indexOf(currentFolderName);
 
               return data;
             }),
@@ -77,6 +81,7 @@ export function SideBar() {
   async function moveGameInCurrentFolder(gameName, toPosition, currentFolderName) {
     const pastPositionOfGame = globalContext.libraryData.folders[currentFolderName].games.indexOf(gameName);
 
+    // removing game from its past position
     globalContext.setLibraryData(
       produce((data) => {
         data.folders[currentFolderName].games.splice(data.folders[currentFolderName].games.indexOf(gameName), 1);
@@ -84,6 +89,7 @@ export function SideBar() {
       }),
     );
 
+    // pushing it into proper position relative to its past
     if (toPosition === -1) {
       globalContext.setLibraryData(
         produce((data) => {
