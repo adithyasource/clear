@@ -329,7 +329,6 @@ export async function importSteamGames() {
 
   const allGameNames = [];
 
-  // WARN check if this works
   setLibraryData((data) => {
     data.folders.steam = undefined;
     return data;
@@ -367,6 +366,7 @@ export async function importSteamGames() {
     } else {
       gridImageFileName = undefined;
     }
+
     if (assetsData.heroes.length !== 0) {
       await invoke("download_image", {
         link: assetsData.heroes[0],
@@ -375,6 +375,7 @@ export async function importSteamGames() {
     } else {
       heroImageFileName = undefined;
     }
+
     if (assetsData.logos.length !== 0) {
       await invoke("download_image", {
         link: assetsData.logos[0],
@@ -383,6 +384,7 @@ export async function importSteamGames() {
     } else {
       logoImageFileName = undefined;
     }
+
     if (assetsData.icons.length !== 0) {
       await invoke("download_image", {
         link: assetsData.icons[0],
@@ -391,6 +393,7 @@ export async function importSteamGames() {
     } else {
       iconImageFileName = undefined;
     }
+
     setLibraryData((data) => {
       data.games[name] = {
         location: `steam://rungameid/${steamId}`,
@@ -403,6 +406,7 @@ export async function importSteamGames() {
       };
       return data;
     });
+
     await updateData();
     setTotalImportedSteamGames((x) => x + 1);
   }

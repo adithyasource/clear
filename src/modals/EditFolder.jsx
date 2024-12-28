@@ -119,6 +119,7 @@ export function EditFolder() {
     );
 
     await updateData();
+
     closeDialog("editFolder");
   }
 
