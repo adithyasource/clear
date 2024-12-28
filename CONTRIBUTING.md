@@ -61,10 +61,8 @@ npm run tauri dev
 
 to build the app, you can run ```npm run tauri build```
 
-### formatting and linting
+### formatting, linting and lsp
 
-the project uses the [biomejs](https://biomejs.dev/) toolchain in order to format and lint code. make sure that it is installed and set up in your editor. \
+the project uses the [deno](https://github.com/denoland/deno) toolchain in order to format and lint code, along with providing language server integration. make sure that it is installed and set up in your editor. \
 \
-for contributors using neovim with lspserver, simply add ```require"lspconfig".biome.setup({})``` to your lua configuration file \
-\
-i also use the typescript language server to provide me with language server features such as "go to definition" and "omnifunc completion" in neovim but you need not use it as long as you stick to the provided formatter and linting rules.
+for contributors using neovim with lspserver, simply add ```require"lspconfig".denols.setup({})``` to your lua configuration file
