@@ -236,21 +236,20 @@ export function SideBar() {
 
       const currentDraggingItem = draggingItem.textContent;
 
-      const nextSiblingItem = nextSibling.textContent;
+      let nextSiblingItem;
+      let toPosition;
+
+      try {
+        nextSiblingItem = nextSibling.textContent;
+        toPosition = globalContext.libraryData.folders[folderName].games.indexOf(nextSiblingItem);
+      } catch {
+        toPosition = -1;
+      }
 
       if (oldFolderName === folderName) {
-        moveGameInCurrentFolder(
-          currentDraggingItem,
-          globalContext.libraryData.folders[folderName].games.indexOf(nextSiblingItem),
-          folderName,
-        );
+        moveGameInCurrentFolder(currentDraggingItem, toPosition, folderName);
       } else {
-        moveGameToAnotherFolder(
-          currentDraggingItem,
-          globalContext.libraryData.folders[folderName].games.indexOf(nextSiblingItem),
-          oldFolderName,
-          folderName,
-        );
+        moveGameToAnotherFolder(currentDraggingItem, toPosition, oldFolderName, folderName);
       }
     }
 

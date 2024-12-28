@@ -203,6 +203,10 @@ export async function getData() {
         }
       }
 
+      // i actually have no idea but this somehow fixes all issues with drag and drop ¯\_(ツ)_/¯
+      setCurrentFolders("");
+      setCurrentGames("");
+
       setCurrentFolders(correctOrderOfFolders);
 
       setCurrentGames(Object.keys(libraryData.games));
