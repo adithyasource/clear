@@ -2,16 +2,16 @@
 
 // importing globals
 import {
-  GlobalContextProvider,
-  UIContextProvider,
-  SelectedDataContextProvider,
   ApplicationStateContextProvider,
+  GlobalContextProvider,
+  SelectedDataContextProvider,
   SteamDataContextProvider,
-} from "./Globals";
+  UIContextProvider,
+} from "./Globals.jsx";
 
 // importing code snippets and library functions
 import { render } from "solid-js/web";
-import App from "./App";
+import App from "./App.jsx";
 
 render(
   () => (

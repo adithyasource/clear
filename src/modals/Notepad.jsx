@@ -1,11 +1,18 @@
 // importing globals
-import { GlobalContext, UIContext, closeDialog, getData, translateText, updateData } from "../Globals";
+import {
+  closeDialog,
+  getData,
+  GlobalContext,
+  translateText,
+  UIContext,
+  updateData,
+} from "../Globals.jsx";
 
 // importing code snippets and library functions
-import { useContext, createSignal } from "solid-js";
+import { createSignal, useContext } from "solid-js";
 
 // importing style related files
-import { Close } from "../libraries/Icons";
+import { Close } from "../libraries/Icons.jsx";
 
 export function Notepad() {
   const globalContext = useContext(GlobalContext);
@@ -36,7 +43,9 @@ export function Notepad() {
           <div class="w-[50%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
             <div class="flex justify-between">
               <div>
-                <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">{translateText("notepad")}</p>
+                <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">
+                  {translateText("notepad")}
+                </p>
               </div>
 
               <button

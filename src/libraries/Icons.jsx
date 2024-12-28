@@ -5,7 +5,12 @@
 
 export function ChevronArrows() {
   return (
-    <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <svg
+      viewBox="0 0 12 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
       <path
         d="M6 11L1 6L6 1"
         class="stroke-[#00000080] dark:stroke-[#ffffff80] "
@@ -26,7 +31,14 @@ export function ChevronArrows() {
 
 export function EyeClosed() {
   return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
       <path
         d="M2 2L22 22"
         class="stroke-[#00000080] dark:stroke-[#ffffff80] "
@@ -54,7 +66,14 @@ export function EyeClosed() {
 
 export function Edit() {
   return (
-    <svg width="14" height="14" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
       <path
         d="M2.5 11.5L12.5 1.50002C13.3284 0.671585 14.6716 0.671585 15.5 1.50002C16.3284 2.32845 16.3284 3.67159 15.5 4.50002L5.5 14.5L1.5 15.5L2.5 11.5Z"
         class="stroke-[#00000080] dark:stroke-[#ffffff80] "
@@ -104,7 +123,12 @@ export function Folder() {
         stroke-linecap="round"
         stroke-linejoin="round"
       />
-      <path d="M12 10V16M9 13H15" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path
+        d="M12 10V16M9 13H15"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
     </svg>
   );
 }
@@ -126,7 +150,12 @@ export function Notepad() {
         stroke-linecap="round"
         stroke-linejoin="round"
       />
-      <path d="M13 2.5V9H19" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path
+        d="M13 2.5V9H19"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
     </svg>
   );
 }
@@ -187,7 +216,14 @@ export function Settings() {
 
 export function Steam() {
   return (
-    <svg aria-hidden="true" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      aria-hidden="true"
+      width="19"
+      height="19"
+      viewBox="0 0 19 19"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <path
         d="M9.33521 10.141L10.8362 11.166L11.8246 12.667L15.0096 10.3973L11.5683 6.88281"
         class="fill-[#00000080] dark:fill-[#ffffff80] "
@@ -218,7 +254,14 @@ export function Steam() {
 
 export function EmptyTray() {
   return (
-    <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      aria-hidden="true"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <path
         d="M3.04819 12H8.44444L10.2222 14H13.7778L15.5556 12H20.9361M6.70951 5.4902L3.27942 11.2785C3.09651 11.5871 3 11.9393 3 12.2981V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V12.2981C21 11.9393 20.9035 11.5871 20.7206 11.2785L17.2905 5.4902C17.1104 5.18633 16.7834 5 16.4302 5H7.5698C7.21659 5 6.88958 5.18633 6.70951 5.4902Z"
         stroke="white"
@@ -232,7 +275,14 @@ export function EmptyTray() {
 
 export function SaveDisk() {
   return (
-    <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      aria-hidden="true"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <path
         d="M5 21H19C20.1046 21 21 20.1046 21 19V8.82843C21 8.29799 20.7893 7.78929 20.4142 7.41421L16.5858 3.58579C16.2107 3.21071 15.702 3 15.1716 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21Z"
         class="stroke-black dark:stroke-white"
@@ -260,7 +310,14 @@ export function SaveDisk() {
 
 export function TrashDelete() {
   return (
-    <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      aria-hidden="true"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <path
         d="M3 6H21M5 6V20C5 21.1046 5.89543 22 7 22H17C18.1046 22 19 21.1046 19 20V6M8 6V4C8 2.89543 8.89543 2 10 2H14C15.1046 2 16 2.89543 16 4V6"
         stroke="#FF3636"
@@ -268,15 +325,34 @@ export function TrashDelete() {
         stroke-linecap="round"
         stroke-linejoin="round"
       />
-      <path d="M14 11V17" stroke="#FF3636" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-      <path d="M10 11V17" stroke="#FF3636" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      <path
+        d="M14 11V17"
+        stroke="#FF3636"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M10 11V17"
+        stroke="#FF3636"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
     </svg>
   );
 }
 
 export function Close() {
   return (
-    <svg width="16" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <svg
+      width="16"
+      height="12"
+      viewBox="0 0 12 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
       <path
         d="M1 1L11 10.3369M1 10.3369L11 1"
         stroke="#FF3636"
@@ -290,7 +366,14 @@ export function Close() {
 
 export function OpenExternal() {
   return (
-    <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      aria-hidden="true"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <path
         d="M5.63605 18.364L18.364 5.63603M18.364 5.63603L8.46446 5.63604M18.364 5.63603V15.5355"
         class="stroke-black dark:stroke-white"
@@ -304,7 +387,14 @@ export function OpenExternal() {
 
 export function Play() {
   return (
-    <svg aria-hidden="true" width="13" height="16" viewBox="0 0 13 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      aria-hidden="true"
+      width="13"
+      height="16"
+      viewBox="0 0 13 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <path
         d="M1.69727 14.3947V0.894745L12.1973 7.64474L1.69727 14.3947Z"
         class="stroke-black dark:stroke-white"
@@ -340,7 +430,14 @@ export function Loading() {
 
 export function ChevronArrow() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
       <path
         d="M14 8L10 12L14 16"
         stroke="rgba(255,255,255,0.5)"

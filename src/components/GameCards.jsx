@@ -1,16 +1,16 @@
 // importing globals
 import {
-  GlobalContext,
   ApplicationStateContext,
-  translateText,
-  openDialog,
-  SelectedDataContext,
-  openGame,
+  GlobalContext,
   locationJoin,
-} from "../Globals";
+  openDialog,
+  openGame,
+  SelectedDataContext,
+  translateText,
+} from "../Globals.jsx";
 
 // importing code snippets and library functions
-import { Show, useContext, For } from "solid-js";
+import { For, Show, useContext } from "solid-js";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 
 export function GameCards(props) {
@@ -26,9 +26,9 @@ export function GameCards(props) {
             type="button"
             class="gameCard group relative w-full cursor-pointer bg-transparent p-0"
             id={index() === 0 ? "firstGameCard" : ""}
-            data-tooltip={
-              globalContext.libraryData.games[gameName].location ? translateText("play") : translateText("no game file")
-            }
+            data-tooltip={globalContext.libraryData.games[gameName].location
+              ? translateText("play")
+              : translateText("no game file")}
             onDragStart={(e) => {
               e.preventDefault();
             }}
@@ -37,7 +37,9 @@ export function GameCards(props) {
                 openGame(globalContext.libraryData.games[gameName].location);
                 return;
               }
-              await selectedDataContext.setSelectedGame(globalContext.libraryData.games[gameName]);
+              await selectedDataContext.setSelectedGame(
+                globalContext.libraryData.games[gameName],
+              );
 
               openDialog("gamePopUp");
             }}
@@ -50,8 +52,13 @@ export function GameCards(props) {
                     when={globalContext.libraryData.games[gameName].gridImage}
                     fallback={
                       <div class="relative flex items-center justify-center">
-                        <Show when={!globalContext.libraryData.userSettings.gameTitle}>
-                          <span class="absolute z-[100] !max-w-[50%]">{gameName}</span>
+                        <Show
+                          when={!globalContext.libraryData.userSettings
+                            .gameTitle}
+                        >
+                          <span class="absolute z-[100] !max-w-[50%]">
+                            {gameName}
+                          </span>
                         </Show>
 
                         <div class="relative z-10 mb-[7px] aspect-[2/3] w-full bg-[#F1F1F1] group-hover:outline-none group-hover:outline-[2px] group-hover:outline-[#0000001f] dark:bg-[#1C1C1C] dark:group-hover:outline-[#ffffff1f]" />
@@ -80,8 +87,12 @@ export function GameCards(props) {
                   when={globalContext.libraryData.games[gameName].gridImage}
                   fallback={
                     <div class="relative flex items-center justify-center">
-                      <Show when={!globalContext.libraryData.userSettings.gameTitle}>
-                        <span class="absolute z-[100] !max-w-[50%]">{gameName}</span>
+                      <Show
+                        when={!globalContext.libraryData.userSettings.gameTitle}
+                      >
+                        <span class="absolute z-[100] !max-w-[50%]">
+                          {gameName}
+                        </span>
                       </Show>
                       <div class="relative z-10 mb-[7px] aspect-[2/3] w-full bg-[#F1F1F1] outline-none outline-[4px]  outline-[#0000001c] duration-200 motion-reduce:duration-100 hover:outline-[#0000003b] dark:bg-[#1C1C1C] dark:outline-[2px] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b]" />
                     </div>
@@ -113,7 +124,10 @@ export function GameCards(props) {
                     )}
                     alt=""
                   />
-                  <div class="aspect-[2/3] w-full  bg-[#000] opacity-[0%] dark:bg-[#fff] dark:opacity-[10%]" alt="" />
+                  <div
+                    class="aspect-[2/3] w-full  bg-[#000] opacity-[0%] dark:bg-[#fff] dark:opacity-[10%]"
+                    alt=""
+                  />
                 </div>
               </div>
             </Show>

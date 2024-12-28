@@ -1,21 +1,21 @@
 // importing globals
 import {
-  SelectedDataContext,
   ApplicationStateContext,
-  UIContext,
   closeDialog,
   locationJoin,
   openDialog,
   openGame,
+  SelectedDataContext,
   translateText,
-} from "../Globals";
+  UIContext,
+} from "../Globals.jsx";
 
 // importing code snippets and library functions
 import { Show, useContext } from "solid-js";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 
 // importing style related files
-import { Close, Play, Settings } from "../libraries/Icons";
+import { Close, Play, Settings } from "../libraries/Icons.jsx";
 
 export function GamePopUp() {
   const selectedDataContext = useContext(SelectedDataContext);
@@ -98,7 +98,9 @@ export function GamePopUp() {
           </div>
           <Show
             when={selectedDataContext.selectedGame().heroImage}
-            fallback={<div class="aspect-[96/31] h-[350px] bg-[#f1f1f1] dark:bg-[#1c1c1c] max-large:h-[270px]" />}
+            fallback={
+              <div class="aspect-[96/31] h-[350px] bg-[#f1f1f1] dark:bg-[#1c1c1c] max-large:h-[270px]" />
+            }
           >
             <img
               src={convertFileSrc(
