@@ -84,9 +84,10 @@ function App() {
     invoke("close_app");
   }
 
-  function addEventListeners() {
+  function handleTabAndMouseBehaviour() {
     // adds user-is-tabbing to body whenever tab is used
     // used for changing tooltip delay
+
     function handleFirstTab(e) {
       if (e.key === "Tab") {
         document.body.classList.add("user-is-tabbing");
@@ -95,13 +96,39 @@ function App() {
         uiContext.setUserIsTabbing(document.body.classList.contains("user-is-tabbing"));
       }
     }
+
     function handleMouseDown() {
       document.body.classList.remove("user-is-tabbing");
       window.removeEventListener("mousedown", handleMouseDown);
       window.addEventListener("keydown", handleFirstTab);
       uiContext.setUserIsTabbing(document.body.classList.contains("user-is-tabbing"));
     }
+
     window.addEventListener("keydown", handleFirstTab);
+  }
+
+  function returnGridStyleForGameCard(zoomLevel, showSideBar) {
+    switch (zoomLevel) {
+      case 0:
+        if (showSideBar) {
+          return "grid-cols-4 medium:grid-cols-5 large:grid-cols-7";
+        }
+        return "grid-cols-4 medium:grid-cols-6 large:grid-cols-8";
+      case 1:
+        if (showSideBar) {
+          return "grid-cols-3 medium:grid-cols-4 large:grid-cols-6";
+        }
+        return "grid-cols-3 medium:grid-cols-5 large:grid-cols-7";
+      case 2:
+        if (showSideBar) {
+          return "grid-cols-2 medium:grid-cols-3 large:grid-cols-5";
+        }
+        return "grid-cols-2 medium:grid-cols-4 large:grid-cols-6";
+    }
+  }
+
+  function addEventListeners() {
+    handleTabAndMouseBehaviour();
 
     // disabling right click
     document.addEventListener("contextmenu", (event) => event.preventDefault());
@@ -125,23 +152,25 @@ function App() {
         }
       }
 
-      // if currently open dialog does not contain data that needs confirmation before being dismissed, close immediately upon escape
       if (e.key === "Escape") {
         e.preventDefault();
+
+        const currentlyOpenDialogName = currentlyOpenDialog.getAttribute("data-modal");
+
+        const modalTakesUserInput = ["newGame", "editGame", "newFolder", "editFolder"].includes(
+          currentlyOpenDialogName,
+        );
+
         if (anyDialogOpen) {
-          if (
-            !["newGame", "editGame", "newFolder", "editFolder"].includes(currentlyOpenDialog.getAttribute("data-modal"))
-          ) {
+          if (!modalTakesUserInput) {
             closeDialogImmediately(currentlyOpenDialog);
           }
         }
       }
 
-      // modifier key is ctrl for windows / if on mac, it changes to meta key (cmd)
-      const modifierKeyPrefix = applicationStateContext.systemPlatform() === "windows" ? "ctrlKey" : "metaKey";
+      const modifierKey = applicationStateContext.systemPlatform() === "windows" ? "ctrlKey" : "metaKey";
 
-      // if ctrl/cmd key is held down
-      if (e[modifierKeyPrefix]) {
+      if (e[modifierKey]) {
         // "play" tooltip added to sidebar game and game card if user is also hovering on a specific element
         for (const sideBarGame of document.querySelectorAll(".sideBarGame")) {
           sideBarGame.classList.add("tooltip-right");
@@ -169,7 +198,7 @@ function App() {
             updateData();
             break;
 
-          // close the app
+          // closes the app
           case "KeyW":
             e.preventDefault();
             closeApp();
@@ -473,20 +502,7 @@ function App() {
                 <div>
                   <div
                     class={`foldersDiv mt-4 grid gap-5
-                      ${globalContext.libraryData.userSettings.zoomLevel === 0
-                        ? globalContext.libraryData.userSettings.showSideBar
-                          ? "grid-cols-4 medium:grid-cols-5 large:grid-cols-7"
-                          : "grid-cols-4 medium:grid-cols-6 large:grid-cols-8"
-                        : globalContext.libraryData.userSettings.zoomLevel === 1
-                          ? globalContext.libraryData.userSettings.showSideBar
-                            ? "grid-cols-3 medium:grid-cols-4 large:grid-cols-6"
-                            : "grid-cols-3 medium:grid-cols-5 large:grid-cols-7"
-                          : globalContext.libraryData.userSettings.zoomLevel === 2
-                            ? globalContext.libraryData.userSettings.showSideBar
-                              ? "grid-cols-2 medium:grid-cols-3 large:grid-cols-5"
-                              : "grid-cols-2 medium:grid-cols-4 large:grid-cols-6"
-                            : ""
-                      }`}
+                      ${returnGridStyleForGameCard(globalContext.libraryData.userSettings.zoomLevel, globalContext.libraryData.userSettings.showSideBar)}`}
                   >
                     <GameCards gamesList={searchResults} />
                   </div>

@@ -75,7 +75,6 @@ export function GlobalContextProvider(props) {
     libraryData,
     setLibraryData,
   };
-
   return <GlobalContext.Provider value={context}>{props.children}</GlobalContext.Provider>;
 }
 
@@ -161,7 +160,7 @@ export function SteamDataContextProvider(props) {
 
 // global helper functions
 
-export async function createEmptyLibrary() {
+async function setupFoldersForImages() {
   await createDir("heroes", {
     dir: BaseDirectory.AppData,
     recursive: true,
@@ -192,22 +191,21 @@ export async function getData() {
 
     // WARN potential footgun here cause you're not checking if games are empty
     if (getLibraryData !== "" && JSON.parse(getLibraryData).folders !== "") {
-      setCurrentGames("");
-      setCurrentFolders("");
-
       setLibraryData(JSON.parse(getLibraryData));
 
-      for (let x = 0; x < Object.keys(libraryData.folders).length; x++) {
-        for (const key in libraryData.folders) {
-          if (libraryData.folders[key].index === x) {
-            setCurrentFolders((z) => [...z, key]);
+      const correctOrderOfFolders = [];
+      const folders = libraryData.folders;
+      for (let x = 0; x < Object.keys(folders).length; x++) {
+        for (const key in folders) {
+          if (folders[key].index === x) {
+            correctOrderOfFolders.push(key);
           }
         }
       }
 
-      setCurrentGames(Object.keys(libraryData.games));
+      setCurrentFolders(correctOrderOfFolders);
 
-      console.log("data fetched");
+      setCurrentGames(Object.keys(libraryData.games));
 
       // checks current theme and adds it to the document classlist for tailwind
       if (libraryData.userSettings.currentTheme === "light") {
@@ -215,9 +213,11 @@ export async function getData() {
       } else {
         document.documentElement.classList.add("dark");
       }
-    } else createEmptyLibrary();
+
+      console.log("data fetched");
+    } else setupFoldersForImages();
   } else {
-    createEmptyLibrary();
+    setupFoldersForImages();
   }
 }
 
@@ -257,129 +257,130 @@ export async function importSteamGames() {
 
   const connectedToInternet = await checkIfConnectedToInternet();
 
-  if (connectedToInternet) {
-    const steamVDFData = await invoke("read_steam_vdf");
-
-    if (steamVDFData === "error") {
-      closeDialog("loading");
-
-      triggerToast(translateText("sorry but there was an error \n reading your Steam library :("));
-
-      return;
-    }
-
-    const steamData = parseVDF(steamVDFData);
-
-    const steamGameIds = [];
-
-    for (let x = 0; x < Object.keys(steamData.libraryfolders).length; x++) {
-      steamGameIds.push(...Object.keys(steamData.libraryfolders[x].apps));
-    }
-
-    const index = steamGameIds.indexOf("228980");
-
-    index !== -1 ? steamGameIds.splice(index, 1) : null;
-
-    setTotalSteamGames(steamGameIds.length);
-
-    const allGameNames = [];
-
-    // WARN check if this works
-    setLibraryData((data) => {
-      data.folders.steam = undefined;
-      return data;
-    });
-
-    await updateData();
-
-    for (const steamId of steamGameIds) {
-      let gameData = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?steamID=${steamId}`);
-
-      gameData = await gameData.json();
-
-      const gameSGDBID = gameData.data.id;
-      const name = gameData.data.name;
-      allGameNames.push(name);
-
-      let gridImageFileName = `${generateRandomString()}.png`;
-      let heroImageFileName = `${generateRandomString()}.png`;
-      let logoImageFileName = `${generateRandomString()}.png`;
-      let iconImageFileName = `${generateRandomString()}.png`;
-
-      let assetsData = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?assets=${gameSGDBID}&length=1`);
-
-      assetsData = await assetsData.json();
-
-      if (assetsData.grids.length !== 0) {
-        await invoke("download_image", {
-          link: assetsData.grids[0],
-          location: locationJoin([appDataDirPath(), "grids", gridImageFileName]),
-        });
-      } else {
-        gridImageFileName = undefined;
-      }
-      if (assetsData.heroes.length !== 0) {
-        await invoke("download_image", {
-          link: assetsData.heroes[0],
-          location: locationJoin([appDataDirPath(), "heroes", heroImageFileName]),
-        });
-      } else {
-        heroImageFileName = undefined;
-      }
-      if (assetsData.logos.length !== 0) {
-        await invoke("download_image", {
-          link: assetsData.logos[0],
-          location: locationJoin([appDataDirPath(), "logos", logoImageFileName]),
-        });
-      } else {
-        logoImageFileName = undefined;
-      }
-      if (assetsData.icons.length !== 0) {
-        await invoke("download_image", {
-          link: assetsData.icons[0],
-          location: locationJoin([appDataDirPath(), "icons", iconImageFileName]),
-        });
-      } else {
-        iconImageFileName = undefined;
-      }
-      setLibraryData((data) => {
-        data.games[name] = {
-          location: `steam://rungameid/${steamId}`,
-          name: name,
-          heroImage: heroImageFileName,
-          gridImage: gridImageFileName,
-          logo: logoImageFileName,
-          icon: iconImageFileName,
-          favourite: false,
-        };
-        return data;
-      });
-      await updateData();
-      setTotalImportedSteamGames((x) => x + 1);
-    }
-
-    setLibraryData(
-      produce((data) => {
-        data.folders.steam = {
-          name: "steam",
-          hide: false,
-          games: allGameNames,
-          index: currentFolders().length,
-        };
-        return data;
-      }),
-    );
-
-    await updateData().then(() => {
-      closeDialog("loading");
-      closeDialog("settings");
-      setTotalImportedSteamGames(0);
-      setTotalSteamGames(0);
-    });
-  } else {
+  if (!connectedToInternet) {
     closeDialog("loading");
     triggerToast(translateText("you're not connected to the internet :("));
+
+    return;
   }
+
+  const steamVDFData = await invoke("read_steam_vdf");
+
+  if (steamVDFData === "error") {
+    closeDialog("loading");
+    triggerToast(translateText("sorry but there was an error \n reading your Steam library :("));
+
+    return;
+  }
+
+  const steamData = parseVDF(steamVDFData);
+
+  const steamGameIds = [];
+
+  for (let x = 0; x < Object.keys(steamData.libraryfolders).length; x++) {
+    steamGameIds.push(...Object.keys(steamData.libraryfolders[x].apps));
+  }
+
+  // exclude steam redistrutables from the game library
+  const index = steamGameIds.indexOf("228980");
+  index !== -1 ? steamGameIds.splice(index, 1) : null;
+
+  setTotalSteamGames(steamGameIds.length);
+
+  const allGameNames = [];
+
+  // WARN check if this works
+  setLibraryData((data) => {
+    data.folders.steam = undefined;
+    return data;
+  });
+
+  await updateData();
+
+  for (const steamId of steamGameIds) {
+    let gameData = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?steamID=${steamId}`);
+
+    gameData = await gameData.json();
+
+    const gameSGDBID = gameData.data.id;
+    const name = gameData.data.name;
+    allGameNames.push(name);
+
+    let gridImageFileName = `${generateRandomString()}.png`;
+    let heroImageFileName = `${generateRandomString()}.png`;
+    let logoImageFileName = `${generateRandomString()}.png`;
+    let iconImageFileName = `${generateRandomString()}.png`;
+
+    let assetsData = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?assets=${gameSGDBID}&length=1`);
+
+    assetsData = await assetsData.json();
+
+    if (assetsData.grids.length !== 0) {
+      await invoke("download_image", {
+        link: assetsData.grids[0],
+        location: locationJoin([appDataDirPath(), "grids", gridImageFileName]),
+      });
+    } else {
+      gridImageFileName = undefined;
+    }
+    if (assetsData.heroes.length !== 0) {
+      await invoke("download_image", {
+        link: assetsData.heroes[0],
+        location: locationJoin([appDataDirPath(), "heroes", heroImageFileName]),
+      });
+    } else {
+      heroImageFileName = undefined;
+    }
+    if (assetsData.logos.length !== 0) {
+      await invoke("download_image", {
+        link: assetsData.logos[0],
+        location: locationJoin([appDataDirPath(), "logos", logoImageFileName]),
+      });
+    } else {
+      logoImageFileName = undefined;
+    }
+    if (assetsData.icons.length !== 0) {
+      await invoke("download_image", {
+        link: assetsData.icons[0],
+        location: locationJoin([appDataDirPath(), "icons", iconImageFileName]),
+      });
+    } else {
+      iconImageFileName = undefined;
+    }
+    setLibraryData((data) => {
+      data.games[name] = {
+        location: `steam://rungameid/${steamId}`,
+        name: name,
+        heroImage: heroImageFileName,
+        gridImage: gridImageFileName,
+        logo: logoImageFileName,
+        icon: iconImageFileName,
+        favourite: false,
+      };
+      return data;
+    });
+    await updateData();
+    setTotalImportedSteamGames((x) => x + 1);
+  }
+
+  setLibraryData(
+    produce((data) => {
+      data.folders.steam = {
+        name: "steam",
+        hide: false,
+        games: allGameNames,
+        index: currentFolders().length,
+      };
+      return data;
+    }),
+  );
+
+  await updateData().then(() => {
+    closeDialog("loading");
+    closeDialog("settings");
+    setTotalImportedSteamGames(0);
+    setTotalSteamGames(0);
+  });
 }
 
 export function translateText(text) {
