@@ -407,7 +407,6 @@ export async function importSteamGames() {
       return data;
     });
 
-    await updateData();
     setTotalImportedSteamGames((x) => x + 1);
   }
 
@@ -423,12 +422,14 @@ export async function importSteamGames() {
     }),
   );
 
-  await updateData().then(() => {
-    closeDialog("loading");
-    closeDialog("settings");
-    setTotalImportedSteamGames(0);
-    setTotalSteamGames(0);
-  });
+  setTimeout(async () => {
+    await updateData().then(() => {
+      closeDialog("loading");
+      closeDialog("settings");
+      setTotalImportedSteamGames(0);
+      setTotalSteamGames(0);
+    });
+  }, 1000);
 }
 
 export function translateText(text) {

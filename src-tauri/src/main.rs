@@ -3,6 +3,7 @@
 
 use std::env;
 use std::fs;
+use std::path::PathBuf;
 use std::process::{Command, Stdio};
 use tauri::{Manager, Window};
 
@@ -40,9 +41,22 @@ fn get_platform() -> String {
 
 #[tauri::command]
 fn read_steam_vdf() -> String {
-    match fs::read_to_string("C:\\Program Files (x86)\\Steam\\steamapps\\libraryfolders.vdf") {
+    let vdf_location = if cfg!(target_os = "windows") {
+        PathBuf::from("C:\\Program Files (x86)\\Steam\\steamapps\\libraryfolders.vdf")
+            .to_string_lossy()
+            .to_string()
+    } else {
+        let home_dir = std::env::var("HOME").expect("HOME environment variable not set");
+        PathBuf::from(home_dir)
+            .join("Library/Application Support/Steam/steamapps/libraryfolders.vdf")
+            .to_string_lossy()
+            .to_string()
+    };
+
+    match fs::read_to_string(vdf_location) {
         Ok(file_contents) => file_contents.into(),
-        Err(_err) => {
+        Err(err) => {
+            println!("{}", err);
             return "error".to_string();
         }
     }

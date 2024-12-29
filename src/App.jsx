@@ -318,8 +318,12 @@ function App() {
             }
             break;
 
-          // disabling misc webview shortcuts
+          // reload shortcut doesn't work on macos for some reason
           case "KeyR":
+            self.location.reload();
+            break;
+
+          // disabling misc webview shortcuts
           case "KeyG":
           case "KeyP":
           case "KeyU":
