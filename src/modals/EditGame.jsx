@@ -338,30 +338,32 @@ export function EditGame() {
       ]),
     });
 
-    globalContext.setLibraryData((data) => {
-      delete data.games[selectedDataContext.selectedGame().name];
-      return data;
-    });
+    setTimeout(async () => {
+      globalContext.setLibraryData((data) => {
+        delete data.games[selectedDataContext.selectedGame().name];
+        return data;
+      });
 
-    for (const folder of Object.values(globalContext.libraryData.folders)) {
-      for (const gameName of folder.games) {
-        if (gameName === selectedDataContext.selectedGame().name) {
-          globalContext.setLibraryData(
-            produce((data) => {
-              data.folders[folder.name].games.splice(
-                folder.games.indexOf(gameName),
-                1,
-              );
+      for (const folder of Object.values(globalContext.libraryData.folders)) {
+        for (const gameName of folder.games) {
+          if (gameName === selectedDataContext.selectedGame().name) {
+            globalContext.setLibraryData(
+              produce((data) => {
+                data.folders[folder.name].games.splice(
+                  folder.games.indexOf(gameName),
+                  1,
+                );
 
-              return data;
-            }),
-          );
+                return data;
+              }),
+            );
+          }
         }
       }
-    }
 
-    await updateData();
-    closeDialog("editGame");
+      await updateData();
+      closeDialog("editGame");
+    }, 100);
   }
 
   onMount(() => {
