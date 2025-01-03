@@ -3,9 +3,12 @@
 
 use std::env;
 use std::fs;
+use std::io;
 use std::path::PathBuf;
 use std::process::{Command, Stdio};
 use tauri::{Manager, Window};
+use winreg::enums::*;
+use winreg::RegKey;
 
 #[tauri::command]
 fn open_location(location: &str) {
@@ -39,12 +42,32 @@ fn get_platform() -> String {
     return platform.to_string();
 }
 
+fn get_steam_path() -> io::Result<String> {
+    let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+    let steam_key = hkcu.open_subkey("SOFTWARE\\Valve\\Steam")?;
+    let steam_path: String = steam_key.get_value("SteamPath")?;
+    print!("founded steam path: {}", steam_path);
+    Ok(steam_path)
+}
+
 #[tauri::command]
 fn read_steam_vdf() -> String {
     let vdf_location = if cfg!(target_os = "windows") {
-        PathBuf::from("C:\\Program Files (x86)\\Steam\\steamapps\\libraryfolders.vdf")
-            .to_string_lossy()
-            .to_string()
+        match get_steam_path() {
+            Ok(steam_path) => {
+                PathBuf::from(steam_path)
+                    .join("steamapps")
+                    .join("libraryfolders.vdf")
+                    .to_string_lossy()
+                    .to_string()
+            }
+            Err(err) => {
+                println!("error reading steam path: {}", err);
+                PathBuf::from("C:\\Program Files (x86)\\Steam\\steamapps\\libraryfolders.vdf")
+                    .to_string_lossy()
+                    .to_string()
+            }
+        }
     } else {
         let home_dir = std::env::var("HOME").expect("HOME environment variable not set");
         PathBuf::from(home_dir)
@@ -56,7 +79,7 @@ fn read_steam_vdf() -> String {
     match fs::read_to_string(vdf_location) {
         Ok(file_contents) => file_contents.into(),
         Err(err) => {
-            println!("{}", err);
+            println!("error reading VDF file: {}", err);
             return "error".to_string();
         }
     }
