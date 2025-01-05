@@ -7,7 +7,9 @@ use std::io;
 use std::path::PathBuf;
 use std::process::{Command, Stdio};
 use tauri::{Manager, Window};
+#[cfg(target_os = "windows")]
 use winreg::enums::*;
+#[cfg(target_os = "windows")]
 use winreg::RegKey;
 
 #[tauri::command]
@@ -42,38 +44,48 @@ fn get_platform() -> String {
     return platform.to_string();
 }
 
+#[cfg(target_os = "windows")]
 fn get_steam_path() -> io::Result<String> {
     let hkcu = RegKey::predef(HKEY_CURRENT_USER);
     let steam_key = hkcu.open_subkey("SOFTWARE\\Valve\\Steam")?;
     let steam_path: String = steam_key.get_value("SteamPath")?;
-    print!("founded steam path: {}", steam_path);
+    print!("found steam path: {}", steam_path);
     Ok(steam_path)
+}
+
+#[cfg(not(target_os = "windows"))]
+fn get_steam_path() -> io::Result<String> {
+    let home_dir = std::env::var("HOME").expect("HOME environment variable not set");
+    Ok(PathBuf::from(home_dir)
+        .join("Library")
+        .join("Application Support")
+        .join("steam")
+        .to_string_lossy()
+        .to_string())
 }
 
 #[tauri::command]
 fn read_steam_vdf() -> String {
-    let vdf_location = if cfg!(target_os = "windows") {
-        match get_steam_path() {
-            Ok(steam_path) => {
-                PathBuf::from(steam_path)
-                    .join("steamapps")
-                    .join("libraryfolders.vdf")
-                    .to_string_lossy()
-                    .to_string()
-            }
-            Err(err) => {
+    let vdf_location = match get_steam_path() {
+        Ok(steam_path) => PathBuf::from(steam_path)
+            .join("steamapps")
+            .join("libraryfolders.vdf")
+            .to_string_lossy()
+            .to_string(),
+        Err(err) => {
+            if cfg!(target_os = "windows") {
                 println!("error reading steam path: {}", err);
                 PathBuf::from("C:\\Program Files (x86)\\Steam\\steamapps\\libraryfolders.vdf")
                     .to_string_lossy()
                     .to_string()
+            } else {
+                let home_dir = std::env::var("HOME").expect("HOME environment variable not set");
+                PathBuf::from(home_dir)
+                    .join("Library/Application Support/Steam/steamapps/libraryfolders.vdf")
+                    .to_string_lossy()
+                    .to_string()
             }
         }
-    } else {
-        let home_dir = std::env::var("HOME").expect("HOME environment variable not set");
-        PathBuf::from(home_dir)
-            .join("Library/Application Support/Steam/steamapps/libraryfolders.vdf")
-            .to_string_lossy()
-            .to_string()
     };
 
     match fs::read_to_string(vdf_location) {
