@@ -35,8 +35,6 @@ text snippets like this
   .
   .
   .
-  .
-  fr: "Importer des jeux Steam",
   he: "Your translation goes here"
 },
 ```
@@ -84,11 +82,14 @@ npm run tauri dev
 
 to build the app, you can run `npm run tauri build`
 
-### formatting, linting and lsp
+### formatting and linting style
 
-the project uses the [deno](https://github.com/denoland/deno) toolchain in order
-to format and lint code, along with providing language server integration. make
-sure that it is installed and set up in your editor.\
+the project uses the [biome](https://biomejs.dev/) toolchain in order
+to format and lint code. make sure that it is installed and set up in your
+editor.\
 \
-for contributors using neovim with lspserver, simply add
-`require"lspconfig".denols.setup({})` to your lua configuration file
+install biome globally by using ```npm install -g @biomejs/biome``` and setup
+up biome for
+[neovim (with lspconfig)](https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#biome),
+[vscode](https://marketplace.visualstudio.com/items?itemName=biomejs.biome)
+or [zed](https://biomejs.dev/reference/zed/)
