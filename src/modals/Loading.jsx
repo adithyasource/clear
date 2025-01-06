@@ -25,7 +25,6 @@ export function Loading() {
           <Show when={steamDataContext.totalSteamGames() !== 0}>
             {`${steamDataContext.totalImportedSteamGames()} / ${steamDataContext.totalSteamGames()}`}
           </Show>
-
           <div class="relative">
             <LoadingIcon />
           </div>

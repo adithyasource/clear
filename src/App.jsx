@@ -30,15 +30,7 @@ import { LanguageSelector } from "./components/LanguageSelector.jsx";
 import { Hotkeys } from "./components/Hotkeys.jsx";
 
 // importing code snippets and library functions
-import {
-  createEffect,
-  For,
-  Match,
-  onMount,
-  Show,
-  Switch,
-  useContext,
-} from "solid-js";
+import { createEffect, For, Match, onMount, Show, Switch, useContext } from "solid-js";
 import { invoke } from "@tauri-apps/api/tauri";
 import { fuzzysearch } from "./libraries/fuzzysearch.js";
 
@@ -54,9 +46,7 @@ function App() {
   createEffect(() => {
     document.body.style.setProperty(
       "--text-color",
-      globalContext.libraryData.userSettings.currentTheme === "light"
-        ? "#000000"
-        : "#ffffff",
+      globalContext.libraryData.userSettings.currentTheme === "light" ? "#000000" : "#ffffff",
     );
   });
 
@@ -86,9 +76,7 @@ function App() {
   createEffect(() => {
     document.body.style.setProperty(
       "--outline-color",
-      globalContext.libraryData.userSettings.currentTheme === "light"
-        ? "#000000"
-        : "#ffffff",
+      globalContext.libraryData.userSettings.currentTheme === "light" ? "#000000" : "#ffffff",
     );
   });
 
@@ -105,9 +93,7 @@ function App() {
         document.body.classList.add("user-is-tabbing");
         self.removeEventListener("keydown", handleFirstTab);
         self.addEventListener("mousedown", handleMouseDown);
-        uiContext.setUserIsTabbing(
-          document.body.classList.contains("user-is-tabbing"),
-        );
+        uiContext.setUserIsTabbing(document.body.classList.contains("user-is-tabbing"));
       }
     }
 
@@ -115,9 +101,7 @@ function App() {
       document.body.classList.remove("user-is-tabbing");
       self.removeEventListener("mousedown", handleMouseDown);
       self.addEventListener("keydown", handleFirstTab);
-      uiContext.setUserIsTabbing(
-        document.body.classList.contains("user-is-tabbing"),
-      );
+      uiContext.setUserIsTabbing(document.body.classList.contains("user-is-tabbing"));
     }
 
     self.addEventListener("keydown", handleFirstTab);
@@ -171,16 +155,9 @@ function App() {
       if (e.key === "Escape") {
         e.preventDefault();
 
-        const currentlyOpenDialogName = currentlyOpenDialog.getAttribute(
-          "data-modal",
-        );
+        const currentlyOpenDialogName = currentlyOpenDialog.getAttribute("data-modal");
 
-        const modalTakesUserInput = [
-          "newGame",
-          "editGame",
-          "newFolder",
-          "editFolder",
-        ].includes(
+        const modalTakesUserInput = ["newGame", "editGame", "newFolder", "editFolder"].includes(
           currentlyOpenDialogName,
         );
 
@@ -191,9 +168,7 @@ function App() {
         }
       }
 
-      const modifierKey = applicationStateContext.systemPlatform() === "windows"
-        ? "ctrlKey"
-        : "metaKey";
+      const modifierKey = applicationStateContext.systemPlatform() === "windows" ? "ctrlKey" : "metaKey";
 
       if (e[modifierKey]) {
         // "play" tooltip added to sidebar game and game card if user is also hovering on a specific element
@@ -209,25 +184,17 @@ function App() {
         switch (e.code) {
           // increase game card zoom level
           case "Equal":
-            globalContext.setLibraryData(
-              "userSettings",
-              "zoomLevel",
-              (zoomLevel) => {
-                return zoomLevel !== 2 ? zoomLevel + 1 : 2;
-              },
-            );
+            globalContext.setLibraryData("userSettings", "zoomLevel", (zoomLevel) => {
+              return zoomLevel !== 2 ? zoomLevel + 1 : 2;
+            });
             updateData();
             break;
 
           // decrease game card zoom level
           case "Minus":
-            globalContext.setLibraryData(
-              "userSettings",
-              "zoomLevel",
-              (zoomLevel) => {
-                return zoomLevel !== 0 ? zoomLevel - 1 : 0;
-              },
-            );
+            globalContext.setLibraryData("userSettings", "zoomLevel", (zoomLevel) => {
+              return zoomLevel !== 0 ? zoomLevel - 1 : 0;
+            });
             updateData();
             break;
 
@@ -243,9 +210,7 @@ function App() {
               e.preventDefault();
               document.querySelector("#searchInput").focus();
             } else {
-              triggerToast(
-                translateText("close current dialog before opening another"),
-              );
+              triggerToast(translateText("close current dialog before opening another"));
             }
             break;
 
@@ -256,9 +221,7 @@ function App() {
               openDialog("newGame");
             } else {
               if (!uiContext.showNewGameModal()) {
-                triggerToast(
-                  translateText("close current dialog before opening another"),
-                );
+                triggerToast(translateText("close current dialog before opening another"));
               }
             }
             break;
@@ -270,9 +233,7 @@ function App() {
               openDialog("newFolder");
             } else {
               if (!uiContext.showNewFolderModal()) {
-                triggerToast(
-                  translateText("close current dialog before opening another"),
-                );
+                triggerToast(translateText("close current dialog before opening another"));
               }
             }
             break;
@@ -284,9 +245,7 @@ function App() {
               openDialog("notepad");
             } else {
               if (!uiContext.showNotepadModal()) {
-                triggerToast(
-                  translateText("close current dialog before opening another"),
-                );
+                triggerToast(translateText("close current dialog before opening another"));
               }
             }
             break;
@@ -298,9 +257,7 @@ function App() {
               openDialog("settings");
             } else {
               if (!uiContext.showSettingsModal()) {
-                triggerToast(
-                  translateText("close current dialog before opening another"),
-                );
+                triggerToast(translateText("close current dialog before opening another"));
               }
             }
             break;
@@ -312,9 +269,7 @@ function App() {
               toggleSideBar();
               document.querySelector("#searchInput").blur();
             } else {
-              triggerToast(
-                translateText("close current dialog before toggling sidebar"),
-              );
+              triggerToast(translateText("close current dialog before toggling sidebar"));
             }
             break;
 
@@ -365,21 +320,17 @@ function App() {
     if (await checkIfConnectedToInternet()) {
       try {
         // checks latest version and stores it in variable
-        const response = await fetch(
-          `${import.meta.env.VITE_CLEAR_API_URL}/?version=a`,
-        );
+        const response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?version=a`);
         const clearVersion = await response.json();
         applicationStateContext.setLatestVersion(clearVersion.clearVersion);
 
         // shows new version indicators if update is available
         applicationStateContext.latestVersion().replaceAll(".", "") >
-            applicationStateContext.appVersion().replaceAll(".", "")
+        applicationStateContext.appVersion().replaceAll(".", "")
           ? uiContext.setShowNewVersionAvailable(true)
           : uiContext.setShowNewVersionAvailable(false);
       } catch (error) {
-        triggerToast(
-          `could not check if newer version available: ${error.message.toLowerCase()}`,
-        );
+        triggerToast(`could not check if newer version available: ${error.message.toLowerCase()}`);
       }
     }
   });
@@ -393,8 +344,10 @@ function App() {
 
       <div class="flex h-full gap-[30px] overflow-y-hidden">
         <Show
-          when={globalContext.libraryData.userSettings.showSideBar === false &&
-            applicationStateContext.windowWidth() >= 1000}
+          when={
+            globalContext.libraryData.userSettings.showSideBar === false &&
+            applicationStateContext.windowWidth() >= 1000
+          }
         >
           <button
             type="button"
@@ -408,39 +361,34 @@ function App() {
           </button>
         </Show>
         <Show
-          when={globalContext.libraryData.userSettings.showSideBar &&
-            applicationStateContext.windowWidth() >= 1000}
+          when={globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000}
         >
           <SideBar />
         </Show>
 
         <Show
-          when={JSON.stringify(globalContext.libraryData.folders) === "{}" &&
-            (applicationStateContext.searchValue() === "" ||
-              applicationStateContext.searchValue() === undefined)}
+          when={
+            JSON.stringify(globalContext.libraryData.folders) === "{}" &&
+            (applicationStateContext.searchValue() === "" || applicationStateContext.searchValue() === undefined)
+          }
         >
           <div
             class={`absolute flex h-[100vh] w-full flex-col items-center justify-center overflow-y-scroll py-[20px] pr-[30px]
               ${
-              globalContext.libraryData.userSettings.showSideBar &&
-                applicationStateContext.windowWidth() >= 1000
-                ? "pl-[23%] large:pl-[17%]"
-                : "pl-[30px] large:pl-[30px]"
-            }`}
+                globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
+                  ? "pl-[23%] large:pl-[17%]"
+                  : "pl-[30px] large:pl-[30px]"
+              }`}
           >
             <div class="!z-50">
               <p class="text-[#000000] dark:text-[#ffffff80]">
                 {translateText("hey there! thank you so much for using clear")}
                 <br />
-                <br />-{" "}
-                {translateText("add some new games using the sidebar buttons")}
+                <br />- {translateText("add some new games using the sidebar buttons")}
                 <br />
-                <br />- {translateText(
-                  "create new folders and drag and drop your games into them",
-                )}
+                <br />- {translateText("create new folders and drag and drop your games into them")}
                 <br />
-                <br />-{" "}
-                {translateText("don't forget to check out the settings!")}
+                <br />- {translateText("don't forget to check out the settings!")}
               </p>
 
               <div class="mt-[35px] flex gap-6">
@@ -471,9 +419,7 @@ function App() {
                       fallback={translateText("import Steam games")}
                     >
                       <span class="text-[#FF3636]">
-                        {translateText(
-                          "current 'steam' folder will be overwritten. confirm?",
-                        )}
+                        {translateText("current 'steam' folder will be overwritten. confirm?")}
                       </span>
                     </Show>
                   </Show>
@@ -491,15 +437,13 @@ function App() {
         <div
           class={`absolute h-[100vh] w-full overflow-y-scroll !rounded-[0px] py-[20px] pr-[30px]
             ${
-            globalContext.libraryData.userSettings.showSideBar &&
-              applicationStateContext.windowWidth() >= 1000
-              ? "pl-[23%] large:pl-[17%]"
-              : "pl-[30px] large:pl-[30px]"
-          }`}
+              globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
+                ? "pl-[23%] large:pl-[17%]"
+                : "pl-[30px] large:pl-[30px]"
+            }`}
         >
           <Show
-            when={applicationStateContext.searchValue() === "" ||
-              applicationStateContext.searchValue() === undefined}
+            when={applicationStateContext.searchValue() === "" || applicationStateContext.searchValue() === undefined}
           >
             <For each={applicationStateContext.currentFolders()}>
               {(folderName) => {
@@ -508,22 +452,15 @@ function App() {
                 return (
                   <Show when={folder.games !== "" && !folder.hide}>
                     <div class="mb-[40px]">
-                      <Show
-                        when={globalContext.libraryData.userSettings
-                          .folderTitle}
-                      >
-                        <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">
-                          {folder.name}
-                        </p>
+                      <Show when={globalContext.libraryData.userSettings.folderTitle}>
+                        <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">{folder.name}</p>
                       </Show>
                       <div
                         class={`foldersDiv mt-4 grid gap-5
-                          ${
-                          returnGridStyleForGameCard(
+                          ${returnGridStyleForGameCard(
                             globalContext.libraryData.userSettings.zoomLevel,
                             globalContext.libraryData.userSettings.showSideBar,
-                          )
-                        }`}
+                          )}`}
                       >
                         <GameCards gamesList={folder.games} />
                       </div>
@@ -535,27 +472,19 @@ function App() {
           </Show>
 
           <Show
-            when={applicationStateContext.searchValue() !== "" &&
-              applicationStateContext.searchValue() !== undefined}
+            when={applicationStateContext.searchValue() !== "" && applicationStateContext.searchValue() !== undefined}
           >
             {() => {
               const searchResults = [];
               const allGameNames = [];
 
-              if (
-                applicationStateContext.searchValue() !== "" &&
-                applicationStateContext.searchValue() !== undefined
-              ) {
+              if (applicationStateContext.searchValue() !== "" && applicationStateContext.searchValue() !== undefined) {
                 for (const key in globalContext.libraryData.games) {
                   allGameNames.push(key);
                 }
               }
 
-              for (
-                const libraryGame of Object.keys(
-                  globalContext.libraryData.games,
-                )
-              ) {
+              for (const libraryGame of Object.keys(globalContext.libraryData.games)) {
                 const result = fuzzysearch(
                   applicationStateContext.searchValue(),
                   libraryGame.toLowerCase().replace("-", " "),
@@ -569,12 +498,10 @@ function App() {
                 <div>
                   <div
                     class={`foldersDiv mt-4 grid gap-5
-                      ${
-                      returnGridStyleForGameCard(
+                      ${returnGridStyleForGameCard(
                         globalContext.libraryData.userSettings.zoomLevel,
                         globalContext.libraryData.userSettings.showSideBar,
-                      )
-                    }`}
+                      )}`}
                   >
                     <GameCards gamesList={searchResults} />
                   </div>

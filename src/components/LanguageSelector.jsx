@@ -1,10 +1,5 @@
 // importing globals
-import {
-  GlobalContext,
-  translateText,
-  UIContext,
-  updateData,
-} from "../Globals.jsx";
+import { GlobalContext, translateText, UIContext, updateData } from "../Globals.jsx";
 
 // importing code snippets and library functions
 import { createSignal, Show, useContext } from "solid-js";
@@ -51,34 +46,26 @@ export function LanguageSelector(props) {
 
         document.getElementById("firstDropdownItem").focus();
       }}
-      class={props.onSettingsPage
-        ? "w-full p-0 text-left"
-        : "standardButton relative flex !w-max cursor-pointer items-center !justify-between bg-[#E8E8E8] !p-4 !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"}
+      class={
+        props.onSettingsPage
+          ? "w-full p-0 text-left"
+          : "standardButton relative flex !w-max cursor-pointer items-center !justify-between bg-[#E8E8E8] !p-4 !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+      }
     >
-      <span class="text-[#12121280] dark:text-[#ffffff80]">
-        [{translateText("language")}]
-      </span>
+      <span class="text-[#12121280] dark:text-[#ffffff80]">[{translateText("language")}]</span>
       &nbsp;
       {returnLanguageFullName(globalContext.libraryData.userSettings.language)}
-      <Show
-        when={props.onSettingsPage
-          ? uiContext.showSettingsLanguageSelector()
-          : showLanguageSelector()}
-      >
+      <Show when={props.onSettingsPage ? uiContext.showSettingsLanguageSelector() : showLanguageSelector()}>
         <div
           class={`absolute z-[100000] flex flex-col gap-4 border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-3 dark:border-[#ffffff1f] dark:bg-[#121212] ${
             props.onSettingsPage ? "top-[150%]" : "left-[1%] top-[120%]"
           }`}
           onMouseLeave={() => {
-            props.onSettingsPage
-              ? uiContext.setShowSettingsLanguageSelector(false)
-              : setShowLanguageSelector(false);
+            props.onSettingsPage ? uiContext.setShowSettingsLanguageSelector(false) : setShowLanguageSelector(false);
           }}
           onKeyDown={(e) => {
             if (e.key === "Escape") {
-              props.onSettingsPage
-                ? uiContext.setShowSettingsLanguageSelector(false)
-                : setShowLanguageSelector(false);
+              props.onSettingsPage ? uiContext.setShowSettingsLanguageSelector(false) : setShowLanguageSelector(false);
             }
           }}
         >

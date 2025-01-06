@@ -42,9 +42,7 @@ export function NewFolder() {
     }
 
     if (folderNameAlreadyExists) {
-      triggerToast(
-        `${folderName()} ${translateText("is already in your library")}`,
-      );
+      triggerToast(`${folderName()} ${translateText("is already in your library")}`);
       return;
     }
 
@@ -71,9 +69,7 @@ export function NewFolder() {
       if (e.key === "Escape") {
         e.preventDefault();
         if (showCloseConfirm()) {
-          closeDialogImmediately(
-            document.querySelector("[data-modal='newFolder']"),
-          );
+          closeDialogImmediately(document.querySelector("[data-modal='newFolder']"));
 
           setShowCloseConfirm(false);
         } else {
@@ -101,16 +97,10 @@ export function NewFolder() {
         <div class="w-[60%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
           <div
             class={`flex justify-between
-              ${
-              globalContext.libraryData.userSettings.language !== "en"
-                ? "flex-col large:flex-row"
-                : ""
-            } `}
+              ${globalContext.libraryData.userSettings.language !== "en" ? "flex-col large:flex-row" : ""} `}
           >
             <div>
-              <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">
-                {translateText("add new folder")}
-              </p>
+              <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">{translateText("add new folder")}</p>
             </div>
             <div class="flex items-center gap-5">
               <button
@@ -120,17 +110,10 @@ export function NewFolder() {
                 }}
                 class="relative cursor-pointer"
               >
-                <Show
-                  when={hideFolder()}
-                  fallback={
-                    <div class="">{translateText("hide in expanded view")}</div>
-                  }
-                >
+                <Show when={hideFolder()} fallback={<div class="">{translateText("hide in expanded view")}</div>}>
                   <div class="relative">
                     <div class="">{translateText("hide in expanded view")}</div>
-                    <div class="absolute inset-0 opacity-70 blur-[5px]">
-                      {translateText("hide in expanded view")}
-                    </div>
+                    <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("hide in expanded view")}</div>
                   </div>
                 </Show>
               </button>
@@ -157,13 +140,11 @@ export function NewFolder() {
                 }}
                 data-tooltip={translateText("close")}
               >
-                {showCloseConfirm()
-                  ? (
-                    <span class="text-[#FF3636] whitespace-nowrap">
-                      {translateText("hit again to confirm")}
-                    </span>
-                  )
-                  : <Close />}
+                {showCloseConfirm() ? (
+                  <span class="text-[#FF3636] whitespace-nowrap">{translateText("hit again to confirm")}</span>
+                ) : (
+                  <Close />
+                )}
               </button>
             </div>
           </div>

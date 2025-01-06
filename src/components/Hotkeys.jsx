@@ -7,8 +7,7 @@ import { Show, useContext } from "solid-js";
 export function Hotkeys(props) {
   const applicationStateContext = useContext(ApplicationStateContext);
 
-  const modifierKeyPrefix =
-    applicationStateContext.systemPlatform() === "windows" ? "ctrl" : "⌘";
+  const modifierKeyPrefix = applicationStateContext.systemPlatform() === "windows" ? "ctrl" : "⌘";
 
   return (
     <>

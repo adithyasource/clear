@@ -7,7 +7,6 @@
 /* tailwind styles (for inaccessable selectors in html) */
 
 @layer components {
-
   html,
   body {
     @apply dark:bg-[#121212] bg-[#FFFFFC];

@@ -2,13 +2,7 @@
 import { createContext, createSignal } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import { invoke } from "@tauri-apps/api/tauri";
-import {
-  BaseDirectory,
-  createDir,
-  exists,
-  readTextFile,
-  writeTextFile,
-} from "@tauri-apps/api/fs";
+import { BaseDirectory, createDir, exists, readTextFile, writeTextFile } from "@tauri-apps/api/fs";
 import { appDataDir } from "@tauri-apps/api/path";
 import { parseVDF } from "./libraries/parseVDF.js";
 
@@ -41,13 +35,9 @@ export const [libraryData, setLibraryData] = createStore({
 });
 
 // ui signals
-const [showSettingsLanguageSelector, setShowSettingsLanguageSelector] =
-  createSignal(false);
-const [showImportAndOverwriteConfirm, setShowImportAndOverwriteConfirm] =
-  createSignal(false);
-const [showNewVersionAvailable, setShowNewVersionAvailable] = createSignal(
-  false,
-);
+const [showSettingsLanguageSelector, setShowSettingsLanguageSelector] = createSignal(false);
+const [showImportAndOverwriteConfirm, setShowImportAndOverwriteConfirm] = createSignal(false);
+const [showNewVersionAvailable, setShowNewVersionAvailable] = createSignal(false);
 const [showNewGameModal, setShowNewGameModal] = createSignal(false);
 const [showEditGameModal, setShowEditGameModal] = createSignal(false);
 const [showNewFolderModal, setShowNewFolderModal] = createSignal(false);
@@ -85,11 +75,7 @@ export function GlobalContextProvider(props) {
     libraryData,
     setLibraryData,
   };
-  return (
-    <GlobalContext.Provider value={context}>
-      {props.children}
-    </GlobalContext.Provider>
-  );
+  return <GlobalContext.Provider value={context}>{props.children}</GlobalContext.Provider>;
 }
 
 export function UIContextProvider(props) {
@@ -120,9 +106,7 @@ export function UIContextProvider(props) {
     setUserIsTabbing,
   };
 
-  return (
-    <UIContext.Provider value={context}>{props.children}</UIContext.Provider>
-  );
+  return <UIContext.Provider value={context}>{props.children}</UIContext.Provider>;
 }
 
 export function SelectedDataContextProvider(props) {
@@ -135,11 +119,7 @@ export function SelectedDataContextProvider(props) {
     setSelectedGameId,
   };
 
-  return (
-    <SelectedDataContext.Provider value={context}>
-      {props.children}
-    </SelectedDataContext.Provider>
-  );
+  return <SelectedDataContext.Provider value={context}>{props.children}</SelectedDataContext.Provider>;
 }
 
 export function ApplicationStateContextProvider(props) {
@@ -164,11 +144,7 @@ export function ApplicationStateContextProvider(props) {
     setWindowWidth,
   };
 
-  return (
-    <ApplicationStateContext.Provider value={context}>
-      {props.children}
-    </ApplicationStateContext.Provider>
-  );
+  return <ApplicationStateContext.Provider value={context}>{props.children}</ApplicationStateContext.Provider>;
 }
 
 export function SteamDataContextProvider(props) {
@@ -179,11 +155,7 @@ export function SteamDataContextProvider(props) {
     setTotalImportedSteamGames,
   };
 
-  return (
-    <SteamDataContext.Provider value={context}>
-      {props.children}
-    </SteamDataContext.Provider>
-  );
+  return <SteamDataContext.Provider value={context}>{props.children}</SteamDataContext.Provider>;
 }
 
 // global helper functions
@@ -263,10 +235,7 @@ export function openGame(gameLocation) {
     location: gameLocation,
   });
 
-  if (
-    libraryData.userSettings.quitAfterOpen === true ||
-    libraryData.userSettings.quitAfterOpen === undefined
-  ) {
+  if (libraryData.userSettings.quitAfterOpen === true || libraryData.userSettings.quitAfterOpen === undefined) {
     setTimeout(() => {
       invoke("close_app");
     }, 500);
@@ -276,8 +245,7 @@ export function openGame(gameLocation) {
 }
 
 export function generateRandomString() {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
   let result = "";
   const charactersLength = characters.length;
@@ -304,11 +272,7 @@ export async function importSteamGames() {
 
   if (steamVDFData === "error") {
     closeDialog("loading");
-    triggerToast(
-      translateText(
-        "sorry but there was an error \n reading your Steam library :(",
-      ),
-    );
+    triggerToast(translateText("sorry but there was an error \n reading your Steam library :("));
 
     return;
   }
@@ -337,9 +301,7 @@ export async function importSteamGames() {
   await updateData();
 
   for (const steamId of steamGameIds) {
-    let gameData = await fetch(
-      `${import.meta.env.VITE_CLEAR_API_URL}/?steamID=${steamId}`,
-    );
+    let gameData = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?steamID=${steamId}`);
 
     gameData = await gameData.json();
 
@@ -352,9 +314,7 @@ export async function importSteamGames() {
     let logoImageFileName = `${generateRandomString()}.png`;
     let iconImageFileName = `${generateRandomString()}.png`;
 
-    let assetsData = await fetch(
-      `${import.meta.env.VITE_CLEAR_API_URL}/?assets=${gameSGDBID}&length=1`,
-    );
+    let assetsData = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?assets=${gameSGDBID}&length=1`);
 
     assetsData = await assetsData.json();
 
@@ -621,9 +581,7 @@ export function locationJoin(locationsList) {
 export function getExecutableFileName(location) {
   // splits both / and \ paths since a library created on windows can be
   // viewed on macos and vice versa
-  return location.toString().split("\\").slice(-1).toString().split("/").slice(
-    -1,
-  );
+  return location.toString().split("\\").slice(-1).toString().split("/").slice(-1);
 }
 
 export function getExecutableParentFolder(location) {

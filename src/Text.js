@@ -14,8 +14,7 @@ export const textLanguages = {
     fr: "Ajoute de nouveaux jeux en utilisant les boutons de la barre latérale",
   },
   "create new folders and drag and drop your games into them": {
-    jp:
-      "新しいフォルダーを作成し、そこにゲームをドラッグ アンド ドロップします。",
+    jp: "新しいフォルダーを作成し、そこにゲームをドラッグ アンド ドロップします。",
     es: "Crea nuevas carpetas y arrastra y suelta tus juegos en ellas.",
     hi: "नए फ़ोल्डर बनाएं और अपने गेम को उनमें उठाकर डालो",
     ru: "Создавайте новые папки и перетаскивайте в них свои игры",
@@ -526,13 +525,11 @@ export const textLanguages = {
     fr: "Pas trouver",
   },
   "sorry but there was an error \n reading your Steam library :(": {
-    jp:
-      "申し訳ありませんが、Steam ライブラリの読み取り中にエラーが発生しました:(",
+    jp: "申し訳ありませんが、Steam ライブラリの読み取り中にエラーが発生しました:(",
     es: "Lo siento pero hubo un error \n al leer tu biblioteca de Steam :(",
     hi: "क्षमा करें, लेकिन आपकी steam लाइब्रेरी को clear पद नहीं पाया :(",
     ru: "Извините, но при чтении вашей библиотеки Steam произошла ошибка :(",
-    fr:
-      "Désolé mais il y a eu une erreur lors de la lecture de votre bibliothèque Steam :(",
+    fr: "Désolé mais il y a eu une erreur lors de la lecture de votre bibliothèque Steam :(",
   },
   language: {
     jp: "言語",

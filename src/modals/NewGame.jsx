@@ -16,15 +16,7 @@ import {
 } from "../Globals.jsx";
 
 // importing code snippets and library functions
-import {
-  createSignal,
-  For,
-  Match,
-  onMount,
-  Show,
-  Switch,
-  useContext,
-} from "solid-js";
+import { createSignal, For, Match, onMount, Show, Switch, useContext } from "solid-js";
 import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
 import { BaseDirectory, copyFile } from "@tauri-apps/api/fs";
 import { open } from "@tauri-apps/api/dialog";
@@ -79,9 +71,7 @@ export function NewGame() {
     }
 
     if (gameNameAlreadyExists) {
-      triggerToast(
-        `${gameName()} ${translateText("is already in your library")}`,
-      );
+      triggerToast(`${gameName()} ${translateText("is already in your library")}`);
       return;
     }
 
@@ -96,27 +86,17 @@ export function NewGame() {
       gridImageFileName = `${generateRandomString()}.png`;
       await invoke("download_image", {
         link: foundGridImage()[foundGridImageIndex()],
-        location: locationJoin([
-          applicationStateContext.appDataDirPath(),
-          "grids",
-          gridImageFileName,
-        ]),
+        location: locationJoin([applicationStateContext.appDataDirPath(), "grids", gridImageFileName]),
       });
     } else {
       if (locatedGridImage()) {
         gridImageFileName = `${generateRandomString()}.${
-          locatedGridImage().split(
-            ".",
-          )[locatedGridImage().split(".").length - 1]
+          locatedGridImage().split(".")[locatedGridImage().split(".").length - 1]
         }`;
 
-        await copyFile(
-          locatedGridImage(),
-          locationJoin(["grids", gridImageFileName]),
-          {
-            dir: BaseDirectory.AppData,
-          },
-        );
+        await copyFile(locatedGridImage(), locationJoin(["grids", gridImageFileName]), {
+          dir: BaseDirectory.AppData,
+        });
       }
     }
 
@@ -125,27 +105,17 @@ export function NewGame() {
 
       await invoke("download_image", {
         link: foundHeroImage()[foundHeroImageIndex()],
-        location: locationJoin([
-          applicationStateContext.appDataDirPath(),
-          "heroes",
-          heroImageFileName,
-        ]),
+        location: locationJoin([applicationStateContext.appDataDirPath(), "heroes", heroImageFileName]),
       });
     } else {
       if (locatedHeroImage()) {
         heroImageFileName = `${generateRandomString()}.${
-          locatedHeroImage().split(
-            ".",
-          )[locatedHeroImage().split(".").length - 1]
+          locatedHeroImage().split(".")[locatedHeroImage().split(".").length - 1]
         }`;
 
-        await copyFile(
-          locatedHeroImage(),
-          locationJoin(["heroes", heroImageFileName]),
-          {
-            dir: BaseDirectory.AppData,
-          },
-        );
+        await copyFile(locatedHeroImage(), locationJoin(["heroes", heroImageFileName]), {
+          dir: BaseDirectory.AppData,
+        });
       }
     }
 
@@ -154,17 +124,11 @@ export function NewGame() {
 
       await invoke("download_image", {
         link: foundLogoImage()[foundLogoImageIndex()],
-        location: locationJoin([
-          applicationStateContext.appDataDirPath(),
-          "logos",
-          logoFileName,
-        ]),
+        location: locationJoin([applicationStateContext.appDataDirPath(), "logos", logoFileName]),
       });
     } else {
       if (locatedLogo()) {
-        logoFileName = `${generateRandomString()}.${
-          locatedLogo().split(".")[locatedLogo().split(".").length - 1]
-        }`;
+        logoFileName = `${generateRandomString()}.${locatedLogo().split(".")[locatedLogo().split(".").length - 1]}`;
 
         await copyFile(locatedLogo(), locationJoin(["logos", logoFileName]), {
           dir: BaseDirectory.AppData,
@@ -177,17 +141,11 @@ export function NewGame() {
 
       await invoke("download_image", {
         link: foundIconImage()[foundIconImageIndex()],
-        location: locationJoin([
-          applicationStateContext.appDataDirPath(),
-          "icons",
-          iconFileName,
-        ]),
+        location: locationJoin([applicationStateContext.appDataDirPath(), "icons", iconFileName]),
       });
     } else {
       if (locatedIcon()) {
-        iconFileName = `${generateRandomString()}.${
-          locatedIcon().split(".")[locatedIcon().split(".").length - 1]
-        }`;
+        iconFileName = `${generateRandomString()}.${locatedIcon().split(".")[locatedIcon().split(".").length - 1]}`;
 
         await copyFile(locatedIcon(), locationJoin(["icons", iconFileName]), {
           dir: BaseDirectory.AppData,
@@ -300,9 +258,7 @@ export function NewGame() {
     let searchedGameData;
 
     try {
-      searchedGameData = await fetch(
-        `${import.meta.env.VITE_CLEAR_API_URL}/?gameName=${gameName()}`,
-      );
+      searchedGameData = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?gameName=${gameName()}`);
     } catch {
       searchedGameData = undefined;
     }
@@ -326,24 +282,14 @@ export function NewGame() {
     setFoundLogoImage(undefined);
     setFoundIconImage(undefined);
 
-    await fetch(
-      `${import.meta.env.VITE_CLEAR_API_URL}/?assets=${selectedDataContext.selectedGameId()}`,
-    ).then((res) =>
+    await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?assets=${selectedDataContext.selectedGameId()}`).then((res) =>
       res.json().then((jsonres) => {
         const missingAssets = [];
 
-        jsonres.grids.length !== 0
-          ? setFoundGridImage(jsonres.grids)
-          : missingAssets.push("grids");
-        jsonres.heroes.length !== 0
-          ? setFoundHeroImage(jsonres.heroes)
-          : missingAssets.push("heroes");
-        jsonres.logos.length !== 0
-          ? setFoundLogoImage(jsonres.logos)
-          : missingAssets.push("logos");
-        jsonres.icons.length !== 0
-          ? setFoundIconImage(jsonres.icons)
-          : missingAssets.push("icons");
+        jsonres.grids.length !== 0 ? setFoundGridImage(jsonres.grids) : missingAssets.push("grids");
+        jsonres.heroes.length !== 0 ? setFoundHeroImage(jsonres.heroes) : missingAssets.push("heroes");
+        jsonres.logos.length !== 0 ? setFoundLogoImage(jsonres.logos) : missingAssets.push("logos");
+        jsonres.icons.length !== 0 ? setFoundIconImage(jsonres.icons) : missingAssets.push("icons");
 
         if (missingAssets.length !== 0) {
           if (missingAssets.length === 4) {
@@ -353,19 +299,13 @@ export function NewGame() {
 
           if (missingAssets.length >= 2) {
             const lastAssetType = missingAssets.splice(-1);
-            triggerToast(
-              `${translateText("couldn't find")} ${
-                missingAssets.join(", ")
-              } & ${lastAssetType} :(`,
-            );
+            triggerToast(`${translateText("couldn't find")} ${missingAssets.join(", ")} & ${lastAssetType} :(`);
             return;
           }
 
-          triggerToast(
-            `${translateText("couldn't find")} ${missingAssets[0]} :(`,
-          );
+          triggerToast(`${translateText("couldn't find")} ${missingAssets[0]} :(`);
         }
-      })
+      }),
     );
   }
 
@@ -374,9 +314,7 @@ export function NewGame() {
       if (e.key === "Escape") {
         e.preventDefault();
         if (showCloseConfirm()) {
-          closeDialogImmediately(
-            document.querySelector("[data-modal='newGame']"),
-          );
+          closeDialogImmediately(document.querySelector("[data-modal='newGame']"));
 
           setShowCloseConfirm(false);
         } else {
@@ -406,9 +344,7 @@ export function NewGame() {
       <div class="flex h-screen w-screen flex-col items-center justify-center gap-3 bg-[#d1d1d1cc] dark:bg-[#121212cc]">
         <div class="flex w-[84rem] justify-between max-large:w-[61rem]">
           <div>
-            <p class="text-[25px] text-[#00000080] dark:text-[#ffffff80]">
-              {translateText("add new game")}
-            </p>
+            <p class="text-[25px] text-[#00000080] dark:text-[#ffffff80]">{translateText("add new game")}</p>
           </div>
           <div class="flex items-center gap-4">
             <button
@@ -418,17 +354,10 @@ export function NewGame() {
                 setFavouriteGame((x) => !x);
               }}
             >
-              <Show
-                when={favouriteGame()}
-                fallback={
-                  <div class="!w-max">{translateText("favourite")}</div>
-                }
-              >
+              <Show when={favouriteGame()} fallback={<div class="!w-max">{translateText("favourite")}</div>}>
                 <div class="relative">
                   <div class="!w-max">{translateText("favourite")}</div>
-                  <div class="absolute inset-0 !w-max opacity-70 blur-[5px]">
-                    {translateText("favourite")}
-                  </div>
+                  <div class="absolute inset-0 !w-max opacity-70 blur-[5px]">{translateText("favourite")}</div>
                 </div>
               </Show>
             </button>
@@ -456,13 +385,11 @@ export function NewGame() {
               }}
               data-tooltip={translateText("close")}
             >
-              {showCloseConfirm()
-                ? (
-                  <span class="text-[#FF3636] whitespace-nowrap">
-                    {translateText("hit again to confirm")}
-                  </span>
-                )
-                : <Close />}
+              {showCloseConfirm() ? (
+                <span class="text-[#FF3636] whitespace-nowrap">{translateText("hit again to confirm")}</span>
+              ) : (
+                <Close />
+              )}
             </button>
           </div>
         </div>
@@ -477,9 +404,7 @@ export function NewGame() {
             onWheel={(e) => {
               if (SGDBGames()) {
                 if (e.deltaY <= 0) {
-                  setFoundGridImageIndex((
-                    i,
-                  ) => (i === foundGridImage().length - 1 ? 0 : i + 1));
+                  setFoundGridImageIndex((i) => (i === foundGridImage().length - 1 ? 0 : i + 1));
                   setShowGridImageLoading(true);
                 }
 
@@ -496,9 +421,7 @@ export function NewGame() {
             onKeyDown={(e) => {
               if (SGDBGames()) {
                 if (e.key === "ArrowRight" || e.key === "ArrowUp") {
-                  setFoundGridImageIndex((
-                    i,
-                  ) => (i === foundGridImage().length - 1 ? 0 : i + 1));
+                  setFoundGridImageIndex((i) => (i === foundGridImage().length - 1 ? 0 : i + 1));
                   setShowGridImageLoading(true);
                 }
 
@@ -517,31 +440,27 @@ export function NewGame() {
               setFoundGridImage(undefined);
             }}
             class="aspect-[2/3] h-[400px] cursor-pointer overflow-hidden bg-[#f1f1f1] dark:bg-[#1c1c1c] tooltip-center max-large:h-[300px] p-0"
-            data-tooltip={foundGridImage()
-              ? showGridImageLoading() === false
-                ? uiContext.userIsTabbing()
-                  ? `${foundGridImageIndex()} / ${
-                    foundGridImage().length - 1
-                  } ${translateText("arrow keys")}`
-                  : `${foundGridImageIndex()} / ${
-                    foundGridImage().length - 1
-                  } ${translateText("scroll")}`
-                : `${foundGridImageIndex()} / ${foundGridImage().length - 1} ${
-                  translateText("loading")
-                }`
-              : translateText("grid/cover")}
+            data-tooltip={
+              foundGridImage()
+                ? showGridImageLoading() === false
+                  ? uiContext.userIsTabbing()
+                    ? `${foundGridImageIndex()} / ${foundGridImage().length - 1} ${translateText("arrow keys")}`
+                    : `${foundGridImageIndex()} / ${foundGridImage().length - 1} ${translateText("scroll")}`
+                  : `${foundGridImageIndex()} / ${foundGridImage().length - 1} ${translateText("loading")}`
+                : translateText("grid/cover")
+            }
           >
             <img
-              src={foundGridImage()
-                ? foundGridImage()[foundGridImageIndex()]
-                : locatedGridImage()
-                ? convertFileSrc(locatedGridImage())
-                // this is a gif which is completely empty
-                : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="}
+              src={
+                foundGridImage()
+                  ? foundGridImage()[foundGridImageIndex()]
+                  : locatedGridImage()
+                    ? convertFileSrc(locatedGridImage())
+                    : // this is a gif which is completely empty
+                      "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
+              }
               alt=""
-              class={`relative inset-0 w-full ${
-                showGridImageLoading() ? "opacity-0" : ""
-              }  `}
+              class={`relative inset-0 w-full ${showGridImageLoading() ? "opacity-0" : ""}  `}
               onLoad={() => {
                 setShowGridImageLoading(false);
               }}
@@ -559,9 +478,7 @@ export function NewGame() {
                 onWheel={(e) => {
                   if (SGDBGames()) {
                     if (e.deltaY <= 0) {
-                      setFoundHeroImageIndex((
-                        i,
-                      ) => (i === foundHeroImage().length - 1 ? 0 : i + 1));
+                      setFoundHeroImageIndex((i) => (i === foundHeroImage().length - 1 ? 0 : i + 1));
                       setShowHeroImageLoading(true);
                     }
 
@@ -578,9 +495,7 @@ export function NewGame() {
                 onKeyDown={(e) => {
                   if (SGDBGames()) {
                     if (e.key === "ArrowRight" || e.key === "ArrowUp") {
-                      setFoundHeroImageIndex((
-                        i,
-                      ) => (i === foundHeroImage().length - 1 ? 0 : i + 1));
+                      setFoundHeroImageIndex((i) => (i === foundHeroImage().length - 1 ? 0 : i + 1));
                       setShowHeroImageLoading(true);
                     }
 
@@ -599,42 +514,40 @@ export function NewGame() {
                   setFoundHeroImage(undefined);
                 }}
                 class="aspect-[67/26] h-[350px] cursor-pointer bg-[#f1f1f1] p-0 dark:bg-[#1c1c1c] max-large:h-[250px] tooltip-center"
-                data-tooltip={foundHeroImage()
-                  ? showHeroImageLoading() === false
-                    ? uiContext.userIsTabbing()
-                      ? `${foundHeroImageIndex()} / ${
-                        foundHeroImage().length - 1
-                      } ${translateText("arrow keys")}`
-                      : `${foundHeroImageIndex()} / ${
-                        foundHeroImage().length - 1
-                      } ${translateText("scroll")}`
-                    : `${foundHeroImageIndex()} / ${
-                      foundHeroImage().length - 1
-                    } ${translateText("loading")}`
-                  : translateText("hero")}
+                data-tooltip={
+                  foundHeroImage()
+                    ? showHeroImageLoading() === false
+                      ? uiContext.userIsTabbing()
+                        ? `${foundHeroImageIndex()} / ${foundHeroImage().length - 1} ${translateText("arrow keys")}`
+                        : `${foundHeroImageIndex()} / ${foundHeroImage().length - 1} ${translateText("scroll")}`
+                      : `${foundHeroImageIndex()} / ${foundHeroImage().length - 1} ${translateText("loading")}`
+                    : translateText("hero")
+                }
               >
                 <img
-                  src={foundHeroImage()
-                    ? foundHeroImage()[foundHeroImageIndex()]
-                    : locatedHeroImage()
-                    ? convertFileSrc(locatedHeroImage())
-                    // this is a gif which is completely empty
-                    : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="}
+                  src={
+                    foundHeroImage()
+                      ? foundHeroImage()[foundHeroImageIndex()]
+                      : locatedHeroImage()
+                        ? convertFileSrc(locatedHeroImage())
+                        : // this is a gif which is completely empty
+                          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
+                  }
                   alt=""
-                  class={`w-full h-full aspect-[96/31] ${
-                    showHeroImageLoading() ? "opacity-0" : ""
-                  }`}
+                  class={`w-full h-full aspect-[96/31] ${showHeroImageLoading() ? "opacity-0" : ""}`}
                   onLoad={() => {
                     setShowHeroImageLoading(false);
                   }}
                 />
                 <img
-                  src={foundHeroImage()
-                    ? foundHeroImage()[foundHeroImageIndex()]
-                    : locatedHeroImage()
-                    ? convertFileSrc(locatedHeroImage())
-                    // this is a gif which is completely empty
-                    : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="}
+                  src={
+                    foundHeroImage()
+                      ? foundHeroImage()[foundHeroImageIndex()]
+                      : locatedHeroImage()
+                        ? convertFileSrc(locatedHeroImage())
+                        : // this is a gif which is completely empty
+                          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
+                  }
                   onLoad={() => {
                     setShowHeroImageLoading(false);
                   }}
@@ -656,9 +569,7 @@ export function NewGame() {
                 onWheel={(e) => {
                   if (SGDBGames()) {
                     if (e.deltaY <= 0) {
-                      setFoundLogoImageIndex((
-                        i,
-                      ) => (i === foundLogoImage().length - 1 ? 0 : i + 1));
+                      setFoundLogoImageIndex((i) => (i === foundLogoImage().length - 1 ? 0 : i + 1));
                       setShowLogoImageLoading(true);
                     }
 
@@ -675,9 +586,7 @@ export function NewGame() {
                 onKeyDown={(e) => {
                   if (SGDBGames()) {
                     if (e.key === "ArrowRight" || e.key === "ArrowUp") {
-                      setFoundLogoImageIndex((
-                        i,
-                      ) => (i === foundLogoImage().length - 1 ? 0 : i + 1));
+                      setFoundLogoImageIndex((i) => (i === foundLogoImage().length - 1 ? 0 : i + 1));
                       setShowLogoImageLoading(true);
                     }
 
@@ -693,36 +602,32 @@ export function NewGame() {
                 }}
                 class={`bottom-[70px] left-[20px] !absolute z-[100] h-[90px] w-[250px] !p-[2px] cursor-pointer max-large:h-[90px] max-large:w-[243px] tooltip-center
                   ${
-                  foundLogoImage() || locatedLogo()
-                    ? "hover:outline-dashed !outline-[2px] !outline-[#E8E8E880] !outline:dark:bg-[#27272780] hover:bg-[#E8E8E84D] hover:dark:bg-[#2727274D] focus:bg-[#E8E8E84D] focus:dark:bg-[#2727274D]"
-                    : "bg-[#E8E8E8] dark:!bg-[#272727]"
-                }
+                    foundLogoImage() || locatedLogo()
+                      ? "hover:outline-dashed !outline-[2px] !outline-[#E8E8E880] !outline:dark:bg-[#27272780] hover:bg-[#E8E8E84D] hover:dark:bg-[#2727274D] focus:bg-[#E8E8E84D] focus:dark:bg-[#2727274D]"
+                      : "bg-[#E8E8E8] dark:!bg-[#272727]"
+                  }
                     `}
-                data-tooltip={foundLogoImage()
-                  ? showLogoImageLoading() === false
-                    ? uiContext.userIsTabbing()
-                      ? `${foundLogoImageIndex()} / ${
-                        foundLogoImage().length - 1
-                      } ${translateText("arrow keys")}`
-                      : `${foundLogoImageIndex()} / ${
-                        foundLogoImage().length - 1
-                      } ${translateText("scroll")}`
-                    : `${foundLogoImageIndex()} / ${
-                      foundLogoImage().length - 1
-                    } ${translateText("loading")}`
-                  : translateText("logo")}
+                data-tooltip={
+                  foundLogoImage()
+                    ? showLogoImageLoading() === false
+                      ? uiContext.userIsTabbing()
+                        ? `${foundLogoImageIndex()} / ${foundLogoImage().length - 1} ${translateText("arrow keys")}`
+                        : `${foundLogoImageIndex()} / ${foundLogoImage().length - 1} ${translateText("scroll")}`
+                      : `${foundLogoImageIndex()} / ${foundLogoImage().length - 1} ${translateText("loading")}`
+                    : translateText("logo")
+                }
               >
                 <img
-                  src={foundLogoImage()
-                    ? foundLogoImage()[foundLogoImageIndex()]
-                    : locatedLogo()
-                    ? convertFileSrc(locatedLogo())
-                    // this is a gif which is completely empty
-                    : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="}
+                  src={
+                    foundLogoImage()
+                      ? foundLogoImage()[foundLogoImageIndex()]
+                      : locatedLogo()
+                        ? convertFileSrc(locatedLogo())
+                        : // this is a gif which is completely empty
+                          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
+                  }
                   alt=""
-                  class={`!object-scale-down w-full h-full  ${
-                    showLogoImageLoading() ? "opacity-0" : ""
-                  }`}
+                  class={`!object-scale-down w-full h-full  ${showLogoImageLoading() ? "opacity-0" : ""}`}
                   onLoad={() => {
                     setShowLogoImageLoading(false);
                   }}
@@ -744,9 +649,7 @@ export function NewGame() {
                 onWheel={(e) => {
                   if (SGDBGames()) {
                     if (e.deltaY <= 0) {
-                      setFoundIconImageIndex((
-                        i,
-                      ) => (i === foundIconImage().length - 1 ? 0 : i + 1));
+                      setFoundIconImageIndex((i) => (i === foundIconImage().length - 1 ? 0 : i + 1));
                       setShowIconImageLoading(true);
                     }
 
@@ -763,9 +666,7 @@ export function NewGame() {
                 onKeyDown={(e) => {
                   if (SGDBGames()) {
                     if (e.key === "ArrowRight" || e.key === "ArrowUp") {
-                      setFoundIconImageIndex((
-                        i,
-                      ) => (i === foundIconImage().length - 1 ? 0 : i + 1));
+                      setFoundIconImageIndex((i) => (i === foundIconImage().length - 1 ? 0 : i + 1));
                       setShowIconImageLoading(true);
                     }
 
@@ -781,31 +682,29 @@ export function NewGame() {
                 }}
                 class={`group relative p-0 tooltip-bottom 
                   ${
-                  foundIconImage() || locatedIcon()
-                    ? "hover:outline-dashed !outline-[2px] !outline-[#E8E8E880] !outline:dark:bg-[#27272780]"
-                    : "bg-[#E8E8E8] dark:!bg-[#272727]"
-                }`}
-                data-tooltip={foundIconImage()
-                  ? showIconImageLoading() === false
-                    ? uiContext.userIsTabbing()
-                      ? `${foundIconImageIndex()} / ${
-                        foundIconImage().length - 1
-                      } ${translateText("arrow keys")}`
-                      : `${foundIconImageIndex()} / ${
-                        foundIconImage().length - 1
-                      } ${translateText("scroll")}`
-                    : `${foundIconImageIndex()} / ${
-                      foundIconImage().length - 1
-                    } ${translateText("loading")}`
-                  : translateText("icon")}
+                    foundIconImage() || locatedIcon()
+                      ? "hover:outline-dashed !outline-[2px] !outline-[#E8E8E880] !outline:dark:bg-[#27272780]"
+                      : "bg-[#E8E8E8] dark:!bg-[#272727]"
+                  }`}
+                data-tooltip={
+                  foundIconImage()
+                    ? showIconImageLoading() === false
+                      ? uiContext.userIsTabbing()
+                        ? `${foundIconImageIndex()} / ${foundIconImage().length - 1} ${translateText("arrow keys")}`
+                        : `${foundIconImageIndex()} / ${foundIconImage().length - 1} ${translateText("scroll")}`
+                      : `${foundIconImageIndex()} / ${foundIconImage().length - 1} ${translateText("loading")}`
+                    : translateText("icon")
+                }
               >
                 <img
-                  src={foundIconImage()
-                    ? foundIconImage()[foundIconImageIndex()]
-                    : locatedIcon()
-                    ? convertFileSrc(locatedIcon())
-                    // this is a gif which is completely empty
-                    : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="}
+                  src={
+                    foundIconImage()
+                      ? foundIconImage()[foundIconImageIndex()]
+                      : locatedIcon()
+                        ? convertFileSrc(locatedIcon())
+                        : // this is a gif which is completely empty
+                          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
+                  }
                   alt=""
                   class={`!object-scale-down h-[40px] w-[40px]
                     ${showIconImageLoading() ? "opacity-0" : ""}`}
@@ -852,27 +751,24 @@ export function NewGame() {
                 >
                   <Switch>
                     <Match
-                      when={globalContext.libraryData.userSettings.language ===
-                          "fr" &&
-                        applicationStateContext.windowWidth() >= 1500}
+                      when={
+                        globalContext.libraryData.userSettings.language === "fr" &&
+                        applicationStateContext.windowWidth() >= 1500
+                      }
                     >
                       {translateText("auto find assets")}
                     </Match>
 
                     <Match
-                      when={globalContext.libraryData.userSettings.language ===
-                          "fr" &&
-                        applicationStateContext.windowWidth() <= 1500}
+                      when={
+                        globalContext.libraryData.userSettings.language === "fr" &&
+                        applicationStateContext.windowWidth() <= 1500
+                      }
                     >
-                      <p class="w-[70px] text-clip text-[10px]">
-                        {translateText("auto find assets")}
-                      </p>
+                      <p class="w-[70px] text-clip text-[10px]">{translateText("auto find assets")}</p>
                     </Match>
 
-                    <Match
-                      when={globalContext.libraryData.userSettings.language !==
-                        "fr"}
-                    >
+                    <Match when={globalContext.libraryData.userSettings.language !== "fr"}>
                       {translateText("auto find assets")}
                     </Match>
                   </Switch>
@@ -883,41 +779,37 @@ export function NewGame() {
                   onClick={() => {
                     gameName() === undefined
                       ? invoke("open_location", {
-                        location: "https://www.steamgriddb.com/",
-                      })
+                          location: "https://www.steamgriddb.com/",
+                        })
                       : gameName() === ""
-                      ? invoke("open_location", {
-                        location: "https://www.steamgriddb.com/",
-                      })
-                      : invoke("open_location", {
-                        location:
-                          `https://www.steamgriddb.com/search/grids?term=${gameName()}`,
-                      });
+                        ? invoke("open_location", {
+                            location: "https://www.steamgriddb.com/",
+                          })
+                        : invoke("open_location", {
+                            location: `https://www.steamgriddb.com/search/grids?term=${gameName()}`,
+                          });
                   }}
                 >
                   <Switch>
                     <Match
-                      when={globalContext.libraryData.userSettings.language ===
-                          "fr" &&
-                        applicationStateContext.windowWidth() >= 1500}
+                      when={
+                        globalContext.libraryData.userSettings.language === "fr" &&
+                        applicationStateContext.windowWidth() >= 1500
+                      }
                     >
                       {translateText("find assets")}
                     </Match>
 
                     <Match
-                      when={globalContext.libraryData.userSettings.language ===
-                          "fr" &&
-                        applicationStateContext.windowWidth() <= 1500}
+                      when={
+                        globalContext.libraryData.userSettings.language === "fr" &&
+                        applicationStateContext.windowWidth() <= 1500
+                      }
                     >
-                      <p class="w-[100px] text-clip text-[10px]">
-                        {translateText("find assets")}
-                      </p>
+                      <p class="w-[100px] text-clip text-[10px]">{translateText("find assets")}</p>
                     </Match>
 
-                    <Match
-                      when={globalContext.libraryData.userSettings.language !==
-                        "fr"}
-                    >
+                    <Match when={globalContext.libraryData.userSettings.language !== "fr"}>
                       {translateText("find assets")}
                     </Match>
                   </Switch>
@@ -932,25 +824,16 @@ export function NewGame() {
                 }}
                 class="standardButton !mt-0 !w-max bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
               >
-                {locatedGame() === undefined
-                  ? translateText("locate game")
-                  : getExecutableFileName(locatedGame())}
+                {locatedGame() === undefined ? translateText("locate game") : getExecutableFileName(locatedGame())}
               </button>
             </div>
           </div>
         </div>
 
         <div class="flex  w-[84rem] justify-between max-large:w-[61rem]">
-          <span class="opacity-50">
-            {translateText("right click to empty image selection")}
-          </span>
-          <Show
-            when={SGDBGames() &&
-              selectedDataContext.selectedGameId() === undefined}
-          >
-            <span class="opacity-80">
-              {translateText("select the official name of your game")}
-            </span>
+          <span class="opacity-50">{translateText("right click to empty image selection")}</span>
+          <Show when={SGDBGames() && selectedDataContext.selectedGameId() === undefined}>
+            <span class="opacity-80">{translateText("select the official name of your game")}</span>
           </Show>
         </div>
 
@@ -960,18 +843,14 @@ export function NewGame() {
               <button
                 type="button"
                 onClick={() => {
-                  document.getElementById("SGDBGamesContainer").scrollLeft -=
-                    40;
+                  document.getElementById("SGDBGamesContainer").scrollLeft -= 40;
                 }}
                 class="tooltip-delayed-bottom"
                 data-tooltip={translateText("scroll left")}
               >
                 <ChevronArrow />
               </button>
-              <div
-                id="SGDBGamesContainer"
-                class="SGDBGamesContainer flex gap-[5px] overflow-x-auto scroll-smooth"
-              >
+              <div id="SGDBGamesContainer" class="SGDBGamesContainer flex gap-[5px] overflow-x-auto scroll-smooth">
                 <For each={SGDBGames()}>
                   {(foundGame) => {
                     return (
@@ -993,8 +872,7 @@ export function NewGame() {
               <button
                 type="button"
                 onClick={() => {
-                  document.getElementById("SGDBGamesContainer").scrollLeft +=
-                    40;
+                  document.getElementById("SGDBGamesContainer").scrollLeft += 40;
                 }}
                 class="tooltip-delayed-bottom"
                 data-tooltip={translateText("scroll right")}
