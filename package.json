@@ -13,18 +13,18 @@
   },
   "license": "UNLICENSE",
   "dependencies": {
-    "@tauri-apps/api": "^1.5.1",
-    "solid-js": "^1.7.8"
+    "@tauri-apps/api": "^1.6.0",
+    "solid-js": "^1.9.3"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.5.6",
-    "autoprefixer": "^10.4.16",
+    "@tauri-apps/cli": "^1.6.3",
+    "autoprefixer": "^10.4.20",
     "cross-env": "^7.0.3",
-    "postcss": "^8.4.31",
-    "tailwindcss": "^3.4.4",
-    "vite": "^4.4.4",
-    "vite-plugin-minify": "^1.5.2",
-    "vite-plugin-solid": "^2.7.0"
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "vite": "^6.0.7",
+    "vite-plugin-minify": "^2.1.0",
+    "vite-plugin-solid": "^2.11.0"
   },
-  "packageManager": "pnpm@9.12.3+sha512.cce0f9de9c5a7c95bef944169cc5dfe8741abfb145078c0d508b868056848a87c81e626246cb60967cbd7fd29a6c062ef73ff840d96b3c86c40ac92cf4a813ee"
+  "packageManager": "pnpm@9.15.3"
 }
