@@ -9,7 +9,9 @@
     "serve": "vite preview",
     "tauri": "tauri",
     "windows_build": "cargo tauri build --target x86_64-pc-windows-msvc -- -Z build-std=std,panic_abort -Z build-std-features=panic_immediate_abort",
-    "windows_bundle": ".\\scripts\\windows_bundle.bat"
+    "windows_bundle": ".\\scripts\\windows_bundle.bat",
+    "format": "biome format --write ./src ",
+    "lint": "biome check --fix --unsafe ./src"
   },
   "license": "UNLICENSE",
   "dependencies": {

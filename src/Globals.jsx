@@ -1,9 +1,9 @@
+import { BaseDirectory, createDir, exists, readTextFile, writeTextFile } from "@tauri-apps/api/fs";
+import { appDataDir } from "@tauri-apps/api/path";
+import { invoke } from "@tauri-apps/api/tauri";
 // importing code snippets and library functions
 import { createContext, createSignal } from "solid-js";
 import { createStore, produce } from "solid-js/store";
-import { invoke } from "@tauri-apps/api/tauri";
-import { BaseDirectory, createDir, exists, readTextFile, writeTextFile } from "@tauri-apps/api/fs";
-import { appDataDir } from "@tauri-apps/api/path";
 import { parseVDF } from "./libraries/parseVDF.js";
 
 // importing text snippets for different languages

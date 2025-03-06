@@ -2,16 +2,16 @@
 import {
   ApplicationStateContext,
   GlobalContext,
+  SelectedDataContext,
   locationJoin,
   openDialog,
   openGame,
-  SelectedDataContext,
   translateText,
 } from "../Globals.jsx";
 
+import { convertFileSrc } from "@tauri-apps/api/tauri";
 // importing code snippets and library functions
 import { For, Show, useContext } from "solid-js";
-import { convertFileSrc } from "@tauri-apps/api/tauri";
 
 export function GameCards(props) {
   const globalContext = useContext(GlobalContext);
@@ -51,16 +51,16 @@ export function GameCards(props) {
                     fallback={
                       <div class="relative flex items-center justify-center">
                         <Show when={!globalContext.libraryData.userSettings.gameTitle}>
-                          <span class="absolute z-[100] !max-w-[50%]">{gameName}</span>
+                          <span class="!max-w-[50%] absolute z-[100]">{gameName}</span>
                         </Show>
 
-                        <div class="relative z-10 mb-[7px] aspect-[2/3] w-full bg-[#F1F1F1] group-hover:outline-none group-hover:outline-[2px] group-hover:outline-[#0000001f] dark:bg-[#1C1C1C] dark:group-hover:outline-[#ffffff1f]" />
+                        <div class="relative z-10 mb-[7px] aspect-[2/3] w-full bg-[#F1F1F1] group-hover:outline-none group-hover:outline-[#0000001f] group-hover:outline-[2px] dark:bg-[#1C1C1C] dark:group-hover:outline-[#ffffff1f]" />
                       </div>
                     }
                   >
                     <div class="relative flex items-center justify-center">
                       <img
-                        class="relative z-10 mb-[7px] aspect-[2/3] w-full group-hover:outline-none group-hover:outline-[2px] group-hover:outline-[#0000001f] dark:group-hover:outline-[#ffffff1f]"
+                        class="relative z-10 mb-[7px] aspect-[2/3] w-full group-hover:outline-none group-hover:outline-[#0000001f] group-hover:outline-[2px] dark:group-hover:outline-[#ffffff1f]"
                         src={convertFileSrc(
                           locationJoin([
                             applicationStateContext.appDataDirPath(),
@@ -81,14 +81,14 @@ export function GameCards(props) {
                   fallback={
                     <div class="relative flex items-center justify-center">
                       <Show when={!globalContext.libraryData.userSettings.gameTitle}>
-                        <span class="absolute z-[100] !max-w-[50%]">{gameName}</span>
+                        <span class="!max-w-[50%] absolute z-[100]">{gameName}</span>
                       </Show>
-                      <div class="relative z-10 mb-[7px] aspect-[2/3] w-full bg-[#F1F1F1] outline-none outline-[4px]  outline-[#0000001c] duration-200 motion-reduce:duration-100 hover:outline-[#0000003b] dark:bg-[#1C1C1C] dark:outline-[2px] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b]" />
+                      <div class="relative z-10 mb-[7px] aspect-[2/3] w-full bg-[#F1F1F1] outline-none outline-[#0000001c] outline-[4px] duration-200 hover:outline-[#0000003b] motion-reduce:duration-100 dark:bg-[#1C1C1C] dark:outline-[#ffffff1a] dark:outline-[2px] dark:group-hover:outline-[#ffffff3b]" />
                     </div>
                   }
                 >
                   <img
-                    class="relative z-10 mb-[7px] outline-none outline-[4px] outline-[#0000001c] duration-200 motion-reduce:duration-100 hover:outline-[#0000003b] dark:outline-[2px] dark:outline-[#ffffff1a] dark:group-hover:outline-[#ffffff3b]"
+                    class="relative z-10 mb-[7px] outline-none outline-[#0000001c] outline-[4px] duration-200 hover:outline-[#0000003b] motion-reduce:duration-100 dark:outline-[#ffffff1a] dark:outline-[2px] dark:group-hover:outline-[#ffffff3b]"
                     src={convertFileSrc(
                       locationJoin([
                         applicationStateContext.appDataDirPath(),
@@ -113,7 +113,7 @@ export function GameCards(props) {
                     )}
                     alt=""
                   />
-                  <div class="aspect-[2/3] w-full  bg-[#000] opacity-[0%] dark:bg-[#fff] dark:opacity-[10%]" alt="" />
+                  <div class="aspect-[2/3] w-full bg-[#000] opacity-[0%] dark:bg-[#fff] dark:opacity-[10%]" alt="" />
                 </div>
               </div>
             </Show>

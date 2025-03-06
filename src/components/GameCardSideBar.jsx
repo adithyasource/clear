@@ -2,16 +2,16 @@
 import {
   ApplicationStateContext,
   GlobalContext,
+  SelectedDataContext,
   locationJoin,
   openDialog,
   openGame,
-  SelectedDataContext,
   translateText,
 } from "../Globals.jsx";
 
+import { convertFileSrc } from "@tauri-apps/api/tauri";
 // importing code snippets and library functions
 import { Show, useContext } from "solid-js";
-import { convertFileSrc } from "@tauri-apps/api/tauri";
 
 export function GameCardSideBar(props) {
   const globalContext = useContext(GlobalContext);
@@ -21,8 +21,7 @@ export function GameCardSideBar(props) {
   return (
     <button
       type="button"
-      class={`!flex gap-[5px] bg-transparent sideBarGame cursor-grab p-0
-        ${props.index === 0 ? "mt-4" : "mt-5"}`}
+      class={`!flex sideBarGame cursor-grab gap-[5px] bg-transparent p-0 ${props.index === 0 ? "mt-4" : "mt-5"}`}
       data-tooltip={
         globalContext.libraryData.games[props.gameName].location ? translateText("play") : translateText("no game file")
       }
@@ -57,7 +56,7 @@ export function GameCardSideBar(props) {
             ]),
           )}
           alt=""
-          class="aspect-square h-[16px] gameIconImage"
+          class="gameIconImage aspect-square h-[16px]"
         />
       </Show>
       <span class="text-[#00000080] active:text-[#0000003a] dark:text-[#ffffff80] active:dark:text-[#ffffff3a]">

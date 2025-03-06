@@ -1,5 +1,5 @@
 // importing globals
-import { closeDialog, getData, GlobalContext, translateText, UIContext, updateData } from "../Globals.jsx";
+import { GlobalContext, UIContext, closeDialog, getData, translateText, updateData } from "../Globals.jsx";
 
 // importing code snippets and library functions
 import { createSignal, useContext } from "solid-js";
@@ -30,18 +30,18 @@ export function Notepad() {
           setNotepadValue(globalContext.libraryData.notepad || "");
           uiContext.setShowNotepadModal(false);
         }}
-        class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible"
+        class="!p-0 h-screen w-screen overflow-visible backdrop:bg-transparent"
       >
-        <div class="flex h-screen w-screen items-center justify-center align-middle bg-[#d1d1d166] dark:bg-[#12121266]">
-          <div class="w-[50%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
+        <div class="flex h-screen w-screen items-center justify-center bg-[#d1d1d166] align-middle dark:bg-[#12121266]">
+          <div class="w-[50%] border-2 border-[#1212121f] border-solid bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
             <div class="flex justify-between">
               <div>
-                <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">{translateText("notepad")}</p>
+                <p class="text-[#000000] text-[25px] dark:text-[#ffffff80]">{translateText("notepad")}</p>
               </div>
 
               <button
                 type="button"
-                class="standardButton !w-max aspect-square !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
+                class="standardButton !w-max !gap-0 !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom aspect-square bg-[#E8E8E8] dark:bg-[#232323]"
                 onClick={() => {
                   closeDialog("notepad");
                   getData();

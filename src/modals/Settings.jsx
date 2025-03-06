@@ -1,23 +1,23 @@
 // importing globals
 import {
   ApplicationStateContext,
+  GlobalContext,
+  UIContext,
   closeDialog,
   getData,
-  GlobalContext,
   importSteamGames,
   translateText,
-  UIContext,
   updateData,
 } from "../Globals.jsx";
 
+import { Hotkeys } from "../components/Hotkeys.jsx";
 // importing components
 import { LanguageSelector } from "../components/LanguageSelector.jsx";
-import { Hotkeys } from "../components/Hotkeys.jsx";
 
+import { appDataDir } from "@tauri-apps/api/path";
+import { invoke } from "@tauri-apps/api/tauri";
 // importing code snippets and library functions
 import { Show, useContext } from "solid-js";
-import { invoke } from "@tauri-apps/api/tauri";
-import { appDataDir } from "@tauri-apps/api/path";
 
 // importing style related files
 import { Close, Steam } from "../libraries/Icons.jsx";
@@ -35,18 +35,18 @@ export function Settings() {
           uiContext.setShowSettingsLanguageSelector(false);
           uiContext.setShowSettingsModal(false);
         }}
-        class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible"
+        class="!p-0 h-screen w-screen overflow-visible backdrop:bg-transparent"
       >
-        <div class="flex h-screen w-screen items-center justify-center align-middle bg-[#d1d1d166] dark:bg-[#12121266]">
-          <div class="w-[70%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
+        <div class="flex h-screen w-screen items-center justify-center bg-[#d1d1d166] align-middle dark:bg-[#12121266]">
+          <div class="w-[70%] border-2 border-[#1212121f] border-solid bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
             <div class="flex justify-between">
               <div>
-                <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">{translateText("settings")}</p>
+                <p class="text-[#000000] text-[25px] dark:text-[#ffffff80]">{translateText("settings")}</p>
               </div>
 
               <button
                 type="button"
-                class="standardButton !w-max aspect-square !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
+                class="standardButton !w-max !gap-0 !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom aspect-square bg-[#E8E8E8] dark:bg-[#232323]"
                 onClick={() => {
                   closeDialog("settings");
                   getData();
@@ -130,7 +130,7 @@ export function Settings() {
                 >
                   <div class="relative">
                     <div class="">{translateText("quit after opening game")}</div>
-                    <div class="absolute inset-0 opacity-70 blur-[5px]  ">
+                    <div class="absolute inset-0 opacity-70 blur-[5px] ">
                       {translateText("quit after opening game")}
                     </div>
                   </div>
@@ -185,7 +185,7 @@ export function Settings() {
               <div class="mt-[35px] flex items-start gap-3">
                 <button
                   type="button"
-                  class="standardButton !m-0 flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+                  class="standardButton !m-0 !w-max !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] flex items-center bg-[#E8E8E8] dark:bg-[#232323]"
                   onClick={() => {
                     invoke("open_location", {
                       location: "https://clear.adithya.zip/update",
@@ -202,7 +202,7 @@ export function Settings() {
               <div>
                 <button
                   type="button"
-                  class="standardButton tooltip-bottom !flex !w-max !gap-3 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] "
+                  class="standardButton tooltip-bottom !flex !w-max !gap-3 !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] bg-[#E8E8E8] dark:bg-[#232323] "
                   data-tooltip={translateText("might not work perfectly!")}
                   onClick={() => {
                     if (globalContext.libraryData.folders.steam !== undefined) {
@@ -239,7 +239,7 @@ export function Settings() {
               <div class="flex items-start gap-3">
                 <button
                   type="button"
-                  class="standardButton !m-0 flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+                  class="standardButton !m-0 !w-max !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] flex items-center bg-[#E8E8E8] dark:bg-[#232323]"
                   onClick={async () => {
                     const appDataDirPath = await appDataDir();
 

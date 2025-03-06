@@ -1,17 +1,17 @@
 // importing globals
 import {
   ApplicationStateContext,
+  GlobalContext,
+  UIContext,
   closeDialog,
   closeDialogImmediately,
-  GlobalContext,
   translateText,
   triggerToast,
-  UIContext,
   updateData,
 } from "../Globals.jsx";
 
 // importing code snippets and library functions
-import { createSignal, onMount, Show, useContext } from "solid-js";
+import { Show, createSignal, onMount, useContext } from "solid-js";
 import { produce } from "solid-js/store";
 
 // importing style related files
@@ -91,16 +91,15 @@ export function NewFolder() {
       onClose={() => {
         uiContext.setShowNewFolderModal(false);
       }}
-      class="h-screen w-screen backdrop:bg-transparent !p-0 overflow-visible"
+      class="!p-0 h-screen w-screen overflow-visible backdrop:bg-transparent"
     >
-      <div class="flex h-screen w-screen items-center justify-center align-middle bg-[#d1d1d166] dark:bg-[#12121266]">
-        <div class="w-[60%] border-2 border-solid border-[#1212121f] bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
+      <div class="flex h-screen w-screen items-center justify-center bg-[#d1d1d166] align-middle dark:bg-[#12121266]">
+        <div class="w-[60%] border-2 border-[#1212121f] border-solid bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
           <div
-            class={`flex justify-between
-              ${globalContext.libraryData.userSettings.language !== "en" ? "flex-col large:flex-row" : ""} `}
+            class={`flex justify-between ${globalContext.libraryData.userSettings.language !== "en" ? "large:flex-row flex-col" : ""} `}
           >
             <div>
-              <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">{translateText("add new folder")}</p>
+              <p class="text-[#000000] text-[25px] dark:text-[#ffffff80]">{translateText("add new folder")}</p>
             </div>
             <div class="flex items-center gap-5">
               <button
@@ -120,14 +119,14 @@ export function NewFolder() {
               <button
                 type="button"
                 onClick={addFolder}
-                class="standardButton flex !w-max items-center bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+                class="standardButton !w-max !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] flex items-center bg-[#E8E8E8] dark:bg-[#232323]"
               >
                 {translateText("save")}
                 <SaveDisk />
               </button>
               <button
                 type="button"
-                class="standardButton flex !w-max !h-full items-center !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
+                class="standardButton !w-max !h-full !gap-0 !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom flex items-center bg-[#E8E8E8] dark:bg-[#232323]"
                 onClick={() => {
                   if (showCloseConfirm()) {
                     closeDialog("newFolder");
@@ -141,7 +140,7 @@ export function NewFolder() {
                 data-tooltip={translateText("close")}
               >
                 {showCloseConfirm() ? (
-                  <span class="text-[#FF3636] whitespace-nowrap">{translateText("hit again to confirm")}</span>
+                  <span class="whitespace-nowrap text-[#FF3636]">{translateText("hit again to confirm")}</span>
                 ) : (
                   <Close />
                 )}
@@ -154,7 +153,7 @@ export function NewFolder() {
               type="text"
               name=""
               id=""
-              class="w-full bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+              class="!text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] w-full bg-[#E8E8E8] dark:bg-[#232323]"
               onInput={(e) => {
                 setFolderName(e.currentTarget.value);
               }}

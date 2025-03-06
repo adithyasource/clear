@@ -1,37 +1,37 @@
 // importing globals
 import {
   ApplicationStateContext,
+  GlobalContext,
+  UIContext,
   checkIfConnectedToInternet,
   closeDialogImmediately,
   getData,
-  GlobalContext,
   importSteamGames,
   openDialog,
   toggleSideBar,
   translateText,
   triggerToast,
-  UIContext,
   updateData,
 } from "./Globals.jsx";
 
 // importing components
 import { SideBar } from "./SideBar.jsx";
+import { GameCards } from "./components/GameCards.jsx";
+import { Hotkeys } from "./components/Hotkeys.jsx";
+import { LanguageSelector } from "./components/LanguageSelector.jsx";
+import { ChevronArrows, EmptyTray, Steam } from "./libraries/Icons.jsx";
 import { EditFolder } from "./modals/EditFolder.jsx";
 import { EditGame } from "./modals/EditGame.jsx";
 import { GamePopUp } from "./modals/GamePopUp.jsx";
+import { Loading } from "./modals/Loading.jsx";
 import { NewFolder } from "./modals/NewFolder.jsx";
 import { NewGame } from "./modals/NewGame.jsx";
 import { Notepad } from "./modals/Notepad.jsx";
 import { Settings } from "./modals/Settings.jsx";
-import { Loading } from "./modals/Loading.jsx";
-import { ChevronArrows, EmptyTray, Steam } from "./libraries/Icons.jsx";
-import { GameCards } from "./components/GameCards.jsx";
-import { LanguageSelector } from "./components/LanguageSelector.jsx";
-import { Hotkeys } from "./components/Hotkeys.jsx";
 
-// importing code snippets and library functions
-import { createEffect, For, Match, onMount, Show, Switch, useContext } from "solid-js";
 import { invoke } from "@tauri-apps/api/tauri";
+// importing code snippets and library functions
+import { For, Match, Show, Switch, createEffect, onMount, useContext } from "solid-js";
 import { fuzzysearch } from "./libraries/fuzzysearch.js";
 
 // importing style related files
@@ -351,7 +351,7 @@ function App() {
         >
           <button
             type="button"
-            class="!absolute right-[31px] top-[32px] z-20 w-[25.25px] cursor-pointer p-2 duration-150 motion-reduce:duration-0 hover:bg-[#D6D6D6] dark:hover:bg-[#232323] tooltip-delayed-left"
+            class="!absolute tooltip-delayed-left top-[32px] right-[31px] z-20 w-[25.25px] cursor-pointer p-2 duration-150 hover:bg-[#D6D6D6] motion-reduce:duration-0 dark:hover:bg-[#232323]"
             onClick={() => {
               toggleSideBar();
             }}
@@ -373,12 +373,11 @@ function App() {
           }
         >
           <div
-            class={`absolute flex h-[100vh] w-full flex-col items-center justify-center overflow-y-scroll py-[20px] pr-[30px]
-              ${
-                globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
-                  ? "pl-[23%] large:pl-[17%]"
-                  : "pl-[30px] large:pl-[30px]"
-              }`}
+            class={`absolute flex h-[100vh] w-full flex-col items-center justify-center overflow-y-scroll py-[20px] pr-[30px] ${
+              globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
+                ? "large:pl-[17%] pl-[23%]"
+                : "large:pl-[30px] pl-[30px]"
+            }`}
           >
             <div class="!z-50">
               <p class="text-[#000000] dark:text-[#ffffff80]">
@@ -394,7 +393,7 @@ function App() {
               <div class="mt-[35px] flex gap-6">
                 <button
                   type="button"
-                  class="standardButton tooltip-bottom !flex !w-max !gap-3 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+                  class="standardButton tooltip-bottom !flex !w-max !gap-3 !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] bg-[#E8E8E8] dark:bg-[#232323]"
                   data-tooltip={translateText("might not work perfectly!")}
                   onClick={() => {
                     if (globalContext.libraryData.folders.steam !== undefined) {
@@ -435,12 +434,11 @@ function App() {
           </div>
         </Show>
         <div
-          class={`absolute h-[100vh] w-full overflow-y-scroll !rounded-[0px] py-[20px] pr-[30px]
-            ${
-              globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
-                ? "pl-[23%] large:pl-[17%]"
-                : "pl-[30px] large:pl-[30px]"
-            }`}
+          class={`!rounded-[0px] absolute h-[100vh] w-full overflow-y-scroll py-[20px] pr-[30px] ${
+            globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
+              ? "large:pl-[17%] pl-[23%]"
+              : "large:pl-[30px] pl-[30px]"
+          }`}
         >
           <Show
             when={applicationStateContext.searchValue() === "" || applicationStateContext.searchValue() === undefined}
@@ -453,14 +451,13 @@ function App() {
                   <Show when={folder.games !== "" && !folder.hide}>
                     <div class="mb-[40px]">
                       <Show when={globalContext.libraryData.userSettings.folderTitle}>
-                        <p class="text-[25px] text-[#000000] dark:text-[#ffffff80]">{folder.name}</p>
+                        <p class="text-[#000000] text-[25px] dark:text-[#ffffff80]">{folder.name}</p>
                       </Show>
                       <div
-                        class={`foldersDiv mt-4 grid gap-5
-                          ${returnGridStyleForGameCard(
-                            globalContext.libraryData.userSettings.zoomLevel,
-                            globalContext.libraryData.userSettings.showSideBar,
-                          )}`}
+                        class={`foldersDiv mt-4 grid gap-5 ${returnGridStyleForGameCard(
+                          globalContext.libraryData.userSettings.zoomLevel,
+                          globalContext.libraryData.userSettings.showSideBar,
+                        )}`}
                       >
                         <GameCards gamesList={folder.games} />
                       </div>
@@ -497,17 +494,16 @@ function App() {
               return (
                 <div>
                   <div
-                    class={`foldersDiv mt-4 grid gap-5
-                      ${returnGridStyleForGameCard(
-                        globalContext.libraryData.userSettings.zoomLevel,
-                        globalContext.libraryData.userSettings.showSideBar,
-                      )}`}
+                    class={`foldersDiv mt-4 grid gap-5 ${returnGridStyleForGameCard(
+                      globalContext.libraryData.userSettings.zoomLevel,
+                      globalContext.libraryData.userSettings.showSideBar,
+                    )}`}
                   >
                     <GameCards gamesList={searchResults} />
                   </div>
                   <div class="items-center">
                     <Show when={searchResults.length === 0}>
-                      <div class="flex h-[calc(100vh-100px)]  w-full items-center justify-center gap-3 align-middle">
+                      <div class="flex h-[calc(100vh-100px)] w-full items-center justify-center gap-3 align-middle">
                         <EmptyTray />
                         {translateText("no games found")}
                       </div>

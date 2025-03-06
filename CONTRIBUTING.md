@@ -92,4 +92,7 @@ install biome globally by using ```npm install -g @biomejs/biome``` and setup
 up biome for
 [neovim (with lspconfig)](https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#biome),
 [vscode](https://marketplace.visualstudio.com/items?itemName=biomejs.biome)
-or [zed](https://biomejs.dev/reference/zed/)
+or [zed](https://biomejs.dev/reference/zed/)\
+\
+make sure to format and lint the code before commiting, either by using your
+editor's features or by running  ```npm lint``` and ```npm format```

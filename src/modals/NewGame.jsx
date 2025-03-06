@@ -1,25 +1,25 @@
 // importing globals
 import {
   ApplicationStateContext,
+  GlobalContext,
+  SelectedDataContext,
+  UIContext,
   closeDialog,
   closeDialogImmediately,
   generateRandomString,
   getExecutableFileName,
-  GlobalContext,
   locationJoin,
   openDialog,
-  SelectedDataContext,
   translateText,
   triggerToast,
-  UIContext,
   updateData,
 } from "../Globals.jsx";
 
-// importing code snippets and library functions
-import { createSignal, For, Match, onMount, Show, Switch, useContext } from "solid-js";
-import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
-import { BaseDirectory, copyFile } from "@tauri-apps/api/fs";
 import { open } from "@tauri-apps/api/dialog";
+import { BaseDirectory, copyFile } from "@tauri-apps/api/fs";
+import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
+// importing code snippets and library functions
+import { For, Match, Show, Switch, createSignal, onMount, useContext } from "solid-js";
 import { produce } from "solid-js/store";
 
 // importing style related files
@@ -339,12 +339,12 @@ export function NewGame() {
       onClose={() => {
         uiContext.setShowNewGameModal(false);
       }}
-      class="backdrop:bg-transparent !p-0 overflow-visible"
+      class="!p-0 overflow-visible backdrop:bg-transparent"
     >
       <div class="flex h-screen w-screen flex-col items-center justify-center gap-3 bg-[#d1d1d1cc] dark:bg-[#121212cc]">
         <div class="flex w-[84rem] justify-between max-large:w-[61rem]">
           <div>
-            <p class="text-[25px] text-[#00000080] dark:text-[#ffffff80]">{translateText("add new game")}</p>
+            <p class="text-[#00000080] text-[25px] dark:text-[#ffffff80]">{translateText("add new game")}</p>
           </div>
           <div class="flex items-center gap-4">
             <button
@@ -357,14 +357,14 @@ export function NewGame() {
               <Show when={favouriteGame()} fallback={<div class="!w-max">{translateText("favourite")}</div>}>
                 <div class="relative">
                   <div class="!w-max">{translateText("favourite")}</div>
-                  <div class="absolute inset-0 !w-max opacity-70 blur-[5px]">{translateText("favourite")}</div>
+                  <div class="!w-max absolute inset-0 opacity-70 blur-[5px]">{translateText("favourite")}</div>
                 </div>
               </Show>
             </button>
             <button
               type="button"
               onClick={addGame}
-              class="standardButton flex items-center gap-1 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] "
+              class="standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] flex items-center gap-1 bg-[#E8E8E8] dark:bg-[#232323] "
             >
               <p class="!w-max">{translateText("save")}</p>
 
@@ -372,7 +372,7 @@ export function NewGame() {
             </button>
             <button
               type="button"
-              class="standardButton flex items-center !w-max !h-full !gap-0 bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom"
+              class="standardButton !w-max !h-full !gap-0 !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom flex items-center bg-[#E8E8E8] dark:bg-[#232323]"
               onClick={() => {
                 if (showCloseConfirm()) {
                   closeDialog("newGame");
@@ -386,7 +386,7 @@ export function NewGame() {
               data-tooltip={translateText("close")}
             >
               {showCloseConfirm() ? (
-                <span class="text-[#FF3636] whitespace-nowrap">{translateText("hit again to confirm")}</span>
+                <span class="whitespace-nowrap text-[#FF3636]">{translateText("hit again to confirm")}</span>
               ) : (
                 <Close />
               )}
@@ -439,7 +439,7 @@ export function NewGame() {
               setLocatedGridImage(undefined);
               setFoundGridImage(undefined);
             }}
-            class="aspect-[2/3] h-[400px] cursor-pointer overflow-hidden bg-[#f1f1f1] dark:bg-[#1c1c1c] tooltip-center max-large:h-[300px] p-0"
+            class="tooltip-center aspect-[2/3] h-[400px] cursor-pointer overflow-hidden bg-[#f1f1f1] p-0 max-large:h-[300px] dark:bg-[#1c1c1c]"
             data-tooltip={
               foundGridImage()
                 ? showGridImageLoading() === false
@@ -513,7 +513,7 @@ export function NewGame() {
                   setLocatedHeroImage(undefined);
                   setFoundHeroImage(undefined);
                 }}
-                class="aspect-[67/26] h-[350px] cursor-pointer bg-[#f1f1f1] p-0 dark:bg-[#1c1c1c] max-large:h-[250px] tooltip-center"
+                class="tooltip-center aspect-[67/26] h-[350px] cursor-pointer bg-[#f1f1f1] p-0 max-large:h-[250px] dark:bg-[#1c1c1c]"
                 data-tooltip={
                   foundHeroImage()
                     ? showHeroImageLoading() === false
@@ -534,7 +534,7 @@ export function NewGame() {
                           "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                   }
                   alt=""
-                  class={`w-full h-full aspect-[96/31] ${showHeroImageLoading() ? "opacity-0" : ""}`}
+                  class={`aspect-[96/31] h-full w-full ${showHeroImageLoading() ? "opacity-0" : ""}`}
                   onLoad={() => {
                     setShowHeroImageLoading(false);
                   }}
@@ -552,7 +552,7 @@ export function NewGame() {
                     setShowHeroImageLoading(false);
                   }}
                   alt=""
-                  class="w-full h-full absolute inset-0 -z-10 aspect-[96/31] opacity-[0.4] blur-[80px]"
+                  class="-z-10 absolute inset-0 aspect-[96/31] h-full w-full opacity-[0.4] blur-[80px]"
                 />
               </button>
 
@@ -600,12 +600,11 @@ export function NewGame() {
                     }
                   }
                 }}
-                class={`bottom-[70px] left-[20px] !absolute z-[100] h-[90px] w-[250px] !p-[2px] cursor-pointer max-large:h-[90px] max-large:w-[243px] tooltip-center
-                  ${
-                    foundLogoImage() || locatedLogo()
-                      ? "hover:outline-dashed !outline-[2px] !outline-[#E8E8E880] !outline:dark:bg-[#27272780] hover:bg-[#E8E8E84D] hover:dark:bg-[#2727274D] focus:bg-[#E8E8E84D] focus:dark:bg-[#2727274D]"
-                      : "bg-[#E8E8E8] dark:!bg-[#272727]"
-                  }
+                class={`!absolute !p-[2px] tooltip-center bottom-[70px] left-[20px] z-[100] h-[90px] w-[250px] cursor-pointer max-large:h-[90px] max-large:w-[243px] ${
+                  foundLogoImage() || locatedLogo()
+                    ? "!outline-[2px] !outline-[#E8E8E880] hover:bg-[#E8E8E84D] hover:outline-dashed focus:bg-[#E8E8E84D] !outline:dark:bg-[#27272780] focus:dark:bg-[#2727274D] hover:dark:bg-[#2727274D]"
+                    : "dark:!bg-[#272727] bg-[#E8E8E8]"
+                }
                     `}
                 data-tooltip={
                   foundLogoImage()
@@ -627,7 +626,7 @@ export function NewGame() {
                           "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                   }
                   alt=""
-                  class={`!object-scale-down w-full h-full  ${showLogoImageLoading() ? "opacity-0" : ""}`}
+                  class={`!object-scale-down h-full w-full ${showLogoImageLoading() ? "opacity-0" : ""}`}
                   onLoad={() => {
                     setShowLogoImageLoading(false);
                   }}
@@ -680,12 +679,11 @@ export function NewGame() {
                     }
                   }
                 }}
-                class={`group relative p-0 tooltip-bottom 
-                  ${
-                    foundIconImage() || locatedIcon()
-                      ? "hover:outline-dashed !outline-[2px] !outline-[#E8E8E880] !outline:dark:bg-[#27272780]"
-                      : "bg-[#E8E8E8] dark:!bg-[#272727]"
-                  }`}
+                class={`group tooltip-bottom relative p-0 ${
+                  foundIconImage() || locatedIcon()
+                    ? "!outline-[2px] !outline-[#E8E8E880] hover:outline-dashed !outline:dark:bg-[#27272780]"
+                    : "dark:!bg-[#272727] bg-[#E8E8E8]"
+                }`}
                 data-tooltip={
                   foundIconImage()
                     ? showIconImageLoading() === false
@@ -706,8 +704,7 @@ export function NewGame() {
                           "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                   }
                   alt=""
-                  class={`!object-scale-down h-[40px] w-[40px]
-                    ${showIconImageLoading() ? "opacity-0" : ""}`}
+                  class={`!object-scale-down h-[40px] w-[40px] ${showIconImageLoading() ? "opacity-0" : ""}`}
                   onLoad={() => {
                     setShowIconImageLoading(false);
                   }}
@@ -733,7 +730,7 @@ export function NewGame() {
                 />
                 <button
                   type="button"
-                  class="standardButton !mr-2 !mt-0 !w-max cursor-pointer bg-[#f1f1f1] px-3 py-1 !text-black text-[#ffffff80] hover:!bg-[#d6d6d6] dark:!bg-[#1c1c1c] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+                  class="standardButton !mr-2 !mt-0 !w-max !text-black hover:!bg-[#d6d6d6] dark:!bg-[#1c1c1c] dark:!text-white dark:hover:!bg-[#2b2b2b] cursor-pointer bg-[#f1f1f1] px-3 py-1 text-[#ffffff80]"
                   onClick={() => {
                     if (gameName() === "" || gameName() === undefined) {
                       triggerToast(translateText("no game name"));
@@ -775,7 +772,7 @@ export function NewGame() {
                 </button>
                 <button
                   type="button"
-                  class="standardButton !mr-2 !mt-0 !w-max cursor-pointer bg-[#f1f1f1] px-3 py-1 !text-black text-[#ffffff80] hover:!bg-[#d6d6d6] dark:bg-[#1c1c1c] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+                  class="standardButton !mr-2 !mt-0 !w-max !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] cursor-pointer bg-[#f1f1f1] px-3 py-1 text-[#ffffff80] dark:bg-[#1c1c1c]"
                   onClick={() => {
                     gameName() === undefined
                       ? invoke("open_location", {
@@ -822,7 +819,7 @@ export function NewGame() {
                 onContextMenu={() => {
                   setlocatedGame(undefined);
                 }}
-                class="standardButton !mt-0 !w-max bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+                class="standardButton !mt-0 !w-max !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] bg-[#E8E8E8] dark:bg-[#232323]"
               >
                 {locatedGame() === undefined ? translateText("locate game") : getExecutableFileName(locatedGame())}
               </button>
@@ -830,7 +827,7 @@ export function NewGame() {
           </div>
         </div>
 
-        <div class="flex  w-[84rem] justify-between max-large:w-[61rem]">
+        <div class="flex w-[84rem] justify-between max-large:w-[61rem]">
           <span class="opacity-50">{translateText("right click to empty image selection")}</span>
           <Show when={SGDBGames() && selectedDataContext.selectedGameId() === undefined}>
             <span class="opacity-80">{translateText("select the official name of your game")}</span>
@@ -839,7 +836,7 @@ export function NewGame() {
 
         <Show when={SGDBGames()}>
           <Show when={selectedDataContext.selectedGameId() === undefined}>
-            <div class="gameInput flex w-[84rem] bg-[#E8E8E8cc] backdrop-blur-[10px] dark:bg-[#272727cc] max-large:w-[61rem]">
+            <div class="gameInput flex w-[84rem] bg-[#E8E8E8cc] backdrop-blur-[10px] max-large:w-[61rem] dark:bg-[#272727cc]">
               <button
                 type="button"
                 onClick={() => {

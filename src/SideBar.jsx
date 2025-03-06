@@ -1,14 +1,14 @@
 // importing globals
 import {
   ApplicationStateContext,
-  getData,
   GlobalContext,
-  openDialog,
   SelectedDataContext,
+  UIContext,
+  getData,
+  openDialog,
   toggleSideBar,
   translateText,
   triggerToast,
-  UIContext,
   updateData,
 } from "./Globals.jsx";
 
@@ -16,7 +16,7 @@ import {
 import { GameCardSideBar } from "./components/GameCardSideBar.jsx";
 
 // importing code snippets and library functions
-import { createSignal, For, onMount, Show, useContext } from "solid-js";
+import { For, Show, createSignal, onMount, useContext } from "solid-js";
 import { produce } from "solid-js/store";
 
 // importing style related files
@@ -286,7 +286,7 @@ export function SideBar() {
                 type="text"
                 id="searchInput"
                 name=""
-                class="w-full bg-[#E8E8E8] text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:text-white dark:hover:!bg-[#2b2b2b]"
+                class="hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] w-full bg-[#E8E8E8] text-black dark:bg-[#232323] dark:text-white"
                 placeholder={translateText("search")}
                 onInput={(e) => {
                   applicationStateContext.setSearchValue(e.currentTarget.value);
@@ -295,7 +295,7 @@ export function SideBar() {
             </form>
             <button
               type="button"
-              class="w-[28px] cursor-pointer p-2 duration-150 motion-reduce:duration-0 hover:bg-[#D6D6D6] dark:hover:bg-[#232323] tooltip-delayed-bottom"
+              class="tooltip-delayed-bottom w-[28px] cursor-pointer p-2 duration-150 hover:bg-[#D6D6D6] motion-reduce:duration-0 dark:hover:bg-[#232323]"
               onClick={() => {
                 toggleSideBar();
               }}
@@ -313,7 +313,7 @@ export function SideBar() {
           <Show when={showContentSkipButton()}>
             <button
               type="button"
-              class="standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+              class="standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] mt-[12px] bg-[#E8E8E8] dark:bg-[#232323]"
               onClick={() => {
                 setShowContentSkipButton(false);
 
@@ -342,12 +342,11 @@ export function SideBar() {
 
           <div
             id="sideBarFolders"
-            class={`overflow-auto mt-[20px]
-              ${
-                globalContext.libraryData.userSettings.language === "fr"
-                  ? "medium:h-[calc(100vh-330px)] large:h-[calc(100vh-275px)]"
-                  : "h-[calc(100vh-275px)]"
-              } `}
+            class={`mt-[20px] overflow-auto ${
+              globalContext.libraryData.userSettings.language === "fr"
+                ? "large:h-[calc(100vh-275px)] medium:h-[calc(100vh-330px)]"
+                : "h-[calc(100vh-275px)]"
+            } `}
             // drag over and drop are triggered when folders inside are dragged over and dropped in the sidebar
             onDragOver={(e) => {
               folderContainerDragOverHandler(e);
@@ -364,7 +363,7 @@ export function SideBar() {
 
                 return (
                   <div
-                    class="sideBarFolder bg-[#f1f1f1] !py-2 dark:bg-[#1c1c1c]"
+                    class="sideBarFolder !py-2 bg-[#f1f1f1] dark:bg-[#1c1c1c]"
                     id={folderName}
                     draggable={true}
                     // drag start and drag end are triggered when the folder itself is dragged
@@ -401,7 +400,7 @@ export function SideBar() {
 
                       <button
                         type="button"
-                        class="w-[25.25px] p-2 duration-150 motion-reduce:duration-0 hover:bg-[#D6D6D6] dark:hover:bg-[#232323] tooltip-delayed-bottom"
+                        class="tooltip-delayed-bottom w-[25.25px] p-2 duration-150 hover:bg-[#D6D6D6] motion-reduce:duration-0 dark:hover:bg-[#232323]"
                         onClick={() => {
                           openDialog("editFolder");
                           selectedDataContext.setSelectedFolder(folder);
@@ -482,7 +481,7 @@ export function SideBar() {
           <div class="">
             <button
               type="button"
-              class="standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+              class="standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] mt-[12px] bg-[#E8E8E8] dark:bg-[#232323]"
               onClick={() => {
                 openDialog("newGame");
               }}
@@ -494,7 +493,7 @@ export function SideBar() {
             </button>
             <button
               type="button"
-              class="standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+              class="standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] mt-[12px] bg-[#E8E8E8] dark:bg-[#232323]"
               onClick={() => {
                 openDialog("newFolder");
               }}
@@ -507,16 +506,15 @@ export function SideBar() {
           </div>
 
           <div
-            class={`flex
-              ${
-                globalContext.libraryData.userSettings.language === "fr"
-                  ? "flex-col gap-0 medium:flex-col medium:gap-0 large:flex-row large:gap-3"
-                  : "gap-3"
-              }`}
+            class={`flex ${
+              globalContext.libraryData.userSettings.language === "fr"
+                ? "large:flex-row flex-col medium:flex-col gap-0 large:gap-3 medium:gap-0"
+                : "gap-3"
+            }`}
           >
             <button
               type="button"
-              class={`standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b] ${
+              class={`standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] mt-[12px] bg-[#E8E8E8] dark:bg-[#232323] ${
                 uiContext.showNewVersionAvailable() ? "!w-[80%]" : ""
               } whitespace-nowrap`}
               onClick={() => {
@@ -530,7 +528,7 @@ export function SideBar() {
             </button>
             <button
               type="button"
-              class="standardButton mt-[12px] bg-[#E8E8E8] !text-black hover:!bg-[#d6d6d6] dark:bg-[#232323] dark:!text-white dark:hover:!bg-[#2b2b2b]"
+              class="standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] mt-[12px] bg-[#E8E8E8] dark:bg-[#232323]"
               onClick={() => {
                 openDialog("settings");
               }}

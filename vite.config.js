@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
-import solidPlugin from "vite-plugin-solid";
 import { ViteMinifyPlugin } from "vite-plugin-minify";
+import solidPlugin from "vite-plugin-solid";
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
