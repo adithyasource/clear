@@ -357,7 +357,7 @@ function App() {
             }}
             data-tooltip={translateText("open sidebar")}
           >
-            <ChevronArrows class="rotate-180" />
+            <ChevronArrows classProp="rotate-180" />
           </button>
         </Show>
         <Show

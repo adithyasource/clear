@@ -3,9 +3,9 @@
 // INFO use <title /> when no text equivalent is present
 // INFO else use aria-hidden="true" to hide from assistive technologies
 
-export function ChevronArrows() {
+export function ChevronArrows({ classProp }) {
   return (
-    <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class={classProp}>
       <path
         d="M6 11L1 6L6 1"
         class="stroke-[#00000080] dark:stroke-[#ffffff80] "
