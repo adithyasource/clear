@@ -47,6 +47,8 @@ export function GamePopUp() {
         />
         <div class="relative">
           <div class="absolute right-[30px] bottom-[30px] flex gap-[15px]">
+            <button type="button" class="invisible-button-gamepopup pointer-events-none" />
+
             <Show
               when={selectedDataContext.selectedGame().location}
               fallback={

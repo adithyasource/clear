@@ -422,7 +422,7 @@ body.user-is-tabbing {
   border-top-right-radius: 0;
 }
 
-body.user-is-tabbing button:focus,
+body.user-is-tabbing button:not(.invisible-button-gamepopup):focus,
 body.user-is-tabbing input:focus,
 body.user-is-tabbing select:focus {
   outline: 1px solid var(--outline-color);
