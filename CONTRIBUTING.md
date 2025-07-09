@@ -94,5 +94,5 @@ up biome for
 [vscode](https://marketplace.visualstudio.com/items?itemName=biomejs.biome)
 or [zed](https://biomejs.dev/reference/zed/)\
 \
-make sure to format and lint the code before commiting, either by using your
+make sure to format and lint the code before committing, either by using your
 editor's features or by running  ```npm lint``` and ```npm format```
