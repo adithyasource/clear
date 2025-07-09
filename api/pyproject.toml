@@ -1,0 +1,11 @@
+[project]
+name = "clear-api"
+version = "0.1.0"
+description = "middleware api for clear"
+requires-python = ">=3.13"
+dependencies = [
+    "dotenv>=0.9.9",
+    "flask>=3.1.1",
+    "requests>=2.32.4",
+    "waitress>=3.0.2",
+]

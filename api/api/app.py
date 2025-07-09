@@ -1,9 +1,9 @@
-import requests
-from flask import Flask, jsonify
-from flask import request
 import json
 import os
+
+import requests
 from dotenv import load_dotenv
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
@@ -69,7 +69,7 @@ def handleRequest():
         )
         return response
 
-    # ? Get links to a game's grids, heros, logos and icons using the game's SGDB ID
+    # ? Get links to a game's grids, heroes, logos and icons using the game's SGDB ID
 
     if request.args.get("assets"):
         gameID = str(request.args.get("assets"))
