@@ -14,22 +14,53 @@
 
 ## feedback
 
-if there are any features or bug fixes you'd like to suggest, please open a new
-issue in the "Issue" tab.
+if there are any features or bug fixes you'd like to suggest, please open a new [issue](https://github.com/adithyasource/clear/issues)
 
 ## getting started
 
-in order to set up your dev environment, you need to have nodejs, npm and rust
-installed\
+<p>dev requirements for the project</p>
+<table>
+    <tbody>
+        <tr>
+            <th>app/website</th>
+            <td><a href="https://nodejs.org/en" target="_blank">nodejs</a></td>
+            <td><a href="https://pnpm.io/installation" target="_blank">pnpm</a></td>
+            <td><a href="https://www.rust-lang.org/tools/install" target="_blank">rust</a></td>
+        </tr>
+        <tr>
+            <th>api</th>
+            <td><a href="https://docs.astral.sh/uv/getting-started/installation/" target="_blank">uv</a></td>
+        </tr>
+    </tbody>
+</table>
+
 when that is done you can run the code in development mode, by doing the
 following:
 
-- ```git clone https://github.com/adithyasource/clear```
-- ```cd clear```
-- ```npm install```
-- ```npm run tauri dev```
+- `git clone https://github.com/adithyasource/clear`
+- `cd clear`
+- `pnpm install`
+- `pnpm run tauri dev`
 
-to build the app, you can run `npm run tauri build`
+to build the app, you can run `pnpm run tauri build`
+
+<details>
+  <summary>website</summary>
+  <ul>
+    <li><code>cd website</code></li>
+    <li><code>pnpm install</code></li>
+    <li><code>pnpm run dev</code> or <code>pnpm run build</code> <em>(to compile tailwind)</em></li>
+  </ul>
+</details>
+
+<details>
+  <summary>api</summary>
+  <ul>
+    <li><code>cd api</code></li>
+    <li><code>uv sync</code></li>
+    <li><code>uv run api/app.py</code></li>
+  </ul>
+</details>
 
 ## contributing
 
@@ -101,27 +132,30 @@ after which you can create a pull request.\
 if you find any bugs, you can always open a
 [new issue](https://github.com/adithyasource/clear/issues) or fix the bug
 yourself!
-    
+
 </details>
 
 <details>
 
 <summary>formatting and linting</summary>
 
-the project uses the [biome](https://biomejs.dev/) toolchain in order
-to format and lint code. make sure that it is installed and set up in your
-editor.\
-\
-install biome globally by using ```npm install -g @biomejs/biome``` and setup
-up biome for
-[neovim (with lspconfig)](https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#biome),
-[vscode](https://marketplace.visualstudio.com/items?itemName=biomejs.biome)
-or [zed](https://biomejs.dev/reference/zed/)\
-\
-make sure to format and lint the code before committing, either by using your
-editor's features or by running  ```npm lint``` and ```npm format```
+<p>required editor tools</p>
+<table>
+    <tbody>
+        <tr>
+            <th>app/website</th>
+            <td><a href="https://biomejs.dev/guides/getting-started/" target="_blank">biome</a></td>
+        </tr>
+        <tr>
+            <th>api</th>
+            <td><a href="https://docs.astral.sh/ruff/installation/" target="_blank">ruff</a></td>
+            <td><a href="https://docs.astral.sh/ty/installation/" target="_blank">ty</a></td>
+        </tr>
+    </tbody>
+</table>
 
-    
+make sure to format and lint the code before committing, either by using your editor's features or by running `pnpm lint` and `pnpm format` for app code or `ruff check` and `ruff format` for api code
+
 </details>
 
 ## api
@@ -153,8 +187,7 @@ editor's features or by running  ```npm lint``` and ```npm format```
   ```
   /?version=put_any_string_here_since_it_doesnt_get_read
   ```
-</details>
-
+  </details>
 
 ## acknowledgments
 
