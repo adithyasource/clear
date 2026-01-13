@@ -1,0 +1,10 @@
+node_modules
+dist
+z
+*.exe
+.env
+.env*
+upx.exe
+builds
+log
+**/.DS_Store
