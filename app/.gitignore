@@ -2,8 +2,8 @@ node_modules
 dist
 z
 *.exe
-.env
-.env*
+.env.development
+.env.production
 upx.exe
 builds
 log
