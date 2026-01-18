@@ -305,6 +305,13 @@ export async function importSteamGames() {
 
     gameData = await gameData.json();
 
+    console.log(gameData);
+
+    if (!gameData.success) {
+      setTotalImportedSteamGames((x) => x + 1);
+      continue;
+    }
+
     const gameSGDBID = gameData.data.id;
     const name = gameData.data.name;
     allGameNames.push(name);

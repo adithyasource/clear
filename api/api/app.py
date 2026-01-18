@@ -88,11 +88,12 @@ def handleRequest():
             ).content
         )
 
-        if length == "1":
-            gridImageLinks.append(gridImageData["data"][0]["thumb"])
-        else:
-            for x in gridImageData["data"]:
-                gridImageLinks.append(x["thumb"])
+        if gridImageData.get("data"):
+            if length == "1":
+                gridImageLinks.append(gridImageData["data"][0]["thumb"])
+            else:
+                for x in gridImageData["data"]:
+                    gridImageLinks.append(x["thumb"])
 
         heroImageData = json.loads(
             requests.get(
@@ -102,11 +103,12 @@ def handleRequest():
             ).content
         )
 
-        if length == "1":
-            heroImageLinks.append(heroImageData["data"][0]["thumb"])
-        else:
-            for x in heroImageData["data"]:
-                heroImageLinks.append(x["thumb"])
+        if heroImageData.get("data"):
+            if length == "1":
+                heroImageLinks.append(heroImageData["data"][0]["thumb"])
+            else:
+                for x in heroImageData["data"]:
+                    heroImageLinks.append(x["thumb"])
 
         logoImageData = json.loads(
             requests.get(
@@ -116,11 +118,12 @@ def handleRequest():
             ).content
         )
 
-        if length == "1":
-            logoImageLinks.append(logoImageData["data"][0]["thumb"])
-        else:
-            for x in logoImageData["data"]:
-                logoImageLinks.append(x["thumb"])
+        if logoImageData.get("data"):
+            if length == "1":
+                logoImageLinks.append(logoImageData["data"][0]["thumb"])
+            else:
+                for x in logoImageData["data"]:
+                    logoImageLinks.append(x["thumb"])
 
         iconImageData = json.loads(
             requests.get(
@@ -130,11 +133,12 @@ def handleRequest():
             ).content
         )
 
-        if length == "1":
-            iconImageLinks.append(iconImageData["data"][0]["thumb"])
-        else:
-            for x in iconImageData["data"]:
-                iconImageLinks.append(x["thumb"])
+        if iconImageData.get("data"):
+            if length == "1":
+                iconImageLinks.append(iconImageData["data"][0]["thumb"])
+            else:
+                for x in iconImageData["data"]:
+                    iconImageLinks.append(x["thumb"])
 
         allImages = {
             "grids": gridImageLinks,
