@@ -12,10 +12,17 @@ load_dotenv()
 AUTH_TOKEN = os.getenv("AUTH_TOKEN")
 FLASK_ENV = os.getenv("FLASK_ENV")
 
-if FLASK_ENV == "development":
-    dataAccessURL = "*"
-elif FLASK_ENV == "production":
-    dataAccessURL = "https://tauri.localhost"
+
+def getCORSURL(request, response):
+    if FLASK_ENV == "development":
+        return "*"
+
+    allowedOrigins = {"https://tauri.localhost", "tauri://localhost"}
+
+    origin = request.headers.get("Origin")
+
+    if origin in allowedOrigins:
+        return origin
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -29,7 +36,7 @@ def handleRequest():
         response = jsonify({"clearVersion": "1.0.0"})
         response.headers.add(
             "Access-Control-Allow-Origin",
-            dataAccessURL,
+            getCORSURL(request, response),
         )
         return response
 
@@ -47,7 +54,7 @@ def handleRequest():
         response = jsonify(json.loads(gameData))
         response.headers.add(
             "Access-Control-Allow-Origin",
-            dataAccessURL,
+            getCORSURL(request, response),
         )
         return response
 
@@ -65,7 +72,7 @@ def handleRequest():
         response = jsonify(json.loads(gameData))
         response.headers.add(
             "Access-Control-Allow-Origin",
-            dataAccessURL,
+            getCORSURL(request, response),
         )
         return response
 
@@ -150,7 +157,7 @@ def handleRequest():
         response = jsonify(allImages)
         response.headers.add(
             "Access-Control-Allow-Origin",
-            dataAccessURL,
+            getCORSURL(request, response),
         )
         return response
 
@@ -249,7 +256,7 @@ def handleRequest():
         response = jsonify(allImages)
         response.headers.add(
             "Access-Control-Allow-Origin",
-            dataAccessURL,
+            getCORSURL(request, response),
         )
         return response
 
@@ -269,7 +276,7 @@ def handleRequest():
         response = jsonify({"image": imageFileBytes})
         response.headers.add(
             "Access-Control-Allow-Origin",
-            dataAccessURL,
+            getCORSURL(request, response),
         )
         return response
 
