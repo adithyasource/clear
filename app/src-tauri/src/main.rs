@@ -98,12 +98,9 @@ fn read_steam_vdf() -> String {
 }
 
 #[tauri::command]
-async fn show_window(window: Window) {
-    window
-        .get_window("main")
-        .expect("no window labeled 'main' found")
-        .show()
-        .unwrap();
+fn show_window(window: Window) {
+    window.show().unwrap();
+    window.set_focus().ok();
 }
 
 #[tauri::command]
@@ -187,6 +184,8 @@ fn check_connection() -> String {
 
 fn main() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_fs::init())
         .invoke_handler(tauri::generate_handler![
             open_location,
             close_app,

@@ -15,10 +15,9 @@ import {
   updateData,
 } from "../Globals.jsx";
 
-import { invoke } from "@tauri-apps/api";
-import { open } from "@tauri-apps/api/dialog";
-import { BaseDirectory, copyFile } from "@tauri-apps/api/fs";
-import { convertFileSrc } from "@tauri-apps/api/tauri";
+import { open } from "@tauri-apps/plugin-dialog";
+import { BaseDirectory, copyFile } from "@tauri-apps/plugin-fs";
+import { convertFileSrc } from "@tauri-apps/api/core";
 // importing code snippets and library functions
 import { Match, Show, Switch, createSignal, onMount, useContext } from "solid-js";
 import { produce } from "solid-js/store";
@@ -172,12 +171,11 @@ export function EditGame() {
       if (editedLocatedGridImage() === null) {
         setEditedLocatedGridImage(undefined);
       } else {
-        const gridImageFileName = `${generateRandomString()}.${
-          editedLocatedGridImage().split(".")[editedLocatedGridImage().split(".").length - 1]
-        }`;
+        const gridImageFileName = `${generateRandomString()}.${editedLocatedGridImage().split(".")[editedLocatedGridImage().split(".").length - 1]
+          }`;
 
         await copyFile(editedLocatedGridImage(), locationJoin(["grids", gridImageFileName]), {
-          dir: BaseDirectory.AppData,
+          baseDir: BaseDirectory.AppData,
         }).then(() => {
           setEditedLocatedGridImage(gridImageFileName);
         });
@@ -190,12 +188,11 @@ export function EditGame() {
       if (editedLocatedHeroImage() === null) {
         setEditedLocatedHeroImage(undefined);
       } else {
-        const heroImageFileName = `${generateRandomString()}.${
-          editedLocatedHeroImage().split(".")[editedLocatedHeroImage().split(".").length - 1]
-        }`;
+        const heroImageFileName = `${generateRandomString()}.${editedLocatedHeroImage().split(".")[editedLocatedHeroImage().split(".").length - 1]
+          }`;
 
         await copyFile(editedLocatedHeroImage(), locationJoin(["heroes", heroImageFileName]), {
-          dir: BaseDirectory.AppData,
+          baseDir: BaseDirectory.AppData,
         }).then(() => {
           setEditedLocatedHeroImage(heroImageFileName);
         });
@@ -208,12 +205,11 @@ export function EditGame() {
       if (editedLocatedLogo() === null) {
         setEditedLocatedLogo(undefined);
       } else {
-        const logoFileName = `${generateRandomString()}.${
-          editedLocatedLogo().split(".")[editedLocatedLogo().split(".").length - 1]
-        }`;
+        const logoFileName = `${generateRandomString()}.${editedLocatedLogo().split(".")[editedLocatedLogo().split(".").length - 1]
+          }`;
 
         await copyFile(editedLocatedLogo(), locationJoin(["logos", logoFileName]), {
-          dir: BaseDirectory.AppData,
+          baseDir: BaseDirectory.AppData,
         }).then(() => {
           setEditedLocatedLogo(logoFileName);
         });
@@ -226,12 +222,11 @@ export function EditGame() {
       if (editedLocatedIcon() === null) {
         setEditedLocatedIcon(undefined);
       } else {
-        const iconFileName = `${generateRandomString()}.${
-          editedLocatedIcon().split(".")[editedLocatedIcon().split(".").length - 1]
-        }`;
+        const iconFileName = `${generateRandomString()}.${editedLocatedIcon().split(".")[editedLocatedIcon().split(".").length - 1]
+          }`;
 
         await copyFile(editedLocatedIcon(), locationJoin(["icons", iconFileName]), {
-          dir: BaseDirectory.AppData,
+          baseDir: BaseDirectory.AppData,
         }).then(() => {
           setEditedLocatedIcon(iconFileName);
         });

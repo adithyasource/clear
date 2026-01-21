@@ -9,7 +9,7 @@ import {
   translateText,
 } from "../Globals.jsx";
 
-import { convertFileSrc } from "@tauri-apps/api/tauri";
+import { convertFileSrc } from "@tauri-apps/api/core";
 // importing code snippets and library functions
 import { For, Show, useContext } from "solid-js";
 

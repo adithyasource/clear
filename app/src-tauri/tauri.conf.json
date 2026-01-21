@@ -2,51 +2,47 @@
   "build": {
     "beforeDevCommand": "pnpm run dev",
     "beforeBuildCommand": "pnpm run build",
-    "devPath": "http://localhost:1420",
-    "distDir": "../dist",
-    "withGlobalTauri": false
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420"
   },
-  "package": {
-    "productName": "clear",
-    "version": "1.1.0"
+  "bundle": {
+    "active": true,
+    "targets": [
+      "nsis",
+      "msi",
+      "dmg",
+      "app"
+    ],
+    "icon": [
+      "icons/128x128.png",
+      "icons/icon.ico"
+    ]
   },
-  "tauri": {
-    "allowlist": {
-      "path": {
-        "all": true
-      },
-      "fs": {
-        "readFile": true,
-        "writeFile": true,
-        "copyFile": true,
-        "exists": true,
-        "createDir": true,
-        "scope": ["$APPDATA/**"]
-      },
-      "dialog": {
-        "open": true
-      },
-      "protocol": {
-        "asset": true,
-        "assetScope": ["**"]
+  "productName": "clear",
+  "mainBinaryName": "clear",
+  "version": "1.1.0",
+  "identifier": "com.adithya.clear",
+  "plugins": {},
+  "app": {
+    "withGlobalTauri": false,
+    "security": {
+      "assetProtocol": {
+        "scope": [
+          "**"
+        ],
+        "enable": true
       }
-    },
-    "bundle": {
-      "active": true,
-      "targets": ["nsis", "msi", "dmg", "app"],
-      "identifier": "com.adithya.clear",
-      "icon": ["icons/128x128.png", "icons/icon.ico"]
     },
     "windows": [
       {
         "title": "clear",
         "width": 1220,
         "height": 760,
-        "fileDropEnabled": false,
         "minHeight": 390,
         "minWidth": 640,
         "theme": "Dark",
-        "visible": false
+        "visible": false,
+        "useHttpsScheme": true
       }
     ]
   }

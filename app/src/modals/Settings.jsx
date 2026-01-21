@@ -15,7 +15,7 @@ import { Hotkeys } from "../components/Hotkeys.jsx";
 import { LanguageSelector } from "../components/LanguageSelector.jsx";
 
 import { appDataDir } from "@tauri-apps/api/path";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 // importing code snippets and library functions
 import { Show, useContext } from "solid-js";
 

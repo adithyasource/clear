@@ -1,7 +1,7 @@
-import { BaseDirectory, createDir, exists, readTextFile, writeTextFile } from "@tauri-apps/api/fs";
+import { BaseDirectory, exists, mkdir, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { appDataDir } from "@tauri-apps/api/path";
-import { invoke } from "@tauri-apps/api/tauri";
 // importing code snippets and library functions
+import { invoke } from "@tauri-apps/api/core"
 import { createContext, createSignal } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import { parseVDF } from "./libraries/parseVDF.js";
@@ -14,6 +14,7 @@ export const UIContext = createContext();
 export const SelectedDataContext = createContext();
 export const ApplicationStateContext = createContext();
 export const SteamDataContext = createContext();
+
 
 // creating store for library data
 export const [libraryData, setLibraryData] = createStore({
@@ -161,20 +162,20 @@ export function SteamDataContextProvider(props) {
 // global helper functions
 
 async function setupFoldersForImages() {
-  await createDir("heroes", {
-    dir: BaseDirectory.AppData,
+  await mkdir("heroes", {
+    baseDir: BaseDirectory.AppData,
     recursive: true,
   });
-  await createDir("grids", {
-    dir: BaseDirectory.AppData,
+  await mkdir("grids", {
+    baseDir: BaseDirectory.AppData,
     recursive: true,
   });
-  await createDir("logos", {
-    dir: BaseDirectory.AppData,
+  await mkdir("logos", {
+    baseDir: BaseDirectory.AppData,
     recursive: true,
   });
-  await createDir("icons", {
-    dir: BaseDirectory.AppData,
+  await mkdir("icons", {
+    baseDir: BaseDirectory.AppData,
     recursive: true,
   });
 
@@ -184,10 +185,12 @@ async function setupFoldersForImages() {
 export async function getData() {
   setAppDataDirPath(await appDataDir());
 
-  if (await exists("data.json", { dir: BaseDirectory.AppData })) {
+  if (await exists("data.json", { baseDir: BaseDirectory.AppData })) {
     const getLibraryData = await readTextFile("data.json", {
-      dir: BaseDirectory.AppData,
+      baseDir: BaseDirectory.AppData,
     });
+
+    console.log(JSON.parse(getLibraryData))
 
     // WARN potential footgun here cause you're not checking if games are empty
     if (getLibraryData !== "" && JSON.parse(getLibraryData).folders !== "") {
@@ -416,18 +419,14 @@ export function translateText(text) {
 }
 
 export async function updateData() {
-  await writeTextFile(
-    {
-      path: "data.json",
-      contents: JSON.stringify(libraryData, null, 4),
-    },
-    {
-      dir: BaseDirectory.AppData,
+  await writeTextFile("data.json", JSON.stringify(libraryData, null, 4),
+      {
+      baseDir: BaseDirectory.AppData,
     },
   ).then(getData());
 }
 
-let toastTimeout = setTimeout(() => {}, 0);
+let toastTimeout = setTimeout(() => { }, 0);
 
 export function triggerToast(message) {
   document.querySelector(".toast").hidePopover();
