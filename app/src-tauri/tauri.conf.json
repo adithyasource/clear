@@ -7,16 +7,8 @@
   },
   "bundle": {
     "active": true,
-    "targets": [
-      "nsis",
-      "msi",
-      "dmg",
-      "app"
-    ],
-    "icon": [
-      "icons/128x128.png",
-      "icons/icon.ico"
-    ]
+    "targets": ["nsis", "msi", "dmg", "app"],
+    "icon": ["icons/128x128.png", "icons/icon.ico"]
   },
   "productName": "clear",
   "mainBinaryName": "clear",
@@ -27,9 +19,7 @@
     "withGlobalTauri": false,
     "security": {
       "assetProtocol": {
-        "scope": [
-          "**"
-        ],
+        "scope": ["**"],
         "enable": true
       }
     },
@@ -42,8 +32,10 @@
         "minWidth": 640,
         "theme": "Dark",
         "visible": false,
-        "useHttpsScheme": true
+        "useHttpsScheme": true,
+        "dragDropEnabled": false
       }
     ]
   }
 }
+
