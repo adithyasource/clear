@@ -2,6 +2,7 @@
 import {
   ApplicationStateContext,
   GlobalContext,
+  GlobalContextType,
   UIContext,
   checkIfConnectedToInternet,
   closeDialogImmediately,
@@ -31,11 +32,12 @@ import { Settings } from "./modals/Settings.jsx";
 
 import { invoke } from "@tauri-apps/api/core";
 // importing code snippets and library functions
-import { For, Match, Show, Switch, createEffect, onMount, useContext } from "solid-js";
+import { Context, For, Match, Show, Switch, createEffect, onMount, useContext } from "solid-js";
 import { fuzzysearch } from "./libraries/fuzzysearch.js";
 
 // importing style related files
 import "./App.css";
+import { LibraryData, Theme } from "./core/types/game.js";
 
 function App() {
   const globalContext = useContext(GlobalContext);
@@ -44,9 +46,13 @@ function App() {
 
   // setting up effects for styles that can be changed in settings
   createEffect(() => {
+    if (!globalContext) {
+      console.log("no access to global context");
+      return;
+    }
     document.body.style.setProperty(
       "--text-color",
-      globalContext.libraryData.userSettings.currentTheme === "light" ? "#000000" : "#ffffff",
+      globalContext.libraryData().userSettings.currentTheme === Theme.light ? "#000000" : "#ffffff",
     );
   });
 

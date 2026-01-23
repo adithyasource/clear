@@ -1,4 +1,4 @@
-class GameAssets {
+export class GameAssets {
   hero?: string;
   grid?: string;
   logo?: string;
@@ -11,7 +11,7 @@ class GameAssets {
   }
 }
 
-class Game {
+export class Game {
   name: string;
   location?: string;
   isFavourite: boolean;
@@ -25,7 +25,7 @@ class Game {
   }
 }
 
-class Folder {
+export class Folder {
   name: string;
   hide: boolean;
   games: Game[];
@@ -37,13 +37,13 @@ class Folder {
   }
 }
 
-enum FontStyle {
+export enum FontStyle {
   "sans serif",
   serif,
   mono,
 }
 
-enum Language {
+export enum Language {
   en,
   jp,
   es,
@@ -52,21 +52,35 @@ enum Language {
   fr,
 }
 
-enum Theme {
+export enum Theme {
   dark,
   light,
 }
 
-class UserSettings {
-  roundedBorders: boolean;
-  showSideBar: boolean;
-  gameTitle: boolean;
-  folderTitle: boolean;
-  quitAfterOpen: boolean;
-  fontName: FontStyle;
-  language: Language;
-  currentTheme: Theme;
-  zoomLevel: number;
+export class UserSettings {
+  roundedBorders: boolean = true;
+  showSideBar: boolean = true;
+  gameTitle: boolean = true;
+  folderTitle: boolean = true;
+  quitAfterOpen: boolean = true;
+  fontName: FontStyle = FontStyle["sans serif"];
+  language: Language = Language.en;
+  currentTheme: Theme = Theme.dark;
+  zoomLevel = 1;
+
+  constructor(init?: Partial<UserSettings>) {
+    Object.assign(this, init);
+  }
 }
 
-export { Game, Folder };
+export class LibraryData {
+  games?: Record<string, Game>;
+  folders?: Record<string, Folder>;
+  notepad?: string;
+  foldersOrder?: string[];
+  userSettings: UserSettings = new UserSettings();
+
+  constructor(init?: Partial<LibraryData>) {
+    Object.assign(this, init);
+  }
+}

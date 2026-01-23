@@ -2,37 +2,27 @@ import { BaseDirectory, exists, mkdir, readTextFile, writeTextFile } from "@taur
 import { appDataDir } from "@tauri-apps/api/path";
 // importing code snippets and library functions
 import { invoke } from "@tauri-apps/api/core";
-import { createContext, createSignal } from "solid-js";
+import { Accessor, createContext, createSignal, Setter } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import { parseVDF } from "./libraries/parseVDF.js";
 
 // importing text snippets for different languages
 import { textLanguages } from "./Text.js";
+import { Game, Language, LibraryData, UserSettings } from "./core/types/game.js";
 
-export const GlobalContext = createContext();
+export type GlobalContextType = {
+  libraryData: Accessor<LibraryData>;
+  setLibraryData: Setter<LibraryData>;
+};
+
+export const GlobalContext = createContext<GlobalContextType>();
 export const UIContext = createContext();
 export const SelectedDataContext = createContext();
 export const ApplicationStateContext = createContext();
 export const SteamDataContext = createContext();
 
 // creating store for library data
-export const [libraryData, setLibraryData] = createStore({
-  // default values
-  games: {},
-  folders: {},
-  notepad: "",
-  userSettings: {
-    roundedBorders: true,
-    showSideBar: true,
-    gameTitle: true,
-    folderTitle: true,
-    quitAfterOpen: true,
-    fontName: "sans serif",
-    language: "en",
-    currentTheme: "dark",
-    zoomLevel: 1,
-  },
-});
+export const [libraryData, setLibraryData] = createSignal<LibraryData>(new LibraryData());
 
 // ui signals
 const [showSettingsLanguageSelector, setShowSettingsLanguageSelector] = createSignal<boolean>(false);
