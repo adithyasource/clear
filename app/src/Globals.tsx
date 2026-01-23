@@ -1,7 +1,7 @@
 import { BaseDirectory, exists, mkdir, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { appDataDir } from "@tauri-apps/api/path";
 // importing code snippets and library functions
-import { invoke } from "@tauri-apps/api/core"
+import { invoke } from "@tauri-apps/api/core";
 import { createContext, createSignal } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import { parseVDF } from "./libraries/parseVDF.js";
@@ -14,7 +14,6 @@ export const UIContext = createContext();
 export const SelectedDataContext = createContext();
 export const ApplicationStateContext = createContext();
 export const SteamDataContext = createContext();
-
 
 // creating store for library data
 export const [libraryData, setLibraryData] = createStore({
@@ -36,7 +35,7 @@ export const [libraryData, setLibraryData] = createStore({
 });
 
 // ui signals
-const [showSettingsLanguageSelector, setShowSettingsLanguageSelector] = createSignal(false);
+const [showSettingsLanguageSelector, setShowSettingsLanguageSelector] = createSignal<boolean>(false);
 const [showImportAndOverwriteConfirm, setShowImportAndOverwriteConfirm] = createSignal(false);
 const [showNewVersionAvailable, setShowNewVersionAvailable] = createSignal(false);
 const [showNewGameModal, setShowNewGameModal] = createSignal(false);
@@ -190,7 +189,7 @@ export async function getData() {
       baseDir: BaseDirectory.AppData,
     });
 
-    console.log(JSON.parse(getLibraryData))
+    console.log(JSON.parse(getLibraryData));
 
     // WARN potential footgun here cause you're not checking if games are empty
     if (getLibraryData !== "" && JSON.parse(getLibraryData).folders !== "") {
@@ -419,14 +418,12 @@ export function translateText(text) {
 }
 
 export async function updateData() {
-  await writeTextFile("data.json", JSON.stringify(libraryData, null, 4),
-      {
-      baseDir: BaseDirectory.AppData,
-    },
-  ).then(getData());
+  await writeTextFile("data.json", JSON.stringify(libraryData, null, 4), {
+    baseDir: BaseDirectory.AppData,
+  }).then(getData());
 }
 
-let toastTimeout = setTimeout(() => { }, 0);
+let toastTimeout = setTimeout(() => {}, 0);
 
 export function triggerToast(message) {
   document.querySelector(".toast").hidePopover();

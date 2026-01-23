@@ -326,7 +326,7 @@ function App() {
 
         // shows new version indicators if update is available
         applicationStateContext.latestVersion().replaceAll(".", "") >
-          applicationStateContext.appVersion().replaceAll(".", "")
+        applicationStateContext.appVersion().replaceAll(".", "")
           ? uiContext.setShowNewVersionAvailable(true)
           : uiContext.setShowNewVersionAvailable(false);
       } catch (error) {
@@ -373,10 +373,11 @@ function App() {
           }
         >
           <div
-            class={`absolute flex h-[100vh] w-full flex-col items-center justify-center overflow-y-scroll py-[20px] pr-[30px] ${globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
-              ? "large:pl-[17%] pl-[23%]"
-              : "large:pl-[30px] pl-[30px]"
-              }`}
+            class={`absolute flex h-[100vh] w-full flex-col items-center justify-center overflow-y-scroll py-[20px] pr-[30px] ${
+              globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
+                ? "large:pl-[17%] pl-[23%]"
+                : "large:pl-[30px] pl-[30px]"
+            }`}
           >
             <div class="!z-50">
               <p class="text-[#000000] dark:text-[#ffffff80]">
@@ -433,10 +434,11 @@ function App() {
           </div>
         </Show>
         <div
-          class={`!rounded-[0px] absolute h-[100vh] w-full overflow-y-scroll py-[20px] pr-[30px] ${globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
-            ? "large:pl-[17%] pl-[23%]"
-            : "large:pl-[30px] pl-[30px]"
-            }`}
+          class={`!rounded-[0px] absolute h-[100vh] w-full overflow-y-scroll py-[20px] pr-[30px] ${
+            globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
+              ? "large:pl-[17%] pl-[23%]"
+              : "large:pl-[30px] pl-[30px]"
+          }`}
         >
           <Show
             when={applicationStateContext.searchValue() === "" || applicationStateContext.searchValue() === undefined}
