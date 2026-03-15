@@ -2,7 +2,6 @@
 import {
   ApplicationStateContext,
   GlobalContext,
-  GlobalContextType,
   UIContext,
   checkIfConnectedToInternet,
   closeDialogImmediately,
@@ -32,12 +31,11 @@ import { Settings } from "./modals/Settings.jsx";
 
 import { invoke } from "@tauri-apps/api/core";
 // importing code snippets and library functions
-import { Context, For, Match, Show, Switch, createEffect, onMount, useContext } from "solid-js";
+import { For, Match, Show, Switch, createEffect, onMount, useContext } from "solid-js";
 import { fuzzysearch } from "./libraries/fuzzysearch.js";
 
 // importing style related files
 import "./App.css";
-import { LibraryData, Theme } from "./core/types/game.js";
 
 function App() {
   const globalContext = useContext(GlobalContext);
@@ -46,13 +44,9 @@ function App() {
 
   // setting up effects for styles that can be changed in settings
   createEffect(() => {
-    if (!globalContext) {
-      console.log("no access to global context");
-      return;
-    }
     document.body.style.setProperty(
       "--text-color",
-      globalContext.libraryData().userSettings.currentTheme === Theme.light ? "#000000" : "#ffffff",
+      globalContext.libraryData.userSettings.currentTheme === "light" ? "#000000" : "#ffffff",
     );
   });
 
@@ -332,7 +326,7 @@ function App() {
 
         // shows new version indicators if update is available
         applicationStateContext.latestVersion().replaceAll(".", "") >
-        applicationStateContext.appVersion().replaceAll(".", "")
+          applicationStateContext.appVersion().replaceAll(".", "")
           ? uiContext.setShowNewVersionAvailable(true)
           : uiContext.setShowNewVersionAvailable(false);
       } catch (error) {
@@ -379,11 +373,10 @@ function App() {
           }
         >
           <div
-            class={`absolute flex h-[100vh] w-full flex-col items-center justify-center overflow-y-scroll py-[20px] pr-[30px] ${
-              globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
-                ? "large:pl-[17%] pl-[23%]"
-                : "large:pl-[30px] pl-[30px]"
-            }`}
+            class={`absolute flex h-[100vh] w-full flex-col items-center justify-center overflow-y-scroll py-[20px] pr-[30px] ${globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
+              ? "large:pl-[17%] pl-[23%]"
+              : "large:pl-[30px] pl-[30px]"
+              }`}
           >
             <div class="!z-50">
               <p class="text-[#000000] dark:text-[#ffffff80]">
@@ -440,11 +433,10 @@ function App() {
           </div>
         </Show>
         <div
-          class={`!rounded-[0px] absolute h-[100vh] w-full overflow-y-scroll py-[20px] pr-[30px] ${
-            globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
-              ? "large:pl-[17%] pl-[23%]"
-              : "large:pl-[30px] pl-[30px]"
-          }`}
+          class={`!rounded-[0px] absolute h-[100vh] w-full overflow-y-scroll py-[20px] pr-[30px] ${globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
+            ? "large:pl-[17%] pl-[23%]"
+            : "large:pl-[30px] pl-[30px]"
+            }`}
         >
           <Show
             when={applicationStateContext.searchValue() === "" || applicationStateContext.searchValue() === undefined}

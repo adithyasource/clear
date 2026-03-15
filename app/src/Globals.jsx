@@ -1,31 +1,42 @@
 import { BaseDirectory, exists, mkdir, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { appDataDir } from "@tauri-apps/api/path";
 // importing code snippets and library functions
-import { invoke } from "@tauri-apps/api/core";
-import { Accessor, createContext, createSignal, Setter } from "solid-js";
+import { invoke } from "@tauri-apps/api/core"
+import { createContext, createSignal } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import { parseVDF } from "./libraries/parseVDF.js";
 
 // importing text snippets for different languages
 import { textLanguages } from "./Text.js";
-import { Game, Language, LibraryData, UserSettings } from "./core/types/game.js";
 
-export type GlobalContextType = {
-  libraryData: Accessor<LibraryData>;
-  setLibraryData: Setter<LibraryData>;
-};
-
-export const GlobalContext = createContext<GlobalContextType>();
+export const GlobalContext = createContext();
 export const UIContext = createContext();
 export const SelectedDataContext = createContext();
 export const ApplicationStateContext = createContext();
 export const SteamDataContext = createContext();
 
+
 // creating store for library data
-export const [libraryData, setLibraryData] = createSignal<LibraryData>(new LibraryData());
+export const [libraryData, setLibraryData] = createStore({
+  // default values
+  games: {},
+  folders: {},
+  notepad: "",
+  userSettings: {
+    roundedBorders: true,
+    showSideBar: true,
+    gameTitle: true,
+    folderTitle: true,
+    quitAfterOpen: true,
+    fontName: "sans serif",
+    language: "en",
+    currentTheme: "dark",
+    zoomLevel: 1,
+  },
+});
 
 // ui signals
-const [showSettingsLanguageSelector, setShowSettingsLanguageSelector] = createSignal<boolean>(false);
+const [showSettingsLanguageSelector, setShowSettingsLanguageSelector] = createSignal(false);
 const [showImportAndOverwriteConfirm, setShowImportAndOverwriteConfirm] = createSignal(false);
 const [showNewVersionAvailable, setShowNewVersionAvailable] = createSignal(false);
 const [showNewGameModal, setShowNewGameModal] = createSignal(false);
@@ -179,7 +190,7 @@ export async function getData() {
       baseDir: BaseDirectory.AppData,
     });
 
-    console.log(JSON.parse(getLibraryData));
+    console.log(JSON.parse(getLibraryData))
 
     // WARN potential footgun here cause you're not checking if games are empty
     if (getLibraryData !== "" && JSON.parse(getLibraryData).folders !== "") {
@@ -408,12 +419,14 @@ export function translateText(text) {
 }
 
 export async function updateData() {
-  await writeTextFile("data.json", JSON.stringify(libraryData, null, 4), {
-    baseDir: BaseDirectory.AppData,
-  }).then(getData());
+  await writeTextFile("data.json", JSON.stringify(libraryData, null, 4),
+      {
+      baseDir: BaseDirectory.AppData,
+    },
+  ).then(getData());
 }
 
-let toastTimeout = setTimeout(() => {}, 0);
+let toastTimeout = setTimeout(() => { }, 0);
 
 export function triggerToast(message) {
   document.querySelector(".toast").hidePopover();
