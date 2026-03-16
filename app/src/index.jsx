@@ -8,6 +8,7 @@ import {
   SteamDataContextProvider,
   UIContextProvider,
 } from "./Globals.jsx";
+import { ModalFrame } from "./components/modal/ModalFrame.jsx";
 
 // importing code snippets and library functions
 import { render } from "solid-js/web";

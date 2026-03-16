@@ -21,6 +21,7 @@ import { convertFileSrc } from "@tauri-apps/api/core";
 // importing code snippets and library functions
 import { Match, Show, Switch, createSignal, onMount, useContext } from "solid-js";
 import { produce } from "solid-js/store";
+import { invoke } from "@tauri-apps/api/core";
 
 // importing style related files
 import { Close, OpenExternal, SaveDisk, TrashDelete } from "../libraries/Icons.jsx";
@@ -171,8 +172,9 @@ export function EditGame() {
       if (editedLocatedGridImage() === null) {
         setEditedLocatedGridImage(undefined);
       } else {
-        const gridImageFileName = `${generateRandomString()}.${editedLocatedGridImage().split(".")[editedLocatedGridImage().split(".").length - 1]
-          }`;
+        const gridImageFileName = `${generateRandomString()}.${
+          editedLocatedGridImage().split(".")[editedLocatedGridImage().split(".").length - 1]
+        }`;
 
         await copyFile(editedLocatedGridImage(), locationJoin(["grids", gridImageFileName]), {
           baseDir: BaseDirectory.AppData,
@@ -188,8 +190,9 @@ export function EditGame() {
       if (editedLocatedHeroImage() === null) {
         setEditedLocatedHeroImage(undefined);
       } else {
-        const heroImageFileName = `${generateRandomString()}.${editedLocatedHeroImage().split(".")[editedLocatedHeroImage().split(".").length - 1]
-          }`;
+        const heroImageFileName = `${generateRandomString()}.${
+          editedLocatedHeroImage().split(".")[editedLocatedHeroImage().split(".").length - 1]
+        }`;
 
         await copyFile(editedLocatedHeroImage(), locationJoin(["heroes", heroImageFileName]), {
           baseDir: BaseDirectory.AppData,
@@ -205,8 +208,9 @@ export function EditGame() {
       if (editedLocatedLogo() === null) {
         setEditedLocatedLogo(undefined);
       } else {
-        const logoFileName = `${generateRandomString()}.${editedLocatedLogo().split(".")[editedLocatedLogo().split(".").length - 1]
-          }`;
+        const logoFileName = `${generateRandomString()}.${
+          editedLocatedLogo().split(".")[editedLocatedLogo().split(".").length - 1]
+        }`;
 
         await copyFile(editedLocatedLogo(), locationJoin(["logos", logoFileName]), {
           baseDir: BaseDirectory.AppData,
@@ -222,8 +226,9 @@ export function EditGame() {
       if (editedLocatedIcon() === null) {
         setEditedLocatedIcon(undefined);
       } else {
-        const iconFileName = `${generateRandomString()}.${editedLocatedIcon().split(".")[editedLocatedIcon().split(".").length - 1]
-          }`;
+        const iconFileName = `${generateRandomString()}.${
+          editedLocatedIcon().split(".")[editedLocatedIcon().split(".").length - 1]
+        }`;
 
         await copyFile(editedLocatedIcon(), locationJoin(["icons", iconFileName]), {
           baseDir: BaseDirectory.AppData,

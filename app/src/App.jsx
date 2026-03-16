@@ -28,6 +28,7 @@ import { NewFolder } from "./modals/NewFolder.jsx";
 import { NewGame } from "./modals/NewGame.jsx";
 import { Notepad } from "./modals/Notepad.jsx";
 import { Settings } from "./modals/Settings.jsx";
+import { ModalFrame } from "./components/modal/ModalFrame";
 
 import { invoke } from "@tauri-apps/api/core";
 // importing code snippets and library functions
@@ -326,7 +327,7 @@ function App() {
 
         // shows new version indicators if update is available
         applicationStateContext.latestVersion().replaceAll(".", "") >
-          applicationStateContext.appVersion().replaceAll(".", "")
+        applicationStateContext.appVersion().replaceAll(".", "")
           ? uiContext.setShowNewVersionAvailable(true)
           : uiContext.setShowNewVersionAvailable(false);
       } catch (error) {
@@ -338,9 +339,11 @@ function App() {
   return (
     <>
       {/* fading out bg color to make the app loading look a bit more smoother */}
-      <div class="loading pointer-events-none absolute z-[1000] flex h-screen w-screen items-center justify-center bg-[#121212]">
+      <div class="loading pointer-events-none absolute z-[10] flex h-screen w-screen items-center justify-center bg-[#121212]">
         <p class="" />
       </div>
+
+      <ModalFrame />
 
       <div class="flex h-full gap-[30px] overflow-y-hidden">
         <Show
@@ -373,10 +376,11 @@ function App() {
           }
         >
           <div
-            class={`absolute flex h-[100vh] w-full flex-col items-center justify-center overflow-y-scroll py-[20px] pr-[30px] ${globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
-              ? "large:pl-[17%] pl-[23%]"
-              : "large:pl-[30px] pl-[30px]"
-              }`}
+            class={`absolute flex h-[100vh] w-full flex-col items-center justify-center overflow-y-scroll py-[20px] pr-[30px] ${
+              globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
+                ? "large:pl-[17%] pl-[23%]"
+                : "large:pl-[30px] pl-[30px]"
+            }`}
           >
             <div class="!z-50">
               <p class="text-[#000000] dark:text-[#ffffff80]">
@@ -433,10 +437,11 @@ function App() {
           </div>
         </Show>
         <div
-          class={`!rounded-[0px] absolute h-[100vh] w-full overflow-y-scroll py-[20px] pr-[30px] ${globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
-            ? "large:pl-[17%] pl-[23%]"
-            : "large:pl-[30px] pl-[30px]"
-            }`}
+          class={`!rounded-[0px] absolute h-[100vh] w-full overflow-y-scroll py-[20px] pr-[30px] ${
+            globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
+              ? "large:pl-[17%] pl-[23%]"
+              : "large:pl-[30px] pl-[30px]"
+          }`}
         >
           <Show
             when={applicationStateContext.searchValue() === "" || applicationStateContext.searchValue() === undefined}
@@ -522,29 +527,6 @@ function App() {
       </div>
 
       <div id="abovePage">
-        <Switch>
-          <Match when={uiContext.showNewGameModal()}>
-            <NewGame />
-          </Match>
-          <Match when={uiContext.showEditGameModal()}>
-            <EditGame />
-          </Match>
-          <Match when={uiContext.showNewFolderModal()}>
-            <NewFolder />
-          </Match>
-          <Match when={uiContext.showEditFolderModal()}>
-            <EditFolder />
-          </Match>
-          <Match when={uiContext.showGamePopUpModal()}>
-            <GamePopUp />
-          </Match>
-          <Match when={uiContext.showNotepadModal()}>
-            <Notepad />
-          </Match>
-          <Match when={uiContext.showSettingsModal()}>
-            <Settings />
-          </Match>
-        </Switch>
         <Show when={uiContext.showLoadingModal()}>
           <Loading />
         </Show>

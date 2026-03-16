@@ -90,8 +90,9 @@ export function NewGame() {
       });
     } else {
       if (locatedGridImage()) {
-        gridImageFileName = `${generateRandomString()}.${locatedGridImage().split(".")[locatedGridImage().split(".").length - 1]
-          }`;
+        gridImageFileName = `${generateRandomString()}.${
+          locatedGridImage().split(".")[locatedGridImage().split(".").length - 1]
+        }`;
 
         await copyFile(locatedGridImage(), locationJoin(["grids", gridImageFileName]), {
           baseDir: BaseDirectory.AppData,
@@ -108,8 +109,9 @@ export function NewGame() {
       });
     } else {
       if (locatedHeroImage()) {
-        heroImageFileName = `${generateRandomString()}.${locatedHeroImage().split(".")[locatedHeroImage().split(".").length - 1]
-          }`;
+        heroImageFileName = `${generateRandomString()}.${
+          locatedHeroImage().split(".")[locatedHeroImage().split(".").length - 1]
+        }`;
 
         await copyFile(locatedHeroImage(), locationJoin(["heroes", heroImageFileName]), {
           baseDir: BaseDirectory.AppData,
@@ -398,7 +400,7 @@ export function NewGame() {
           <button
             type="button"
             onClick={locateGridImage}
-            onScroll={() => { }}
+            onScroll={() => {}}
             onWheel={(e) => {
               if (SGDBGames()) {
                 if (e.deltaY <= 0) {
@@ -455,7 +457,7 @@ export function NewGame() {
                   : locatedGridImage()
                     ? convertFileSrc(locatedGridImage())
                     : // this is a gif which is completely empty
-                    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
+                      "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
               }
               alt=""
               class={`relative inset-0 w-full ${showGridImageLoading() ? "opacity-0" : ""}  `}
@@ -472,7 +474,7 @@ export function NewGame() {
               <button
                 type="button"
                 onClick={locateHeroImage}
-                onScroll={() => { }}
+                onScroll={() => {}}
                 onWheel={(e) => {
                   if (SGDBGames()) {
                     if (e.deltaY <= 0) {
@@ -529,7 +531,7 @@ export function NewGame() {
                       : locatedHeroImage()
                         ? convertFileSrc(locatedHeroImage())
                         : // this is a gif which is completely empty
-                        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
+                          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                   }
                   alt=""
                   class={`aspect-[96/31] h-full w-full ${showHeroImageLoading() ? "opacity-0" : ""}`}
@@ -544,7 +546,7 @@ export function NewGame() {
                       : locatedHeroImage()
                         ? convertFileSrc(locatedHeroImage())
                         : // this is a gif which is completely empty
-                        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
+                          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                   }
                   onLoad={() => {
                     setShowHeroImageLoading(false);
@@ -563,7 +565,7 @@ export function NewGame() {
                   setLocatedLogo(undefined);
                   setFoundLogoImage(undefined);
                 }}
-                onScroll={() => { }}
+                onScroll={() => {}}
                 onWheel={(e) => {
                   if (SGDBGames()) {
                     if (e.deltaY <= 0) {
@@ -598,10 +600,11 @@ export function NewGame() {
                     }
                   }
                 }}
-                class={`!absolute !p-[2px] tooltip-center bottom-[70px] left-[20px] z-[100] h-[90px] w-[250px] cursor-pointer max-large:h-[90px] max-large:w-[243px] ${foundLogoImage() || locatedLogo()
-                  ? "!outline-[2px] !outline-[#E8E8E880] hover:bg-[#E8E8E84D] hover:outline-dashed focus:bg-[#E8E8E84D] !outline:dark:bg-[#27272780] focus:dark:bg-[#2727274D] hover:dark:bg-[#2727274D]"
-                  : "dark:!bg-[#272727] bg-[#E8E8E8]"
-                  }
+                class={`!absolute !p-[2px] tooltip-center bottom-[70px] left-[20px] z-[100] h-[90px] w-[250px] cursor-pointer max-large:h-[90px] max-large:w-[243px] ${
+                  foundLogoImage() || locatedLogo()
+                    ? "!outline-[2px] !outline-[#E8E8E880] hover:bg-[#E8E8E84D] hover:outline-dashed focus:bg-[#E8E8E84D] !outline:dark:bg-[#27272780] focus:dark:bg-[#2727274D] hover:dark:bg-[#2727274D]"
+                    : "dark:!bg-[#272727] bg-[#E8E8E8]"
+                }
                     `}
                 data-tooltip={
                   foundLogoImage()
@@ -620,7 +623,7 @@ export function NewGame() {
                       : locatedLogo()
                         ? convertFileSrc(locatedLogo())
                         : // this is a gif which is completely empty
-                        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
+                          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                   }
                   alt=""
                   class={`!object-scale-down h-full w-full ${showLogoImageLoading() ? "opacity-0" : ""}`}
@@ -641,7 +644,7 @@ export function NewGame() {
                   setLocatedIcon(undefined);
                   setFoundIconImage(undefined);
                 }}
-                onScroll={() => { }}
+                onScroll={() => {}}
                 onWheel={(e) => {
                   if (SGDBGames()) {
                     if (e.deltaY <= 0) {
@@ -676,10 +679,11 @@ export function NewGame() {
                     }
                   }
                 }}
-                class={`group tooltip-bottom relative p-0 ${foundIconImage() || locatedIcon()
-                  ? "!outline-[2px] !outline-[#E8E8E880] hover:outline-dashed !outline:dark:bg-[#27272780]"
-                  : "dark:!bg-[#272727] bg-[#E8E8E8]"
-                  }`}
+                class={`group tooltip-bottom relative p-0 ${
+                  foundIconImage() || locatedIcon()
+                    ? "!outline-[2px] !outline-[#E8E8E880] hover:outline-dashed !outline:dark:bg-[#27272780]"
+                    : "dark:!bg-[#272727] bg-[#E8E8E8]"
+                }`}
                 data-tooltip={
                   foundIconImage()
                     ? showIconImageLoading() === false
@@ -697,7 +701,7 @@ export function NewGame() {
                       : locatedIcon()
                         ? convertFileSrc(locatedIcon())
                         : // this is a gif which is completely empty
-                        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
+                          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                   }
                   alt=""
                   class={`!object-scale-down h-[40px] w-[40px] ${showIconImageLoading() ? "opacity-0" : ""}`}
@@ -772,15 +776,15 @@ export function NewGame() {
                   onClick={() => {
                     gameName() === undefined
                       ? invoke("open_location", {
-                        location: "https://www.steamgriddb.com/",
-                      })
-                      : gameName() === ""
-                        ? invoke("open_location", {
                           location: "https://www.steamgriddb.com/",
                         })
+                      : gameName() === ""
+                        ? invoke("open_location", {
+                            location: "https://www.steamgriddb.com/",
+                          })
                         : invoke("open_location", {
-                          location: `https://www.steamgriddb.com/search/grids?term=${gameName()}`,
-                        });
+                            location: `https://www.steamgriddb.com/search/grids?term=${gameName()}`,
+                          });
                   }}
                 >
                   <Switch>

@@ -14,6 +14,8 @@ import {
 
 // importing components
 import { GameCardSideBar } from "./components/GameCardSideBar.jsx";
+import { NewGameModal } from "./components/modal/NewGameModal.jsx";
+import { openModal } from "./stores/modalStore";
 
 // importing code snippets and library functions
 import { For, Show, createSignal, onMount, useContext } from "solid-js";
@@ -483,7 +485,8 @@ export function SideBar() {
               type="button"
               class="standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] mt-[12px] bg-[#E8E8E8] dark:bg-[#232323]"
               onClick={() => {
-                openDialog("newGame");
+                // openDialog("newGame");
+                openModal(NewGameModal);
               }}
             >
               {translateText("add game")}
