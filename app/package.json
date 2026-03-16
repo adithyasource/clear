@@ -1,6 +1,6 @@
 {
   "name": "clear",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "",
   "scripts": {
     "start": "vite",
@@ -32,3 +32,4 @@
   },
   "packageManager": "pnpm@9.15.3"
 }
+
