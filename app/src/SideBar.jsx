@@ -15,6 +15,7 @@ import {
 // importing components
 import { GameCardSideBar } from "./components/GameCardSideBar.jsx";
 import { NewGameModal } from "./components/modal/NewGameModal.jsx";
+import { NewFolderModal } from "./components/modal/NewFolderModal.jsx";
 import { openModal } from "./stores/modalStore";
 
 // importing code snippets and library functions
@@ -486,7 +487,7 @@ export function SideBar() {
               class="standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] mt-[12px] bg-[#E8E8E8] dark:bg-[#232323]"
               onClick={() => {
                 // openDialog("newGame");
-                openModal(NewGameModal);
+                openModal({ type: "newGame", component: NewGameModal, confirmWhileClosing: true });
               }}
             >
               {translateText("add game")}
@@ -498,7 +499,8 @@ export function SideBar() {
               type="button"
               class="standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] mt-[12px] bg-[#E8E8E8] dark:bg-[#232323]"
               onClick={() => {
-                openDialog("newFolder");
+                // openDialog("newFolder");
+                openModal(NewFolderModal);
               }}
             >
               {translateText("add folder")}

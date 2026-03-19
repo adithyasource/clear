@@ -9,6 +9,8 @@ import { parseVDF } from "./libraries/parseVDF.js";
 // importing text snippets for different languages
 import { textLanguages } from "./Text.js";
 
+import { closeModal } from "./stores/modalStore.js";
+
 export const GlobalContext = createContext();
 export const UIContext = createContext();
 export const SelectedDataContext = createContext();
@@ -484,68 +486,15 @@ export function openDialog(dialogData) {
 }
 
 export function closeDialog(dialogData, ref) {
-  function updateModalShowState() {
-    switch (dialogData) {
-      case "newGame":
-        setShowNewGameModal(false);
-        break;
-
-      case "editGame":
-        setShowEditGameModal(false);
-        break;
-
-      case "newFolder":
-        setShowNewFolderModal(false);
-        break;
-
-      case "editFolder":
-        setShowEditFolderModal(false);
-        break;
-
-      case "gamePopUp":
-        setShowGamePopUpModal(false);
-        break;
-
-      case "notepad":
-        setShowNotepadModal(false);
-        break;
-
-      case "settings":
-        setShowSettingsModal(false);
-        break;
-
-      case "loading":
-        setShowLoadingModal(false);
-        break;
+  ref.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeModal();
     }
-  }
-
-  if (ref !== undefined) {
-    ref.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        e.stopPropagation();
-
-        ref.classList.remove("showDialog");
-        ref.classList.add("hideDialog");
-        setTimeout(() => {
-          ref.close();
-          updateModalShowState();
-        }, 200);
-      }
-    });
-  } else {
-    const dialogRef = document.querySelector(`[data-modal="${dialogData}"]`);
-
-    dialogRef.classList.remove("showDialog");
-    dialogRef.classList.add("hideDialog");
-    setTimeout(() => {
-      dialogRef.close();
-      updateModalShowState();
-    }, 200);
-  }
+  });
 }
 
 export function closeDialogImmediately(ref) {
+  return;
   ref.classList.remove("showDialog");
   ref.classList.add("hideDialog");
   setTimeout(() => {

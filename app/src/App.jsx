@@ -30,6 +30,8 @@ import { Notepad } from "./modals/Notepad.jsx";
 import { Settings } from "./modals/Settings.jsx";
 import { ModalFrame } from "./components/modal/ModalFrame";
 
+import { closeModal } from "./stores/modalStore.js";
+
 import { invoke } from "@tauri-apps/api/core";
 // importing code snippets and library functions
 import { For, Match, Show, Switch, createEffect, onMount, useContext } from "solid-js";
@@ -42,6 +44,8 @@ function App() {
   const globalContext = useContext(GlobalContext);
   const uiContext = useContext(UIContext);
   const applicationStateContext = useContext(ApplicationStateContext);
+
+  closeModal();
 
   // setting up effects for styles that can be changed in settings
   createEffect(() => {
@@ -150,22 +154,6 @@ function App() {
         if (dialog.open) {
           anyDialogOpen = true;
           currentlyOpenDialog = dialog;
-        }
-      }
-
-      if (e.key === "Escape") {
-        e.preventDefault();
-
-        const currentlyOpenDialogName = currentlyOpenDialog.getAttribute("data-modal");
-
-        const modalTakesUserInput = ["newGame", "editGame", "newFolder", "editFolder"].includes(
-          currentlyOpenDialogName,
-        );
-
-        if (anyDialogOpen) {
-          if (!modalTakesUserInput) {
-            closeDialogImmediately(currentlyOpenDialog);
-          }
         }
       }
 

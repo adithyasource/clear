@@ -7,7 +7,6 @@
 /* tailwind styles (for inaccessable selectors in html) */
 
 @layer components {
-
   html,
   body {
     @apply dark:bg-[#121212] bg-[#FFFFFC];
@@ -227,11 +226,11 @@ input,
   transition: 0.2s;
 }
 
-dialog.showDialog {
+#modal.showModal {
   animation: dialogFadeIn 0.3s ease forwards;
 }
 
-dialog.hideDialog {
+#modal:not(.showModal) {
   animation: dialogFadeOut 0.2s ease forwards;
 }
 
@@ -247,7 +246,9 @@ dialog.hideDialog {
 
 .toast:popover-open {
   opacity: 1;
-  animation: normalFadeIn 0.2s, normalFadeOut 0.2s 1.3s;
+  animation:
+    normalFadeIn 0.2s,
+    normalFadeOut 0.2s 1.3s;
 }
 
 .toast {
@@ -377,7 +378,9 @@ body.user-is-tabbing {
 
   .toast {
     opacity: 1;
-    animation: dialogFadeIn 0s, dialogFadeOut 0s 2.3s;
+    animation:
+      dialogFadeIn 0s,
+      dialogFadeOut 0s 2.3s;
   }
 
   [class*="tooltip-"]:hover::after,
@@ -387,7 +390,9 @@ body.user-is-tabbing {
 
   .toast:popover-open {
     opacity: 1;
-    animation: normalFadeIn 0s, normalFadeOut 0s 1.3s;
+    animation:
+      normalFadeIn 0s,
+      normalFadeOut 0s 1.3s;
   }
 
   [class*="tooltip-delayed-"]:hover::after {

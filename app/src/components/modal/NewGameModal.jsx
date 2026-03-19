@@ -9,8 +9,6 @@ import { createSignal, For, Match, onMount, Show, Switch, useContext } from "sol
 import { produce } from "solid-js/store";
 import {
   ApplicationStateContext,
-  closeDialog,
-  closeDialogImmediately,
   GlobalContext,
   generateRandomString,
   getExecutableFileName,
@@ -22,6 +20,7 @@ import {
   UIContext,
   updateData,
 } from "../../Globals.jsx";
+import { closeModal, modalShowCloseConfirm, setModalShowCloseConfirm } from "../../stores/modalStore.js";
 
 // importing style related files
 import { ChevronArrow, Close, SaveDisk } from "../../libraries/Icons.jsx";
@@ -36,8 +35,6 @@ export function NewGameModal() {
   const [showHeroImageLoading, setShowHeroImageLoading] = createSignal(false);
   const [showLogoImageLoading, setShowLogoImageLoading] = createSignal(false);
   const [showIconImageLoading, setShowIconImageLoading] = createSignal(false);
-
-  const [showCloseConfirm, setShowCloseConfirm] = createSignal(false);
 
   const [gameName, setGameName] = createSignal("");
   const [favouriteGame, setFavouriteGame] = createSignal(false);
@@ -172,8 +169,8 @@ export function NewGameModal() {
 
     await updateData();
 
-    closeDialog("loading");
-    closeDialog("newGame");
+    closeModal(true);
+    closeModal(true);
 
     setTimeout(() => {
       // scrolling to the bottom where uncategorized games are
@@ -310,27 +307,6 @@ export function NewGameModal() {
     );
   }
 
-  onMount(() => {
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        e.preventDefault();
-        if (showCloseConfirm()) {
-          closeDialogImmediately(document.querySelector("[data-modal='newGame']"));
-
-          setShowCloseConfirm(false);
-        } else {
-          setShowCloseConfirm(true);
-
-          const closeConfirmTimer = setTimeout(() => {
-            clearTimeout(closeConfirmTimer);
-
-            setShowCloseConfirm(false);
-          }, 1500);
-        }
-      }
-    });
-  });
-
   return (
     <div class="flex flex-col items-center justify-center gap-3">
       <div class="flex w-full justify-between">
@@ -365,18 +341,11 @@ export function NewGameModal() {
             type="button"
             class="standardButton !w-max !h-full !gap-0 !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom flex items-center bg-[#E8E8E8] dark:bg-[#232323]"
             onClick={() => {
-              if (showCloseConfirm()) {
-                closeDialog("newGame");
-              } else {
-                setShowCloseConfirm(true);
-              }
-              setTimeout(() => {
-                setShowCloseConfirm(false);
-              }, 1500);
+              closeModal();
             }}
             data-tooltip={translateText("close")}
           >
-            {showCloseConfirm() ? (
+            {modalShowCloseConfirm() ? (
               <span class="whitespace-nowrap text-[#FF3636]">{translateText("hit again to confirm")}</span>
             ) : (
               <Close />
