@@ -16,9 +16,9 @@ import {
 
 // importing components
 import { SideBar } from "./SideBar.jsx";
-import { GameCards } from "./components/GameCards.jsx";
-import { Hotkeys } from "./components/Hotkeys.jsx";
-import { LanguageSelector } from "./components/LanguageSelector.jsx";
+import { GameCards } from "./components/card/GameCards.jsx";
+import { Hotkeys } from "./components/ui/Hotkeys.jsx";
+import { LanguageSelector } from "./components/ui/LanguageSelector.jsx";
 import { ChevronArrows, EmptyTray, Steam } from "./libraries/Icons.jsx";
 import { ModalFrame } from "./components/modal/ModalFrame";
 
@@ -27,7 +27,7 @@ import { closeModal } from "./stores/modalStore.js";
 import { invoke } from "@tauri-apps/api/core";
 // importing code snippets and library functions
 import { For, Match, Show, Switch, createEffect, onMount, useContext } from "solid-js";
-import { fuzzysearch } from "./libraries/fuzzysearch.js";
+import { fuzzysearch } from "./utils/fuzzysearch.js";
 
 // importing style related files
 import "./App.css";
@@ -36,8 +36,6 @@ function App() {
   const globalContext = useContext(GlobalContext);
   const uiContext = useContext(UIContext);
   const applicationStateContext = useContext(ApplicationStateContext);
-
-  closeModal();
 
   // setting up effects for styles that can be changed in settings
   createEffect(() => {

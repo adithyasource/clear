@@ -1,5 +1,5 @@
 // importing globals
-import { GlobalContext, UIContext, translateText, updateData } from "../Globals.jsx";
+import { GlobalContext, UIContext, translateText, updateData } from "../../Globals.jsx";
 
 // importing code snippets and library functions
 import { Show, createSignal, useContext } from "solid-js";

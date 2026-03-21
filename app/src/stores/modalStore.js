@@ -4,7 +4,7 @@ const [modalState, setModalState] = createSignal(null);
 const [modalVisible, setModalVisible] = createSignal(false);
 const [modalShowCloseConfirm, setModalShowCloseConfirm] = createSignal(false);
 
-export function openModal({ type, component, confirmWhileClosing }) {
+function openModal({ type, component, confirmWhileClosing }) {
   setModalState({ type, component: () => component, confirmWhileClosing });
 
   requestAnimationFrame(() => {
@@ -12,7 +12,7 @@ export function openModal({ type, component, confirmWhileClosing }) {
   });
 }
 
-export function closeModal(closeModalImmediatelyOverride) {
+function closeModal(closeModalImmediatelyOverride) {
   function closeHandler() {
     setModalVisible(false);
 
@@ -46,4 +46,4 @@ export function closeModal(closeModalImmediatelyOverride) {
   }
 }
 
-export { modalState, modalVisible, setModalVisible, modalShowCloseConfirm };
+export { modalState, modalVisible, modalShowCloseConfirm, closeModal, openModal };

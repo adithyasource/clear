@@ -6,15 +6,15 @@ import {
   locationJoin,
   openGame,
   translateText,
-} from "../Globals.jsx";
+} from "../../Globals.jsx";
 
-import { openModal } from "../stores/modalStore.js";
+import { openModal } from "../../stores/modalStore.js";
 
 import { convertFileSrc } from "@tauri-apps/api/core";
 // importing code snippets and library functions
 import { For, Show, useContext } from "solid-js";
 
-import { GamePopUpModal } from "./modal/GamePopUp.jsx";
+import { GamePopUpModal } from "../modal/GamePopUp.jsx";
 
 export function GameCards(props) {
   const globalContext = useContext(GlobalContext);

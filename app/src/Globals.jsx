@@ -4,7 +4,7 @@ import { appDataDir } from "@tauri-apps/api/path";
 import { invoke } from "@tauri-apps/api/core";
 import { createContext, createSignal } from "solid-js";
 import { createStore, produce } from "solid-js/store";
-import { parseVDF } from "./libraries/parseVDF.js";
+import { parseVDF } from "./utils/parseVDF.js";
 
 // importing text snippets for different languages
 import { textLanguages } from "./Text.js";

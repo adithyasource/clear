@@ -13,7 +13,7 @@ import {
 } from "./Globals.jsx";
 
 // importing components
-import { GameCardSideBar } from "./components/GameCardSideBar.jsx";
+import { GameCardSideBar } from "./components/card/GameCardSideBar.jsx";
 import { NewGameModal } from "./components/modal/NewGameModal.jsx";
 import { NewFolderModal } from "./components/modal/NewFolderModal.jsx";
 import { SettingsModal } from "./components/modal/SettingsModal.jsx";

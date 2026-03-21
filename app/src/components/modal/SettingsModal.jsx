@@ -9,9 +9,9 @@ import {
   updateData,
 } from "../../Globals.jsx";
 
-import { Hotkeys } from "../../components/Hotkeys.jsx";
+import { Hotkeys } from "../ui/Hotkeys.jsx";
 // importing components
-import { LanguageSelector } from "../../components/LanguageSelector.jsx";
+import { LanguageSelector } from "../ui/LanguageSelector.jsx";
 
 import { appDataDir } from "@tauri-apps/api/path";
 import { invoke } from "@tauri-apps/api/core";

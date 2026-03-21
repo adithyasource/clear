@@ -6,14 +6,14 @@ import {
   locationJoin,
   openGame,
   translateText,
-} from "../Globals.jsx";
+} from "../../Globals.jsx";
 
 import { convertFileSrc } from "@tauri-apps/api/core";
 // importing code snippets and library functions
 import { Show, useContext } from "solid-js";
 
-import { openModal } from "../stores/modalStore.js";
-import { GamePopUpModal } from "./modal/GamePopUp.jsx";
+import { openModal } from "../../stores/modalStore.js";
+import { GamePopUpModal } from "../modal/GamePopUp.jsx";
 
 export function GameCardSideBar(props) {
   const globalContext = useContext(GlobalContext);
