@@ -4,14 +4,17 @@ import {
   GlobalContext,
   SelectedDataContext,
   locationJoin,
-  openDialog,
   openGame,
   translateText,
 } from "../Globals.jsx";
 
+import { openModal } from "../stores/modalStore.js";
+
 import { convertFileSrc } from "@tauri-apps/api/core";
 // importing code snippets and library functions
 import { For, Show, useContext } from "solid-js";
+
+import { GamePopUpModal } from "./modal/GamePopUp.jsx";
 
 export function GameCards(props) {
   const globalContext = useContext(GlobalContext);
@@ -39,7 +42,7 @@ export function GameCards(props) {
               }
               await selectedDataContext.setSelectedGame(globalContext.libraryData.games[gameName]);
 
-              openDialog("gamePopUp");
+              openModal({ type: "gamePopUp", component: GamePopUpModal, confirmWhileClosing: false });
             }}
           >
             <Show

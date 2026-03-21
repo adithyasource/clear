@@ -5,7 +5,7 @@ import { convertFileSrc, invoke } from "@tauri-apps/api/core";
 import { open } from "@tauri-apps/plugin-dialog";
 import { BaseDirectory, copyFile } from "@tauri-apps/plugin-fs";
 // importing code snippets and library functions
-import { createSignal, For, Match, onMount, Show, Switch, useContext } from "solid-js";
+import { createSignal, For, Match, Show, Switch, useContext } from "solid-js";
 import { produce } from "solid-js/store";
 import {
   ApplicationStateContext,
@@ -20,7 +20,7 @@ import {
   UIContext,
   updateData,
 } from "../../Globals.jsx";
-import { closeModal, modalShowCloseConfirm, setModalShowCloseConfirm } from "../../stores/modalStore.js";
+import { closeModal, modalShowCloseConfirm } from "../../stores/modalStore.js";
 
 // importing style related files
 import { ChevronArrow, Close, SaveDisk } from "../../libraries/Icons.jsx";
@@ -308,7 +308,7 @@ export function NewGameModal() {
   }
 
   return (
-    <div class="flex flex-col items-center justify-center gap-3">
+    <div class="flex w-[84rem] flex-col items-center justify-center gap-3 max-large:w-[61rem]">
       <div class="flex w-full justify-between">
         <div>
           <p class="text-[#00000080] text-[25px] dark:text-[#ffffff80]">{translateText("add new game")}</p>

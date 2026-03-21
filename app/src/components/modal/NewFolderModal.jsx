@@ -1,20 +1,11 @@
 // importing globals
-import {
-  ApplicationStateContext,
-  GlobalContext,
-  UIContext,
-  closeDialog,
-  closeDialogImmediately,
-  translateText,
-  triggerToast,
-  updateData,
-} from "../../Globals.jsx";
+import { ApplicationStateContext, GlobalContext, translateText, triggerToast, updateData } from "../../Globals.jsx";
 
 // importing code snippets and library functions
-import { Show, createSignal, onMount, useContext } from "solid-js";
+import { Show, createSignal, useContext } from "solid-js";
 import { produce } from "solid-js/store";
 
-import { closeModal } from "../../stores/modalStore.js";
+import { closeModal, modalShowCloseConfirm } from "../../stores/modalStore.js";
 
 // importing style related files
 import { Close, SaveDisk } from "../../libraries/Icons.jsx";
@@ -25,8 +16,6 @@ export function NewFolderModal() {
 
   const [folderName, setFolderName] = createSignal();
   const [hideFolder, setHideFolder] = createSignal(false);
-
-  const [showCloseConfirm, setShowCloseConfirm] = createSignal(false);
 
   async function addFolder() {
     if (folderName() === "" || folderName() === undefined) {
@@ -62,29 +51,8 @@ export function NewFolderModal() {
 
     await updateData();
 
-    closeDialog("newFolder");
+    closeModal(true);
   }
-
-  onMount(() => {
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        e.preventDefault();
-        if (showCloseConfirm()) {
-          closeDialogImmediately(document.querySelector("[data-modal='newFolder']"));
-
-          setShowCloseConfirm(false);
-        } else {
-          setShowCloseConfirm(true);
-
-          const closeConfirmTimer = setTimeout(() => {
-            clearTimeout(closeConfirmTimer);
-
-            setShowCloseConfirm(false);
-          }, 1500);
-        }
-      }
-    });
-  });
 
   return (
     <div class="flex h-screen w-screen items-center justify-center bg-[#d1d1d166] align-middle dark:bg-[#12121266]">
@@ -122,18 +90,11 @@ export function NewFolderModal() {
               type="button"
               class="standardButton !w-max !h-full !gap-0 !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom flex items-center bg-[#E8E8E8] dark:bg-[#232323]"
               onClick={() => {
-                if (showCloseConfirm()) {
-                  closeModal();
-                } else {
-                  setShowCloseConfirm(true);
-                }
-                setTimeout(() => {
-                  setShowCloseConfirm(false);
-                }, 1500);
+                closeModal();
               }}
               data-tooltip={translateText("close")}
             >
-              {showCloseConfirm() ? (
+              {modalShowCloseConfirm() ? (
                 <span class="whitespace-nowrap text-[#FF3636]">{translateText("hit again to confirm")}</span>
               ) : (
                 <Close />

@@ -16,6 +16,8 @@ import {
 import { GameCardSideBar } from "./components/GameCardSideBar.jsx";
 import { NewGameModal } from "./components/modal/NewGameModal.jsx";
 import { NewFolderModal } from "./components/modal/NewFolderModal.jsx";
+import { SettingsModal } from "./components/modal/SettingsModal.jsx";
+import { NotepadModal } from "./components/modal/NotepadModal.jsx";
 import { openModal } from "./stores/modalStore";
 
 // importing code snippets and library functions
@@ -486,7 +488,6 @@ export function SideBar() {
               type="button"
               class="standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] mt-[12px] bg-[#E8E8E8] dark:bg-[#232323]"
               onClick={() => {
-                // openDialog("newGame");
                 openModal({ type: "newGame", component: NewGameModal, confirmWhileClosing: true });
               }}
             >
@@ -499,8 +500,7 @@ export function SideBar() {
               type="button"
               class="standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] mt-[12px] bg-[#E8E8E8] dark:bg-[#232323]"
               onClick={() => {
-                // openDialog("newFolder");
-                openModal(NewFolderModal);
+                openModal({ type: "newFolder", component: NewFolderModal, confirmWhileClosing: true });
               }}
             >
               {translateText("add folder")}
@@ -523,7 +523,7 @@ export function SideBar() {
                 uiContext.showNewVersionAvailable() ? "!w-[80%]" : ""
               } whitespace-nowrap`}
               onClick={() => {
-                openDialog("notepad");
+                openModal({ type: "notepad", component: NotepadModal, confirmWhileClosing: false });
               }}
             >
               {translateText("notepad")}
@@ -535,7 +535,7 @@ export function SideBar() {
               type="button"
               class="standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] mt-[12px] bg-[#E8E8E8] dark:bg-[#232323]"
               onClick={() => {
-                openDialog("settings");
+                openModal({ type: "settings", component: SettingsModal, confirmWhileClosing: false });
               }}
             >
               {translateText("settings")}

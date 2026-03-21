@@ -13,24 +13,37 @@ export function openModal({ type, component, confirmWhileClosing }) {
 }
 
 export function closeModal(closeModalImmediatelyOverride) {
-  if (!modalState()) return;
-
-  if (closeModalImmediatelyOverride || (modalState().confirmWhileClosing && modalShowCloseConfirm())) {
+  function closeHandler() {
     setModalVisible(false);
 
     setTimeout(() => {
       setModalState(null);
       setModalShowCloseConfirm(false);
     }, 200);
+  }
+
+  if (!modalState()) return;
+
+  if (closeModalImmediatelyOverride) {
+    closeHandler();
+    return;
+  }
+
+  if (modalState().confirmWhileClosing) {
+    if (modalShowCloseConfirm()) {
+      closeHandler();
+    } else {
+      setModalShowCloseConfirm(true);
+
+      const closeConfirmTimer = setTimeout(() => {
+        clearTimeout(closeConfirmTimer);
+
+        setModalShowCloseConfirm(false);
+      }, 1500);
+    }
   } else {
-    setModalShowCloseConfirm(true);
-
-    const closeConfirmTimer = setTimeout(() => {
-      clearTimeout(closeConfirmTimer);
-
-      setModalShowCloseConfirm(false);
-    }, 1500);
+    closeHandler();
   }
 }
 
-export { modalState, modalVisible, setModalVisible, modalShowCloseConfirm, setModalShowCloseConfirm };
+export { modalState, modalVisible, setModalVisible, modalShowCloseConfirm };

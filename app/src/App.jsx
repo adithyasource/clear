@@ -20,14 +20,6 @@ import { GameCards } from "./components/GameCards.jsx";
 import { Hotkeys } from "./components/Hotkeys.jsx";
 import { LanguageSelector } from "./components/LanguageSelector.jsx";
 import { ChevronArrows, EmptyTray, Steam } from "./libraries/Icons.jsx";
-import { EditFolder } from "./modals/EditFolder.jsx";
-import { EditGame } from "./modals/EditGame.jsx";
-import { GamePopUp } from "./modals/GamePopUp.jsx";
-import { Loading } from "./modals/Loading.jsx";
-import { NewFolder } from "./modals/NewFolder.jsx";
-import { NewGame } from "./modals/NewGame.jsx";
-import { Notepad } from "./modals/Notepad.jsx";
-import { Settings } from "./modals/Settings.jsx";
 import { ModalFrame } from "./components/modal/ModalFrame";
 
 import { closeModal } from "./stores/modalStore.js";
