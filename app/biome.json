@@ -7,9 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": [
-      "**"
-    ]
+    "includes": ["**"]
   },
   "formatter": {
     "enabled": true,
@@ -51,3 +49,4 @@
     }
   }
 }
+

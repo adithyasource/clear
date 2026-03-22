@@ -1,36 +1,26 @@
-// importing globals
+import { invoke } from "@tauri-apps/api/core";
+import { createEffect, For, onMount, Show, useContext } from "solid-js";
+import { ModalFrame } from "./components/modal/ModalFrame";
+import { SideBar } from "./components/sidebar/SideBar.jsx";
+import { GameCards } from "./components/ui/GameCards.jsx";
+import { Hotkeys } from "./components/ui/Hotkeys.jsx";
+import { LanguageSelector } from "./components/ui/LanguageSelector.jsx";
 import {
   ApplicationStateContext,
-  GlobalContext,
-  UIContext,
   checkIfConnectedToInternet,
-  closeDialogImmediately,
-  getData,
+  GlobalContext,
   importSteamGames,
   openDialog,
   toggleSideBar,
   translateText,
   triggerToast,
+  UIContext,
   updateData,
 } from "./Globals.jsx";
-
-// importing components
-import { SideBar } from "./SideBar.jsx";
-import { GameCards } from "./components/card/GameCards.jsx";
-import { Hotkeys } from "./components/ui/Hotkeys.jsx";
-import { LanguageSelector } from "./components/ui/LanguageSelector.jsx";
 import { ChevronArrows, EmptyTray, Steam } from "./libraries/Icons.jsx";
-import { ModalFrame } from "./components/modal/ModalFrame";
-
-import { closeModal } from "./stores/modalStore.js";
-
-import { invoke } from "@tauri-apps/api/core";
-// importing code snippets and library functions
-import { For, Match, Show, Switch, createEffect, onMount, useContext } from "solid-js";
 import { fuzzysearch } from "./utils/fuzzysearch.js";
-
-// importing style related files
 import "./App.css";
+import { getData } from "./services/libraryService.js";
 
 function App() {
   const globalContext = useContext(GlobalContext);
