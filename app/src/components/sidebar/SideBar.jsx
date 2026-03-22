@@ -367,21 +367,19 @@ export function SideBar() {
         >
           <p class="mt-[5px]" />
 
-          <For each={applicationStateContext.currentFolders()}>
-            {(folderName, index) => {
-              const folder = globalContext.libraryData.folders[folderName];
-
+          <For each={libraryData.folders}>
+            {(folder, index) => {
               return (
                 <div
                   class="sideBarFolder !py-2 bg-[#f1f1f1] dark:bg-[#1c1c1c]"
-                  id={folderName}
+                  id={folder.name}
                   draggable={true}
                   // drag start and drag end are triggered when the folder itself is dragged
                   onDragStart={(e) => {
                     setTimeout(() => {
                       e.srcElement.classList.add("dragging");
                     }, 0);
-                    e.dataTransfer.setData("folderName", folderName);
+                    e.dataTransfer.setData("folderName", folder.name);
                   }}
                   onDragEnd={(e) => {
                     e.srcElement.classList.remove("dragging");
@@ -391,7 +389,7 @@ export function SideBar() {
                     gamesFolderDragOverHandler(e);
                   }}
                   onDrop={async (e) => {
-                    await gamesFolderDropHandler(e, folderName);
+                    await gamesFolderDropHandler(e, folder.name);
                   }}
                 >
                   <div class="flex cursor-move items-center gap-[10px]">
@@ -431,7 +429,7 @@ export function SideBar() {
                   <Show when={folder.games.length > 0}>
                     <For each={folder.games}>
                       {(gameName, index) => (
-                        <GameCardSideBar gameName={gameName} index={index()} folderName={folderName} />
+                        <GameCardSideBar gameName={gameName} index={index()} folderName={folder.name} />
                       )}
                     </For>
                     <p class="sideBarGame mt-[10px] h-[3px] w-full cursor-grab">&nbsp;</p>

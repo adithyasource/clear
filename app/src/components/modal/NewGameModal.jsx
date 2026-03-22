@@ -1,12 +1,5 @@
-// importing globals
-
 import { convertFileSrc, invoke } from "@tauri-apps/api/core";
-
-import { open } from "@tauri-apps/plugin-dialog";
-import { BaseDirectory, copyFile } from "@tauri-apps/plugin-fs";
-// importing code snippets and library functions
 import { createSignal, For, Match, Show, Switch, useContext } from "solid-js";
-import { produce } from "solid-js/store";
 import {
   ApplicationStateContext,
   GlobalContext,
@@ -16,12 +9,10 @@ import {
   triggerToast,
   UIContext,
 } from "../../Globals.jsx";
-import { closeModal, modalShowCloseConfirm } from "../../stores/modalStore.js";
-
-// importing style related files
 import { ChevronArrow, Close, SaveDisk } from "../../libraries/Icons.jsx";
-
 import { addGame, selectGameLocation, selectImageLocation } from "../../services/gameService.js";
+import { closeModal, modalShowCloseConfirm } from "../../stores/modalStore.js";
+import { gameSearchResults } from "../../data/api/sgdbAssets.js";
 
 export function NewGameModal() {
   const globalContext = useContext(GlobalContext);
@@ -54,209 +45,14 @@ export function NewGameModal() {
   const [foundLogoImageIndex, setFoundLogoImageIndex] = createSignal(0);
   const [foundIconImageIndex, setFoundIconImageIndex] = createSignal(0);
 
-  const [SGDBGames, setSGDBGames] = createSignal();
-
-  // async function addGame() {
-  //   if (gameName() === "" || gameName() === undefined) {
-  //     triggerToast(translateText("no game name"));
-  //     return;
-  //   }
-  //
-  //   let gameNameAlreadyExists = false;
-  //
-  //   for (const name of Object.keys(globalContext.libraryData.games)) {
-  //     if (gameName() === name) {
-  //       gameNameAlreadyExists = true;
-  //     }
-  //   }
-  //
-  //   if (gameNameAlreadyExists) {
-  //     triggerToast(`${gameName()} ${translateText("is already in your library")}`);
-  //     return;
-  //   }
-  //
-  //   let heroImageFileName;
-  //   let gridImageFileName;
-  //   let logoFileName;
-  //   let iconFileName;
-  //
-  //   openDialog("loading");
-  //
-  //   if (foundGridImage()) {
-  //     gridImageFileName = `${generateRandomString()}.png`;
-  //     await invoke("download_image", {
-  //       link: foundGridImage()[foundGridImageIndex()],
-  //       location: locationJoin([applicationStateContext.appDataDirPath(), "grids", gridImageFileName]),
-  //     });
-  //   } else {
-  //     if (locatedGridImage()) {
-  //       gridImageFileName = `${generateRandomString()}.${
-  //         locatedGridImage().split(".")[locatedGridImage().split(".").length - 1]
-  //       }`;
-  //
-  //       await copyFile(locatedGridImage(), locationJoin(["grids", gridImageFileName]), {
-  //         baseDir: BaseDirectory.AppData,
-  //       });
-  //     }
-  //   }
-  //
-  //   if (foundHeroImage()) {
-  //     heroImageFileName = `${generateRandomString()}.png`;
-  //
-  //     await invoke("download_image", {
-  //       link: foundHeroImage()[foundHeroImageIndex()],
-  //       location: locationJoin([applicationStateContext.appDataDirPath(), "heroes", heroImageFileName]),
-  //     });
-  //   } else {
-  //     if (locatedHeroImage()) {
-  //       heroImageFileName = `${generateRandomString()}.${
-  //         locatedHeroImage().split(".")[locatedHeroImage().split(".").length - 1]
-  //       }`;
-  //
-  //       await copyFile(locatedHeroImage(), locationJoin(["heroes", heroImageFileName]), {
-  //         baseDir: BaseDirectory.AppData,
-  //       });
-  //     }
-  //   }
-  //
-  //   if (foundLogoImage()) {
-  //     logoFileName = `${generateRandomString()}.png`;
-  //
-  //     await invoke("download_image", {
-  //       link: foundLogoImage()[foundLogoImageIndex()],
-  //       location: locationJoin([applicationStateContext.appDataDirPath(), "logos", logoFileName]),
-  //     });
-  //   } else {
-  //     if (locatedLogo()) {
-  //       logoFileName = `${generateRandomString()}.${locatedLogo().split(".")[locatedLogo().split(".").length - 1]}`;
-  //
-  //       await copyFile(locatedLogo(), locationJoin(["logos", logoFileName]), {
-  //         baseDir: BaseDirectory.AppData,
-  //       });
-  //     }
-  //   }
-  //
-  //   if (foundIconImage()) {
-  //     iconFileName = `${generateRandomString()}.png`;
-  //
-  //     await invoke("download_image", {
-  //       link: foundIconImage()[foundIconImageIndex()],
-  //       location: locationJoin([applicationStateContext.appDataDirPath(), "icons", iconFileName]),
-  //     });
-  //   } else {
-  //     if (locatedIcon()) {
-  //       iconFileName = `${generateRandomString()}.${locatedIcon().split(".")[locatedIcon().split(".").length - 1]}`;
-  //
-  //       await copyFile(locatedIcon(), locationJoin(["icons", iconFileName]), {
-  //         baseDir: BaseDirectory.AppData,
-  //       });
-  //     }
-  //   }
-  //
-  //   globalContext.setLibraryData(
-  //     produce((data) => {
-  //       data.games[gameName()] = {
-  //         location: gameLocation(),
-  //         name: gameName(),
-  //         heroImage: heroImageFileName,
-  //         gridImage: gridImageFileName,
-  //         logo: logoFileName,
-  //         icon: iconFileName,
-  //         favourite: favouriteGame(),
-  //       };
-  //
-  //       return data;
-  //     }),
-  //   );
-  //
-  //   await updateData();
-  //
-  //   closeModal(true);
-  //   closeModal(true);
-  //
-  //   setTimeout(() => {
-  //     // scrolling to the bottom where uncategorized games are
-  //     const sideBarFolders = document.getElementById("sideBarFolders");
-  //     sideBarFolders.scrollTop = sideBarFolders.scrollHeight;
-  //   }, 100);
-  // }
-
-  async function locateGridImage() {
-    setGridImage(
-      await open({
-        multiple: false,
-        filters: [
-          {
-            name: "Image",
-            extensions: ["png", "jpg", "jpeg", "webp"],
-          },
-        ],
-      }),
-    );
-  }
-  async function locateHeroImage() {
-    setHeroImage(
-      await open({
-        multiple: false,
-        filters: [
-          {
-            name: "Image",
-            extensions: ["png", "jpg", "jpeg", "webp"],
-          },
-        ],
-      }),
-    );
-  }
-  async function locateLogo() {
-    setLogoImage(
-      await open({
-        multiple: false,
-        filters: [
-          {
-            name: "Image",
-            extensions: ["png", "jpg", "jpeg", "webp"],
-          },
-        ],
-      }),
-    );
-  }
-
-  async function locateIcon() {
-    setIconImage(
-      await open({
-        multiple: false,
-        filters: [
-          {
-            name: "Image",
-            extensions: ["png", "jpg", "jpeg", "ico"],
-          },
-        ],
-      }),
-    );
-  }
+  const [searchResults, setSearchResults] = createSignal();
 
   async function searchGameName() {
-    setSGDBGames(undefined);
+    setSearchResults(undefined);
 
-    let searchedGameData;
+    const result = await gameSearchResults(gameName());
 
-    try {
-      searchedGameData = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?gameName=${gameName()}`);
-    } catch {
-      searchedGameData = undefined;
-    }
-
-    if (searchedGameData) {
-      searchedGameData = await searchedGameData.json();
-
-      if (searchedGameData.data.length === 0) {
-        triggerToast(translateText("couldn't find that game :("));
-      } else {
-        setSGDBGames(searchedGameData.data);
-      }
-    } else {
-      triggerToast(translateText("you're not connected to the internet :("));
-    }
+    setSearchResults(result);
   }
 
   async function getGameAssets() {
@@ -329,6 +125,12 @@ export function NewGameModal() {
               });
 
               closeModal(true);
+
+              // setTimeout(() => {
+              //   // scrolling to the bottom where uncategorized games are
+              //   const sideBarFolders = document.getElementById("sideBarFolders");
+              //   sideBarFolders.scrollTop = sideBarFolders.scrollHeight;
+              // }, 100);
             }}
             class="standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] flex items-center gap-1 bg-[#E8E8E8] dark:bg-[#232323] "
           >
@@ -363,7 +165,7 @@ export function NewGameModal() {
           }}
           onScroll={() => {}}
           onWheel={(e) => {
-            if (SGDBGames()) {
+            if (searchResults()) {
               if (e.deltaY <= 0) {
                 setFoundGridImageIndex((i) => (i === foundGridImage().length - 1 ? 0 : i + 1));
                 setShowGridImageLoading(true);
@@ -380,7 +182,7 @@ export function NewGameModal() {
             }
           }}
           onKeyDown={(e) => {
-            if (SGDBGames()) {
+            if (searchResults()) {
               if (e.key === "ArrowRight" || e.key === "ArrowUp") {
                 setFoundGridImageIndex((i) => (i === foundGridImage().length - 1 ? 0 : i + 1));
                 setShowGridImageLoading(true);
@@ -439,7 +241,7 @@ export function NewGameModal() {
               }}
               onScroll={() => {}}
               onWheel={(e) => {
-                if (SGDBGames()) {
+                if (searchResults()) {
                   if (e.deltaY <= 0) {
                     setFoundHeroImageIndex((i) => (i === foundHeroImage().length - 1 ? 0 : i + 1));
                     setShowHeroImageLoading(true);
@@ -456,7 +258,7 @@ export function NewGameModal() {
                 }
               }}
               onKeyDown={(e) => {
-                if (SGDBGames()) {
+                if (searchResults()) {
                   if (e.key === "ArrowRight" || e.key === "ArrowUp") {
                     setFoundHeroImageIndex((i) => (i === foundHeroImage().length - 1 ? 0 : i + 1));
                     setShowHeroImageLoading(true);
@@ -532,7 +334,7 @@ export function NewGameModal() {
               }}
               onScroll={() => {}}
               onWheel={(e) => {
-                if (SGDBGames()) {
+                if (searchResults()) {
                   if (e.deltaY <= 0) {
                     setFoundLogoImageIndex((i) => (i === foundLogoImage().length - 1 ? 0 : i + 1));
                     setShowLogoImageLoading(true);
@@ -549,7 +351,7 @@ export function NewGameModal() {
                 }
               }}
               onKeyDown={(e) => {
-                if (SGDBGames()) {
+                if (searchResults()) {
                   if (e.key === "ArrowRight" || e.key === "ArrowUp") {
                     setFoundLogoImageIndex((i) => (i === foundLogoImage().length - 1 ? 0 : i + 1));
                     setShowLogoImageLoading(true);
@@ -612,7 +414,7 @@ export function NewGameModal() {
               }}
               onScroll={() => {}}
               onWheel={(e) => {
-                if (SGDBGames()) {
+                if (searchResults()) {
                   if (e.deltaY <= 0) {
                     setFoundIconImageIndex((i) => (i === foundIconImage().length - 1 ? 0 : i + 1));
                     setShowIconImageLoading(true);
@@ -629,7 +431,7 @@ export function NewGameModal() {
                 }
               }}
               onKeyDown={(e) => {
-                if (SGDBGames()) {
+                if (searchResults()) {
                   if (e.key === "ArrowRight" || e.key === "ArrowUp") {
                     setFoundIconImageIndex((i) => (i === foundIconImage().length - 1 ? 0 : i + 1));
                     setShowIconImageLoading(true);
@@ -698,14 +500,14 @@ export function NewGameModal() {
                 type="button"
                 class="standardButton !mr-2 !mt-0 !w-max !text-black hover:!bg-[#d6d6d6] dark:!bg-[#1c1c1c] dark:!text-white dark:hover:!bg-[#2b2b2b] cursor-pointer bg-[#f1f1f1] px-3 py-1 text-[#ffffff80]"
                 onClick={() => {
-                  if (gameName() === "" || gameName() === undefined) {
+                  if (!gameName()) {
                     triggerToast(translateText("no game name"));
                     return;
                   }
 
                   searchGameName();
                   selectedDataContext.setSelectedGameId(undefined);
-                  setSGDBGames(undefined);
+                  setSearchResults(undefined);
                   setFoundGridImage(undefined);
                   setFoundHeroImage(undefined);
                   setFoundLogoImage(undefined);
@@ -797,12 +599,12 @@ export function NewGameModal() {
 
       <div class="flex w-[84rem] justify-between max-large:w-[61rem]">
         <span class="opacity-50">{translateText("right click to empty image selection")}</span>
-        <Show when={SGDBGames() && selectedDataContext.selectedGameId() === undefined}>
+        <Show when={searchResults() && selectedDataContext.selectedGameId() === undefined}>
           <span class="opacity-80">{translateText("select the official name of your game")}</span>
         </Show>
       </div>
 
-      <Show when={SGDBGames()}>
+      <Show when={searchResults()}>
         <Show when={selectedDataContext.selectedGameId() === undefined}>
           <div class="gameInput flex w-[84rem] bg-[#E8E8E8cc] backdrop-blur-[10px] max-large:w-[61rem] dark:bg-[#272727cc]">
             <button
@@ -816,7 +618,7 @@ export function NewGameModal() {
               <ChevronArrow />
             </button>
             <div id="SGDBGamesContainer" class="SGDBGamesContainer flex gap-[5px] overflow-x-auto scroll-smooth">
-              <For each={SGDBGames()}>
+              <For each={searchResults()}>
                 {(foundGame) => {
                   return (
                     <button

@@ -1,9 +1,9 @@
-import { pickExecutable, pickImage } from "../data/system/locateDialog";
+import { produce } from "solid-js/store";
+import { dataFileWrite } from "../data/storage/fileStorage";
 import { copyImageIntoBin } from "../data/storage/imageStroage";
+import { pickExecutable, pickImage } from "../data/system/locateDialog";
 import { libraryData, setLibraryData } from "../stores/libraryStore";
 import { generateId } from "../utils/generateId";
-import { dataFileWrite } from "../data/storage/fileStorage";
-import { createStore, produce } from "solid-js/store";
 
 export async function prepareImageFiles({ gridImage, heroImage, logoImage, iconImage }) {
   // implement downloading if downloaded image

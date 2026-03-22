@@ -10,6 +10,8 @@ import { closeModal, modalShowCloseConfirm } from "../../stores/modalStore.js";
 // importing style related files
 import { Close, SaveDisk } from "../../libraries/Icons.jsx";
 
+import { addFolder } from "../../services/folderService.js";
+
 export function NewFolderModal() {
   const globalContext = useContext(GlobalContext);
   const applicationStateContext = useContext(ApplicationStateContext);
@@ -17,42 +19,42 @@ export function NewFolderModal() {
   const [folderName, setFolderName] = createSignal();
   const [hideFolder, setHideFolder] = createSignal(false);
 
-  async function addFolder() {
-    if (folderName() === "" || folderName() === undefined) {
-      triggerToast(translateText("no folder name"));
-      return;
-    }
-
-    let folderNameAlreadyExists = false;
-
-    for (const name of Object.keys(globalContext.libraryData.folders)) {
-      if (folderName() === name) {
-        folderNameAlreadyExists = true;
-      }
-    }
-
-    if (folderNameAlreadyExists) {
-      triggerToast(`${folderName()} ${translateText("is already in your library")}`);
-      return;
-    }
-
-    globalContext.setLibraryData(
-      produce((data) => {
-        data.folders[folderName()] = {
-          name: folderName(),
-          hide: hideFolder(),
-          games: [],
-          index: applicationStateContext.currentFolders().length,
-        };
-
-        return data;
-      }),
-    );
-
-    await updateData();
-
-    closeModal(true);
-  }
+  // async function addFolder() {
+  //   if (folderName() === "" || folderName() === undefined) {
+  //     triggerToast(translateText("no folder name"));
+  //     return;
+  //   }
+  //
+  //   let folderNameAlreadyExists = false;
+  //
+  //   for (const name of Object.keys(globalContext.libraryData.folders)) {
+  //     if (folderName() === name) {
+  //       folderNameAlreadyExists = true;
+  //     }
+  //   }
+  //
+  //   if (folderNameAlreadyExists) {
+  //     triggerToast(`${folderName()} ${translateText("is already in your library")}`);
+  //     return;
+  //   }
+  //
+  //   globalContext.setLibraryData(
+  //     produce((data) => {
+  //       data.folders[folderName()] = {
+  //         name: folderName(),
+  //         hide: hideFolder(),
+  //         games: [],
+  //         index: applicationStateContext.currentFolders().length,
+  //       };
+  //
+  //       return data;
+  //     }),
+  //   );
+  //
+  //   await updateData();
+  //
+  //   closeModal(true);
+  // }
 
   return (
     <div class="flex h-screen w-screen items-center justify-center bg-[#d1d1d166] align-middle dark:bg-[#12121266]">
@@ -80,7 +82,11 @@ export function NewFolderModal() {
             </button>
             <button
               type="button"
-              onClick={addFolder}
+              onClick={() => {
+                addFolder({ name: folderName(), hide: hideFolder() });
+
+                closeModal(true);
+              }}
               class="standardButton !w-max !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] flex items-center bg-[#E8E8E8] dark:bg-[#232323]"
             >
               {translateText("save")}
