@@ -10,20 +10,18 @@ import { produce } from "solid-js/store";
 import {
   ApplicationStateContext,
   GlobalContext,
-  generateRandomString,
   getExecutableFileName,
-  locationJoin,
-  openDialog,
   SelectedDataContext,
   translateText,
   triggerToast,
   UIContext,
-  updateData,
 } from "../../Globals.jsx";
 import { closeModal, modalShowCloseConfirm } from "../../stores/modalStore.js";
 
 // importing style related files
 import { ChevronArrow, Close, SaveDisk } from "../../libraries/Icons.jsx";
+
+import { addGame, selectGameLocation, selectImageLocation } from "../../services/gameService.js";
 
 export function NewGameModal() {
   const globalContext = useContext(GlobalContext);
@@ -36,17 +34,21 @@ export function NewGameModal() {
   const [showLogoImageLoading, setShowLogoImageLoading] = createSignal(false);
   const [showIconImageLoading, setShowIconImageLoading] = createSignal(false);
 
+  const [gameLocation, setGameLocation] = createSignal();
+
   const [gameName, setGameName] = createSignal("");
-  const [favouriteGame, setFavouriteGame] = createSignal(false);
-  const [locatedGridImage, setLocatedGridImage] = createSignal();
-  const [locatedHeroImage, setLocatedHeroImage] = createSignal();
-  const [locatedLogo, setLocatedLogo] = createSignal();
-  const [locatedIcon, setLocatedIcon] = createSignal();
-  const [locatedGame, setlocatedGame] = createSignal();
-  const [foundGridImage, setFoundGridImage] = createSignal(false);
-  const [foundHeroImage, setFoundHeroImage] = createSignal(false);
-  const [foundLogoImage, setFoundLogoImage] = createSignal(false);
-  const [foundIconImage, setFoundIconImage] = createSignal(false);
+  const [favourite, setFavourite] = createSignal(false);
+
+  const [gridImage, setGridImage] = createSignal();
+  const [heroImage, setHeroImage] = createSignal();
+  const [logoImage, setLogoImage] = createSignal();
+  const [iconImage, setIconImage] = createSignal();
+
+  const [foundGridImage, setFoundGridImage] = createSignal();
+  const [foundHeroImage, setFoundHeroImage] = createSignal();
+  const [foundLogoImage, setFoundLogoImage] = createSignal();
+  const [foundIconImage, setFoundIconImage] = createSignal();
+
   const [foundGridImageIndex, setFoundGridImageIndex] = createSignal(0);
   const [foundHeroImageIndex, setFoundHeroImageIndex] = createSignal(0);
   const [foundLogoImageIndex, setFoundLogoImageIndex] = createSignal(0);
@@ -54,147 +56,133 @@ export function NewGameModal() {
 
   const [SGDBGames, setSGDBGames] = createSignal();
 
-  async function addGame() {
-    if (gameName() === "" || gameName() === undefined) {
-      triggerToast(translateText("no game name"));
-      return;
-    }
+  // async function addGame() {
+  //   if (gameName() === "" || gameName() === undefined) {
+  //     triggerToast(translateText("no game name"));
+  //     return;
+  //   }
+  //
+  //   let gameNameAlreadyExists = false;
+  //
+  //   for (const name of Object.keys(globalContext.libraryData.games)) {
+  //     if (gameName() === name) {
+  //       gameNameAlreadyExists = true;
+  //     }
+  //   }
+  //
+  //   if (gameNameAlreadyExists) {
+  //     triggerToast(`${gameName()} ${translateText("is already in your library")}`);
+  //     return;
+  //   }
+  //
+  //   let heroImageFileName;
+  //   let gridImageFileName;
+  //   let logoFileName;
+  //   let iconFileName;
+  //
+  //   openDialog("loading");
+  //
+  //   if (foundGridImage()) {
+  //     gridImageFileName = `${generateRandomString()}.png`;
+  //     await invoke("download_image", {
+  //       link: foundGridImage()[foundGridImageIndex()],
+  //       location: locationJoin([applicationStateContext.appDataDirPath(), "grids", gridImageFileName]),
+  //     });
+  //   } else {
+  //     if (locatedGridImage()) {
+  //       gridImageFileName = `${generateRandomString()}.${
+  //         locatedGridImage().split(".")[locatedGridImage().split(".").length - 1]
+  //       }`;
+  //
+  //       await copyFile(locatedGridImage(), locationJoin(["grids", gridImageFileName]), {
+  //         baseDir: BaseDirectory.AppData,
+  //       });
+  //     }
+  //   }
+  //
+  //   if (foundHeroImage()) {
+  //     heroImageFileName = `${generateRandomString()}.png`;
+  //
+  //     await invoke("download_image", {
+  //       link: foundHeroImage()[foundHeroImageIndex()],
+  //       location: locationJoin([applicationStateContext.appDataDirPath(), "heroes", heroImageFileName]),
+  //     });
+  //   } else {
+  //     if (locatedHeroImage()) {
+  //       heroImageFileName = `${generateRandomString()}.${
+  //         locatedHeroImage().split(".")[locatedHeroImage().split(".").length - 1]
+  //       }`;
+  //
+  //       await copyFile(locatedHeroImage(), locationJoin(["heroes", heroImageFileName]), {
+  //         baseDir: BaseDirectory.AppData,
+  //       });
+  //     }
+  //   }
+  //
+  //   if (foundLogoImage()) {
+  //     logoFileName = `${generateRandomString()}.png`;
+  //
+  //     await invoke("download_image", {
+  //       link: foundLogoImage()[foundLogoImageIndex()],
+  //       location: locationJoin([applicationStateContext.appDataDirPath(), "logos", logoFileName]),
+  //     });
+  //   } else {
+  //     if (locatedLogo()) {
+  //       logoFileName = `${generateRandomString()}.${locatedLogo().split(".")[locatedLogo().split(".").length - 1]}`;
+  //
+  //       await copyFile(locatedLogo(), locationJoin(["logos", logoFileName]), {
+  //         baseDir: BaseDirectory.AppData,
+  //       });
+  //     }
+  //   }
+  //
+  //   if (foundIconImage()) {
+  //     iconFileName = `${generateRandomString()}.png`;
+  //
+  //     await invoke("download_image", {
+  //       link: foundIconImage()[foundIconImageIndex()],
+  //       location: locationJoin([applicationStateContext.appDataDirPath(), "icons", iconFileName]),
+  //     });
+  //   } else {
+  //     if (locatedIcon()) {
+  //       iconFileName = `${generateRandomString()}.${locatedIcon().split(".")[locatedIcon().split(".").length - 1]}`;
+  //
+  //       await copyFile(locatedIcon(), locationJoin(["icons", iconFileName]), {
+  //         baseDir: BaseDirectory.AppData,
+  //       });
+  //     }
+  //   }
+  //
+  //   globalContext.setLibraryData(
+  //     produce((data) => {
+  //       data.games[gameName()] = {
+  //         location: gameLocation(),
+  //         name: gameName(),
+  //         heroImage: heroImageFileName,
+  //         gridImage: gridImageFileName,
+  //         logo: logoFileName,
+  //         icon: iconFileName,
+  //         favourite: favouriteGame(),
+  //       };
+  //
+  //       return data;
+  //     }),
+  //   );
+  //
+  //   await updateData();
+  //
+  //   closeModal(true);
+  //   closeModal(true);
+  //
+  //   setTimeout(() => {
+  //     // scrolling to the bottom where uncategorized games are
+  //     const sideBarFolders = document.getElementById("sideBarFolders");
+  //     sideBarFolders.scrollTop = sideBarFolders.scrollHeight;
+  //   }, 100);
+  // }
 
-    let gameNameAlreadyExists = false;
-
-    for (const name of Object.keys(globalContext.libraryData.games)) {
-      if (gameName() === name) {
-        gameNameAlreadyExists = true;
-      }
-    }
-
-    if (gameNameAlreadyExists) {
-      triggerToast(`${gameName()} ${translateText("is already in your library")}`);
-      return;
-    }
-
-    let heroImageFileName;
-    let gridImageFileName;
-    let logoFileName;
-    let iconFileName;
-
-    openDialog("loading");
-
-    if (foundGridImage()) {
-      gridImageFileName = `${generateRandomString()}.png`;
-      await invoke("download_image", {
-        link: foundGridImage()[foundGridImageIndex()],
-        location: locationJoin([applicationStateContext.appDataDirPath(), "grids", gridImageFileName]),
-      });
-    } else {
-      if (locatedGridImage()) {
-        gridImageFileName = `${generateRandomString()}.${
-          locatedGridImage().split(".")[locatedGridImage().split(".").length - 1]
-        }`;
-
-        await copyFile(locatedGridImage(), locationJoin(["grids", gridImageFileName]), {
-          baseDir: BaseDirectory.AppData,
-        });
-      }
-    }
-
-    if (foundHeroImage()) {
-      heroImageFileName = `${generateRandomString()}.png`;
-
-      await invoke("download_image", {
-        link: foundHeroImage()[foundHeroImageIndex()],
-        location: locationJoin([applicationStateContext.appDataDirPath(), "heroes", heroImageFileName]),
-      });
-    } else {
-      if (locatedHeroImage()) {
-        heroImageFileName = `${generateRandomString()}.${
-          locatedHeroImage().split(".")[locatedHeroImage().split(".").length - 1]
-        }`;
-
-        await copyFile(locatedHeroImage(), locationJoin(["heroes", heroImageFileName]), {
-          baseDir: BaseDirectory.AppData,
-        });
-      }
-    }
-
-    if (foundLogoImage()) {
-      logoFileName = `${generateRandomString()}.png`;
-
-      await invoke("download_image", {
-        link: foundLogoImage()[foundLogoImageIndex()],
-        location: locationJoin([applicationStateContext.appDataDirPath(), "logos", logoFileName]),
-      });
-    } else {
-      if (locatedLogo()) {
-        logoFileName = `${generateRandomString()}.${locatedLogo().split(".")[locatedLogo().split(".").length - 1]}`;
-
-        await copyFile(locatedLogo(), locationJoin(["logos", logoFileName]), {
-          baseDir: BaseDirectory.AppData,
-        });
-      }
-    }
-
-    if (foundIconImage()) {
-      iconFileName = `${generateRandomString()}.png`;
-
-      await invoke("download_image", {
-        link: foundIconImage()[foundIconImageIndex()],
-        location: locationJoin([applicationStateContext.appDataDirPath(), "icons", iconFileName]),
-      });
-    } else {
-      if (locatedIcon()) {
-        iconFileName = `${generateRandomString()}.${locatedIcon().split(".")[locatedIcon().split(".").length - 1]}`;
-
-        await copyFile(locatedIcon(), locationJoin(["icons", iconFileName]), {
-          baseDir: BaseDirectory.AppData,
-        });
-      }
-    }
-
-    globalContext.setLibraryData(
-      produce((data) => {
-        data.games[gameName()] = {
-          location: locatedGame(),
-          name: gameName(),
-          heroImage: heroImageFileName,
-          gridImage: gridImageFileName,
-          logo: logoFileName,
-          icon: iconFileName,
-          favourite: favouriteGame(),
-        };
-
-        return data;
-      }),
-    );
-
-    await updateData();
-
-    closeModal(true);
-    closeModal(true);
-
-    setTimeout(() => {
-      // scrolling to the bottom where uncategorized games are
-      const sideBarFolders = document.getElementById("sideBarFolders");
-      sideBarFolders.scrollTop = sideBarFolders.scrollHeight;
-    }, 100);
-  }
-
-  async function locateGame() {
-    setlocatedGame(
-      await open({
-        multiple: false,
-        filters: [
-          {
-            name: "Executable",
-            extensions: ["exe", "lnk", "url", "app"],
-          },
-        ],
-      }),
-    );
-  }
   async function locateGridImage() {
-    setFoundGridImage(undefined);
-    setLocatedGridImage(
+    setGridImage(
       await open({
         multiple: false,
         filters: [
@@ -207,8 +195,7 @@ export function NewGameModal() {
     );
   }
   async function locateHeroImage() {
-    setFoundHeroImage(undefined);
-    setLocatedHeroImage(
+    setHeroImage(
       await open({
         multiple: false,
         filters: [
@@ -221,8 +208,7 @@ export function NewGameModal() {
     );
   }
   async function locateLogo() {
-    setFoundLogoImage(undefined);
-    setLocatedLogo(
+    setLogoImage(
       await open({
         multiple: false,
         filters: [
@@ -236,8 +222,7 @@ export function NewGameModal() {
   }
 
   async function locateIcon() {
-    setFoundIconImage(undefined);
-    setLocatedIcon(
+    setIconImage(
       await open({
         multiple: false,
         filters: [
@@ -318,10 +303,10 @@ export function NewGameModal() {
             type="button"
             class="cursor-pointer"
             onClick={() => {
-              setFavouriteGame((x) => !x);
+              setFavourite((x) => !x);
             }}
           >
-            <Show when={favouriteGame()} fallback={<div class="!w-max">{translateText("favourite")}</div>}>
+            <Show when={favourite()} fallback={<div class="!w-max">{translateText("favourite")}</div>}>
               <div class="relative">
                 <div class="!w-max">{translateText("favourite")}</div>
                 <div class="!w-max absolute inset-0 opacity-70 blur-[5px]">{translateText("favourite")}</div>
@@ -330,7 +315,21 @@ export function NewGameModal() {
           </button>
           <button
             type="button"
-            onClick={addGame}
+            onClick={() => {
+              // openDialog("loading");
+
+              addGame({
+                name: gameName(),
+                favourite: favourite(),
+                gameLocation: gameLocation(),
+                gridImage: gridImage(),
+                heroImage: heroImage(),
+                logoImage: logoImage(),
+                iconImage: iconImage(),
+              });
+
+              closeModal(true);
+            }}
             class="standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] flex items-center gap-1 bg-[#E8E8E8] dark:bg-[#232323] "
           >
             <p class="!w-max">{translateText("save")}</p>
@@ -359,7 +358,9 @@ export function NewGameModal() {
 
         <button
           type="button"
-          onClick={locateGridImage}
+          onClick={() => {
+            selectImageLocation(setGridImage);
+          }}
           onScroll={() => {}}
           onWheel={(e) => {
             if (SGDBGames()) {
@@ -414,8 +415,8 @@ export function NewGameModal() {
             src={
               foundGridImage()
                 ? foundGridImage()[foundGridImageIndex()]
-                : locatedGridImage()
-                  ? convertFileSrc(locatedGridImage())
+                : gridImage()
+                  ? convertFileSrc(gridImage())
                   : // this is a gif which is completely empty
                     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
             }
@@ -433,7 +434,9 @@ export function NewGameModal() {
 
             <button
               type="button"
-              onClick={locateHeroImage}
+              onClick={() => {
+                selectImageLocation(setHeroImage);
+              }}
               onScroll={() => {}}
               onWheel={(e) => {
                 if (SGDBGames()) {
@@ -488,8 +491,8 @@ export function NewGameModal() {
                 src={
                   foundHeroImage()
                     ? foundHeroImage()[foundHeroImageIndex()]
-                    : locatedHeroImage()
-                      ? convertFileSrc(locatedHeroImage())
+                    : heroImage()
+                      ? convertFileSrc(heroImage())
                       : // this is a gif which is completely empty
                         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                 }
@@ -503,8 +506,8 @@ export function NewGameModal() {
                 src={
                   foundHeroImage()
                     ? foundHeroImage()[foundHeroImageIndex()]
-                    : locatedHeroImage()
-                      ? convertFileSrc(locatedHeroImage())
+                    : heroImage()
+                      ? convertFileSrc(heroImage())
                       : // this is a gif which is completely empty
                         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                 }
@@ -520,7 +523,9 @@ export function NewGameModal() {
 
             <button
               type="button"
-              onClick={locateLogo}
+              onClick={() => {
+                selectImageLocation(setLogoImage);
+              }}
               onContextMenu={() => {
                 setLocatedLogo(undefined);
                 setFoundLogoImage(undefined);
@@ -561,7 +566,7 @@ export function NewGameModal() {
                 }
               }}
               class={`!absolute !p-[2px] tooltip-center bottom-[70px] left-[20px] z-[100] h-[90px] w-[250px] cursor-pointer max-large:h-[90px] max-large:w-[243px] ${
-                foundLogoImage() || locatedLogo()
+                foundLogoImage() || logoImage()
                   ? "!outline-[2px] !outline-[#E8E8E880] hover:bg-[#E8E8E84D] hover:outline-dashed focus:bg-[#E8E8E84D] !outline:dark:bg-[#27272780] focus:dark:bg-[#2727274D] hover:dark:bg-[#2727274D]"
                   : "dark:!bg-[#272727] bg-[#E8E8E8]"
               } `}
@@ -579,8 +584,8 @@ export function NewGameModal() {
                 src={
                   foundLogoImage()
                     ? foundLogoImage()[foundLogoImageIndex()]
-                    : locatedLogo()
-                      ? convertFileSrc(locatedLogo())
+                    : logoImage()
+                      ? convertFileSrc(logoImage())
                       : // this is a gif which is completely empty
                         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                 }
@@ -598,7 +603,9 @@ export function NewGameModal() {
           <div class="flex cursor-pointer items-center gap-3 ">
             <button
               type="button"
-              onClick={locateIcon}
+              onClick={() => {
+                selectImageLocation(setIconImage);
+              }}
               onContextMenu={() => {
                 setLocatedIcon(undefined);
                 setFoundIconImage(undefined);
@@ -639,7 +646,7 @@ export function NewGameModal() {
                 }
               }}
               class={`group tooltip-bottom relative p-0 ${
-                foundIconImage() || locatedIcon()
+                foundIconImage() || iconImage()
                   ? "!outline-[2px] !outline-[#E8E8E880] hover:outline-dashed !outline:dark:bg-[#27272780]"
                   : "dark:!bg-[#272727] bg-[#E8E8E8]"
               }`}
@@ -657,8 +664,8 @@ export function NewGameModal() {
                 src={
                   foundIconImage()
                     ? foundIconImage()[foundIconImageIndex()]
-                    : locatedIcon()
-                      ? convertFileSrc(locatedIcon())
+                    : iconImage()
+                      ? convertFileSrc(iconImage())
                       : // this is a gif which is completely empty
                         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                 }
@@ -774,13 +781,15 @@ export function NewGameModal() {
 
             <button
               type="button"
-              onClick={locateGame}
+              onClick={() => {
+                selectGameLocation(setGameLocation);
+              }}
               onContextMenu={() => {
-                setlocatedGame(undefined);
+                setGameLocation(undefined);
               }}
               class="standardButton !mt-0 !w-max !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] bg-[#E8E8E8] dark:bg-[#232323]"
             >
-              {locatedGame() === undefined ? translateText("locate game") : getExecutableFileName(locatedGame())}
+              {gameLocation() === undefined ? translateText("locate game") : getExecutableFileName(gameLocation())}
             </button>
           </div>
         </div>

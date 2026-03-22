@@ -1,14 +1,16 @@
 import { appDataDir } from "@tauri-apps/api/path";
-import { dataFileExists } from "../data/storage/fileStorage.ts";
-import { dataFileRead } from "../data/storage/fileStorage.ts";
+import { dataFileExists } from "../data/storage/fileStorage.js";
+import { dataFileRead } from "../data/storage/fileStorage.js";
 import { triggerToast } from "../Globals.jsx";
 import { setLibraryData } from "../stores/libraryStore.js";
 
 export async function getData() {
   let libraryData;
   try {
-    libraryData = dataFileRead();
+    libraryData = await dataFileRead();
+
     setLibraryData(libraryData);
+    console.log("data fetched");
   } catch (err) {
     triggerToast(err);
   }
@@ -19,15 +21,5 @@ export async function getData() {
   //   document.documentElement.classList.add("dark");
   // }
 
-  console.log("data fetched");
-
   return libraryData;
 }
-
-export async function updateData() {
-  await writeTextFile("data.json", JSON.stringify(libraryData, null, 4), {
-    baseDir: BaseDirectory.AppData,
-  }).then(getData());
-}
-
-export async function addGame({ name, gridImage, heroImage, logoImage, iconImage }) {}

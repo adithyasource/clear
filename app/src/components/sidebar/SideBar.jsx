@@ -21,7 +21,7 @@ import { NotepadModal } from "../../components/modal/NotepadModal.jsx";
 import { openModal } from "../../stores/modalStore";
 
 // importing code snippets and library functions
-import { For, Show, createSignal, onMount, useContext } from "solid-js";
+import { For, Show, createSignal, createEffect, onMount, useContext } from "solid-js";
 import { produce } from "solid-js/store";
 
 // importing style related files
@@ -36,11 +36,17 @@ import {
   UpdateDownload,
 } from "../../libraries/Icons.jsx";
 
+import { libraryData } from "../../stores/libraryStore.js";
+
 export function SideBar() {
   const globalContext = useContext(GlobalContext);
   const uiContext = useContext(UIContext);
   const selectedDataContext = useContext(SelectedDataContext);
   const applicationStateContext = useContext(ApplicationStateContext);
+
+  createEffect(() => {
+    console.log(JSON.parse(JSON.stringify(libraryData.games)));
+  });
 
   const [showContentSkipButton, setShowContentSkipButton] = createSignal(false);
 
@@ -462,17 +468,25 @@ export function SideBar() {
               <p class="pd-3 text-[#00000080] dark:text-[#ffffff80] ">{translateText("uncategorized")}</p>
             </div>
 
-            <For each={applicationStateContext.currentGames()}>
+            <For each={Object.entries(libraryData.games)}>
               {(currentGame, index) => {
                 const gamesInFolders = [];
-                for (const folder of Object.values(globalContext.libraryData.folders)) {
+                console.log(currentGame);
+                console.log(!gamesInFolders.includes(currentGame));
+
+                for (const folder of Object.values(libraryData.folders)) {
                   for (const game of folder.games) {
                     gamesInFolders.push(game);
                   }
                 }
                 return (
                   <Show when={!gamesInFolders.includes(currentGame)}>
-                    <GameCardSideBar gameName={currentGame} index={index()} folderName="uncategorized" />
+                    <GameCardSideBar
+                      gameId={currentGame[0]}
+                      game={currentGame[1]}
+                      index={index()}
+                      folderName="uncategorized"
+                    />
                   </Show>
                 );
               }}
@@ -488,6 +502,8 @@ export function SideBar() {
             class="standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] mt-[12px] bg-[#E8E8E8] dark:bg-[#232323]"
             onClick={() => {
               openModal({ type: "newGame", component: NewGameModal, confirmWhileClosing: true });
+
+              console.log(JSON.stringify(libraryData.games));
             }}
           >
             {translateText("add game")}

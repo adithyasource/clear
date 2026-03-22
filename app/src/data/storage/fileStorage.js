@@ -1,11 +1,9 @@
-import { exists } from "@tauri-apps/plugin-fs";
 import { BaseDirectory, exists, mkdir, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
-import { appDataDir } from "@tauri-apps/api/path";
 import { locationJoin } from "../../Globals";
 
 const defaultData = {
   games: {},
-  folders: {},
+  folders: [],
   notepad: "",
   userSettings: {
     roundedBorders: true,
@@ -22,14 +20,15 @@ const defaultData = {
 
 async function dataFileExists() {
   try {
-    return await exists("data.json", { baseDir: BaseDirectory.AppData });
+    const result = await exists("data.json", { baseDir: BaseDirectory.AppData });
+    return result;
   } catch (err) {
     console.error("error checking datafile existence:", err);
     return false;
   }
 }
 
-async function dataFileWrite(json) {
+export async function dataFileWrite(json) {
   if (!dataFileExists()) {
     throw new Error("data file doesnt exist");
   }
@@ -41,10 +40,8 @@ async function dataFileWrite(json) {
 
 async function dataFileRead() {
   try {
-    if (!dataFileExists()) {
-      // setup data file
-
-      dataFileWrite(defaultData);
+    if (!(await dataFileExists())) {
+      await dataFileWrite(defaultData);
     }
 
     const content = await readTextFile("data.json", {
@@ -76,37 +73,12 @@ async function dataFileRead() {
   }
 }
 
-async function folderInBaseDirExists(folderName) {
+export async function folderInBaseDirExists(folderName) {
   try {
     return await exists(folderName, { baseDir: BaseDirectory.AppData });
   } catch (err) {
     console.error("error checking folder existence:", err);
     return false;
-  }
-}
-
-async function getImageBinPaths() {
-  try {
-    const appDataDirPath = await appDataDir();
-
-    let folders = ["heroes", "grids", "logos", "icons"];
-
-    let paths = { heroes: undefined, grids: undefined, logos: undefined, icons: undefined };
-
-    for (let x of folders) {
-      if (await folderInBaseDirExists(x)) {
-        paths[x] = locationJoin([appDataDirPath, x]);
-      } else {
-        await mkdir(x, {
-          baseDir: BaseDirectory.AppData,
-          recursive: true,
-        });
-      }
-    }
-
-    return paths;
-  } catch (err) {
-    throw new Error(`could not find / create paths for images bins: ${err}`);
   }
 }
 

@@ -1,8 +1,8 @@
 import { createStore } from "solid-js/store";
 
-export const [libraryData, setLibraryData] = createStore({
+const [libraryData, setLibraryData] = createStore({
   // default values
-  games: [],
+  games: {},
   folders: [],
   notepad: "",
   userSettings: {
@@ -17,3 +17,5 @@ export const [libraryData, setLibraryData] = createStore({
     zoomLevel: 1,
   },
 });
+
+export { libraryData, setLibraryData };
