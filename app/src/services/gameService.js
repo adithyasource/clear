@@ -59,17 +59,17 @@ export async function selectGameLocation(setter) {
 
 export async function selectImageFileLocation(setter) {
   const path = await pickImage();
-  if (path) setter({ type: "local", path });
+  if (path) setter({ type: "local", data: path });
 }
 
-export async function selectImageRemoteLocation({ paths, index, setter }) {
-  if (paths) setter({ type: "remote", paths, index });
+export async function selectImageRemoteLocation({ data, index, setter }) {
+  if (data) setter({ type: "remote", data, index });
 }
 
 export function changeImageRemoteLocationIndex({ setter, changeBy }) {
   setter((prev) => {
     console.log(prev);
-    const maxIndex = prev.paths.length - 1;
+    const maxIndex = prev.data.length - 1;
 
     let newIndex = prev.index + changeBy;
 
@@ -89,10 +89,10 @@ export async function fetchGameAssets({ gameId, setters }) {
 
     console.log(images, warning);
 
-    selectImageRemoteLocation({ paths: images.grids, index: 0, setter: setters.grid });
-    selectImageRemoteLocation({ paths: images.heroes, index: 0, setter: setters.hero });
-    selectImageRemoteLocation({ paths: images.logos, index: 0, setter: setters.logo });
-    selectImageRemoteLocation({ paths: images.icons, index: 0, setter: setters.icon });
+    selectImageRemoteLocation({ data: images.grids, index: 0, setter: setters.grid });
+    selectImageRemoteLocation({ data: images.heroes, index: 0, setter: setters.hero });
+    selectImageRemoteLocation({ data: images.logos, index: 0, setter: setters.logo });
+    selectImageRemoteLocation({ data: images.icons, index: 0, setter: setters.icon });
 
     if (warning) {
       triggerToast(warning);

@@ -1,5 +1,5 @@
 import { convertFileSrc, invoke } from "@tauri-apps/api/core";
-import { createSignal, For, Match, Show, Switch, useContext } from "solid-js";
+import { createSignal, For, Match, Show, Switch, useContext, createEffect } from "solid-js";
 import { gameSearchResults } from "../../data/api/sgdbAssets.js";
 import {
   ApplicationStateContext,
@@ -32,22 +32,21 @@ export function NewGameModal() {
   const [gameName, setGameName] = createSignal("");
   const [favourite, setFavourite] = createSignal(false);
 
-  const [gridImage, setGridImage] = createSignal({ type: "local", path: undefined });
-  const [heroImage, setHeroImage] = createSignal();
-  const [logoImage, setLogoImage] = createSignal();
-  const [iconImage, setIconImage] = createSignal();
+  const [gridImage, setGridImage] = createSignal({ type: "local", data: undefined });
+  const [heroImage, setHeroImage] = createSignal({ type: "local", data: undefined });
+  const [logoImage, setLogoImage] = createSignal({ type: "local", data: undefined });
+  const [iconImage, setIconImage] = createSignal({ type: "local", data: undefined });
 
-  const [foundGridImage, setFoundGridImage] = createSignal();
-  const [foundHeroImage, setFoundHeroImage] = createSignal();
-  const [foundLogoImage, setFoundLogoImage] = createSignal();
   const [foundIconImage, setFoundIconImage] = createSignal();
 
-  const [foundGridImageIndex, setFoundGridImageIndex] = createSignal(0);
-  const [foundHeroImageIndex, setFoundHeroImageIndex] = createSignal(0);
-  const [foundLogoImageIndex, setFoundLogoImageIndex] = createSignal(0);
   const [foundIconImageIndex, setFoundIconImageIndex] = createSignal(0);
 
   const [searchResults, setSearchResults] = createSignal();
+
+  createEffect(() => {
+    console.log("type:", logoImage().type);
+    console.log("data:", logoImage().data);
+  });
 
   async function searchGameName() {
     setSearchResults(undefined);
@@ -166,18 +165,18 @@ export function NewGameModal() {
             gridImage().type === "remote"
               ? showGridImageLoading() === false
                 ? uiContext.userIsTabbing()
-                  ? `${gridImage().index} / ${gridImage().paths.length - 1} ${translateText("arrow keys")}`
-                  : `${gridImage().index} / ${gridImage().paths.length - 1} ${translateText("scroll")}`
-                : `${gridImage().index} / ${gridImage().paths.length - 1} ${translateText("loading")}`
+                  ? `${gridImage().index} / ${gridImage().data.length - 1} ${translateText("arrow keys")}`
+                  : `${gridImage().index} / ${gridImage().data.length - 1} ${translateText("scroll")}`
+                : `${gridImage().index} / ${gridImage().data.length - 1} ${translateText("loading")}`
               : translateText("grid/cover")
           }
         >
           <img
             src={
               gridImage().type === "remote"
-                ? gridImage().paths[gridImage().index]
-                : gridImage().type === "local"
-                  ? convertFileSrc(gridImage().path)
+                ? gridImage().data[gridImage().index]
+                : gridImage().type === "local" && gridImage().data
+                  ? convertFileSrc(gridImage().data)
                   : // this is a gif which is completely empty
                     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
             }
@@ -200,36 +199,26 @@ export function NewGameModal() {
               }}
               onScroll={() => {}}
               onWheel={(e) => {
-                if (searchResults()) {
+                if (heroImage().type === "remote") {
                   if (e.deltaY <= 0) {
-                    setFoundHeroImageIndex((i) => (i === foundHeroImage().length - 1 ? 0 : i + 1));
+                    changeImageRemoteLocationIndex({ setter: setHeroImage, changeBy: 1 });
                     setShowHeroImageLoading(true);
                   }
 
                   if (e.deltaY >= 0) {
-                    if (foundHeroImageIndex() !== 0) {
-                      setFoundHeroImageIndex((i) => i - 1);
-                      setShowHeroImageLoading(true);
-                    } else {
-                      setShowHeroImageLoading(false);
-                    }
+                    changeImageRemoteLocationIndex({ setter: setHeroImage, changeBy: -1 });
                   }
                 }
               }}
               onKeyDown={(e) => {
-                if (searchResults()) {
+                if (heroImage().type === "remote") {
                   if (e.key === "ArrowRight" || e.key === "ArrowUp") {
-                    setFoundHeroImageIndex((i) => (i === foundHeroImage().length - 1 ? 0 : i + 1));
+                    changeImageRemoteLocationIndex({ setter: setHeroImage, changeBy: 1 });
                     setShowHeroImageLoading(true);
                   }
 
                   if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
-                    if (foundHeroImageIndex() !== 0) {
-                      setFoundHeroImageIndex((i) => i - 1);
-                      setShowHeroImageLoading(true);
-                    } else {
-                      setShowHeroImageLoading(false);
-                    }
+                    changeImageRemoteLocationIndex({ setter: setHeroImage, changeBy: -1 });
                   }
                 }
               }}
@@ -239,21 +228,21 @@ export function NewGameModal() {
               }}
               class="tooltip-center aspect-[67/26] h-[350px] cursor-pointer bg-[#f1f1f1] p-0 max-large:h-[250px] dark:bg-[#1c1c1c]"
               data-tooltip={
-                foundHeroImage()
+                heroImage().type === "remote"
                   ? showHeroImageLoading() === false
                     ? uiContext.userIsTabbing()
-                      ? `${foundHeroImageIndex()} / ${foundHeroImage().length - 1} ${translateText("arrow keys")}`
-                      : `${foundHeroImageIndex()} / ${foundHeroImage().length - 1} ${translateText("scroll")}`
-                    : `${foundHeroImageIndex()} / ${foundHeroImage().length - 1} ${translateText("loading")}`
+                      ? `${heroImage().index} / ${heroImage().data.length - 1} ${translateText("arrow keys")}`
+                      : `${heroImage().index} / ${heroImage().data.length - 1} ${translateText("scroll")}`
+                    : `${heroImage().index} / ${heroImage().data.length - 1} ${translateText("loading")}`
                   : translateText("hero")
               }
             >
               <img
                 src={
-                  foundHeroImage()
-                    ? foundHeroImage()[foundHeroImageIndex()]
-                    : heroImage()
-                      ? convertFileSrc(heroImage())
+                  heroImage().type === "remote"
+                    ? heroImage().data[heroImage().index]
+                    : heroImage().type === "local" && heroImage().data
+                      ? convertFileSrc(heroImage().data)
                       : // this is a gif which is completely empty
                         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                 }
@@ -265,10 +254,10 @@ export function NewGameModal() {
               />
               <img
                 src={
-                  foundHeroImage()
-                    ? foundHeroImage()[foundHeroImageIndex()]
-                    : heroImage()
-                      ? convertFileSrc(heroImage())
+                  heroImage().type === "remote"
+                    ? heroImage().data[heroImage().index]
+                    : heroImage().type === "local" && heroImage().data
+                      ? convertFileSrc(heroImage().data)
                       : // this is a gif which is completely empty
                         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                 }
@@ -289,64 +278,52 @@ export function NewGameModal() {
               }}
               onContextMenu={() => {
                 setLocatedLogo(undefined);
-                setFoundLogoImage(undefined);
               }}
               onScroll={() => {}}
               onWheel={(e) => {
-                if (searchResults()) {
+                if (logoImage().type === "remote")
                   if (e.deltaY <= 0) {
-                    setFoundLogoImageIndex((i) => (i === foundLogoImage().length - 1 ? 0 : i + 1));
+                    changeImageRemoteLocationIndex({ setter: setLogoImage, changeBy: 1 });
                     setShowLogoImageLoading(true);
                   }
 
-                  if (e.deltaY >= 0) {
-                    if (foundLogoImageIndex() !== 0) {
-                      setFoundLogoImageIndex((i) => i - 1);
-                      setShowLogoImageLoading(true);
-                    } else {
-                      setShowLogoImageLoading(false);
-                    }
-                  }
+                if (e.deltaY >= 0) {
+                  changeImageRemoteLocationIndex({ setter: setLogoImage, changeBy: -1 });
                 }
               }}
               onKeyDown={(e) => {
-                if (searchResults()) {
+                if (logoImage().type === "remote") {
                   if (e.key === "ArrowRight" || e.key === "ArrowUp") {
-                    setFoundLogoImageIndex((i) => (i === foundLogoImage().length - 1 ? 0 : i + 1));
+                    changeImageRemoteLocationIndex({ setter: setLogoImage, changeBy: 1 });
                     setShowLogoImageLoading(true);
                   }
 
                   if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
-                    if (foundLogoImageIndex() !== 0) {
-                      setFoundLogoImageIndex((i) => i - 1);
-                      setShowLogoImageLoading(true);
-                    } else {
-                      setShowLogoImageLoading(false);
-                    }
+                    changeImageRemoteLocationIndex({ setter: setLogoImage, changeBy: -1 });
                   }
                 }
               }}
               class={`!absolute !p-[2px] tooltip-center bottom-[70px] left-[20px] z-[100] h-[90px] w-[250px] cursor-pointer max-large:h-[90px] max-large:w-[243px] ${
-                foundLogoImage() || logoImage()
+                logoImage().data
                   ? "!outline-[2px] !outline-[#E8E8E880] hover:bg-[#E8E8E84D] hover:outline-dashed focus:bg-[#E8E8E84D] !outline:dark:bg-[#27272780] focus:dark:bg-[#2727274D] hover:dark:bg-[#2727274D]"
                   : "dark:!bg-[#272727] bg-[#E8E8E8]"
               } `}
               data-tooltip={
-                foundLogoImage()
+                logoImage().type === "remote"
                   ? showLogoImageLoading() === false
                     ? uiContext.userIsTabbing()
-                      ? `${foundLogoImageIndex()} / ${foundLogoImage().length - 1} ${translateText("arrow keys")}`
-                      : `${foundLogoImageIndex()} / ${foundLogoImage().length - 1} ${translateText("scroll")}`
-                    : `${foundLogoImageIndex()} / ${foundLogoImage().length - 1} ${translateText("loading")}`
+                      ? `${logoImage().index} / ${logoImage().data.length - 1} ${translateText("arrow keys")}`
+                      : `${logoImage().index} / ${logoImage().data.length - 1} ${translateText("scroll")}`
+                    : `${logoImage().index} / ${logoImage().data.length - 1} ${translateText("loading")}`
                   : translateText("logo")
               }
             >
               <img
                 src={
-                  foundLogoImage()
-                    ? foundLogoImage()[foundLogoImageIndex()]
-                    : logoImage()
-                      ? convertFileSrc(logoImage())
+                  logoImage().type === "remote"
+                    ? logoImage().data[logoImage().index]
+                    : logoImage().type === "local" && logoImage().data
+                      ? convertFileSrc(logoImage().data)
                       : // this is a gif which is completely empty
                         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                 }
