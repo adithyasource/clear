@@ -4,8 +4,10 @@ import { copyImageIntoBin } from "../data/storage/imageStroage";
 import { pickExecutable, pickImage } from "../data/system/locateDialog";
 import { libraryData, setLibraryData } from "../stores/libraryStore";
 import { generateId } from "../utils/generateId";
+import { gameAssetResults } from "../data/api/sgdbAssets";
+import { triggerToast } from "../Globals";
 
-export async function prepareImageFiles({ gridImage, heroImage, logoImage, iconImage }) {
+export async function processImage({ gridImage, heroImage, logoImage, iconImage }) {
   // implement downloading if downloaded image
   if (gridImage) copyImageIntoBin({ type: "grid", origin: gridImage });
   if (heroImage) copyImageIntoBin({ type: "hero", origin: heroImage });
@@ -18,7 +20,7 @@ export async function addGame({ name, favourite, gameLocation, gridImage, heroIm
     throw new Error("no game name");
   }
 
-  prepareImageFiles({ gridImage, heroImage, logoImage, iconImage });
+  processImage({ gridImage, heroImage, logoImage, iconImage });
 
   // for (const name of Object.keys(globalContext.libraryData.games)) {
   //   if (gameName() === name) {
@@ -55,7 +57,47 @@ export async function selectGameLocation(setter) {
   if (path) setter(path);
 }
 
-export async function selectImageLocation(setter) {
+export async function selectImageFileLocation(setter) {
   const path = await pickImage();
-  if (path) setter(path);
+  if (path) setter({ type: "local", path });
+}
+
+export async function selectImageRemoteLocation({ paths, index, setter }) {
+  if (paths) setter({ type: "remote", paths, index });
+}
+
+export function changeImageRemoteLocationIndex({ setter, changeBy }) {
+  setter((prev) => {
+    console.log(prev);
+    const maxIndex = prev.paths.length - 1;
+
+    let newIndex = prev.index + changeBy;
+
+    if (newIndex < 0) newIndex = 0;
+    if (newIndex > maxIndex) newIndex = maxIndex;
+
+    return {
+      ...prev,
+      index: newIndex,
+    };
+  });
+}
+
+export async function fetchGameAssets({ gameId, setters }) {
+  try {
+    const { images, warning } = await gameAssetResults(gameId);
+
+    console.log(images, warning);
+
+    selectImageRemoteLocation({ paths: images.grids, index: 0, setter: setters.grid });
+    selectImageRemoteLocation({ paths: images.heroes, index: 0, setter: setters.hero });
+    selectImageRemoteLocation({ paths: images.logos, index: 0, setter: setters.logo });
+    selectImageRemoteLocation({ paths: images.icons, index: 0, setter: setters.icon });
+
+    if (warning) {
+      triggerToast(warning);
+    }
+  } catch (err) {
+    triggerToast(err);
+  }
 }

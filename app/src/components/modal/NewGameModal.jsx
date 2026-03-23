@@ -11,8 +11,10 @@ import {
   UIContext,
 } from "../../Globals.jsx";
 import { ChevronArrow, Close, SaveDisk } from "../../libraries/Icons.jsx";
-import { addGame, selectGameLocation, selectImageLocation } from "../../services/gameService.js";
+import { addGame, selectGameLocation, selectImageFileLocation } from "../../services/gameService.js";
 import { closeModal, modalShowCloseConfirm } from "../../stores/modalStore.js";
+import { fetchGameAssets } from "../../services/gameService.js";
+import { changeImageRemoteLocationIndex } from "../../services/gameService.js";
 
 export function NewGameModal() {
   const globalContext = useContext(GlobalContext);
@@ -30,7 +32,7 @@ export function NewGameModal() {
   const [gameName, setGameName] = createSignal("");
   const [favourite, setFavourite] = createSignal(false);
 
-  const [gridImage, setGridImage] = createSignal();
+  const [gridImage, setGridImage] = createSignal({ type: "local", path: undefined });
   const [heroImage, setHeroImage] = createSignal();
   const [logoImage, setLogoImage] = createSignal();
   const [iconImage, setIconImage] = createSignal();
@@ -53,39 +55,6 @@ export function NewGameModal() {
     const result = await gameSearchResults(gameName());
 
     setSearchResults(result);
-  }
-
-  async function getGameAssets() {
-    setFoundGridImage(undefined);
-    setFoundHeroImage(undefined);
-    setFoundLogoImage(undefined);
-    setFoundIconImage(undefined);
-
-    await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?assets=${selectedDataContext.selectedGameId()}`).then((res) =>
-      res.json().then((jsonres) => {
-        const missingAssets = [];
-
-        jsonres.grids.length !== 0 ? setFoundGridImage(jsonres.grids) : missingAssets.push("grids");
-        jsonres.heroes.length !== 0 ? setFoundHeroImage(jsonres.heroes) : missingAssets.push("heroes");
-        jsonres.logos.length !== 0 ? setFoundLogoImage(jsonres.logos) : missingAssets.push("logos");
-        jsonres.icons.length !== 0 ? setFoundIconImage(jsonres.icons) : missingAssets.push("icons");
-
-        if (missingAssets.length !== 0) {
-          if (missingAssets.length === 4) {
-            triggerToast(translateText("couldn't find any assets :("));
-            return;
-          }
-
-          if (missingAssets.length >= 2) {
-            const lastAssetType = missingAssets.splice(-1);
-            triggerToast(`${translateText("couldn't find")} ${missingAssets.join(", ")} & ${lastAssetType} :(`);
-            return;
-          }
-
-          triggerToast(`${translateText("couldn't find")} ${missingAssets[0]} :(`);
-        }
-      }),
-    );
   }
 
   return (
@@ -161,40 +130,30 @@ export function NewGameModal() {
         <button
           type="button"
           onClick={() => {
-            selectImageLocation(setGridImage);
+            selectImageFileLocation(setGridImage);
           }}
           onScroll={() => {}}
           onWheel={(e) => {
-            if (searchResults()) {
+            if (gridImage().type === "remote") {
               if (e.deltaY <= 0) {
-                setFoundGridImageIndex((i) => (i === foundGridImage().length - 1 ? 0 : i + 1));
                 setShowGridImageLoading(true);
+                changeImageRemoteLocationIndex({ setter: setGridImage, changeBy: 1 });
               }
 
               if (e.deltaY >= 0) {
-                if (foundGridImageIndex() !== 0) {
-                  setFoundGridImageIndex((i) => i - 1);
-                  setShowGridImageLoading(true);
-                } else {
-                  setShowGridImageLoading(false);
-                }
+                changeImageRemoteLocationIndex({ setter: setGridImage, changeBy: -1 });
               }
             }
           }}
           onKeyDown={(e) => {
-            if (searchResults()) {
+            if (gridImage().type === "remote") {
               if (e.key === "ArrowRight" || e.key === "ArrowUp") {
-                setFoundGridImageIndex((i) => (i === foundGridImage().length - 1 ? 0 : i + 1));
+                changeImageRemoteLocationIndex({ setter: setGridImage, changeBy: 1 });
                 setShowGridImageLoading(true);
               }
 
               if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
-                if (foundGridImageIndex() !== 0) {
-                  setFoundGridImageIndex((i) => i - 1);
-                  setShowGridImageLoading(true);
-                } else {
-                  setShowGridImageLoading(false);
-                }
+                changeImageRemoteLocationIndex({ setter: setGridImage, changeBy: -1 });
               }
             }
           }}
@@ -204,21 +163,21 @@ export function NewGameModal() {
           }}
           class="tooltip-center aspect-[2/3] h-[400px] cursor-pointer overflow-hidden bg-[#f1f1f1] p-0 max-large:h-[300px] dark:bg-[#1c1c1c]"
           data-tooltip={
-            foundGridImage()
+            gridImage().type === "remote"
               ? showGridImageLoading() === false
                 ? uiContext.userIsTabbing()
-                  ? `${foundGridImageIndex()} / ${foundGridImage().length - 1} ${translateText("arrow keys")}`
-                  : `${foundGridImageIndex()} / ${foundGridImage().length - 1} ${translateText("scroll")}`
-                : `${foundGridImageIndex()} / ${foundGridImage().length - 1} ${translateText("loading")}`
+                  ? `${gridImage().index} / ${gridImage().paths.length - 1} ${translateText("arrow keys")}`
+                  : `${gridImage().index} / ${gridImage().paths.length - 1} ${translateText("scroll")}`
+                : `${gridImage().index} / ${gridImage().paths.length - 1} ${translateText("loading")}`
               : translateText("grid/cover")
           }
         >
           <img
             src={
-              foundGridImage()
-                ? foundGridImage()[foundGridImageIndex()]
-                : gridImage()
-                  ? convertFileSrc(gridImage())
+              gridImage().type === "remote"
+                ? gridImage().paths[gridImage().index]
+                : gridImage().type === "local"
+                  ? convertFileSrc(gridImage().path)
                   : // this is a gif which is completely empty
                     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
             }
@@ -237,7 +196,7 @@ export function NewGameModal() {
             <button
               type="button"
               onClick={() => {
-                selectImageLocation(setHeroImage);
+                selectImageFileLocation(setHeroImage);
               }}
               onScroll={() => {}}
               onWheel={(e) => {
@@ -326,7 +285,7 @@ export function NewGameModal() {
             <button
               type="button"
               onClick={() => {
-                selectImageLocation(setLogoImage);
+                selectImageFileLocation(setLogoImage);
               }}
               onContextMenu={() => {
                 setLocatedLogo(undefined);
@@ -406,7 +365,7 @@ export function NewGameModal() {
             <button
               type="button"
               onClick={() => {
-                selectImageLocation(setIconImage);
+                selectImageFileLocation(setIconImage);
               }}
               onContextMenu={() => {
                 setLocatedIcon(undefined);
@@ -625,9 +584,15 @@ export function NewGameModal() {
                       type="button"
                       class="flex-shrink-0"
                       onClick={() => {
-                        selectedDataContext.setSelectedGameId(undefined);
-                        selectedDataContext.setSelectedGameId(foundGame.id);
-                        getGameAssets();
+                        fetchGameAssets({
+                          gameId: foundGame.id,
+                          setters: {
+                            grid: setGridImage,
+                            hero: setHeroImage,
+                            logo: setLogoImage,
+                            icon: setIconImage,
+                          },
+                        });
                       }}
                     >
                       {foundGame.name}
