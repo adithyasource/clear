@@ -1,30 +1,22 @@
-// importing globals
+import { createEffect, createSignal, For, onMount, Show, useContext } from "solid-js";
+import { produce } from "solid-js/store";
+import { NewFolderModal } from "../../components/modal/NewFolderModal.jsx";
+import { NewGameModal } from "../../components/modal/NewGameModal.jsx";
+import { NotepadModal } from "../../components/modal/NotepadModal.jsx";
+import { SettingsModal } from "../../components/modal/SettingsModal.jsx";
+import { GameCardSideBar } from "../../components/sidebar/GameCardSideBar.jsx";
 import {
   ApplicationStateContext,
   GlobalContext,
-  SelectedDataContext,
-  UIContext,
   getData,
   openDialog,
+  SelectedDataContext,
   toggleSideBar,
   translateText,
   triggerToast,
+  UIContext,
   updateData,
 } from "../../Globals.jsx";
-
-// importing components
-import { GameCardSideBar } from "../../components/sidebar/GameCardSideBar.jsx";
-import { NewGameModal } from "../../components/modal/NewGameModal.jsx";
-import { NewFolderModal } from "../../components/modal/NewFolderModal.jsx";
-import { SettingsModal } from "../../components/modal/SettingsModal.jsx";
-import { NotepadModal } from "../../components/modal/NotepadModal.jsx";
-import { openModal } from "../../stores/modalStore";
-
-// importing code snippets and library functions
-import { For, Show, createSignal, createEffect, onMount, useContext } from "solid-js";
-import { produce } from "solid-js/store";
-
-// importing style related files
 import {
   ChevronArrows,
   Edit,
@@ -35,8 +27,8 @@ import {
   Settings,
   UpdateDownload,
 } from "../../libraries/Icons.jsx";
-
 import { libraryData } from "../../stores/libraryStore.js";
+import { openModal } from "../../stores/modalStore";
 
 export function SideBar() {
   const globalContext = useContext(GlobalContext);
@@ -462,8 +454,8 @@ export function SideBar() {
               await updateData();
             }}
           >
-            <div class=" flex cursor-default items-center gap-[10px]">
-              <p class="pd-3 text-[#00000080] dark:text-[#ffffff80] ">{translateText("uncategorized")}</p>
+            <div class="flex cursor-default items-center gap-[10px]">
+              <p class="pd-3 text-[#00000080] dark:text-[#ffffff80]">{translateText("uncategorized")}</p>
             </div>
 
             <For each={Object.entries(libraryData.games)}>
@@ -553,7 +545,7 @@ export function SideBar() {
           >
             {translateText("settings")}
             <Show when={uiContext.showNewVersionAvailable()}>
-              <div class=" tooltip-delayed-top" data-tooltip={translateText("new update available!")}>
+              <div class="tooltip-delayed-top" data-tooltip={translateText("new update available!")}>
                 <div class="opacity-50">
                   <UpdateDownload />
                 </div>

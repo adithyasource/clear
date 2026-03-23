@@ -1,27 +1,19 @@
-// importing globals
+import { invoke } from "@tauri-apps/api/core";
+import { appDataDir } from "@tauri-apps/api/path";
+import { Show, useContext } from "solid-js";
 import {
   ApplicationStateContext,
   GlobalContext,
-  UIContext,
   getData,
   importSteamGames,
   translateText,
+  UIContext,
   updateData,
 } from "../../Globals.jsx";
-
-import { Hotkeys } from "../ui/Hotkeys.jsx";
-// importing components
-import { LanguageSelector } from "../ui/LanguageSelector.jsx";
-
-import { appDataDir } from "@tauri-apps/api/path";
-import { invoke } from "@tauri-apps/api/core";
-// importing code snippets and library functions
-import { Show, useContext } from "solid-js";
-
-// importing style related files
 import { Close, Steam } from "../../libraries/Icons.jsx";
-
 import { closeModal } from "../../stores/modalStore.js";
+import { Hotkeys } from "../ui/Hotkeys.jsx";
+import { LanguageSelector } from "../ui/LanguageSelector.jsx";
 
 export function SettingsModal() {
   const globalContext = useContext(GlobalContext);
@@ -63,7 +55,7 @@ export function SettingsModal() {
               when={globalContext.libraryData.userSettings.roundedBorders}
               fallback={<div class="">{translateText("rounded borders")}</div>}
             >
-              <div class="relative ">
+              <div class="relative">
                 <div class="">{translateText("rounded borders")}</div>
                 <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("rounded borders")}</div>
               </div>
@@ -122,7 +114,7 @@ export function SettingsModal() {
             >
               <div class="relative">
                 <div class="">{translateText("quit after opening game")}</div>
-                <div class="absolute inset-0 opacity-70 blur-[5px] ">{translateText("quit after opening game")}</div>
+                <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("quit after opening game")}</div>
               </div>
             </Show>
           </button>
@@ -192,7 +184,7 @@ export function SettingsModal() {
           <div>
             <button
               type="button"
-              class="standardButton tooltip-bottom !flex !w-max !gap-3 !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] bg-[#E8E8E8] dark:bg-[#232323] "
+              class="standardButton tooltip-bottom !flex !w-max !gap-3 !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] bg-[#E8E8E8] dark:bg-[#232323]"
               data-tooltip={translateText("might not work perfectly!")}
               onClick={() => {
                 if (globalContext.libraryData.folders.steam !== undefined) {
@@ -248,7 +240,7 @@ export function SettingsModal() {
 
         <Hotkeys onSettingsPage={true} />
 
-        <div class="mt-[35px] flex justify-between ">
+        <div class="mt-[35px] flex justify-between">
           <div>
             clear <span class="text-[#12121280] dark:text-[#ffffff80]">v{applicationStateContext.appVersion()}</span>
           </div>

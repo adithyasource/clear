@@ -1,14 +1,8 @@
-// importing globals
-import { ApplicationStateContext, SelectedDataContext, locationJoin, openGame, translateText } from "../../Globals.jsx";
-
 import { convertFileSrc } from "@tauri-apps/api/core";
-// importing code snippets and library functions
 import { Show, useContext } from "solid-js";
-
+import { ApplicationStateContext, locationJoin, openGame, SelectedDataContext, translateText } from "../../Globals.jsx";
 import { openModal } from "../../stores/modalStore.js";
 import { GamePopUpModal } from "../modal/GamePopUp.jsx";
-
-import { libraryData } from "../../stores/libraryStore.js";
 
 export function GameCardSideBar({ gameId, game, index, folderName }) {
   const selectedDataContext = useContext(SelectedDataContext);

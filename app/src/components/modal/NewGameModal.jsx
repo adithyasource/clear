@@ -1,5 +1,6 @@
 import { convertFileSrc, invoke } from "@tauri-apps/api/core";
 import { createSignal, For, Match, Show, Switch, useContext } from "solid-js";
+import { gameSearchResults } from "../../data/api/sgdbAssets.js";
 import {
   ApplicationStateContext,
   GlobalContext,
@@ -12,7 +13,6 @@ import {
 import { ChevronArrow, Close, SaveDisk } from "../../libraries/Icons.jsx";
 import { addGame, selectGameLocation, selectImageLocation } from "../../services/gameService.js";
 import { closeModal, modalShowCloseConfirm } from "../../stores/modalStore.js";
-import { gameSearchResults } from "../../data/api/sgdbAssets.js";
 
 export function NewGameModal() {
   const globalContext = useContext(GlobalContext);
@@ -132,7 +132,7 @@ export function NewGameModal() {
               //   sideBarFolders.scrollTop = sideBarFolders.scrollHeight;
               // }, 100);
             }}
-            class="standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] flex items-center gap-1 bg-[#E8E8E8] dark:bg-[#232323] "
+            class="standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] flex items-center gap-1 bg-[#E8E8E8] dark:bg-[#232323]"
           >
             <p class="!w-max">{translateText("save")}</p>
 
@@ -317,7 +317,7 @@ export function NewGameModal() {
                   setShowHeroImageLoading(false);
                 }}
                 alt=""
-                class="-z-10 absolute inset-0 aspect-[96/31] h-full w-full opacity-[0.4] blur-[80px]"
+                class="absolute inset-0 -z-10 aspect-[96/31] h-full w-full opacity-[0.4] blur-[80px]"
               />
             </button>
 
@@ -402,7 +402,7 @@ export function NewGameModal() {
 
           {/* h-[40px] w-[40px] !bg-[#E8E8E8] dark:!bg-[#272727] */}
 
-          <div class="flex cursor-pointer items-center gap-3 ">
+          <div class="flex cursor-pointer items-center gap-3">
             <button
               type="button"
               onClick={() => {

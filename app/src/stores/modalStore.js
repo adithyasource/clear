@@ -46,4 +46,4 @@ function closeModal(closeModalImmediatelyOverride) {
   }
 }
 
-export { modalState, modalVisible, modalShowCloseConfirm, closeModal, openModal };
+export { closeModal, modalShowCloseConfirm, modalState, modalVisible, openModal };

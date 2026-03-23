@@ -1,5 +1,4 @@
-import { BaseDirectory, exists, mkdir, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
-import { locationJoin } from "../../Globals";
+import { BaseDirectory, exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 
 const defaultData = {
   games: {},

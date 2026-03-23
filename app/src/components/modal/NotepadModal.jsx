@@ -1,10 +1,5 @@
-// importing globals
-import { GlobalContext, getData, translateText, updateData } from "../../Globals.jsx";
-
-// importing code snippets and library functions
 import { createSignal, useContext } from "solid-js";
-
-// importing style related files
+import { GlobalContext, getData, translateText, updateData } from "../../Globals.jsx";
 import { Close } from "../../libraries/Icons.jsx";
 import { closeModal } from "../../stores/modalStore.js";
 

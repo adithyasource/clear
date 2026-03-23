@@ -1,8 +1,5 @@
-// importing globals
-import { ApplicationStateContext, translateText } from "../../Globals.jsx";
-
-// importing code snippets and library functions
 import { Show, useContext } from "solid-js";
+import { ApplicationStateContext, translateText } from "../../Globals.jsx";
 
 export function Hotkeys(props) {
   const applicationStateContext = useContext(ApplicationStateContext);

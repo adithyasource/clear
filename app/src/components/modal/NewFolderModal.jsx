@@ -1,20 +1,11 @@
-// importing globals
-import { ApplicationStateContext, GlobalContext, translateText, triggerToast, updateData } from "../../Globals.jsx";
-
-// importing code snippets and library functions
-import { Show, createSignal, useContext } from "solid-js";
-import { produce } from "solid-js/store";
-
-import { closeModal, modalShowCloseConfirm } from "../../stores/modalStore.js";
-
-// importing style related files
+import { createSignal, Show, useContext } from "solid-js";
+import { GlobalContext, translateText } from "../../Globals.jsx";
 import { Close, SaveDisk } from "../../libraries/Icons.jsx";
-
 import { addFolder } from "../../services/folderService.js";
+import { closeModal, modalShowCloseConfirm } from "../../stores/modalStore.js";
 
 export function NewFolderModal() {
   const globalContext = useContext(GlobalContext);
-  const applicationStateContext = useContext(ApplicationStateContext);
 
   const [folderName, setFolderName] = createSignal();
   const [hideFolder, setHideFolder] = createSignal(false);

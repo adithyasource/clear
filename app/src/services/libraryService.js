@@ -1,5 +1,3 @@
-import { appDataDir } from "@tauri-apps/api/path";
-import { dataFileExists } from "../data/storage/fileStorage.js";
 import { dataFileRead } from "../data/storage/fileStorage.js";
 import { triggerToast } from "../Globals.jsx";
 import { setLibraryData } from "../stores/libraryStore.js";

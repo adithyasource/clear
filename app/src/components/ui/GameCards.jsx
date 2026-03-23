@@ -1,19 +1,14 @@
-// importing globals
+import { convertFileSrc } from "@tauri-apps/api/core";
+import { For, Show, useContext } from "solid-js";
 import {
   ApplicationStateContext,
   GlobalContext,
-  SelectedDataContext,
   locationJoin,
   openGame,
+  SelectedDataContext,
   translateText,
 } from "../../Globals.jsx";
-
 import { openModal } from "../../stores/modalStore.js";
-
-import { convertFileSrc } from "@tauri-apps/api/core";
-// importing code snippets and library functions
-import { For, Show, useContext } from "solid-js";
-
 import { GamePopUpModal } from "../modal/GamePopUp.jsx";
 
 export function GameCards(props) {
@@ -104,7 +99,7 @@ export function GameCards(props) {
                   />
                 </Show>
 
-                <div class="absolute inset-0 duration-500 motion-reduce:duration-100 dark:bg-blend-screen dark:blur-[30px] dark:group-hover:blur-[50px] ">
+                <div class="absolute inset-0 duration-500 motion-reduce:duration-100 dark:bg-blend-screen dark:blur-[30px] dark:group-hover:blur-[50px]">
                   <img
                     class="absolute inset-0 opacity-0 duration-500 motion-reduce:duration-100 dark:opacity-[40%] dark:group-hover:opacity-60"
                     src={convertFileSrc(

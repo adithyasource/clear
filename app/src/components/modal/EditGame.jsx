@@ -1,29 +1,23 @@
-// importing globals
+import { convertFileSrc, invoke } from "@tauri-apps/api/core";
+import { open } from "@tauri-apps/plugin-dialog";
+import { BaseDirectory, copyFile } from "@tauri-apps/plugin-fs";
+import { createSignal, Match, onMount, Show, Switch, useContext } from "solid-js";
+import { produce } from "solid-js/store";
 import {
   ApplicationStateContext,
-  GlobalContext,
-  SelectedDataContext,
-  UIContext,
   closeDialog,
   closeDialogImmediately,
+  GlobalContext,
   generateRandomString,
   getExecutableFileName,
   getExecutableParentFolder,
   locationJoin,
+  SelectedDataContext,
   translateText,
   triggerToast,
+  UIContext,
   updateData,
 } from "../Globals.jsx";
-
-import { open } from "@tauri-apps/plugin-dialog";
-import { BaseDirectory, copyFile } from "@tauri-apps/plugin-fs";
-import { convertFileSrc } from "@tauri-apps/api/core";
-// importing code snippets and library functions
-import { Match, Show, Switch, createSignal, onMount, useContext } from "solid-js";
-import { produce } from "solid-js/store";
-import { invoke } from "@tauri-apps/api/core";
-
-// importing style related files
 import { Close, OpenExternal, SaveDisk, TrashDelete } from "../libraries/Icons.jsx";
 
 export function EditGame() {
@@ -369,7 +363,7 @@ export function EditGame() {
                   >
                     <div class="relative">
                       <div class="!w-max">{translateText("favourite")}</div>
-                      <div class="-z-10 !w-max absolute inset-0 opacity-70 blur-[5px]">
+                      <div class="!w-max absolute inset-0 -z-10 opacity-70 blur-[5px]">
                         {translateText("favourite")}
                       </div>
                     </div>
@@ -379,7 +373,7 @@ export function EditGame() {
                 <Match when={editedFavouriteGame() === true}>
                   <div class="relative">
                     <div class="!w-max">{translateText("favourite")}</div>
-                    <div class="-z-10 !w-max absolute inset-0 opacity-70 blur-[5px]">{translateText("favourite")}</div>
+                    <div class="!w-max absolute inset-0 -z-10 opacity-70 blur-[5px]">{translateText("favourite")}</div>
                   </div>
                 </Match>
 
@@ -488,7 +482,7 @@ export function EditGame() {
             >
               <Switch>
                 <Match when={editedLocatedHeroImage() === null} class="absolute inset-0 overflow-hidden">
-                  <span class=" absolute top-[47%] left-[45%] opacity-0 group-hover:opacity-100 max-large:top-[45%] max-large:left-[42%]">
+                  <span class="absolute top-[47%] left-[45%] opacity-0 group-hover:opacity-100 max-large:top-[45%] max-large:left-[42%]">
                     {translateText("hero")}
                   </span>
                 </Match>
@@ -513,7 +507,7 @@ export function EditGame() {
                       ]),
                     )}
                     alt=""
-                    class="-z-10 absolute inset-0 aspect-[96/31] h-full opacity-[0.6] blur-[80px]"
+                    class="absolute inset-0 -z-10 aspect-[96/31] h-full opacity-[0.6] blur-[80px]"
                   />
                 </Match>
                 <Match when={editedLocatedHeroImage()} class="absolute inset-0 overflow-hidden">
@@ -525,7 +519,7 @@ export function EditGame() {
                   <img
                     src={convertFileSrc(editedLocatedHeroImage())}
                     alt=""
-                    class="-z-10 absolute inset-0 aspect-[96/31] h-full opacity-[0.6] blur-[80px]"
+                    class="absolute inset-0 -z-10 aspect-[96/31] h-full opacity-[0.6] blur-[80px]"
                   />
                 </Match>
               </Switch>
@@ -560,7 +554,7 @@ export function EditGame() {
                     />
                   </Show>
 
-                  <span class=" absolute top-[65%] left-[55%] opacity-0 group-hover:opacity-100 max-large:top-[45%] max-large:left-[35%]">
+                  <span class="absolute top-[65%] left-[55%] opacity-0 group-hover:opacity-100 max-large:top-[45%] max-large:left-[35%]">
                     {translateText("logo")}
                   </span>
                 </button>
@@ -601,7 +595,7 @@ export function EditGame() {
                   </Match>
                 </Switch>
 
-                <span class=" absolute top-[35%] left-[40%] opacity-0 group-hover:opacity-100 max-large:top-[30%] max-large:left-[35%]">
+                <span class="absolute top-[35%] left-[40%] opacity-0 group-hover:opacity-100 max-large:top-[30%] max-large:left-[35%]">
                   {translateText("logo")}
                 </span>
               </button>
@@ -632,7 +626,7 @@ export function EditGame() {
                           ]),
                         )}
                         alt=""
-                        class="h-[40px] w-[40px] "
+                        class="h-[40px] w-[40px]"
                       />
                     </Show>
                   </Match>
@@ -643,7 +637,7 @@ export function EditGame() {
                     <div class="!bg-[#E8E8E8] dark:!bg-[#272727] h-[40px] w-[40px]" />
                   </Match>
                 </Switch>
-                <span class=" absolute top-[120%] left-[-10%] z-[10000] opacity-0 group-hover:opacity-100">
+                <span class="absolute top-[120%] left-[-10%] z-[10000] opacity-0 group-hover:opacity-100">
                   {translateText("icon")}
                 </span>
               </button>

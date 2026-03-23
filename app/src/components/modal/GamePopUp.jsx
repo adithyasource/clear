@@ -1,29 +1,22 @@
-// importing globals
+import { convertFileSrc } from "@tauri-apps/api/core";
+import { Show, useContext } from "solid-js";
 import {
   ApplicationStateContext,
-  SelectedDataContext,
-  closeDialog,
   locationJoin,
   openDialog,
   openGame,
+  SelectedDataContext,
   translateText,
 } from "../../Globals.jsx";
-
-import { convertFileSrc } from "@tauri-apps/api/core";
-// importing code snippets and library functions
-import { Show, useContext } from "solid-js";
-
-import { closeModal } from "../../stores/modalStore.js";
-
-// importing style related files
 import { Close, Play, Settings } from "../../libraries/Icons.jsx";
+import { closeModal } from "../../stores/modalStore.js";
 
 export function GamePopUpModal() {
   const selectedDataContext = useContext(SelectedDataContext);
   const applicationStateContext = useContext(ApplicationStateContext);
 
   return (
-    <div class="flex h-screen w-screen flex-col items-center justify-center bg-[#d1d1d166] px-[40px] dark:bg-[#12121266] ">
+    <div class="flex h-screen w-screen flex-col items-center justify-center bg-[#d1d1d166] px-[40px] dark:bg-[#12121266]">
       <img
         src={convertFileSrc(
           locationJoin([
@@ -33,7 +26,7 @@ export function GamePopUpModal() {
           ]),
         )}
         alt=""
-        class="-z-10 absolute h-[350px] opacity-[0.4] blur-[80px] max-large:h-[270px]"
+        class="absolute -z-10 h-[350px] opacity-[0.4] blur-[80px] max-large:h-[270px]"
       />
       <div class="relative">
         <div class="absolute right-[30px] bottom-[30px] flex gap-[15px]">
@@ -121,7 +114,7 @@ export function GamePopUpModal() {
                 ]),
               )}
               alt=""
-              class=" relative aspect-auto max-h-[100px] max-w-[400px] max-large:max-h-[70px] max-large:max-w-[300px]"
+              class="relative aspect-auto max-h-[100px] max-w-[400px] max-large:max-h-[70px] max-large:max-w-[300px]"
             />
           </Show>
         </div>
