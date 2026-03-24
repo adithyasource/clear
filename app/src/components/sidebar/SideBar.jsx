@@ -1,4 +1,4 @@
-import { createEffect, createSignal, For, onMount, Show, useContext } from "solid-js";
+import { createEffect, createSignal, For, onMount, Show, useContext, createMemo } from "solid-js";
 import { produce } from "solid-js/store";
 import { NewFolderModal } from "@/components/modal/NewFolderModal.jsx";
 import { NewGameModal } from "@/components/modal/NewGameModal.jsx";
@@ -45,6 +45,18 @@ export function SideBar() {
 
   let scrollY = " ";
 
+  const uncategorizedGames = createMemo(() => {
+    const inFolders = new Set();
+
+    for (const folder of libraryData.folders) {
+      for (const gameId of folder.games) {
+        inFolders.add(gameId);
+      }
+    }
+
+    return Object.entries(libraryData.games).filter(([id]) => !inFolders.has(id));
+  });
+
   async function moveFolder(folderName, toPosition) {
     const pastPositionOfFolder = applicationStateContext.currentFolders().indexOf(folderName);
     const currentFolders = applicationStateContext.currentFolders();
@@ -82,37 +94,37 @@ export function SideBar() {
     await updateData();
   }
 
-  function moveGameInCurrentFolder(gameName, toPosition, currentFolderName) {
-    const pastPositionOfGame = globalContext.libraryData.folders[currentFolderName].games.indexOf(gameName);
+  function moveGameInCurrentFolder({ gameId, toIndex, fromIndex }) {
+    const pastPositionOfGame = libraryData.folders[fromIndex].games.indexOf(gameId);
 
     // removing game from its past position
-    globalContext.setLibraryData(
+    setLibraryData(
       produce((data) => {
-        data.folders[currentFolderName].games.splice(data.folders[currentFolderName].games.indexOf(gameName), 1);
+        data.folders[fromIndex].games.splice(data.folders[fromIndex].games.indexOf(gameId), 1);
         return data;
       }),
     );
 
     // pushing it into proper position relative to its past
-    if (toPosition === -1) {
-      globalContext.setLibraryData(
+    if (toIndex === -1) {
+      setLibraryData(
         produce((data) => {
-          data.folders[currentFolderName].games.push(gameName);
+          data.folders[fromIndex].games.push(gameId);
           return data;
         }),
       );
     } else {
-      if (toPosition > pastPositionOfGame) {
-        globalContext.setLibraryData(
+      if (toIndex > pastPositionOfGame) {
+        setLibraryData(
           produce((data) => {
-            data.folders[currentFolderName].games.splice(toPosition - 1, 0, gameName);
+            data.folders[fromIndex].games.splice(toIndex - 1, 0, gameId);
             return data;
           }),
         );
       } else {
-        globalContext.setLibraryData(
+        setLibraryData(
           produce((data) => {
-            data.folders[currentFolderName].games.splice(toPosition, 0, gameName);
+            data.folders[fromIndex].games.splice(toIndex, 0, gameId);
             return data;
           }),
         );
@@ -120,7 +132,7 @@ export function SideBar() {
     }
   }
 
-  async function moveGameToAnotherFolder(gameId, toIndex, fromIndex, isFromUncategorized) {
+  async function moveGameToAnotherFolder({ gameId, toIndex, fromIndex, isFromUncategorized }) {
     if (!isFromUncategorized) {
       setLibraryData(
         produce((data) => {
@@ -237,16 +249,20 @@ export function SideBar() {
 
     const isFromUncategorized = e.dataTransfer.getData("oldFolderName") === "uncategorized";
 
+    const fromIndex = libraryData.folders.findIndex((f) => f.name === oldFolderName);
+    const gameId = e.dataTransfer.getData("gameId");
+    const toIndex = libraryData.folders.findIndex((f) => f.name === folderName);
+
     if (oldFolderName === folderName) {
-      moveGameInCurrentFolder(gameId, index, folderName);
+      if (isFromUncategorized) {
+        return;
+      }
+      moveGameInCurrentFolder({ gameId, toIndex, fromIndex });
       return;
     }
 
     if (document.querySelectorAll(".sideBarFolder:is(.dragging)")[0] === undefined) {
-      const gameId = e.dataTransfer.getData("gameId");
-      const toIndex = libraryData.folders.findIndex((f) => f.name === folderName);
-      const fromIndex = libraryData.folders.findIndex((f) => f.name === oldFolderName);
-      moveGameToAnotherFolder(gameId, toIndex, fromIndex, isFromUncategorized);
+      moveGameToAnotherFolder({ gameId, toIndex, fromIndex, isFromUncategorized });
     }
 
     await writeUpdateData();
@@ -432,44 +448,36 @@ export function SideBar() {
               e.preventDefault();
             }}
             onDrop={async (e) => {
-              const gameName = e.dataTransfer.getData("gameName");
+              const gameId = e.dataTransfer.getData("gameId");
               const oldFolderName = e.dataTransfer.getData("oldFolderName");
-              const index = globalContext.libraryData.folders[oldFolderName].games.indexOf(gameName);
 
-              globalContext.setLibraryData(
+              const fromIndex = libraryData.folders.findIndex((f) => f.name === oldFolderName);
+
+              const index = libraryData.folders[fromIndex].games.indexOf(gameId);
+
+              setLibraryData(
                 produce((data) => {
-                  data.folders[oldFolderName].games.splice(index, 1);
+                  data.folders[fromIndex].games.splice(index, 1);
                   return data;
                 }),
               );
 
-              await updateData();
+              await writeUpdateData();
             }}
           >
             <div class="flex cursor-default items-center gap-[10px]">
               <p class="pd-3 text-[#00000080] dark:text-[#ffffff80]">{translateText("uncategorized")}</p>
             </div>
 
-            <For each={Object.entries(libraryData.games)}>
+            <For each={uncategorizedGames()}>
               {(currentGame, index) => {
-                const gamesInFolders = [];
-                console.log(currentGame);
-                console.log(!gamesInFolders.includes(currentGame));
-
-                for (const folder of Object.values(libraryData.folders)) {
-                  for (const game of folder.games) {
-                    gamesInFolders.push(game);
-                  }
-                }
                 return (
-                  <Show when={!gamesInFolders.includes(currentGame)}>
-                    <GameCardSideBar
-                      gameId={currentGame[0]}
-                      game={currentGame[1]}
-                      index={index()}
-                      folderName="uncategorized"
-                    />
-                  </Show>
+                  <GameCardSideBar
+                    gameId={currentGame[0]}
+                    game={currentGame[1]}
+                    index={index()}
+                    folderName="uncategorized"
+                  />
                 );
               }}
             </For>
