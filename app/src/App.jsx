@@ -12,11 +12,11 @@ import {
   importSteamGames,
   openDialog,
   toggleSideBar,
-  translateText,
   triggerToast,
   UIContext,
   updateData,
 } from "./Globals.jsx";
+import { translateText } from "@/utils/translateText";
 import { ChevronArrows, EmptyTray, Steam } from "./libraries/Icons.jsx";
 import { fuzzysearch } from "./utils/fuzzysearch.js";
 import "./App.css";

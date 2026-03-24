@@ -1,3 +1,5 @@
+import { translateText } from "../../utils/translateText";
+
 export async function gameSearchResults(searchQuery) {
   try {
     const response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?gameName=${searchQuery}`);

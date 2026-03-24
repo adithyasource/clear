@@ -1,3 +1,4 @@
+import path from "path";
 import { defineConfig } from "vite";
 import { ViteMinifyPlugin } from "vite-plugin-minify";
 import solidPlugin from "vite-plugin-solid";
@@ -20,5 +21,11 @@ export default defineConfig(async () => ({
   envPrefix: ["VITE_", "TAURI_"],
   build: {
     sourcemap: false,
+  },
+
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
   },
 }));

@@ -1,5 +1,7 @@
 import { createSignal, Show, useContext } from "solid-js";
 import { GlobalContext, translateText, UIContext, updateData } from "../../Globals.jsx";
+import { libraryData, setLibraryData } from "../../stores/libraryStore.js";
+import { writeUpdateData } from "../../services/libraryService.js";
 
 export function LanguageSelector(props) {
   const globalContext = useContext(GlobalContext);
@@ -8,9 +10,10 @@ export function LanguageSelector(props) {
   const [showLanguageSelector, setShowLanguageSelector] = createSignal(false);
 
   async function changeLanguage(lang) {
-    globalContext.setLibraryData("userSettings", "language", lang);
-
-    await updateData();
+    console.log(lang);
+    setLibraryData("userSettings", "language", lang);
+    console.log(libraryData);
+    await writeUpdateData();
     setShowLanguageSelector(false);
     uiContext.setShowSettingsLanguageSelector(false);
   }

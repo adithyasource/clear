@@ -1,23 +1,28 @@
-import { dataFileRead } from "../data/storage/fileStorage.js";
+import { dataFileRead, dataFileWrite } from "../data/storage/fileStorage.js";
 import { triggerToast } from "../Globals.jsx";
-import { setLibraryData } from "../stores/libraryStore.js";
+import { libraryData, setLibraryData } from "../stores/libraryStore.js";
 
 export async function getData() {
-  let libraryData;
+  let data;
   try {
-    libraryData = await dataFileRead();
+    data = await dataFileRead();
 
-    setLibraryData(libraryData);
+    setLibraryData(data);
     console.log("data fetched");
+
+    // if (libraryData.userSettings.currentTheme === "light") {
+    //   document.documentElement.classList.remove("dark");
+    // } else {
+    //   document.documentElement.classList.add("dark");
+    // }
+
+    return data;
   } catch (err) {
     triggerToast(err);
   }
+}
 
-  // if (libraryData.userSettings.currentTheme === "light") {
-  //   document.documentElement.classList.remove("dark");
-  // } else {
-  //   document.documentElement.classList.add("dark");
-  // }
-
-  return libraryData;
+export async function writeUpdateData() {
+  console.log(libraryData);
+  await dataFileWrite(libraryData);
 }
