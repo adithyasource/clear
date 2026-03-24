@@ -120,29 +120,27 @@ export function SideBar() {
     }
   }
 
-  async function moveGameToAnotherFolder(gameId, toPosition, currentFolderName, destinationFolderName) {
-    console.log(gameId, toPosition, currentFolderName, destinationFolderName);
-    if (currentFolderName !== "uncategorized") {
-      globalContext.setLibraryData(
+  async function moveGameToAnotherFolder(gameId, toIndex, fromIndex, isFromUncategorized) {
+    if (!isFromUncategorized) {
+      setLibraryData(
         produce((data) => {
-          data.folders[currentFolderName].games.splice(data.folders[currentFolderName].games.indexOf(gameName), 1);
+          data.folders[fromIndex].games.splice(data.folders[fromIndex].games.indexOf(gameId), 1);
           return data;
         }),
       );
     }
 
-    if (toPosition === -1) {
+    if (toIndex === -1) {
       setLibraryData(
         produce((data) => {
-          data.folders[toPosition].games.push(gameId);
+          data.folders[toIndex].games.push(gameId);
           return data;
         }),
       );
     } else {
       setLibraryData(
         produce((data) => {
-          console.log(data.folders[toPosition.games]);
-          data.folders[toPosition].games.push(gameId);
+          data.folders[toIndex].games.push(gameId);
 
           console.log(data);
           return data;
@@ -234,41 +232,21 @@ export function SideBar() {
     }
   }
 
-  async function gamesFolderDropHandler(e, folderName, index) {
+  async function gamesFolderDropHandler(e, folderName) {
     const oldFolderName = e.dataTransfer.getData("oldFolderName");
 
-    console.log(oldFolderName, folderName);
+    const isFromUncategorized = e.dataTransfer.getData("oldFolderName") === "uncategorized";
+
+    if (oldFolderName === folderName) {
+      moveGameInCurrentFolder(gameId, index, folderName);
+      return;
+    }
 
     if (document.querySelectorAll(".sideBarFolder:is(.dragging)")[0] === undefined) {
-      const draggingItem = document.querySelector(".dragging");
-      const siblings = [...e.srcElement.querySelectorAll(".sideBarGame:not(.dragging)")];
-
-      console.log(siblings);
-
-      const nextSibling = siblings.find((sibling) => {
-        let compensatedY = "";
-        compensatedY = e.clientY + scrollY;
-
-        return compensatedY <= sibling.offsetTop + sibling.offsetHeight / 2;
-      });
-
       const gameId = e.dataTransfer.getData("gameId");
-
-      const folder = JSON.parse(JSON.stringify(libraryData)).folders.find((f) => f.name === folderName);
-
-      const nextSiblingId = nextSibling?.dataset?.gameId;
-
-      let toPosition = folder.games.findIndex((g) => g === nextSiblingId);
-
-      if (toPosition === -1) {
-        toPosition = folder.games.length;
-      }
-
-      if (oldFolderName === folderName) {
-        moveGameInCurrentFolder(gameId, toPosition, folderName);
-      } else {
-        moveGameToAnotherFolder(gameId, toPosition, oldFolderName, folderName);
-      }
+      const toIndex = libraryData.folders.findIndex((f) => f.name === folderName);
+      const fromIndex = libraryData.folders.findIndex((f) => f.name === oldFolderName);
+      moveGameToAnotherFolder(gameId, toIndex, fromIndex, isFromUncategorized);
     }
 
     await writeUpdateData();
