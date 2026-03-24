@@ -1,3 +1,4 @@
+import { invoke } from "@tauri-apps/api/core";
 import { appDataDir } from "@tauri-apps/api/path";
 import { BaseDirectory, copyFile, mkdir } from "@tauri-apps/plugin-fs";
 import { locationJoin } from "../../Globals.jsx";
@@ -24,10 +25,34 @@ export async function getImageBinPath(type) {
 }
 
 export async function copyImageIntoBin({ type, origin }) {
-  console.log(origin);
-  const originImageFileType = origin.split(".")[origin.split(".").length - 1];
+  try {
+    const originImageFileType = origin.split(".")[origin.split(".").length - 1];
 
-  const gridImageFileName = `${generateId()}.${originImageFileType}`;
+    const fileName = `${generateId()}.${originImageFileType}`;
 
-  await copyFile(origin, locationJoin([await getImageBinPath(type), gridImageFileName]));
+    const finalPath = locationJoin([await getImageBinPath(type), fileName]);
+
+    await copyFile(origin, finalPath);
+
+    return finalPath;
+  } catch (err) {
+    throw new Error("image could not be downloaded: ", err);
+  }
+}
+
+export async function downloadImageIntoBin({ type, origin }) {
+  try {
+    const fileName = `${generateId()}.png`;
+
+    const finalPath = locationJoin([await getImageBinPath(type), fileName]);
+
+    await invoke("download_image", {
+      link: origin,
+      location: finalPath,
+    });
+
+    return finalPath;
+  } catch (err) {
+    throw new Error("image could not be downloaded: ", err);
+  }
 }

@@ -37,7 +37,7 @@ export async function dataFileWrite(json) {
   });
 }
 
-async function dataFileRead() {
+export async function dataFileRead() {
   try {
     if (!(await dataFileExists())) {
       await dataFileWrite(defaultData);
@@ -80,5 +80,3 @@ export async function folderInBaseDirExists(folderName) {
     return false;
   }
 }
-
-export { dataFileExists, dataFileRead };

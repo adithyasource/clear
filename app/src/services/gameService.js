@@ -1,18 +1,24 @@
 import { produce } from "solid-js/store";
+import { gameAssetResults } from "../data/api/sgdbAssets";
 import { dataFileWrite } from "../data/storage/fileStorage";
-import { copyImageIntoBin } from "../data/storage/imageStroage";
+import { copyImageIntoBin, downloadImageIntoBin } from "../data/storage/imageStroage";
 import { pickExecutable, pickImage } from "../data/system/locateDialog";
+import { triggerToast } from "../Globals";
 import { libraryData, setLibraryData } from "../stores/libraryStore";
 import { generateId } from "../utils/generateId";
-import { gameAssetResults } from "../data/api/sgdbAssets";
-import { triggerToast } from "../Globals";
 
-export async function processImage({ gridImage, heroImage, logoImage, iconImage }) {
-  // implement downloading if downloaded image
-  if (gridImage) copyImageIntoBin({ type: "grid", origin: gridImage });
-  if (heroImage) copyImageIntoBin({ type: "hero", origin: heroImage });
-  if (logoImage) copyImageIntoBin({ type: "logo", origin: logoImage });
-  if (iconImage) copyImageIntoBin({ type: "icon", origin: iconImage });
+export async function processImage({ imageType, imageData }) {
+  if (!imageData.data) return;
+
+  let finalImagePath;
+
+  if (imageData.type === "local") {
+    finalImagePath = await copyImageIntoBin({ type: imageType, origin: imageData.data });
+  } else if (imageData.type === "remote") {
+    finalImagePath = await downloadImageIntoBin({ type: imageType, origin: imageData.data[imageData.index] });
+  }
+
+  return finalImagePath;
 }
 
 export async function addGame({ name, favourite, gameLocation, gridImage, heroImage, logoImage, iconImage }) {
@@ -20,7 +26,10 @@ export async function addGame({ name, favourite, gameLocation, gridImage, heroIm
     throw new Error("no game name");
   }
 
-  processImage({ gridImage, heroImage, logoImage, iconImage });
+  const gridImagePath = await processImage({ imageType: "grid", imageData: gridImage });
+  const heroImagePath = await processImage({ imageType: "hero", imageData: heroImage });
+  const logoImagePath = await processImage({ imageType: "logo", imageData: logoImage });
+  const iconimagePath = await processImage({ imageType: "icon", imageData: iconImage });
 
   // for (const name of Object.keys(globalContext.libraryData.games)) {
   //   if (gameName() === name) {
@@ -39,10 +48,10 @@ export async function addGame({ name, favourite, gameLocation, gridImage, heroIm
         name,
         gameLocation,
         favourite,
-        gridImage,
-        heroImage,
-        logoImage,
-        iconImage,
+        gridImagePath,
+        heroImagePath,
+        logoImagePath,
+        iconimagePath,
       };
 
       return data;

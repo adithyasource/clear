@@ -1,15 +1,11 @@
-import { BaseDirectory, exists, mkdir, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
-import { appDataDir } from "@tauri-apps/api/path";
-// importing code snippets and library functions
 import { invoke } from "@tauri-apps/api/core";
+import { appDataDir } from "@tauri-apps/api/path";
+import { BaseDirectory, exists, mkdir, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { createContext, createSignal } from "solid-js";
 import { createStore, produce } from "solid-js/store";
-import { parseVDF } from "./utils/parseVDF.js";
-
-// importing text snippets for different languages
-import { textLanguages } from "./Text.js";
-
 import { closeModal } from "./stores/modalStore.js";
+import { textLanguages } from "./Text.js";
+import { parseVDF } from "./utils/parseVDF.js";
 
 export const GlobalContext = createContext();
 export const UIContext = createContext();

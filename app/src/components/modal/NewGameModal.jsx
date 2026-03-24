@@ -37,10 +37,6 @@ export function NewGameModal() {
   const [logoImage, setLogoImage] = createSignal({ type: "local", data: undefined });
   const [iconImage, setIconImage] = createSignal({ type: "local", data: undefined });
 
-  const [foundIconImage, setFoundIconImage] = createSignal();
-
-  const [foundIconImageIndex, setFoundIconImageIndex] = createSignal(0);
-
   const [searchResults, setSearchResults] = createSignal();
 
   createEffect(() => {
@@ -346,64 +342,53 @@ export function NewGameModal() {
               }}
               onContextMenu={() => {
                 setLocatedIcon(undefined);
-                setFoundIconImage(undefined);
               }}
               onScroll={() => {}}
               onWheel={(e) => {
                 if (searchResults()) {
                   if (e.deltaY <= 0) {
-                    setFoundIconImageIndex((i) => (i === foundIconImage().length - 1 ? 0 : i + 1));
+                    changeImageRemoteLocationIndex({ setter: setIconImage, changeBy: 1 });
                     setShowIconImageLoading(true);
                   }
 
                   if (e.deltaY >= 0) {
-                    if (foundIconImageIndex() !== 0) {
-                      setFoundIconImageIndex((i) => i - 1);
-                      setShowIconImageLoading(true);
-                    } else {
-                      setShowIconImageLoading(false);
-                    }
+                    changeImageRemoteLocationIndex({ setter: setIconImage, changeBy: -1 });
                   }
                 }
               }}
               onKeyDown={(e) => {
                 if (searchResults()) {
                   if (e.key === "ArrowRight" || e.key === "ArrowUp") {
-                    setFoundIconImageIndex((i) => (i === foundIconImage().length - 1 ? 0 : i + 1));
+                    changeImageRemoteLocationIndex({ setter: setIconImage, changeBy: 1 });
                     setShowIconImageLoading(true);
                   }
 
                   if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
-                    if (foundIconImageIndex() !== 0) {
-                      setFoundIconImageIndex((i) => i - 1);
-                      setShowIconImageLoading(true);
-                    } else {
-                      setShowIconImageLoading(false);
-                    }
+                    changeImageRemoteLocationIndex({ setter: setIconImage, changeBy: -1 });
                   }
                 }
               }}
               class={`group tooltip-bottom relative p-0 ${
-                foundIconImage() || iconImage()
+                iconImage().data
                   ? "!outline-[2px] !outline-[#E8E8E880] hover:outline-dashed !outline:dark:bg-[#27272780]"
                   : "dark:!bg-[#272727] bg-[#E8E8E8]"
               }`}
               data-tooltip={
-                foundIconImage()
+                iconImage().type === "remote"
                   ? showIconImageLoading() === false
                     ? uiContext.userIsTabbing()
-                      ? `${foundIconImageIndex()} / ${foundIconImage().length - 1} ${translateText("arrow keys")}`
-                      : `${foundIconImageIndex()} / ${foundIconImage().length - 1} ${translateText("scroll")}`
-                    : `${foundIconImageIndex()} / ${foundIconImage().length - 1} ${translateText("loading")}`
+                      ? `${iconImage().index} / ${iconImage().data.length - 1} ${translateText("arrow keys")}`
+                      : `${iconImage().index} / ${iconImage().data.length - 1} ${translateText("scroll")}`
+                    : `${iconImage().index} / ${iconImage().data.length - 1} ${translateText("loading")}`
                   : translateText("icon")
               }
             >
               <img
                 src={
-                  foundIconImage()
-                    ? foundIconImage()[foundIconImageIndex()]
-                    : iconImage()
-                      ? convertFileSrc(iconImage())
+                  iconImage().type === "remote"
+                    ? iconImage().data[iconImage().index]
+                    : iconImage().type === "local" && iconImage().data
+                      ? convertFileSrc(iconImage().data)
                       : // this is a gif which is completely empty
                         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                 }
