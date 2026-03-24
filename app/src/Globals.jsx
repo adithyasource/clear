@@ -3,9 +3,10 @@ import { appDataDir } from "@tauri-apps/api/path";
 import { BaseDirectory, exists, mkdir, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { createContext, createSignal } from "solid-js";
 import { createStore, produce } from "solid-js/store";
-import { closeModal } from "./stores/modalStore.js";
-import { textLanguages } from "./Text.js";
-import { parseVDF } from "./utils/parseVDF.js";
+import { closeModal } from "@/stores/modalStore.js";
+import { textLanguages } from "@/Text.js";
+import { parseVDF } from "@/utils/parseVDF.js";
+import { translateText } from "@/utils/translateText";
 
 export const GlobalContext = createContext();
 export const UIContext = createContext();
@@ -397,22 +398,6 @@ export async function importSteamGames() {
       setTotalSteamGames(0);
     });
   }, 1000);
-}
-
-export function translateText(text) {
-  if (!Object.prototype.hasOwnProperty.call(textLanguages, text)) {
-    console.trace(`missing text translation '${text}'`);
-
-    return "undefined";
-  }
-
-  const translatedText = textLanguages[text][libraryData.userSettings.language];
-
-  if (libraryData.userSettings.language === "en" || translatedText === "") {
-    return text;
-  }
-
-  return translatedText;
 }
 
 export async function updateData() {

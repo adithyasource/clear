@@ -1,10 +1,10 @@
 import { createEffect, createSignal, For, onMount, Show, useContext } from "solid-js";
 import { produce } from "solid-js/store";
-import { NewFolderModal } from "../../components/modal/NewFolderModal.jsx";
-import { NewGameModal } from "../../components/modal/NewGameModal.jsx";
-import { NotepadModal } from "../../components/modal/NotepadModal.jsx";
-import { SettingsModal } from "../../components/modal/SettingsModal.jsx";
-import { GameCardSideBar } from "../../components/sidebar/GameCardSideBar.jsx";
+import { NewFolderModal } from "@/components/modal/NewFolderModal.jsx";
+import { NewGameModal } from "@/components/modal/NewGameModal.jsx";
+import { NotepadModal } from "@/components/modal/NotepadModal.jsx";
+import { SettingsModal } from "@/components/modal/SettingsModal.jsx";
+import { GameCardSideBar } from "@/components/sidebar/GameCardSideBar.jsx";
 import {
   ApplicationStateContext,
   GlobalContext,
@@ -12,11 +12,10 @@ import {
   openDialog,
   SelectedDataContext,
   toggleSideBar,
-  translateText,
   triggerToast,
   UIContext,
   updateData,
-} from "../../Globals.jsx";
+} from "@/Globals.jsx";
 import {
   ChevronArrows,
   Edit,
@@ -26,9 +25,11 @@ import {
   Notepad,
   Settings,
   UpdateDownload,
-} from "../../libraries/Icons.jsx";
-import { libraryData } from "../../stores/libraryStore.js";
-import { openModal } from "../../stores/modalStore";
+} from "@/libraries/Icons.jsx";
+import { libraryData, setLibraryData } from "@/stores/libraryStore.js";
+import { openModal } from "@/stores/modalStore";
+import { translateText } from "@/utils/translateText";
+import { writeUpdateData } from "@/services/libraryService";
 
 export function SideBar() {
   const globalContext = useContext(GlobalContext);
@@ -119,7 +120,8 @@ export function SideBar() {
     }
   }
 
-  function moveGameToAnotherFolder(gameName, toPosition, currentFolderName, destinationFolderName) {
+  async function moveGameToAnotherFolder(gameId, toPosition, currentFolderName, destinationFolderName) {
+    console.log(gameId, toPosition, currentFolderName, destinationFolderName);
     if (currentFolderName !== "uncategorized") {
       globalContext.setLibraryData(
         produce((data) => {
@@ -130,16 +132,19 @@ export function SideBar() {
     }
 
     if (toPosition === -1) {
-      globalContext.setLibraryData(
+      setLibraryData(
         produce((data) => {
-          data.folders[destinationFolderName].games.push(gameName);
+          data.folders[toPosition].games.push(gameId);
           return data;
         }),
       );
     } else {
-      globalContext.setLibraryData(
+      setLibraryData(
         produce((data) => {
-          data.folders[destinationFolderName].games.splice(toPosition, 0, gameName);
+          console.log(data.folders[toPosition.games]);
+          data.folders[toPosition].games.push(gameId);
+
+          console.log(data);
           return data;
         }),
       );
@@ -229,12 +234,16 @@ export function SideBar() {
     }
   }
 
-  async function gamesFolderDropHandler(e, folderName) {
+  async function gamesFolderDropHandler(e, folderName, index) {
     const oldFolderName = e.dataTransfer.getData("oldFolderName");
+
+    console.log(oldFolderName, folderName);
 
     if (document.querySelectorAll(".sideBarFolder:is(.dragging)")[0] === undefined) {
       const draggingItem = document.querySelector(".dragging");
       const siblings = [...e.srcElement.querySelectorAll(".sideBarGame:not(.dragging)")];
+
+      console.log(siblings);
 
       const nextSibling = siblings.find((sibling) => {
         let compensatedY = "";
@@ -243,26 +252,26 @@ export function SideBar() {
         return compensatedY <= sibling.offsetTop + sibling.offsetHeight / 2;
       });
 
-      const currentDraggingItem = draggingItem.textContent;
+      const gameId = e.dataTransfer.getData("gameId");
 
-      let nextSiblingItem;
-      let toPosition;
+      const folder = JSON.parse(JSON.stringify(libraryData)).folders.find((f) => f.name === folderName);
 
-      try {
-        nextSiblingItem = nextSibling.textContent;
-        toPosition = globalContext.libraryData.folders[folderName].games.indexOf(nextSiblingItem);
-      } catch {
-        toPosition = -1;
+      const nextSiblingId = nextSibling?.dataset?.gameId;
+
+      let toPosition = folder.games.findIndex((g) => g === nextSiblingId);
+
+      if (toPosition === -1) {
+        toPosition = folder.games.length;
       }
 
       if (oldFolderName === folderName) {
-        moveGameInCurrentFolder(currentDraggingItem, toPosition, folderName);
+        moveGameInCurrentFolder(gameId, toPosition, folderName);
       } else {
-        moveGameToAnotherFolder(currentDraggingItem, toPosition, oldFolderName, folderName);
+        moveGameToAnotherFolder(gameId, toPosition, oldFolderName, folderName);
       }
     }
 
-    await updateData();
+    await writeUpdateData();
   }
 
   onMount(() => {
@@ -381,7 +390,7 @@ export function SideBar() {
                     gamesFolderDragOverHandler(e);
                   }}
                   onDrop={async (e) => {
-                    await gamesFolderDropHandler(e, folder.name);
+                    await gamesFolderDropHandler(e, folder.name, index());
                   }}
                 >
                   <div class="flex cursor-move items-center gap-[10px]">
@@ -420,8 +429,13 @@ export function SideBar() {
 
                   <Show when={folder.games.length > 0}>
                     <For each={folder.games}>
-                      {(gameName, index) => (
-                        <GameCardSideBar gameName={gameName} index={index()} folderName={folder.name} />
+                      {(gameId, index) => (
+                        <GameCardSideBar
+                          gameId={gameId}
+                          game={libraryData.games[gameId]}
+                          index={index()}
+                          folderName={folder.name}
+                        />
                       )}
                     </For>
                     <p class="sideBarGame mt-[10px] h-[3px] w-full cursor-grab">&nbsp;</p>

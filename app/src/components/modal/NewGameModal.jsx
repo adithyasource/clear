@@ -1,20 +1,25 @@
 import { convertFileSrc, invoke } from "@tauri-apps/api/core";
-import { createSignal, For, Match, Show, Switch, useContext, createEffect } from "solid-js";
-import { gameSearchResults } from "../../data/api/sgdbAssets.js";
+import { createEffect, createSignal, For, Match, Show, Switch, useContext } from "solid-js";
+import { gameSearchResults } from "@/data/api/sgdbAssets.js";
 import {
   ApplicationStateContext,
   GlobalContext,
   getExecutableFileName,
   SelectedDataContext,
-  translateText,
   triggerToast,
   UIContext,
-} from "../../Globals.jsx";
-import { ChevronArrow, Close, SaveDisk } from "../../libraries/Icons.jsx";
-import { addGame, selectGameLocation, selectImageFileLocation } from "../../services/gameService.js";
-import { closeModal, modalShowCloseConfirm } from "../../stores/modalStore.js";
-import { fetchGameAssets } from "../../services/gameService.js";
-import { changeImageRemoteLocationIndex } from "../../services/gameService.js";
+} from "@/Globals.jsx";
+import { ChevronArrow, Close, SaveDisk } from "@/libraries/Icons.jsx";
+import {
+  addGame,
+  changeImageRemoteLocationIndex,
+  fetchGameAssets,
+  selectGameLocation,
+  selectImageFileLocation,
+} from "@/services/gameService.js";
+import { closeModal, modalShowCloseConfirm } from "@/stores/modalStore.js";
+import { translateText } from "@/utils/translateText";
+import { LoadingTextAndIcon } from "@/components/modal/Loading";
 
 export function NewGameModal() {
   const globalContext = useContext(GlobalContext);
@@ -38,6 +43,8 @@ export function NewGameModal() {
   const [iconImage, setIconImage] = createSignal({ type: "local", data: undefined });
 
   const [searchResults, setSearchResults] = createSignal();
+
+  const [fetchingAssetsLoading, setFetchingAssetsLoading] = createSignal(false);
 
   createEffect(() => {
     console.log("type:", logoImage().type);
@@ -154,7 +161,6 @@ export function NewGameModal() {
           }}
           onContextMenu={() => {
             setLocatedGridImage(undefined);
-            setFoundGridImage(undefined);
           }}
           class="tooltip-center aspect-[2/3] h-[400px] cursor-pointer overflow-hidden bg-[#f1f1f1] p-0 max-large:h-[300px] dark:bg-[#1c1c1c]"
           data-tooltip={
@@ -220,7 +226,6 @@ export function NewGameModal() {
               }}
               onContextMenu={() => {
                 setLocatedHeroImage(undefined);
-                setFoundHeroImage(undefined);
               }}
               class="tooltip-center aspect-[67/26] h-[350px] cursor-pointer bg-[#f1f1f1] p-0 max-large:h-[250px] dark:bg-[#1c1c1c]"
               data-tooltip={
@@ -345,7 +350,7 @@ export function NewGameModal() {
               }}
               onScroll={() => {}}
               onWheel={(e) => {
-                if (searchResults()) {
+                if (iconImage().type === "remote") {
                   if (e.deltaY <= 0) {
                     changeImageRemoteLocationIndex({ setter: setIconImage, changeBy: 1 });
                     setShowIconImageLoading(true);
@@ -357,7 +362,7 @@ export function NewGameModal() {
                 }
               }}
               onKeyDown={(e) => {
-                if (searchResults()) {
+                if (iconImage().type === "remote") {
                   if (e.key === "ArrowRight" || e.key === "ArrowUp") {
                     changeImageRemoteLocationIndex({ setter: setIconImage, changeBy: 1 });
                     setShowIconImageLoading(true);
@@ -429,35 +434,33 @@ export function NewGameModal() {
                   searchGameName();
                   selectedDataContext.setSelectedGameId(undefined);
                   setSearchResults(undefined);
-                  setFoundGridImage(undefined);
-                  setFoundHeroImage(undefined);
-                  setFoundLogoImage(undefined);
-                  setFoundIconImage(undefined);
                 }}
               >
-                <Switch>
-                  <Match
-                    when={
-                      globalContext.libraryData.userSettings.language === "fr" &&
-                      applicationStateContext.windowWidth() >= 1500
-                    }
-                  >
-                    {translateText("auto find assets")}
-                  </Match>
+                <Show when={!fetchingAssetsLoading()} fallback={LoadingTextAndIcon()}>
+                  <Switch>
+                    <Match
+                      when={
+                        globalContext.libraryData.userSettings.language === "fr" &&
+                        applicationStateContext.windowWidth() >= 1500
+                      }
+                    >
+                      {translateText("auto find assets")}
+                    </Match>
 
-                  <Match
-                    when={
-                      globalContext.libraryData.userSettings.language === "fr" &&
-                      applicationStateContext.windowWidth() <= 1500
-                    }
-                  >
-                    <p class="w-[70px] text-clip text-[10px]">{translateText("auto find assets")}</p>
-                  </Match>
+                    <Match
+                      when={
+                        globalContext.libraryData.userSettings.language === "fr" &&
+                        applicationStateContext.windowWidth() <= 1500
+                      }
+                    >
+                      <p class="w-[70px] text-clip text-[10px]">{translateText("auto find assets")}</p>
+                    </Match>
 
-                  <Match when={globalContext.libraryData.userSettings.language !== "fr"}>
-                    {translateText("auto find assets")}
-                  </Match>
-                </Switch>
+                    <Match when={globalContext.libraryData.userSettings.language !== "fr"}>
+                      {translateText("auto find assets")}
+                    </Match>
+                  </Switch>
+                </Show>
               </button>
               <button
                 type="button"
@@ -545,8 +548,11 @@ export function NewGameModal() {
                     <button
                       type="button"
                       class="flex-shrink-0"
-                      onClick={() => {
-                        fetchGameAssets({
+                      onClick={async () => {
+                        setSearchResults(undefined);
+
+                        setFetchingAssetsLoading(true);
+                        await fetchGameAssets({
                           gameId: foundGame.id,
                           setters: {
                             grid: setGridImage,
@@ -555,6 +561,7 @@ export function NewGameModal() {
                             icon: setIconImage,
                           },
                         });
+                        setFetchingAssetsLoading(false);
                       }}
                     >
                       {foundGame.name}

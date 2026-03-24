@@ -1,8 +1,9 @@
 import { createSignal, Show, useContext } from "solid-js";
-import { GlobalContext, translateText } from "../../Globals.jsx";
-import { Close, SaveDisk } from "../../libraries/Icons.jsx";
-import { addFolder } from "../../services/folderService.js";
-import { closeModal, modalShowCloseConfirm } from "../../stores/modalStore.js";
+import { GlobalContext } from "@/Globals.jsx";
+import { Close, SaveDisk } from "@/libraries/Icons.jsx";
+import { addFolder } from "@/services/folderService.js";
+import { closeModal, modalShowCloseConfirm } from "@/stores/modalStore.js";
+import { translateText } from "@/utils/translateText";
 
 export function NewFolderModal() {
   const globalContext = useContext(GlobalContext);

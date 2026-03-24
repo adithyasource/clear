@@ -1,4 +1,4 @@
-import { translateText } from "../../utils/translateText";
+import { translateText } from "@/utils/translateText";
 
 export async function gameSearchResults(searchQuery) {
   try {

@@ -1,11 +1,11 @@
 import { produce } from "solid-js/store";
-import { gameAssetResults } from "../data/api/sgdbAssets";
-import { dataFileWrite } from "../data/storage/fileStorage";
-import { copyImageIntoBin, downloadImageIntoBin } from "../data/storage/imageStroage";
-import { pickExecutable, pickImage } from "../data/system/locateDialog";
-import { triggerToast } from "../Globals";
-import { libraryData, setLibraryData } from "../stores/libraryStore";
-import { generateId } from "../utils/generateId";
+import { gameAssetResults } from "@/data/api/sgdbAssets";
+import { dataFileWrite } from "@/data/storage/fileStorage";
+import { copyImageIntoBin, downloadImageIntoBin } from "@/data/storage/imageStroage";
+import { pickExecutable, pickImage } from "@/data/system/locateDialog";
+import { triggerToast } from "@/Globals";
+import { libraryData, setLibraryData } from "@/stores/libraryStore";
+import { generateId } from "@/utils/generateId";
 
 export async function processImage({ imageType, imageData }) {
   if (!imageData.data) return;

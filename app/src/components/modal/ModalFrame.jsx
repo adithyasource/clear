@@ -1,5 +1,5 @@
-import { onMount, onCleanup } from "solid-js";
-import { closeModal, modalState, modalVisible } from "../../stores/modalStore";
+import { onCleanup, onMount } from "solid-js";
+import { closeModal, modalState, modalVisible } from "@/stores/modalStore";
 
 export function ModalFrame() {
   let modalRef;

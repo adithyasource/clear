@@ -1,10 +1,13 @@
 import { invoke } from "@tauri-apps/api/core";
 import { createEffect, For, onMount, Show, useContext } from "solid-js";
-import { ModalFrame } from "./components/modal/ModalFrame";
-import { SideBar } from "./components/sidebar/SideBar.jsx";
-import { GameCards } from "./components/ui/GameCards.jsx";
-import { Hotkeys } from "./components/ui/Hotkeys.jsx";
-import { LanguageSelector } from "./components/ui/LanguageSelector.jsx";
+import { ModalFrame } from "@/components/modal/ModalFrame";
+import { SideBar } from "@/components/sidebar/SideBar.jsx";
+import { GameCards } from "@/components/ui/GameCards.jsx";
+import { Hotkeys } from "@/components/ui/Hotkeys.jsx";
+import { LanguageSelector } from "@/components/ui/LanguageSelector.jsx";
+import { ChevronArrows, EmptyTray, Steam } from "@/libraries/Icons.jsx";
+import { fuzzysearch } from "@/utils/fuzzysearch.js";
+import { translateText } from "@/utils/translateText";
 import {
   ApplicationStateContext,
   checkIfConnectedToInternet,
@@ -16,11 +19,8 @@ import {
   UIContext,
   updateData,
 } from "./Globals.jsx";
-import { translateText } from "@/utils/translateText";
-import { ChevronArrows, EmptyTray, Steam } from "./libraries/Icons.jsx";
-import { fuzzysearch } from "./utils/fuzzysearch.js";
 import "./App.css";
-import { getData } from "./services/libraryService.js";
+import { getData } from "@/services/libraryService.js";
 
 function App() {
   const globalContext = useContext(GlobalContext);

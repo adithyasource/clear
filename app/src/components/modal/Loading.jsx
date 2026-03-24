@@ -1,10 +1,7 @@
-import { SteamDataContext } from "../../Globals.jsx";
-
-// importing code snippets and library functions
 import { Show, useContext } from "solid-js";
-
-// importing style related files
-import { Loading as LoadingIcon } from "../../libraries/Icons.jsx";
+import { SteamDataContext } from "@/Globals.jsx";
+import { Loading as LoadingIcon } from "@/libraries/Icons.jsx";
+import { translateText } from "@/utils/translateText";
 
 export function LoadingModal() {
   const steamDataContext = useContext(SteamDataContext);
@@ -19,6 +16,17 @@ export function LoadingModal() {
         <div class="relative">
           <LoadingIcon />
         </div>
+      </div>
+    </div>
+  );
+}
+
+export function LoadingTextAndIcon() {
+  return (
+    <div class="flex w-max items-center justify-between gap-2">
+      {translateText("loading")}{" "}
+      <div class="relative">
+        <LoadingIcon />
       </div>
     </div>
   );

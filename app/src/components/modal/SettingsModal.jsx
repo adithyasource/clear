@@ -6,14 +6,14 @@ import {
   GlobalContext,
   getData,
   importSteamGames,
-  translateText,
   UIContext,
   updateData,
-} from "../../Globals.jsx";
-import { Close, Steam } from "../../libraries/Icons.jsx";
-import { closeModal } from "../../stores/modalStore.js";
-import { Hotkeys } from "../ui/Hotkeys.jsx";
-import { LanguageSelector } from "../ui/LanguageSelector.jsx";
+} from "@/Globals.jsx";
+import { Close, Steam } from "@/libraries/Icons.jsx";
+import { closeModal } from "@/stores/modalStore.js";
+import { Hotkeys } from "@/components/ui/Hotkeys.jsx";
+import { LanguageSelector } from "@/components/ui/LanguageSelector.jsx";
+import { translateText } from "@/utils/translateText";
 
 export function SettingsModal() {
   const globalContext = useContext(GlobalContext);

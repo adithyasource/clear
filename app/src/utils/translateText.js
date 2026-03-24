@@ -1,5 +1,5 @@
-import { libraryData } from "../stores/libraryStore";
-import { textLanguages } from "../Text";
+import { libraryData } from "@/stores/libraryStore";
+import { textLanguages } from "@/Text";
 
 export function translateText(text) {
   if (!Object.prototype.hasOwnProperty.call(textLanguages, text)) {

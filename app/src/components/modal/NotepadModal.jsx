@@ -1,7 +1,8 @@
 import { createSignal, useContext } from "solid-js";
-import { GlobalContext, getData, translateText, updateData } from "../../Globals.jsx";
-import { Close } from "../../libraries/Icons.jsx";
-import { closeModal } from "../../stores/modalStore.js";
+import { GlobalContext, getData, updateData } from "@/Globals.jsx";
+import { Close } from "@/libraries/Icons.jsx";
+import { closeModal } from "@/stores/modalStore.js";
+import { translateText } from "@/utils/translateText";
 
 export function NotepadModal() {
   const globalContext = useContext(GlobalContext);

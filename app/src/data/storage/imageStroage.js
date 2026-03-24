@@ -1,9 +1,9 @@
 import { invoke } from "@tauri-apps/api/core";
 import { appDataDir } from "@tauri-apps/api/path";
 import { BaseDirectory, copyFile, mkdir } from "@tauri-apps/plugin-fs";
-import { locationJoin } from "../../Globals.jsx";
-import { generateId } from "../../utils/generateId.js";
-import { folderInBaseDirExists } from "./fileStorage.js";
+import { locationJoin } from "@/Globals.jsx";
+import { generateId } from "@/utils/generateId.js";
+import { folderInBaseDirExists } from "@/data/storage/fileStorage.js";
 
 export async function getImageBinPath(type) {
   const appDataDirPath = await appDataDir();

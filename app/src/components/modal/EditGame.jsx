@@ -13,12 +13,12 @@ import {
   getExecutableParentFolder,
   locationJoin,
   SelectedDataContext,
-  translateText,
   triggerToast,
   UIContext,
   updateData,
-} from "../Globals.jsx";
-import { Close, OpenExternal, SaveDisk, TrashDelete } from "../libraries/Icons.jsx";
+} from "@/Globals.jsx";
+import { Close, OpenExternal, SaveDisk, TrashDelete } from "@/libraries/Icons.jsx";
+import { translateText } from "@/utils/translateText";
 
 export function EditGame() {
   const globalContext = useContext(GlobalContext);

@@ -234,7 +234,7 @@ input,
   animation: dialogFadeOut 0.2s ease forwards;
 }
 
-.loading {
+.loading::before {
   opacity: 1;
   animation: loadingFadeOut 0.3s;
   opacity: 0;

@@ -1,15 +1,9 @@
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { Show, useContext } from "solid-js";
-import {
-  ApplicationStateContext,
-  locationJoin,
-  openDialog,
-  openGame,
-  SelectedDataContext,
-  translateText,
-} from "../../Globals.jsx";
-import { Close, Play, Settings } from "../../libraries/Icons.jsx";
-import { closeModal } from "../../stores/modalStore.js";
+import { ApplicationStateContext, locationJoin, openDialog, openGame, SelectedDataContext } from "@/Globals.jsx";
+import { Close, Play, Settings } from "@/libraries/Icons.jsx";
+import { closeModal } from "@/stores/modalStore.js";
+import { translateText } from "@/utils/translateText";
 
 export function GamePopUpModal() {
   const selectedDataContext = useContext(SelectedDataContext);
