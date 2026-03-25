@@ -1,4 +1,4 @@
-import { createEffect, createSignal, For, onMount, Show, useContext, createMemo } from "solid-js";
+import { createEffect, createMemo, createSignal, For, onMount, Show, useContext } from "solid-js";
 import { produce } from "solid-js/store";
 import { NewFolderModal } from "@/components/modal/NewFolderModal.jsx";
 import { NewGameModal } from "@/components/modal/NewGameModal.jsx";
@@ -8,13 +8,11 @@ import { GameCardSideBar } from "@/components/sidebar/GameCardSideBar.jsx";
 import {
   ApplicationStateContext,
   GlobalContext,
-  getData,
   openDialog,
   SelectedDataContext,
   toggleSideBar,
   triggerToast,
   UIContext,
-  updateData,
 } from "@/Globals.jsx";
 import {
   ChevronArrows,
@@ -26,10 +24,10 @@ import {
   Settings,
   UpdateDownload,
 } from "@/libraries/Icons.jsx";
+import { writeUpdateData } from "@/services/libraryService";
 import { libraryData, setLibraryData } from "@/stores/libraryStore.js";
 import { openModal } from "@/stores/modalStore";
 import { translateText } from "@/utils/translateText";
-import { writeUpdateData } from "@/services/libraryService";
 
 export function SideBar() {
   const globalContext = useContext(GlobalContext);
@@ -56,43 +54,6 @@ export function SideBar() {
 
     return Object.entries(libraryData.games).filter(([id]) => !inFolders.has(id));
   });
-
-  async function moveFolder(folderName, toPosition) {
-    const pastPositionOfFolder = applicationStateContext.currentFolders().indexOf(folderName);
-    const currentFolders = applicationStateContext.currentFolders();
-
-    // removing folder from its past position
-    currentFolders.splice(pastPositionOfFolder, 1);
-
-    // pushing it into proper position relative to its past
-    if (toPosition === -1) {
-      currentFolders.push(folderName);
-    } else {
-      if (toPosition > pastPositionOfFolder) {
-        currentFolders.splice(toPosition - 1, 0, folderName);
-      } else {
-        currentFolders.splice(toPosition, 0, folderName);
-      }
-    }
-
-    // reordering folders in library data based on new current folders order
-    for (const currentFolderName of currentFolders) {
-      for (const folderName of Object.keys(globalContext.libraryData.folders)) {
-        if (currentFolderName === folderName) {
-          globalContext.setLibraryData(
-            produce((data) => {
-              Object.values(data.folders)[Object.keys(globalContext.libraryData.folders).indexOf(folderName)].index =
-                currentFolders.indexOf(currentFolderName);
-
-              return data;
-            }),
-          );
-        }
-      }
-    }
-
-    await updateData();
-  }
 
   function moveGameInCurrentFolder({ gameId, toIndex, fromIndex }) {
     const pastPositionOfGame = libraryData.folders[fromIndex].games.indexOf(gameId);
@@ -161,6 +122,35 @@ export function SideBar() {
     );
   }
 
+  async function moveFolder({ fromIndex, toIndex }) {
+    // removing folder from its past position
+    console.log(fromIndex, toIndex);
+    if (fromIndex === toIndex) return;
+
+    setLibraryData(
+      produce((data) => {
+        const copyOfFolder = data.folders[fromIndex];
+        data.folders.splice(fromIndex, 1);
+
+        if (toIndex > fromIndex) {
+          toIndex--;
+        }
+
+        if (toIndex === -1 || toIndex >= data.folders.length) {
+          data.folders.push(copyOfFolder);
+        } else {
+          data.folders.splice(toIndex, 0, copyOfFolder);
+        }
+
+        console.log(data.folders);
+        return data;
+      }),
+    );
+
+    await writeUpdateData();
+    clearDragStyles();
+  }
+
   function folderContainerDragOverHandler(e) {
     e.preventDefault();
 
@@ -189,7 +179,7 @@ export function SideBar() {
   }
 
   async function folderContainerDropHandler(e) {
-    const folderName = e.dataTransfer.getData("folderName");
+    const fromIndex = parseTransferIndex(e.dataTransfer.getData("folderIndex"));
 
     if (document.querySelectorAll(".sideBarFolder:is(.dragging)")[0] !== undefined) {
       const siblings = [...e.srcElement.querySelectorAll(".sideBarFolder:not(.dragging)")];
@@ -201,17 +191,12 @@ export function SideBar() {
         return compensatedY <= sibling.offsetTop + sibling.offsetHeight / 2;
       });
 
-      try {
-        moveFolder(folderName, applicationStateContext.currentFolders().indexOf(nextSibling.id));
-        document.querySelector("#uncategorizedFolder").classList.remove("currentlyDragging");
-        setTimeout(() => {
-          getData();
-        }, 100);
-      } catch (_error) {
-        getData();
-      }
+      const toIndex = Number(nextSibling.dataset.folderIndex);
 
-      await updateData();
+      try {
+        moveFolder({ fromIndex, toIndex });
+        document.querySelector("#uncategorizedFolder").classList.remove("currentlyDragging");
+      } catch (_error) {}
     }
   }
 
@@ -222,8 +207,13 @@ export function SideBar() {
     });
 
     document.querySelectorAll(".sideBarFolder").forEach((el) => {
+      el.classList.remove("currentlyDragging");
       el.classList.remove("dragging");
     });
+  }
+
+  function parseTransferIndex(val) {
+    return val === "undefined" ? undefined : Number(val);
   }
 
   function gamesFolderDragOverHandler(e) {
@@ -256,10 +246,6 @@ export function SideBar() {
   }
 
   async function gamesFolderDropHandler(e, toFolderIndex) {
-    function parseTransferIndex(val) {
-      return val === "undefined" ? undefined : Number(val);
-    }
-
     const fromFolderIndex = parseTransferIndex(e.dataTransfer.getData("fromFolderIndex"));
     const gameId = e.dataTransfer.getData("gameId");
 
@@ -391,12 +377,14 @@ export function SideBar() {
                   class="sideBarFolder !py-2 bg-[#f1f1f1] dark:bg-[#1c1c1c]"
                   id={folder.name}
                   draggable={true}
+                  data-folder-index={folderIndex()}
                   // drag start and drag end are triggered when the folder itself is dragged
                   onDragStart={(e) => {
                     setTimeout(() => {
                       e.srcElement.classList.add("dragging");
                     }, 0);
                     e.dataTransfer.setData("folderName", folder.name);
+                    e.dataTransfer.setData("folderIndex", folderIndex());
                   }}
                   onDragEnd={(e) => {
                     e.srcElement.classList.remove("dragging");
@@ -470,6 +458,7 @@ export function SideBar() {
             onDragOver={(e) => {
               e.preventDefault();
             }}
+            data-folder-index={-1}
             onDrop={async (e) => {
               const gameId = e.dataTransfer.getData("gameId");
               const oldFolderName = e.dataTransfer.getData("oldFolderName");
