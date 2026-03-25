@@ -132,7 +132,7 @@ export function SideBar() {
     }
   }
 
-  async function moveGameToAnotherFolder({ gameId, toGameIndex, toFolderIndex, fromFolderIndex }) {
+  async function moveGame({ gameId, toGameIndex, toFolderIndex, fromFolderIndex }) {
     console.log({ gameId, toGameIndex, toFolderIndex, fromFolderIndex });
 
     const movingFromUncategorized = fromFolderIndex === undefined;
@@ -143,6 +143,10 @@ export function SideBar() {
           const fromGameIndex = data.folders[fromFolderIndex].games.indexOf(gameId);
 
           data.folders[fromFolderIndex].games.splice(fromGameIndex, 1);
+
+          if (fromFolderIndex === toFolderIndex && fromGameIndex < toGameIndex) {
+            toGameIndex--;
+          }
         }
         console.log(data);
 
@@ -155,33 +159,6 @@ export function SideBar() {
         return data;
       }),
     );
-
-    // if (!isFromUncategorized) {
-    //   setLibraryData(
-    //     produce((data) => {
-    //       data.folders[fromIndex].games.splice(data.folders[fromIndex].games.indexOf(gameId), 1);
-    //       return data;
-    //     }),
-    //   );
-    // }
-    //
-    // if (toIndex === -1) {
-    //   setLibraryData(
-    //     produce((data) => {
-    //       data.folders[toIndex].games.push(gameId);
-    //       return data;
-    //     }),
-    //   );
-    // } else {
-    //   setLibraryData(
-    //     produce((data) => {
-    //       data.folders[toIndex].games.push(gameId);
-    //
-    //       console.log(data);
-    //       return data;
-    //     }),
-    //   );
-    // }
   }
 
   function folderContainerDragOverHandler(e) {
@@ -238,6 +215,17 @@ export function SideBar() {
     }
   }
 
+  function clearDragStyles() {
+    document.querySelectorAll(".sideBarGame").forEach((el) => {
+      el.classList.remove("currentlyDragging");
+      el.classList.remove("dragging");
+    });
+
+    document.querySelectorAll(".sideBarFolder").forEach((el) => {
+      el.classList.remove("dragging");
+    });
+  }
+
   function gamesFolderDragOverHandler(e) {
     e.preventDefault();
 
@@ -276,7 +264,6 @@ export function SideBar() {
     const gameId = e.dataTransfer.getData("gameId");
 
     if (document.querySelectorAll(".sideBarFolder:is(.dragging)")[0] === undefined) {
-      const draggingItem = document.querySelector(".dragging");
       const siblings = [...e.srcElement.querySelectorAll(".sideBarGame:not(.dragging)")];
 
       const nextSibling = siblings.find((sibling) => {
@@ -285,8 +272,6 @@ export function SideBar() {
 
         return compensatedY <= sibling.offsetTop + sibling.offsetHeight / 2;
       });
-
-      const currentDraggingItem = draggingItem.textContent;
 
       let nextSiblingItem;
       let toGameIndex;
@@ -298,15 +283,11 @@ export function SideBar() {
         toGameIndex = -1;
       }
 
-      if (fromFolderIndex === toFolderIndex) {
-        moveGameInCurrentFolder({ gameId, toGameIndex, fromFolderIndex });
-      } else {
-        // console.log({ gameId, toGameIndex, toFolderIndex, fromFolderIndex });
-        moveGameToAnotherFolder({ gameId, toGameIndex, toFolderIndex, fromFolderIndex });
-      }
+      moveGame({ gameId, toGameIndex, toFolderIndex, fromFolderIndex });
     }
 
     await writeUpdateData();
+    clearDragStyles();
   }
 
   onMount(() => {
