@@ -132,33 +132,56 @@ export function SideBar() {
     }
   }
 
-  async function moveGameToAnotherFolder({ gameId, toIndex, fromIndex, isFromUncategorized }) {
-    if (!isFromUncategorized) {
-      setLibraryData(
-        produce((data) => {
-          data.folders[fromIndex].games.splice(data.folders[fromIndex].games.indexOf(gameId), 1);
-          return data;
-        }),
-      );
-    }
+  async function moveGameToAnotherFolder({ gameId, toGameIndex, toFolderIndex, fromFolderIndex }) {
+    console.log({ gameId, toGameIndex, toFolderIndex, fromFolderIndex });
 
-    if (toIndex === -1) {
-      setLibraryData(
-        produce((data) => {
-          data.folders[toIndex].games.push(gameId);
-          return data;
-        }),
-      );
-    } else {
-      setLibraryData(
-        produce((data) => {
-          data.folders[toIndex].games.push(gameId);
+    const movingFromUncategorized = fromFolderIndex === undefined;
 
-          console.log(data);
-          return data;
-        }),
-      );
-    }
+    setLibraryData(
+      produce((data) => {
+        if (!movingFromUncategorized) {
+          const fromGameIndex = data.folders[fromFolderIndex].games.indexOf(gameId);
+
+          data.folders[fromFolderIndex].games.splice(fromGameIndex, 1);
+        }
+        console.log(data);
+
+        if (toGameIndex === -1) {
+          data.folders[toFolderIndex].games.push(gameId);
+        } else {
+          data.folders[toFolderIndex].games.splice(toGameIndex, 0, gameId);
+        }
+
+        return data;
+      }),
+    );
+
+    // if (!isFromUncategorized) {
+    //   setLibraryData(
+    //     produce((data) => {
+    //       data.folders[fromIndex].games.splice(data.folders[fromIndex].games.indexOf(gameId), 1);
+    //       return data;
+    //     }),
+    //   );
+    // }
+    //
+    // if (toIndex === -1) {
+    //   setLibraryData(
+    //     produce((data) => {
+    //       data.folders[toIndex].games.push(gameId);
+    //       return data;
+    //     }),
+    //   );
+    // } else {
+    //   setLibraryData(
+    //     produce((data) => {
+    //       data.folders[toIndex].games.push(gameId);
+    //
+    //       console.log(data);
+    //       return data;
+    //     }),
+    //   );
+    // }
   }
 
   function folderContainerDragOverHandler(e) {
@@ -244,25 +267,43 @@ export function SideBar() {
     }
   }
 
-  async function gamesFolderDropHandler(e, folderName) {
-    const oldFolderName = e.dataTransfer.getData("oldFolderName");
-
-    const isFromUncategorized = e.dataTransfer.getData("oldFolderName") === "uncategorized";
-
-    const fromIndex = libraryData.folders.findIndex((f) => f.name === oldFolderName);
-    const gameId = e.dataTransfer.getData("gameId");
-    const toIndex = libraryData.folders.findIndex((f) => f.name === folderName);
-
-    if (oldFolderName === folderName) {
-      if (isFromUncategorized) {
-        return;
-      }
-      moveGameInCurrentFolder({ gameId, toIndex, fromIndex });
-      return;
+  async function gamesFolderDropHandler(e, toFolderIndex) {
+    function parseTransferIndex(val) {
+      return val === "undefined" ? undefined : Number(val);
     }
 
+    const fromFolderIndex = parseTransferIndex(e.dataTransfer.getData("fromFolderIndex"));
+    const gameId = e.dataTransfer.getData("gameId");
+
     if (document.querySelectorAll(".sideBarFolder:is(.dragging)")[0] === undefined) {
-      moveGameToAnotherFolder({ gameId, toIndex, fromIndex, isFromUncategorized });
+      const draggingItem = document.querySelector(".dragging");
+      const siblings = [...e.srcElement.querySelectorAll(".sideBarGame:not(.dragging)")];
+
+      const nextSibling = siblings.find((sibling) => {
+        let compensatedY = "";
+        compensatedY = e.clientY + scrollY;
+
+        return compensatedY <= sibling.offsetTop + sibling.offsetHeight / 2;
+      });
+
+      const currentDraggingItem = draggingItem.textContent;
+
+      let nextSiblingItem;
+      let toGameIndex;
+
+      try {
+        nextSiblingItem = nextSibling.dataset.gameId;
+        toGameIndex = parseTransferIndex(libraryData.folders[toFolderIndex].games.indexOf(nextSiblingItem));
+      } catch {
+        toGameIndex = -1;
+      }
+
+      if (fromFolderIndex === toFolderIndex) {
+        moveGameInCurrentFolder({ gameId, toGameIndex, fromFolderIndex });
+      } else {
+        // console.log({ gameId, toGameIndex, toFolderIndex, fromFolderIndex });
+        moveGameToAnotherFolder({ gameId, toGameIndex, toFolderIndex, fromFolderIndex });
+      }
     }
 
     await writeUpdateData();
@@ -363,7 +404,7 @@ export function SideBar() {
           <p class="mt-[5px]" />
 
           <For each={libraryData.folders}>
-            {(folder, index) => {
+            {(folder, folderIndex) => {
               return (
                 <div
                   class="sideBarFolder !py-2 bg-[#f1f1f1] dark:bg-[#1c1c1c]"
@@ -384,7 +425,7 @@ export function SideBar() {
                     gamesFolderDragOverHandler(e);
                   }}
                   onDrop={async (e) => {
-                    await gamesFolderDropHandler(e, folder.name, index());
+                    await gamesFolderDropHandler(e, folderIndex());
                   }}
                 >
                   <div class="flex cursor-move items-center gap-[10px]">
@@ -409,7 +450,7 @@ export function SideBar() {
                         selectedDataContext.setSelectedFolder(folder);
                       }}
                       onKeyDown={(e) => {
-                        if (index() === 0) {
+                        if (folderIndex() === 0) {
                           if (e.key === "Tab" && e.shiftKey === true) {
                             setShowContentSkipButton(true);
                           }
@@ -423,12 +464,13 @@ export function SideBar() {
 
                   <Show when={folder.games.length > 0}>
                     <For each={folder.games}>
-                      {(gameId, index) => (
+                      {(gameId, gameIndex) => (
                         <GameCardSideBar
                           gameId={gameId}
                           game={libraryData.games[gameId]}
-                          index={index()}
+                          gameIndex={gameIndex()}
                           folderName={folder.name}
+                          folderIndex={folderIndex()}
                         />
                       )}
                     </For>
@@ -475,8 +517,9 @@ export function SideBar() {
                   <GameCardSideBar
                     gameId={currentGame[0]}
                     game={currentGame[1]}
-                    index={index()}
+                    gameIndex={index()}
                     folderName="uncategorized"
+                    folderIndex={undefined}
                   />
                 );
               }}

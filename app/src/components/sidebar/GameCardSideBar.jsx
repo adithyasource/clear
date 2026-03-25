@@ -5,7 +5,7 @@ import { GamePopUpModal } from "@/components/modal/GamePopUp.jsx";
 import { openModal } from "@/stores/modalStore.js";
 import { translateText } from "@/utils/translateText";
 
-export function GameCardSideBar({ gameId, game, index, folderName }) {
+export function GameCardSideBar({ gameId, game, gameIndex, folderName, folderIndex }) {
   const selectedDataContext = useContext(SelectedDataContext);
   const applicationStateContext = useContext(ApplicationStateContext);
 
@@ -14,7 +14,7 @@ export function GameCardSideBar({ gameId, game, index, folderName }) {
   return (
     <button
       type="button"
-      class={`!flex sideBarGame cursor-grab gap-[5px] bg-transparent p-0 ${index === 0 ? "mt-4" : "mt-5"}`}
+      class={`!flex sideBarGame cursor-grab gap-[5px] bg-transparent p-0 ${gameIndex === 0 ? "mt-4" : "mt-5"}`}
       data-tooltip={game.gameLocation ? translateText("play") : translateText("no game file")}
       data-game-id={gameId}
       draggable={true}
@@ -25,6 +25,9 @@ export function GameCardSideBar({ gameId, game, index, folderName }) {
         e.dataTransfer.setData("gameId", gameId);
 
         e.dataTransfer.setData("oldFolderName", folderName);
+
+        e.dataTransfer.setData("fromFolderIndex", folderIndex);
+        e.dataTransfer.setData("fromGameIndex", gameIndex);
       }}
       onDragEnd={(e) => {
         e.srcElement.classList.remove("dragging");
