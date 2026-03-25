@@ -11,43 +11,6 @@ export function NewFolderModal() {
   const [folderName, setFolderName] = createSignal();
   const [hideFolder, setHideFolder] = createSignal(false);
 
-  // async function addFolder() {
-  //   if (folderName() === "" || folderName() === undefined) {
-  //     triggerToast(translateText("no folder name"));
-  //     return;
-  //   }
-  //
-  //   let folderNameAlreadyExists = false;
-  //
-  //   for (const name of Object.keys(globalContext.libraryData.folders)) {
-  //     if (folderName() === name) {
-  //       folderNameAlreadyExists = true;
-  //     }
-  //   }
-  //
-  //   if (folderNameAlreadyExists) {
-  //     triggerToast(`${folderName()} ${translateText("is already in your library")}`);
-  //     return;
-  //   }
-  //
-  //   globalContext.setLibraryData(
-  //     produce((data) => {
-  //       data.folders[folderName()] = {
-  //         name: folderName(),
-  //         hide: hideFolder(),
-  //         games: [],
-  //         index: applicationStateContext.currentFolders().length,
-  //       };
-  //
-  //       return data;
-  //     }),
-  //   );
-  //
-  //   await updateData();
-  //
-  //   closeModal(true);
-  // }
-
   return (
     <div class="flex h-screen w-screen items-center justify-center bg-[#d1d1d166] align-middle dark:bg-[#12121266]">
       <div class="w-[60%] border-2 border-[#1212121f] border-solid bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">

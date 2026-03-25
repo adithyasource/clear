@@ -125,18 +125,6 @@ function App() {
 
     // keyboard handling
     document.addEventListener("keydown", (e) => {
-      const allDialogs = document.querySelectorAll("dialog");
-      let anyDialogOpen = false;
-      let currentlyOpenDialog;
-
-      // checks if any dialogs are open
-      for (const dialog of allDialogs) {
-        if (dialog.open) {
-          anyDialogOpen = true;
-          currentlyOpenDialog = dialog;
-        }
-      }
-
       const modifierKey = applicationStateContext.systemPlatform() === "windows" ? "ctrlKey" : "metaKey";
 
       if (e[modifierKey]) {

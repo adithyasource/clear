@@ -1,4 +1,6 @@
-import { createEffect, createMemo, createSignal, For, onMount, Show, useContext } from "solid-js";
+/** biome-ignore-all lint/a11y/noStaticElementInteractions: <explanation> */
+
+import { createMemo, createSignal, For, onMount, Show, useContext } from "solid-js";
 import { produce } from "solid-js/store";
 import { NewFolderModal } from "@/components/modal/NewFolderModal.jsx";
 import { NewGameModal } from "@/components/modal/NewGameModal.jsx";
@@ -7,7 +9,6 @@ import { SettingsModal } from "@/components/modal/SettingsModal.jsx";
 import { GameCardSideBar } from "@/components/sidebar/GameCardSideBar.jsx";
 import {
   ApplicationStateContext,
-  GlobalContext,
   openDialog,
   SelectedDataContext,
   toggleSideBar,

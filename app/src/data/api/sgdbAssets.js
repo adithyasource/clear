@@ -30,7 +30,7 @@ export async function gameAssetResults(gameId) {
       .map(([k]) => k);
 
     if (missing.length === 4) {
-      throw new Error(translatetext("couldn't find any assets :("));
+      throw new Error(translateText("couldn't find any assets :("));
     }
 
     return {
