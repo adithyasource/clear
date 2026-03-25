@@ -30,14 +30,9 @@ import { openModal } from "@/stores/modalStore";
 import { translateText } from "@/utils/translateText";
 
 export function SideBar() {
-  const globalContext = useContext(GlobalContext);
   const uiContext = useContext(UIContext);
   const selectedDataContext = useContext(SelectedDataContext);
   const applicationStateContext = useContext(ApplicationStateContext);
-
-  createEffect(() => {
-    console.log(JSON.parse(JSON.stringify(libraryData.games)));
-  });
 
   const [showContentSkipButton, setShowContentSkipButton] = createSignal(false);
 
@@ -55,42 +50,20 @@ export function SideBar() {
     return Object.entries(libraryData.games).filter(([id]) => !inFolders.has(id));
   });
 
-  function moveGameInCurrentFolder({ gameId, toIndex, fromIndex }) {
-    const pastPositionOfGame = libraryData.folders[fromIndex].games.indexOf(gameId);
+  function clearDragStyles() {
+    document.querySelectorAll(".sideBarGame").forEach((el) => {
+      el.classList.remove("currentlyDragging");
+      el.classList.remove("dragging");
+    });
 
-    // removing game from its past position
-    setLibraryData(
-      produce((data) => {
-        data.folders[fromIndex].games.splice(data.folders[fromIndex].games.indexOf(gameId), 1);
-        return data;
-      }),
-    );
+    document.querySelectorAll(".sideBarFolder").forEach((el) => {
+      el.classList.remove("currentlyDragging");
+      el.classList.remove("dragging");
+    });
+  }
 
-    // pushing it into proper position relative to its past
-    if (toIndex === -1) {
-      setLibraryData(
-        produce((data) => {
-          data.folders[fromIndex].games.push(gameId);
-          return data;
-        }),
-      );
-    } else {
-      if (toIndex > pastPositionOfGame) {
-        setLibraryData(
-          produce((data) => {
-            data.folders[fromIndex].games.splice(toIndex - 1, 0, gameId);
-            return data;
-          }),
-        );
-      } else {
-        setLibraryData(
-          produce((data) => {
-            data.folders[fromIndex].games.splice(toIndex, 0, gameId);
-            return data;
-          }),
-        );
-      }
-    }
+  function parseTransferIndex(val) {
+    return val === "undefined" ? undefined : Number(val);
   }
 
   async function moveGame({ gameId, toGameIndex, toFolderIndex, fromFolderIndex }) {
@@ -198,22 +171,6 @@ export function SideBar() {
         document.querySelector("#uncategorizedFolder").classList.remove("currentlyDragging");
       } catch (_error) {}
     }
-  }
-
-  function clearDragStyles() {
-    document.querySelectorAll(".sideBarGame").forEach((el) => {
-      el.classList.remove("currentlyDragging");
-      el.classList.remove("dragging");
-    });
-
-    document.querySelectorAll(".sideBarFolder").forEach((el) => {
-      el.classList.remove("currentlyDragging");
-      el.classList.remove("dragging");
-    });
-  }
-
-  function parseTransferIndex(val) {
-    return val === "undefined" ? undefined : Number(val);
   }
 
   function gamesFolderDragOverHandler(e) {
@@ -356,7 +313,7 @@ export function SideBar() {
         <div
           id="sideBarFolders"
           class={`mt-[20px] overflow-auto ${
-            globalContext.libraryData.userSettings.language === "fr"
+            libraryData.userSettings.language === "fr"
               ? "large:h-[calc(100vh-275px)] medium:h-[calc(100vh-330px)]"
               : "h-[calc(100vh-275px)]"
           } `}
@@ -530,7 +487,7 @@ export function SideBar() {
 
         <div
           class={`flex ${
-            globalContext.libraryData.userSettings.language === "fr"
+            libraryData.userSettings.language === "fr"
               ? "large:flex-row flex-col medium:flex-col gap-0 large:gap-3 medium:gap-0"
               : "gap-3"
           }`}

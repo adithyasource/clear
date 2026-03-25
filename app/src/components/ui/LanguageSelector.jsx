@@ -1,11 +1,10 @@
 import { createSignal, Show, useContext } from "solid-js";
-import { GlobalContext, UIContext } from "@/Globals.jsx";
+import { UIContext } from "@/Globals.jsx";
 import { writeUpdateData } from "@/services/libraryService.js";
 import { libraryData, setLibraryData } from "@/stores/libraryStore.js";
 import { translateText } from "@/utils/translateText";
 
 export function LanguageSelector(props) {
-  const globalContext = useContext(GlobalContext);
   const uiContext = useContext(UIContext);
 
   const [showLanguageSelector, setShowLanguageSelector] = createSignal(false);
@@ -55,7 +54,7 @@ export function LanguageSelector(props) {
     >
       <span class="text-[#12121280] dark:text-[#ffffff80]">[{translateText("language")}]</span>
       &nbsp;
-      {returnLanguageFullName(globalContext.libraryData.userSettings.language)}
+      {returnLanguageFullName(libraryData.userSettings.language)}
       <Show when={props.onSettingsPage ? uiContext.showSettingsLanguageSelector() : showLanguageSelector()}>
         <div
           class={`absolute z-[100000] flex flex-col gap-4 border-2 border-[#1212121f] border-solid bg-[#FFFFFC] p-3 dark:border-[#ffffff1f] dark:bg-[#121212] ${
