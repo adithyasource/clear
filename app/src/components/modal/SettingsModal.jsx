@@ -1,22 +1,16 @@
 import { invoke } from "@tauri-apps/api/core";
 import { appDataDir } from "@tauri-apps/api/path";
 import { Show, useContext } from "solid-js";
-import {
-  ApplicationStateContext,
-  GlobalContext,
-  getData,
-  importSteamGames,
-  UIContext,
-  updateData,
-} from "@/Globals.jsx";
+import { ApplicationStateContext, getData, importSteamGames, UIContext } from "@/Globals.jsx";
 import { Close, Steam } from "@/libraries/Icons.jsx";
 import { closeModal } from "@/stores/modalStore.js";
 import { Hotkeys } from "@/components/ui/Hotkeys.jsx";
 import { LanguageSelector } from "@/components/ui/LanguageSelector.jsx";
 import { translateText } from "@/utils/translateText";
+import { libraryData, setLibraryData } from "@/stores/libraryStore";
+import { writeUpdateData } from "@/services/libraryService";
 
 export function SettingsModal() {
-  const globalContext = useContext(GlobalContext);
   const uiContext = useContext(UIContext);
   const applicationStateContext = useContext(ApplicationStateContext);
 
@@ -45,14 +39,14 @@ export function SettingsModal() {
           <button
             type="button"
             onClick={async () => {
-              globalContext.setLibraryData("userSettings", "roundedBorders", (x) => !x);
+              setLibraryData("userSettings", "roundedBorders", (x) => !x);
 
-              await updateData();
+              await writeUpdateData();
             }}
             class="relative cursor-pointer p-0 text-left"
           >
             <Show
-              when={globalContext.libraryData.userSettings.roundedBorders}
+              when={libraryData.userSettings.roundedBorders}
               fallback={<div class="">{translateText("rounded borders")}</div>}
             >
               <div class="relative">
@@ -64,14 +58,14 @@ export function SettingsModal() {
           <button
             type="button"
             onClick={async () => {
-              globalContext.setLibraryData("userSettings", "gameTitle", (x) => !x);
+              setLibraryData("userSettings", "gameTitle", (x) => !x);
 
-              await updateData();
+              await writeUpdateData();
             }}
             class="relative cursor-pointer p-0 text-left"
           >
             <Show
-              when={globalContext.libraryData.userSettings.gameTitle}
+              when={libraryData.userSettings.gameTitle}
               fallback={<div class="">{translateText("game title")}</div>}
             >
               <div class="relative">
@@ -83,14 +77,14 @@ export function SettingsModal() {
           <button
             type="button"
             onClick={async () => {
-              globalContext.setLibraryData("userSettings", "folderTitle", (x) => !x);
+              setLibraryData("userSettings", "folderTitle", (x) => !x);
 
-              await updateData();
+              await writeUpdateData();
             }}
             class="relative cursor-pointer p-0 text-left"
           >
             <Show
-              when={globalContext.libraryData.userSettings.folderTitle}
+              when={libraryData.userSettings.folderTitle}
               fallback={<div class="">{translateText("folder title")}</div>}
             >
               <div class="relative">
@@ -102,14 +96,14 @@ export function SettingsModal() {
           <button
             type="button"
             onClick={async () => {
-              globalContext.setLibraryData("userSettings", "quitAfterOpen", (x) => !x);
+              setLibraryData("userSettings", "quitAfterOpen", (x) => !x);
 
-              await updateData();
+              await writeUpdateData();
             }}
             class="relative cursor-pointer p-0 text-left"
           >
             <Show
-              when={globalContext.libraryData.userSettings.quitAfterOpen}
+              when={libraryData.userSettings.quitAfterOpen}
               fallback={<div class="">{translateText("quit after opening game")}</div>}
             >
               <div class="relative">
@@ -122,41 +116,37 @@ export function SettingsModal() {
           <button
             type="button"
             onClick={async () => {
-              switch (globalContext.libraryData.userSettings.fontName) {
+              switch (libraryData.userSettings.fontName) {
                 case "sans serif":
-                  globalContext.setLibraryData("userSettings", "fontName", "serif");
+                  setLibraryData("userSettings", "fontName", "serif");
                   break;
                 case "serif":
-                  globalContext.setLibraryData("userSettings", "fontName", "mono");
+                  setLibraryData("userSettings", "fontName", "mono");
                   break;
                 case "mono":
-                  globalContext.setLibraryData("userSettings", "fontName", "sans serif");
+                  setLibraryData("userSettings", "fontName", "sans serif");
               }
 
-              await updateData();
+              await writeUpdateData();
             }}
             class="flex cursor-pointer gap-2 p-0 text-left"
           >
             <span class="text-[#12121280] dark:text-[#ffffff80]">[{translateText("font")}]</span>
-            <div class="">
-              {translateText(globalContext.libraryData.userSettings.fontName) || translateText("sans serif")}
-            </div>
+            <div class="">{translateText(libraryData.userSettings.fontName) || translateText("sans serif")}</div>
           </button>
           <button
             type="button"
             onClick={async () => {
-              globalContext.libraryData.userSettings.currentTheme === "dark"
-                ? globalContext.setLibraryData("userSettings", "currentTheme", "light")
-                : globalContext.setLibraryData("userSettings", "currentTheme", "dark");
+              libraryData.userSettings.currentTheme === "dark"
+                ? setLibraryData("userSettings", "currentTheme", "light")
+                : setLibraryData("userSettings", "currentTheme", "dark");
 
-              await updateData();
+              await writeUpdateData();
             }}
             class="flex cursor-pointer gap-2 p-0 text-left"
           >
             <span class="text-[#12121280] dark:text-[#ffffff80]">[{translateText("theme")}]</span>
-            <div class="">
-              {translateText(globalContext.libraryData.userSettings.currentTheme) || translateText("dark")}
-            </div>
+            <div class="">{translateText(libraryData.userSettings.currentTheme) || translateText("dark")}</div>
           </button>
           <div class="relative flex cursor-pointer gap-2">
             <LanguageSelector onSettingsPage={true} />
@@ -187,7 +177,7 @@ export function SettingsModal() {
               class="standardButton tooltip-bottom !flex !w-max !gap-3 !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] bg-[#E8E8E8] dark:bg-[#232323]"
               data-tooltip={translateText("might not work perfectly!")}
               onClick={() => {
-                if (globalContext.libraryData.folders.steam !== undefined) {
+                if (libraryData.folders.steam !== undefined) {
                   uiContext.showImportAndOverwriteConfirm()
                     ? importSteamGames()
                     : uiContext.setShowImportAndOverwriteConfirm(true);
@@ -200,10 +190,7 @@ export function SettingsModal() {
                 }
               }}
             >
-              <Show
-                when={globalContext.libraryData.folders.steam !== undefined}
-                fallback={translateText("import Steam games")}
-              >
+              <Show when={libraryData.folders.steam !== undefined} fallback={translateText("import Steam games")}>
                 <Show
                   when={uiContext.showImportAndOverwriteConfirm() === true}
                   fallback={translateText("import Steam games")}

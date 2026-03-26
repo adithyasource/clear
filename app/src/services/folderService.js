@@ -7,17 +7,6 @@ export async function addFolder({ name, hide }) {
     throw new Error("no folder name");
   }
 
-  // for (const name of Object.keys(globalContext.libraryData.folders)) {
-  //   if (folderName() === name) {
-  //     folderNameAlreadyExists = true;
-  //   }
-  // }
-  //
-  // if (folderNameAlreadyExists) {
-  //   triggerToast(`${folderName()} ${translateText("is already in your library")}`);
-  //   return;
-  // }
-
   setLibraryData(
     produce((data) =>
       data.folders.push({

@@ -1,13 +1,11 @@
-import { createSignal, Show, useContext } from "solid-js";
-import { GlobalContext } from "@/Globals.jsx";
+import { createSignal, Show } from "solid-js";
 import { Close, SaveDisk } from "@/libraries/Icons.jsx";
 import { addFolder } from "@/services/folderService.js";
 import { closeModal, modalShowCloseConfirm } from "@/stores/modalStore.js";
 import { translateText } from "@/utils/translateText";
+import { libraryData } from "@/stores/libraryStore";
 
 export function NewFolderModal() {
-  const globalContext = useContext(GlobalContext);
-
   const [folderName, setFolderName] = createSignal();
   const [hideFolder, setHideFolder] = createSignal(false);
 
@@ -15,7 +13,7 @@ export function NewFolderModal() {
     <div class="flex h-screen w-screen items-center justify-center bg-[#d1d1d166] align-middle dark:bg-[#12121266]">
       <div class="w-[60%] border-2 border-[#1212121f] border-solid bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
         <div
-          class={`flex justify-between ${globalContext.libraryData.userSettings.language !== "en" ? "large:flex-row flex-col" : ""} `}
+          class={`flex justify-between ${libraryData.userSettings.language !== "en" ? "large:flex-row flex-col" : ""} `}
         >
           <div>
             <p class="text-[#000000] text-[25px] dark:text-[#ffffff80]">{translateText("add new folder")}</p>

@@ -1,21 +1,22 @@
-import { createSignal, useContext } from "solid-js";
-import { GlobalContext, getData, updateData } from "@/Globals.jsx";
+import { createSignal } from "solid-js";
+import { getData } from "@/Globals.jsx";
 import { Close } from "@/libraries/Icons.jsx";
+import { writeUpdateData } from "@/services/libraryService";
+import { libraryData } from "@/stores/libraryStore";
 import { closeModal } from "@/stores/modalStore.js";
 import { translateText } from "@/utils/translateText";
 
 export function NotepadModal() {
-  const globalContext = useContext(GlobalContext);
-
   const [notepadValue, setNotepadValue] = createSignal("");
 
   async function saveNotepad() {
-    globalContext.setLibraryData("notepad", notepadValue());
-    await updateData();
+    setLibraryData("notepad", notepadValue());
+
+    await writeUpdateData();
   }
 
   setTimeout(() => {
-    setNotepadValue(globalContext.libraryData.notepad || "");
+    setNotepadValue(libraryData.notepad || "");
   }, 50);
 
   return (

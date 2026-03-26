@@ -10,15 +10,15 @@ import { generateId } from "@/utils/generateId";
 export async function processImage({ imageType, imageData }) {
   if (!imageData.data) return;
 
-  let finalImagePath;
+  let fileName;
 
   if (imageData.type === "local") {
-    finalImagePath = await copyImageIntoBin({ type: imageType, origin: imageData.data });
+    fileName = await copyImageIntoBin({ type: imageType, origin: imageData.data });
   } else if (imageData.type === "remote") {
-    finalImagePath = await downloadImageIntoBin({ type: imageType, origin: imageData.data[imageData.index] });
+    fileName = await downloadImageIntoBin({ type: imageType, origin: imageData.data[imageData.index] });
   }
 
-  return finalImagePath;
+  return fileName;
 }
 
 export async function addGame({ name, favourite, gameLocation, gridImage, heroImage, logoImage, iconImage }) {
@@ -30,17 +30,6 @@ export async function addGame({ name, favourite, gameLocation, gridImage, heroIm
   const heroImagePath = await processImage({ imageType: "hero", imageData: heroImage });
   const logoImagePath = await processImage({ imageType: "logo", imageData: logoImage });
   const iconimagePath = await processImage({ imageType: "icon", imageData: iconImage });
-
-  // for (const name of Object.keys(globalContext.libraryData.games)) {
-  //   if (gameName() === name) {
-  //     gameNameAlreadyExists = true;
-  //   }
-  // }
-  //
-  // if (gameNameAlreadyExists) {
-  //   triggerToast(`${gameName()} ${translateText("is already in your library")}`);
-  //   return;
-  // }
 
   setLibraryData(
     produce((data) => {

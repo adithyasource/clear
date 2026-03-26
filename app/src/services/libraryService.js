@@ -10,12 +10,6 @@ export async function getData() {
     setLibraryData(data);
     console.log("data fetched");
 
-    // if (libraryData.userSettings.currentTheme === "light") {
-    //   document.documentElement.classList.remove("dark");
-    // } else {
-    //   document.documentElement.classList.add("dark");
-    // }
-
     return data;
   } catch (err) {
     triggerToast(err);

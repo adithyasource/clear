@@ -3,7 +3,6 @@ import { createEffect, createSignal, For, Match, Show, Switch, useContext } from
 import { gameSearchResults } from "@/data/api/sgdbAssets.js";
 import {
   ApplicationStateContext,
-  GlobalContext,
   getExecutableFileName,
   SelectedDataContext,
   triggerToast,
@@ -20,9 +19,9 @@ import {
 import { closeModal, modalShowCloseConfirm } from "@/stores/modalStore.js";
 import { translateText } from "@/utils/translateText";
 import { LoadingTextAndIcon } from "@/components/modal/Loading";
+import { libraryData } from "@/stores/libraryStore";
 
 export function NewGameModal() {
-  const globalContext = useContext(GlobalContext);
   const selectedDataContext = useContext(SelectedDataContext);
   const applicationStateContext = useContext(ApplicationStateContext);
   const uiContext = useContext(UIContext);
@@ -439,26 +438,18 @@ export function NewGameModal() {
                 <Show when={!fetchingAssetsLoading()} fallback={LoadingTextAndIcon()}>
                   <Switch>
                     <Match
-                      when={
-                        globalContext.libraryData.userSettings.language === "fr" &&
-                        applicationStateContext.windowWidth() >= 1500
-                      }
+                      when={libraryData.userSettings.language === "fr" && applicationStateContext.windowWidth() >= 1500}
                     >
                       {translateText("auto find assets")}
                     </Match>
 
                     <Match
-                      when={
-                        globalContext.libraryData.userSettings.language === "fr" &&
-                        applicationStateContext.windowWidth() <= 1500
-                      }
+                      when={libraryData.userSettings.language === "fr" && applicationStateContext.windowWidth() <= 1500}
                     >
                       <p class="w-[70px] text-clip text-[10px]">{translateText("auto find assets")}</p>
                     </Match>
 
-                    <Match when={globalContext.libraryData.userSettings.language !== "fr"}>
-                      {translateText("auto find assets")}
-                    </Match>
+                    <Match when={libraryData.userSettings.language !== "fr"}>{translateText("auto find assets")}</Match>
                   </Switch>
                 </Show>
               </button>
@@ -481,26 +472,18 @@ export function NewGameModal() {
               >
                 <Switch>
                   <Match
-                    when={
-                      globalContext.libraryData.userSettings.language === "fr" &&
-                      applicationStateContext.windowWidth() >= 1500
-                    }
+                    when={libraryData.userSettings.language === "fr" && applicationStateContext.windowWidth() >= 1500}
                   >
                     {translateText("find assets")}
                   </Match>
 
                   <Match
-                    when={
-                      globalContext.libraryData.userSettings.language === "fr" &&
-                      applicationStateContext.windowWidth() <= 1500
-                    }
+                    when={libraryData.userSettings.language === "fr" && applicationStateContext.windowWidth() <= 1500}
                   >
                     <p class="w-[100px] text-clip text-[10px]">{translateText("find assets")}</p>
                   </Match>
 
-                  <Match when={globalContext.libraryData.userSettings.language !== "fr"}>
-                    {translateText("find assets")}
-                  </Match>
+                  <Match when={libraryData.userSettings.language !== "fr"}>{translateText("find assets")}</Match>
                 </Switch>
               </button>
             </div>

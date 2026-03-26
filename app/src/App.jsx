@@ -11,7 +11,6 @@ import { translateText } from "@/utils/translateText";
 import {
   ApplicationStateContext,
   checkIfConnectedToInternet,
-  GlobalContext,
   importSteamGames,
   openDialog,
   toggleSideBar,
@@ -21,9 +20,9 @@ import {
 } from "./Globals.jsx";
 import "./App.css";
 import { getData } from "@/services/libraryService.js";
+import { libraryData } from "./stores/libraryStore.js";
 
 function App() {
-  const globalContext = useContext(GlobalContext);
   const uiContext = useContext(UIContext);
   const applicationStateContext = useContext(ApplicationStateContext);
 
@@ -31,13 +30,17 @@ function App() {
   createEffect(() => {
     document.body.style.setProperty(
       "--text-color",
-      globalContext.libraryData.userSettings.currentTheme === "light" ? "#000000" : "#ffffff",
+      libraryData.userSettings.currentTheme === "light" ? "#000000" : "#ffffff",
     );
+
+    libraryData.userSettings.currentTheme === "light"
+      ? document.documentElement.classList.remove("dark")
+      : document.documentElement.classList.add("dark");
   });
 
   createEffect(() => {
     let fontFamily;
-    switch (globalContext.libraryData.userSettings.fontName) {
+    switch (libraryData.userSettings.fontName) {
       case "sans serif":
         fontFamily = "Helvetica, Arial, sans-serif";
         break;
@@ -52,16 +55,13 @@ function App() {
   });
 
   createEffect(() => {
-    document.body.style.setProperty(
-      "--border-radius",
-      globalContext.libraryData.userSettings.roundedBorders ? "6px" : "0px",
-    );
+    document.body.style.setProperty("--border-radius", libraryData.userSettings.roundedBorders ? "6px" : "0px");
   });
 
   createEffect(() => {
     document.body.style.setProperty(
       "--outline-color",
-      globalContext.libraryData.userSettings.currentTheme === "light" ? "#000000" : "#ffffff",
+      libraryData.userSettings.currentTheme === "light" ? "#000000" : "#ffffff",
     );
   });
 
@@ -141,7 +141,7 @@ function App() {
         switch (e.code) {
           // increase game card zoom level
           case "Equal":
-            globalContext.setLibraryData("userSettings", "zoomLevel", (zoomLevel) => {
+            setLibraryData("userSettings", "zoomLevel", (zoomLevel) => {
               return zoomLevel !== 2 ? zoomLevel + 1 : 2;
             });
             updateData();
@@ -149,7 +149,7 @@ function App() {
 
           // decrease game card zoom level
           case "Minus":
-            globalContext.setLibraryData("userSettings", "zoomLevel", (zoomLevel) => {
+            setLibraryData("userSettings", "zoomLevel", (zoomLevel) => {
               return zoomLevel !== 0 ? zoomLevel - 1 : 0;
             });
             updateData();
@@ -294,20 +294,10 @@ function App() {
 
   return (
     <>
-      {/* fading out bg color to make the app loading look a bit more smoother */}
-      <div class="loading pointer-events-none absolute z-[10] flex h-screen w-screen items-center justify-center bg-[#121212]">
-        <p class="" />
-      </div>
-
       <ModalFrame />
 
       <div class="flex h-full gap-[30px] overflow-y-hidden">
-        <Show
-          when={
-            globalContext.libraryData.userSettings.showSideBar === false &&
-            applicationStateContext.windowWidth() >= 1000
-          }
-        >
+        <Show when={libraryData.userSettings.showSideBar === false && applicationStateContext.windowWidth() >= 1000}>
           <button
             type="button"
             class="!absolute tooltip-delayed-left top-[32px] right-[31px] z-20 w-[25.25px] cursor-pointer p-2 duration-150 hover:bg-[#D6D6D6] motion-reduce:duration-0 dark:hover:bg-[#232323]"
@@ -319,21 +309,19 @@ function App() {
             <ChevronArrows classProp="rotate-180" />
           </button>
         </Show>
-        <Show
-          when={globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000}
-        >
+        <Show when={libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000}>
           <SideBar />
         </Show>
 
         <Show
           when={
-            JSON.stringify(globalContext.libraryData.folders) === "{}" &&
+            libraryData.folders.length === 0 &&
             (applicationStateContext.searchValue() === "" || applicationStateContext.searchValue() === undefined)
           }
         >
           <div
             class={`absolute flex h-[100vh] w-full flex-col items-center justify-center overflow-y-scroll py-[20px] pr-[30px] ${
-              globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
+              libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
                 ? "large:pl-[17%] pl-[23%]"
                 : "large:pl-[30px] pl-[30px]"
             }`}
@@ -355,7 +343,7 @@ function App() {
                   class="standardButton tooltip-bottom !flex !w-max !gap-3 !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] bg-[#E8E8E8] dark:bg-[#232323]"
                   data-tooltip={translateText("might not work perfectly!")}
                   onClick={() => {
-                    if (globalContext.libraryData.folders.steam !== undefined) {
+                    if (libraryData.folders.steam !== undefined) {
                       uiContext.showImportAndOverwriteConfirm()
                         ? importSteamGames()
                         : uiContext.setShowImportAndOverwriteConfirm(true);
@@ -368,10 +356,7 @@ function App() {
                     }
                   }}
                 >
-                  <Show
-                    when={globalContext.libraryData.folders.steam !== undefined}
-                    fallback={translateText("import Steam games")}
-                  >
+                  <Show when={libraryData.folders.steam !== undefined} fallback={translateText("import Steam games")}>
                     <Show
                       when={uiContext.showImportAndOverwriteConfirm() === true}
                       fallback={translateText("import Steam games")}
@@ -394,28 +379,29 @@ function App() {
         </Show>
         <div
           class={`!rounded-[0px] absolute h-[100vh] w-full overflow-y-scroll py-[20px] pr-[30px] ${
-            globalContext.libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
+            libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
               ? "large:pl-[17%] pl-[23%]"
               : "large:pl-[30px] pl-[30px]"
           }`}
         >
           <Show
-            when={applicationStateContext.searchValue() === "" || applicationStateContext.searchValue() === undefined}
+            when={
+              libraryData.folders &&
+              (applicationStateContext.searchValue() === "" || applicationStateContext.searchValue() === undefined)
+            }
           >
-            <For each={applicationStateContext.currentFolders()}>
-              {(folderName) => {
-                const folder = globalContext.libraryData.folders[folderName];
-
+            <For each={libraryData.folders}>
+              {(folder) => {
                 return (
-                  <Show when={folder.games !== "" && !folder.hide}>
+                  <Show when={folder.games.length !== 0 && !folder.hide}>
                     <div class="mb-[40px]">
-                      <Show when={globalContext.libraryData.userSettings.folderTitle}>
+                      <Show when={libraryData.userSettings.folderTitle}>
                         <p class="text-[#000000] text-[25px] dark:text-[#ffffff80]">{folder.name}</p>
                       </Show>
                       <div
                         class={`foldersDiv mt-4 grid gap-5 ${returnGridStyleForGameCard(
-                          globalContext.libraryData.userSettings.zoomLevel,
-                          globalContext.libraryData.userSettings.showSideBar,
+                          libraryData.userSettings.zoomLevel,
+                          libraryData.userSettings.showSideBar,
                         )}`}
                       >
                         <GameCards gamesList={folder.games} />
@@ -426,7 +412,6 @@ function App() {
               }}
             </For>
           </Show>
-
           <Show
             when={applicationStateContext.searchValue() !== "" && applicationStateContext.searchValue() !== undefined}
           >
@@ -435,12 +420,12 @@ function App() {
               const allGameNames = [];
 
               if (applicationStateContext.searchValue() !== "" && applicationStateContext.searchValue() !== undefined) {
-                for (const key in globalContext.libraryData.games) {
+                for (const key in libraryData.games) {
                   allGameNames.push(key);
                 }
               }
 
-              for (const libraryGame of Object.keys(globalContext.libraryData.games)) {
+              for (const libraryGame of Object.keys(libraryData.games)) {
                 const result = fuzzysearch(
                   applicationStateContext.searchValue(),
                   libraryGame.toLowerCase().replace("-", " "),
@@ -454,8 +439,8 @@ function App() {
                 <div>
                   <div
                     class={`foldersDiv mt-4 grid gap-5 ${returnGridStyleForGameCard(
-                      globalContext.libraryData.userSettings.zoomLevel,
-                      globalContext.libraryData.userSettings.showSideBar,
+                      libraryData.userSettings.zoomLevel,
+                      libraryData.userSettings.showSideBar,
                     )}`}
                   >
                     <GameCards gamesList={searchResults} />

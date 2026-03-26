@@ -24,6 +24,16 @@ export async function getImageBinPath(type) {
   }
 }
 
+export async function getImagePath({ type, fileName }) {
+  try {
+    const binPath = await getImageBinPath(type);
+
+    return locationJoin([binPath, fileName]);
+  } catch (err) {
+    throw new Error(`could not find image path: ${err}`);
+  }
+}
+
 export async function copyImageIntoBin({ type, origin }) {
   try {
     const originImageFileType = origin.split(".")[origin.split(".").length - 1];
@@ -34,7 +44,7 @@ export async function copyImageIntoBin({ type, origin }) {
 
     await copyFile(origin, finalPath);
 
-    return finalPath;
+    return fileName;
   } catch (err) {
     throw new Error("image could not be downloaded: ", err);
   }
@@ -51,7 +61,7 @@ export async function downloadImageIntoBin({ type, origin }) {
       location: finalPath,
     });
 
-    return finalPath;
+    return fileName;
   } catch (err) {
     throw new Error("image could not be downloaded: ", err);
   }
