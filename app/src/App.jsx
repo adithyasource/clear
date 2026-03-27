@@ -16,11 +16,11 @@ import {
   toggleSideBar,
   triggerToast,
   UIContext,
-  updateData,
 } from "./Globals.jsx";
 import "./App.css";
 import { getData } from "@/services/libraryService.js";
-import { libraryData } from "./stores/libraryStore.js";
+import { writeUpdateData } from "./services/libraryService.js";
+import { libraryData, setLibraryData } from "./stores/libraryStore.js";
 
 function App() {
   const uiContext = useContext(UIContext);
@@ -144,7 +144,7 @@ function App() {
             setLibraryData("userSettings", "zoomLevel", (zoomLevel) => {
               return zoomLevel !== 2 ? zoomLevel + 1 : 2;
             });
-            updateData();
+            writeUpdateData();
             break;
 
           // decrease game card zoom level
@@ -152,7 +152,7 @@ function App() {
             setLibraryData("userSettings", "zoomLevel", (zoomLevel) => {
               return zoomLevel !== 0 ? zoomLevel - 1 : 0;
             });
-            updateData();
+            writeUpdateData();
             break;
 
           // closes the app

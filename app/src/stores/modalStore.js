@@ -12,38 +12,41 @@ function openModal({ type, component, confirmWhileClosing }) {
   });
 }
 
-function closeModal(closeModalImmediatelyOverride) {
-  function closeHandler() {
+let closeConfirmTimer = null;
+let closeHandlerTimer = null;
+
+function closeModal(force = false) {
+  const state = modalState();
+  if (!state) return;
+
+  const doClose = () => {
     setModalVisible(false);
 
-    setTimeout(() => {
+    clearTimeout(closeHandlerTimer);
+    closeHandlerTimer = setTimeout(() => {
       setModalState(null);
       setModalShowCloseConfirm(false);
+      closeHandlerTimer = null;
     }, 200);
-  }
+  };
 
-  if (!modalState()) return;
-
-  if (closeModalImmediatelyOverride) {
-    closeHandler();
+  if (force || !state.confirmWhileClosing) {
+    doClose();
     return;
   }
 
-  if (modalState().confirmWhileClosing) {
-    if (modalShowCloseConfirm()) {
-      closeHandler();
-    } else {
-      setModalShowCloseConfirm(true);
-
-      const closeConfirmTimer = setTimeout(() => {
-        clearTimeout(closeConfirmTimer);
-
-        setModalShowCloseConfirm(false);
-      }, 1500);
-    }
-  } else {
-    closeHandler();
+  if (modalShowCloseConfirm()) {
+    doClose();
+    return;
   }
+
+  setModalShowCloseConfirm(true);
+
+  clearTimeout(closeConfirmTimer);
+  closeConfirmTimer = setTimeout(() => {
+    setModalShowCloseConfirm(false);
+    closeConfirmTimer = null;
+  }, 1500);
 }
 
 export { closeModal, modalShowCloseConfirm, modalState, modalVisible, openModal };
