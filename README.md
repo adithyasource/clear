@@ -10,6 +10,8 @@
     </tbody>
 </table>
 
+> ⚠️ current version works okay-ish, but a major release is planned soon. follow me on [twitter / x](http://x.com/adithyasrc) to get notified when it drops!
+
 ![image](https://github.com/adithyasource/clear/assets/140549783/bd4dae97-4b0b-466f-a1ff-570ae05a0eec)
 
 ## feedback
