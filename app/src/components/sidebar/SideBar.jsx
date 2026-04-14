@@ -227,7 +227,7 @@ export function SideBar() {
         toGameIndex = -1;
       }
 
-      moveGame({ gameId, toGameIndex, toFolderIndex, fromFolderIndex });
+      await moveGame({ gameId, toGameIndex, toFolderIndex, fromFolderIndex });
     }
 
     await writeUpdateData();
