@@ -1,33 +1,46 @@
 import { convertFileSrc } from "@tauri-apps/api/core";
-import { Show, useContext } from "solid-js";
-import { ApplicationStateContext, locationJoin, openDialog, openGame, SelectedDataContext } from "@/Globals.jsx";
+import { createResource, Show } from "solid-js";
+import { openDialog, openGame } from "@/Globals.jsx";
 import { Close, Play, Settings } from "@/libraries/Icons.jsx";
 import { closeModal } from "@/stores/modalStore.js";
 import { translateText } from "@/utils/translateText";
+import { getImagePath } from "../../data/storage/imageStroage";
+import { libraryData } from "../../stores/libraryStore";
+import { selectedGame } from "../../stores/selectedGameStore";
 
 export function GamePopUpModal() {
-  const selectedDataContext = useContext(SelectedDataContext);
-  const applicationStateContext = useContext(ApplicationStateContext);
+  const game = () => libraryData.games[selectedGame()];
+
+  const [heroImageFile] = createResource(
+    () => libraryData.games[selectedGame()]?.heroImagePath,
+    async (filePath) => {
+      if (!filePath) return null;
+      const path = await getImagePath({ type: "hero", fileName: filePath });
+      return convertFileSrc(path);
+    },
+  );
+
+  const [logoImageFile] = createResource(
+    () => libraryData.games[selectedGame()]?.logoImagePath,
+    async (filePath) => {
+      if (!filePath) return null;
+      const path = await getImagePath({ type: "logo", fileName: filePath });
+      return convertFileSrc(path);
+    },
+  );
+
+  const hero = () => heroImageFile();
+  const logo = () => logoImageFile();
 
   return (
     <div class="flex h-screen w-screen flex-col items-center justify-center bg-[#d1d1d166] px-[40px] dark:bg-[#12121266]">
-      <img
-        src={convertFileSrc(
-          locationJoin([
-            applicationStateContext.appDataDirPath(),
-            "heroes",
-            selectedDataContext.selectedGame().heroImage,
-          ]),
-        )}
-        alt=""
-        class="absolute -z-10 h-[350px] opacity-[0.4] blur-[80px] max-large:h-[270px]"
-      />
+      <img src={hero()} alt="" class="absolute -z-10 h-[350px] opacity-[0.4] blur-[80px] max-large:h-[270px]" />
       <div class="relative">
         <div class="absolute right-[30px] bottom-[30px] flex gap-[15px]">
           <button type="button" class="invisible-button-gamepopup pointer-events-none" />
 
           <Show
-            when={selectedDataContext.selectedGame().location}
+            when={game().gameLocation}
             fallback={
               <button
                 type="button"
@@ -45,7 +58,7 @@ export function GamePopUpModal() {
               type="button"
               class="standardButton !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] focus:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] dark:focus:!bg-[#2b2b2b] bg-[#E8E8E8] hover:backdrop-blur-[5px] focus:backdrop-blur-[5px] dark:bg-[#232323]"
               onClick={() => {
-                openGame(selectedDataContext.selectedGame().location);
+                openGame(game().gameLocation);
               }}
             >
               <div class="!w-max">{translateText("play")}</div>
@@ -76,37 +89,21 @@ export function GamePopUpModal() {
           </button>
         </div>
         <Show
-          when={selectedDataContext.selectedGame().heroImage}
+          when={hero()}
           fallback={<div class="aspect-[96/31] h-[350px] bg-[#f1f1f1] max-large:h-[270px] dark:bg-[#1c1c1c]" />}
         >
-          <img
-            src={convertFileSrc(
-              locationJoin([
-                applicationStateContext.appDataDirPath(),
-                "heroes",
-                selectedDataContext.selectedGame().heroImage,
-              ]),
-            )}
-            alt=""
-            class="aspect-[96/31] h-[350px] max-large:h-[270px]"
-          />
+          <img src={hero()} alt="" class="aspect-[96/31] h-[350px] max-large:h-[270px]" />
         </Show>
 
         <div class="absolute bottom-[30px] left-[25px] flex h-[70px] w-[300px] items-center align-middle max-large:bottom-[15px]">
           <Show
-            when={selectedDataContext.selectedGame().logo}
+            when={logo()}
             fallback={
               <div class="dark:!bg-[#272727] absolute bottom-[5px] h-[90px] w-[250px] bg-[#E8E8E8] max-large:h-[70px] max-large:w-[170px]" />
             }
           >
             <img
-              src={convertFileSrc(
-                locationJoin([
-                  applicationStateContext.appDataDirPath(),
-                  "logos",
-                  selectedDataContext.selectedGame().logo,
-                ]),
-              )}
+              src={logo()}
               alt=""
               class="relative aspect-auto max-h-[100px] max-w-[400px] max-large:max-h-[70px] max-large:max-w-[300px]"
             />

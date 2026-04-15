@@ -68,8 +68,6 @@ export function SideBar() {
   }
 
   async function moveGame({ gameId, toGameIndex, toFolderIndex, fromFolderIndex }) {
-    console.log({ gameId, toGameIndex, toFolderIndex, fromFolderIndex });
-
     const movingFromUncategorized = fromFolderIndex === undefined;
 
     setLibraryData(
