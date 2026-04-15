@@ -40,7 +40,7 @@ export function GameCardSideBar({ gameId, game, gameIndex, folderName, folderInd
           return;
         }
 
-        await setSelectedGame(gameId);
+        setSelectedGame(gameId);
 
         openModal({
           type: "gamePopUp",

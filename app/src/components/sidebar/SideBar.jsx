@@ -29,6 +29,8 @@ import { writeUpdateData } from "@/services/libraryService";
 import { libraryData, setLibraryData } from "@/stores/libraryStore.js";
 import { openModal } from "@/stores/modalStore";
 import { translateText } from "@/utils/translateText";
+import { setSelectedFolder } from "../../stores/selectedFolderStore";
+import { EditFolderModal } from "../modal/EditFolderModal";
 
 export function SideBar() {
   const uiContext = useContext(UIContext);
@@ -371,8 +373,16 @@ export function SideBar() {
                       type="button"
                       class="tooltip-delayed-bottom w-[25.25px] p-2 duration-150 hover:bg-[#D6D6D6] motion-reduce:duration-0 dark:hover:bg-[#232323]"
                       onClick={() => {
-                        openDialog("editFolder");
-                        selectedDataContext.setSelectedFolder(folder);
+                        setSelectedFolder(folderIndex());
+
+                        openModal({
+                          type: "editFolder",
+                          component: EditFolderModal,
+                          confirmWhileClosing: true,
+                          onClose: () => {
+                            setSelectedFolder();
+                          },
+                        });
                       }}
                       onKeyDown={(e) => {
                         if (folderIndex() === 0) {

@@ -21,3 +21,19 @@ export async function addFolder({ name, hide }) {
 
   dataFileWrite(libraryData);
 }
+
+export async function updateFolder({ folderIndex, newName, newHide }) {
+  setLibraryData(
+    produce((data) => {
+      if (newName) {
+        data.folders[folderIndex].name = newName;
+      }
+
+      if (newHide !== undefined) {
+        data.folders[folderIndex].hide = newHide;
+      }
+
+      return data;
+    }),
+  );
+}
