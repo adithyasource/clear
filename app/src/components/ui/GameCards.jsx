@@ -14,10 +14,18 @@ export function GameCards(props) {
       {(gameId, index) => {
         const game = libraryData.games[gameId];
 
-        const [imagePath] = createResource(
+        const [gridImageFile] = createResource(
           () => gameId,
-          () => getImagePath({ type: "grid", fileName: game.gridImagePath }),
+          async () => {
+            if (!game.gridImagePath) {
+              return null;
+            }
+            const path = await getImagePath({ type: "grid", fileName: game.gridImagePath });
+            return convertFileSrc(path);
+          },
         );
+
+        const grid = () => gridImageFile();
 
         return (
           <button
@@ -59,7 +67,7 @@ export function GameCards(props) {
                     <div class="relative flex items-center justify-center">
                       <img
                         class="relative z-10 mb-[7px] aspect-[2/3] w-full group-hover:outline-none group-hover:outline-[#0000001f] group-hover:outline-[2px] dark:group-hover:outline-[#ffffff1f]"
-                        src={imagePath(gameId) ? convertFileSrc(imagePath(gameId)) : ""}
+                        src={grid()}
                         alt=""
                       />
                     </div>
@@ -69,7 +77,7 @@ export function GameCards(props) {
             >
               <div class="relative w-full">
                 <Show
-                  when={game.gridImagePath}
+                  when={grid()}
                   fallback={
                     <div class="relative flex items-center justify-center">
                       <Show when={!libraryData.userSettings.gameTitle}>
@@ -81,7 +89,7 @@ export function GameCards(props) {
                 >
                   <img
                     class="relative z-10 mb-[7px] outline-none outline-[#0000001c] outline-[4px] duration-200 hover:outline-[#0000003b] motion-reduce:duration-100 dark:outline-[#ffffff1a] dark:outline-[2px] dark:group-hover:outline-[#ffffff3b]"
-                    src={imagePath(gameId) ? convertFileSrc(imagePath(gameId)) : ""}
+                    src={grid()}
                     alt=""
                     width="100%"
                   />
