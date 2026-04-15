@@ -4,8 +4,8 @@ const [modalState, setModalState] = createSignal(null);
 const [modalVisible, setModalVisible] = createSignal(false);
 const [modalShowCloseConfirm, setModalShowCloseConfirm] = createSignal(false);
 
-function openModal({ type, component, confirmWhileClosing }) {
-  setModalState({ type, component: () => component, confirmWhileClosing });
+function openModal({ type, component, confirmWhileClosing, onClose }) {
+  setModalState({ type, component: () => component, confirmWhileClosing, onClose });
 
   requestAnimationFrame(() => {
     setModalVisible(true);
@@ -27,6 +27,8 @@ function closeModal(force = false) {
       setModalState(null);
       setModalShowCloseConfirm(false);
       closeHandlerTimer = null;
+
+      state.onClose?.();
     }, 200);
   };
 

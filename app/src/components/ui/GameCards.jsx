@@ -6,7 +6,7 @@ import { openModal } from "@/stores/modalStore.js";
 import { translateText } from "@/utils/translateText";
 import { getImagePath } from "../../data/storage/imageStroage";
 import { libraryData } from "@/stores/libraryStore";
-import { setSelectedGame } from "../../stores/selectedGameStore";
+import { selectedGame, setSelectedGame } from "../../stores/selectedGameStore";
 
 export function GameCards(props) {
   return (
@@ -41,11 +41,16 @@ export function GameCards(props) {
                 openGame(game.location);
                 return;
               }
-              console.log({ gameId });
-
               await setSelectedGame(gameId);
 
-              openModal({ type: "gamePopUp", component: GamePopUpModal, confirmWhileClosing: false });
+              openModal({
+                type: "gamePopUp",
+                component: GamePopUpModal,
+                confirmWhileClosing: false,
+                onClose: () => {
+                  setSelectedGame();
+                },
+              });
             }}
           >
             <Show

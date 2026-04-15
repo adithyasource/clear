@@ -4,6 +4,7 @@ import { ApplicationStateContext, locationJoin, openGame, SelectedDataContext } 
 import { GamePopUpModal } from "@/components/modal/GamePopUp.jsx";
 import { openModal } from "@/stores/modalStore.js";
 import { translateText } from "@/utils/translateText";
+import { setSelectedGame } from "../../stores/selectedGameStore";
 
 export function GameCardSideBar({ gameId, game, gameIndex, folderName, folderIndex }) {
   const selectedDataContext = useContext(SelectedDataContext);
@@ -38,9 +39,17 @@ export function GameCardSideBar({ gameId, game, gameIndex, folderName, folderInd
           openGame(game.gameLocation);
           return;
         }
-        await selectedDataContext.setSelectedGame(gameId);
 
-        openModal({ type: "gamePopUp", component: GamePopUpModal, confirmWhileClosing: false });
+        await setSelectedGame(gameId);
+
+        openModal({
+          type: "gamePopUp",
+          component: GamePopUpModal,
+          confirmWhileClosing: false,
+          onClose: () => {
+            setSelectedGame();
+          },
+        });
       }}
     >
       <Show when={game.icon}>
