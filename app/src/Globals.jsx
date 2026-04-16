@@ -414,6 +414,8 @@ export function triggerToast(message) {
     document.querySelector(".toast").showPopover();
   }, 20);
 
+  console.error(`toast triggered: ${message}`);
+
   setToastMessage(message);
   clearTimeout(toastTimeout);
   toastTimeout = setTimeout(() => {

@@ -1,9 +1,9 @@
 import { createSignal, Show } from "solid-js";
 import { Close, SaveDisk } from "@/libraries/Icons.jsx";
 import { addFolder } from "@/services/folderService.js";
+import { libraryData } from "@/stores/libraryStore";
 import { closeModal, modalShowCloseConfirm } from "@/stores/modalStore.js";
 import { translateText } from "@/utils/translateText";
-import { libraryData } from "@/stores/libraryStore";
 
 export function NewFolderModal() {
   const [folderName, setFolderName] = createSignal();

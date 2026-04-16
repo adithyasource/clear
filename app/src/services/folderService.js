@@ -1,6 +1,8 @@
 import { produce } from "solid-js/store";
-import { dataFileWrite } from "@/data/storage/fileStorage";
-import { libraryData, setLibraryData } from "@/stores/libraryStore";
+import { setLibraryData } from "@/stores/libraryStore";
+import { writeUpdateData } from "./libraryService";
+import { setSelectedFolder } from "../stores/selectedFolderStore";
+import { batch } from "solid-js";
 
 export async function addFolder({ name, hide }) {
   if (!name) {
@@ -17,9 +19,7 @@ export async function addFolder({ name, hide }) {
     ),
   );
 
-  console.log(JSON.stringify(libraryData.folders));
-
-  dataFileWrite(libraryData);
+  await writeUpdateData();
 }
 
 export async function updateFolder({ folderIndex, newName, newHide }) {
@@ -36,4 +36,16 @@ export async function updateFolder({ folderIndex, newName, newHide }) {
       return data;
     }),
   );
+
+  await writeUpdateData();
+}
+
+export async function deleteFolder({ folderIndex }) {
+  setLibraryData(
+    produce((data) => {
+      data.folders.splice(folderIndex, 1);
+    }),
+  );
+
+  await writeUpdateData();
 }
