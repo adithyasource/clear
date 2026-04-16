@@ -6,7 +6,7 @@ import { openModal } from "@/stores/modalStore.js";
 import { translateText } from "@/utils/translateText";
 import { getImagePath } from "../../data/storage/imageStroage";
 import { libraryData } from "@/stores/libraryStore";
-import { selectedGame, setSelectedGame } from "../../stores/selectedGameStore";
+import { setSelectedGame } from "../../stores/selectedGameStore";
 
 export function GameCards(props) {
   return (
@@ -32,13 +32,18 @@ export function GameCards(props) {
             type="button"
             class="gameCard group relative w-full cursor-pointer bg-transparent p-0"
             id={index() === 0 ? "firstGameCard" : ""}
-            data-tooltip={game.location ? translateText("play") : translateText("no game file")}
+            onPointerMove={(e) => {
+              if (e.metaKey) {
+                console.log("holding meta");
+              }
+            }}
+            data-tooltip={game.gameLocation ? translateText("play") : translateText("no game file")}
             onDragStart={(e) => {
               e.preventDefault();
             }}
             onClick={async (e) => {
-              if (e.ctrlKey && game.location) {
-                openGame(game.location);
+              if (e.ctrlKey && game.gameLocation) {
+                openGame(game.gameLocation);
                 return;
               }
               await setSelectedGame(gameId);
