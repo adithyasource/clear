@@ -50,6 +50,8 @@ export async function addGame({ name, favourite, gameLocation, gridImage, heroIm
   await writeUpdateData();
 }
 
+export async function updateGame(gameId, newData) {}
+
 export async function selectGameLocation(setter) {
   const path = await pickExecutable();
   if (path) setter(path);

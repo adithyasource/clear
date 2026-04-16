@@ -6,7 +6,9 @@ import { closeModal } from "@/stores/modalStore.js";
 import { translateText } from "@/utils/translateText";
 import { getImagePath } from "../../data/storage/imageStroage";
 import { libraryData } from "../../stores/libraryStore";
-import { selectedGame } from "../../stores/selectedGameStore";
+import { selectedGame, setSelectedGame } from "../../stores/selectedGameStore";
+import { EditGameModal } from "./EditGameModal";
+import { openModal } from "../../stores/modalStore";
 
 export function GamePopUpModal() {
   const game = () => libraryData.games[selectedGame()];
@@ -70,8 +72,14 @@ export function GamePopUpModal() {
             type="button"
             class="standardButton !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom focus:!bg-[#d6d6d6] dark:focus:!bg-[#2b2b2b] bg-[#E8E8E8] hover:backdrop-blur-[5px] focus:backdrop-blur-[5px] dark:bg-[#232323]"
             onClick={() => {
-              closeModal(true);
-              openDialog("editGame");
+              openModal({
+                type: "editGame",
+                component: EditGameModal,
+                confirmWhileClosing: true,
+                onClose: () => {
+                  setSelectedGame();
+                },
+              });
             }}
             data-tooltip={translateText("settings")}
           >
