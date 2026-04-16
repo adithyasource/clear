@@ -535,7 +535,7 @@ export function EditGameModal() {
       </div>
 
       <div class="flex w-[84rem] justify-between max-large:w-[61rem]">
-        <span class="opacity-50">{translateText("right click to empty image selection")}</span>
+        <span class="opacity-50">{translateText("right click to undo / empty image selection")}</span>
         <Show when={searchResults() && selectedDataContext.selectedGameId() === undefined}>
           <span class="opacity-80">{translateText("select the official name of your game")}</span>
         </Show>
