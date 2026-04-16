@@ -1,19 +1,33 @@
-import { createSignal } from "solid-js";
+import { createSignal, onCleanup } from "solid-js";
 import { getData } from "@/Globals.jsx";
 import { Close } from "@/libraries/Icons.jsx";
-import { writeUpdateData } from "@/services/libraryService";
 import { libraryData } from "@/stores/libraryStore";
 import { closeModal } from "@/stores/modalStore.js";
 import { translateText } from "@/utils/translateText";
+import { updateNotepadData } from "../../services/notepadService";
 
 export function NotepadModal() {
   const [notepadValue, setNotepadValue] = createSignal("");
+  let saveTimeout;
 
   async function saveNotepad() {
-    setLibraryData("notepad", notepadValue());
-
-    await writeUpdateData();
+    try {
+      await updateNotepadData(notepadValue());
+    } catch (e) {
+      triggerToast(e.message);
+    }
   }
+
+  function debounceSaveNotepad() {
+    clearTimeout(saveTimeout);
+    saveTimeout = setTimeout(() => {
+      saveNotepad();
+    }, 500);
+  }
+
+  onCleanup(() => {
+    clearTimeout(saveTimeout);
+  });
 
   setTimeout(() => {
     setNotepadValue(libraryData.notepad || "");
@@ -24,7 +38,10 @@ export function NotepadModal() {
       <div class="w-[50%] border-2 border-[#1212121f] border-solid bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
         <div class="flex justify-between">
           <div>
-            <p class="text-[#000000] text-[25px] dark:text-[#ffffff80]">{translateText("notepad")}</p>
+            <p class="text-[#000000] text-[25px] dark:text-[#ffffff80]">
+              {translateText("notepad")}
+              <Show when={libraryData.notepad !== notepadValue()}>*</Show>
+            </p>
           </div>
 
           <button
@@ -42,7 +59,7 @@ export function NotepadModal() {
         <textarea
           onInput={(e) => {
             setNotepadValue(e.target.value);
-            saveNotepad();
+            debounceSaveNotepad();
           }}
           class="mt-6 h-[40vh] w-full resize-none bg-transparent focus:outline-none"
           placeholder={translateText("write anything you want over here!")}
