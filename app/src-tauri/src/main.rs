@@ -123,7 +123,7 @@ fn download_image(link: &str, location: &str) {
         command.creation_flags(0x08000000);
     }
 
-    let _ = command.stdout(Stdio::null()).stderr(Stdio::null()).spawn();
+    let _ = command.status();
 }
 
 #[tauri::command]
@@ -149,7 +149,7 @@ fn delete_assets(hero_image: &str, grid_image: &str, logo: &str, icon: &str) {
             command.creation_flags(0x08000000);
         }
 
-        let _ = command.stdout(Stdio::null()).stderr(Stdio::null()).spawn();
+        let _ = command.status();
     }
 }
 

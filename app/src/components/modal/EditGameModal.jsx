@@ -183,9 +183,9 @@ export function EditGameModal() {
           </button>
           <button
             type="button"
-            onClick={() => {
+            onClick={async () => {
               try {
-                updateGame(selectedGame(), {
+                await updateGame(selectedGame(), {
                   name: gameName(),
                   favourite: favourite(),
                   gameLocation: gameLocation(),
