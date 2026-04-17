@@ -22,6 +22,7 @@ import { translateText } from "@/utils/translateText";
 import { getImagePath } from "../../data/storage/imageStroage";
 import { selectedGame } from "../../stores/selectedGameStore";
 import { clearContextMenuData, openContextMenu } from "../../stores/contextMenuStore";
+import { updateGame } from "../../services/gameService";
 
 export function EditGameModal() {
   const selectedDataContext = useContext(SelectedDataContext);
@@ -35,10 +36,10 @@ export function EditGameModal() {
   const [showLogoImageLoading, setShowLogoImageLoading] = createSignal(false);
   const [showIconImageLoading, setShowIconImageLoading] = createSignal(false);
 
-  const [gameLocation, setGameLocation] = createSignal(originalGame().gameLocation);
+  const [gameLocation, setGameLocation] = createSignal();
 
-  const [gameName, setGameName] = createSignal(originalGame().name);
-  const [favourite, setFavourite] = createSignal(originalGame().favourite);
+  const [gameName, setGameName] = createSignal();
+  const [favourite, setFavourite] = createSignal();
 
   const [gridImage, setGridImage] = createSignal({ type: "local", data: undefined });
   const [heroImage, setHeroImage] = createSignal({ type: "local", data: undefined });
@@ -46,6 +47,10 @@ export function EditGameModal() {
   const [iconImage, setIconImage] = createSignal({ type: "local", data: undefined });
 
   onMount(async () => {
+    originalGame().name && setGameName(originalGame().name);
+    originalGame().favourite && setFavourite(originalGame().favourite);
+    originalGame().gameLocation && setGameLocation(originalGame().gameLocation);
+
     originalGame().gridImagePath &&
       setGridImage({
         type: "local",
@@ -179,25 +184,21 @@ export function EditGameModal() {
           <button
             type="button"
             onClick={() => {
-              // openDialog("loading");
-
-              updateGame(selectedGame, {
-                name: gameName(),
-                favourite: favourite(),
-                gameLocation: gameLocation(),
-                gridImage: gridImage(),
-                heroImage: heroImage(),
-                logoImage: logoImage(),
-                iconImage: iconImage(),
-              });
+              try {
+                updateGame(selectedGame(), {
+                  name: gameName(),
+                  favourite: favourite(),
+                  gameLocation: gameLocation(),
+                  gridImage: gridImage(),
+                  heroImage: heroImage(),
+                  logoImage: logoImage(),
+                  iconImage: iconImage(),
+                });
+              } catch (e) {
+                triggerToast(`error: ${e.message}`);
+              }
 
               closeModal(true);
-
-              // setTimeout(() => {
-              //   // scrolling to the bottom where uncategorized games are
-              //   const sideBarFolders = document.getElementById("sideBarFolders");
-              //   sideBarFolders.scrollTop = sideBarFolders.scrollHeight;
-              // }, 100);
             }}
             class="standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] flex items-center gap-1 bg-[#E8E8E8] dark:bg-[#232323]"
           >

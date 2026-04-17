@@ -66,3 +66,5 @@ export async function downloadImageIntoBin({ type, origin }) {
     throw new Error("image could not be downloaded: ", err);
   }
 }
+
+export async function deleteImage({ type, fileName }) {}

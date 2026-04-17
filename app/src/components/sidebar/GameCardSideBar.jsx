@@ -10,9 +10,6 @@ export function GameCardSideBar({ gameId, game, gameIndex, folderName, folderInd
   const selectedDataContext = useContext(SelectedDataContext);
   const applicationStateContext = useContext(ApplicationStateContext);
 
-  console.log(game);
-  console.log(gameId);
-
   return (
     <button
       type="button"

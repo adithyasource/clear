@@ -6,6 +6,8 @@ import { triggerToast } from "@/Globals";
 import { setLibraryData } from "@/stores/libraryStore";
 import { generateId } from "@/utils/generateId";
 import { writeUpdateData } from "./libraryService";
+import { libraryData } from "../stores/libraryStore";
+import { deleteImage, getImagePath } from "../data/storage/imageStroage";
 
 export async function processImage({ imageType, imageData }) {
   if (!imageData.data) return;
@@ -50,7 +52,76 @@ export async function addGame({ name, favourite, gameLocation, gridImage, heroIm
   await writeUpdateData();
 }
 
-export async function updateGame(gameId, newData) {}
+export async function updateGame(gameId, newData) {
+  console.log(gameId);
+  console.log(newData);
+  const game = libraryData.games[gameId];
+
+  let deletionList = [];
+
+  const updatedGame = JSON.parse(JSON.stringify(game));
+
+  for (const key of ["grid", "hero", "logo", "icon"]) {
+    const field = `${key}Image`;
+    const pathField = `${key}ImagePath`;
+
+    let newValue = newData[field];
+    const newValueData = newValue.data;
+
+    const oldValueFile = game[pathField];
+
+    if (!newValueData) {
+      if (oldValueFile) {
+        await deleteImage({ type: key, fileName: oldValueFile });
+        updatedGame[pathField] = null;
+      }
+      continue;
+    }
+
+    if (newValue.type === "remote") {
+      // will have to download new and delete old
+      updatedGame[pathField] = await downloadImageIntoBin({ type: key, origin: newValueData[newValue.index] });
+
+      if (oldValueFile) {
+        deletionList.push({ type: key, fileName: oldValueFile });
+      }
+      continue;
+    }
+
+    let oldValueData;
+    if (oldValueFile) {
+      oldValueData = await getImagePath({ type: key, fileName: oldValueFile });
+    }
+
+    if (oldValueData !== newValueData) {
+      // need to delete ${oldValue} and move in ${newValue}
+
+      updatedGame[pathField] = await copyImageIntoBin({ type: key, origin: newValueData });
+
+      deletionList.push({ type: key, fileName: oldValueFile });
+    }
+  }
+
+  for (const file of deletionList) {
+    await deleteImage({ type: file.type, fileName: file.fileName });
+  }
+
+  Object.assign(updatedGame, {
+    name: newData.name,
+    favourite: newData.favourite,
+    gameLocation: newData.gameLocation,
+  });
+
+  setLibraryData(
+    "games",
+    gameId,
+    produce((game) => {
+      Object.assign(game, updatedGame);
+    }),
+  );
+
+  await writeUpdateData();
+}
 
 export async function selectGameLocation(setter) {
   const path = await pickExecutable();

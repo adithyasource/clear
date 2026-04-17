@@ -12,16 +12,17 @@ export function GameCards(props) {
   return (
     <For each={props.gamesList}>
       {(gameId, index) => {
-        const game = libraryData.games[gameId];
+        const game = () => libraryData.games[gameId];
 
         const [gridImageFile] = createResource(
-          () => gameId,
-          async () => {
-            if (!game.gridImagePath) {
+          // track changes from the image path
+          () => game().gridImagePath,
+          async (path) => {
+            if (!path) {
               return null;
             }
-            const path = await getImagePath({ type: "grid", fileName: game.gridImagePath });
-            return convertFileSrc(path);
+            const fullPath = await getImagePath({ type: "grid", fileName: path });
+            return convertFileSrc(fullPath);
           },
         );
 
@@ -37,13 +38,13 @@ export function GameCards(props) {
                 console.log("holding meta");
               }
             }}
-            data-tooltip={game.gameLocation ? translateText("play") : translateText("no game file")}
+            data-tooltip={game().gameLocation ? translateText("play") : translateText("no game file")}
             onDragStart={(e) => {
               e.preventDefault();
             }}
             onClick={async (e) => {
-              if (e.ctrlKey && game.gameLocation) {
-                openGame(game.gameLocation);
+              if (e.ctrlKey && game().gameLocation) {
+                openGame(game().gameLocation);
                 return;
               }
               await setSelectedGame(gameId);
@@ -59,11 +60,11 @@ export function GameCards(props) {
             }}
           >
             <Show
-              when={game.favourite}
+              when={game().favourite}
               fallback={
                 <div class="relative w-full">
                   <Show
-                    when={game.gridImagePath}
+                    when={game().gridImagePath}
                     fallback={
                       <div class="relative flex items-center justify-center">
                         <Show when={!libraryData.userSettings.gameTitle}>
@@ -117,7 +118,7 @@ export function GameCards(props) {
             </Show>
             <Show when={libraryData.userSettings.gameTitle}>
               <div class="flex items-start justify-between">
-                <span class="text-[#000000] dark:text-white">{game.name}</span>
+                <span class="text-[#000000] dark:text-white">{game().name}</span>
               </div>
             </Show>
           </button>
