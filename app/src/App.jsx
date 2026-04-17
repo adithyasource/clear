@@ -21,6 +21,7 @@ import "./App.css";
 import { getData } from "@/services/libraryService.js";
 import { writeUpdateData } from "./services/libraryService.js";
 import { libraryData, setLibraryData } from "./stores/libraryStore.js";
+import { ContextMenu } from "./components/ui/ContextMenu.jsx";
 
 function App() {
   const uiContext = useContext(UIContext);
@@ -269,7 +270,7 @@ function App() {
     document.documentElement.classList.add("dark");
 
     // only shows the window after the ui has been rendered
-    invoke("show_window");
+    // invoke("show_window");
 
     addEventListeners();
     applicationStateContext.setSystemPlatform(await invoke("get_platform"));
@@ -294,6 +295,7 @@ function App() {
 
   return (
     <>
+      <ContextMenu />
       <ModalFrame />
 
       <div class="flex h-full gap-[30px] overflow-y-hidden">

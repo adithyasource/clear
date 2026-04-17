@@ -1,5 +1,5 @@
 import { convertFileSrc, invoke } from "@tauri-apps/api/core";
-import { createEffect, createSignal, For, Match, Show, Switch, useContext, onMount } from "solid-js";
+import { createEffect, createSignal, For, Match, onMount, Show, Switch, useContext } from "solid-js";
 import { LoadingTextAndIcon } from "@/components/modal/Loading";
 import { gameSearchResults } from "@/data/api/sgdbAssets.js";
 import {
@@ -11,7 +11,6 @@ import {
 } from "@/Globals.jsx";
 import { ChevronArrow, Close, SaveDisk } from "@/libraries/Icons.jsx";
 import {
-  addGame,
   changeImageRemoteLocationIndex,
   fetchGameAssets,
   selectGameLocation,
@@ -22,23 +21,24 @@ import { closeModal, modalShowCloseConfirm } from "@/stores/modalStore.js";
 import { translateText } from "@/utils/translateText";
 import { getImagePath } from "../../data/storage/imageStroage";
 import { selectedGame } from "../../stores/selectedGameStore";
+import { openContextMenu } from "../../stores/contextMenuStore";
 
 export function EditGameModal() {
   const selectedDataContext = useContext(SelectedDataContext);
   const applicationStateContext = useContext(ApplicationStateContext);
   const uiContext = useContext(UIContext);
 
-  const game = () => libraryData.games[selectedGame()];
+  const originalGame = () => libraryData.games[selectedGame()];
 
   const [showGridImageLoading, setShowGridImageLoading] = createSignal(false);
   const [showHeroImageLoading, setShowHeroImageLoading] = createSignal(false);
   const [showLogoImageLoading, setShowLogoImageLoading] = createSignal(false);
   const [showIconImageLoading, setShowIconImageLoading] = createSignal(false);
 
-  const [gameLocation, setGameLocation] = createSignal(game().gameLocation);
+  const [gameLocation, setGameLocation] = createSignal(originalGame().gameLocation);
 
-  const [gameName, setGameName] = createSignal(game().name);
-  const [favourite, setFavourite] = createSignal(game().favourite);
+  const [gameName, setGameName] = createSignal(originalGame().name);
+  const [favourite, setFavourite] = createSignal(originalGame().favourite);
 
   const [gridImage, setGridImage] = createSignal({ type: "local", data: undefined });
   const [heroImage, setHeroImage] = createSignal({ type: "local", data: undefined });
@@ -46,28 +46,28 @@ export function EditGameModal() {
   const [iconImage, setIconImage] = createSignal({ type: "local", data: undefined });
 
   onMount(async () => {
-    game().gridImagePath &&
+    originalGame().gridImagePath &&
       setGridImage({
         type: "local",
-        data: await getImagePath({ type: "grid", fileName: game().gridImagePath }),
+        data: await getImagePath({ type: "grid", fileName: originalGame().gridImagePath }),
       });
 
-    game().heroImagePath &&
+    originalGame().heroImagePath &&
       setHeroImage({
         type: "local",
-        data: await getImagePath({ type: "hero", fileName: game().heroImagePath }),
+        data: await getImagePath({ type: "hero", fileName: originalGame().heroImagePath }),
       });
 
-    game().logoImagePath &&
+    originalGame().logoImagePath &&
       setLogoImage({
         type: "local",
-        data: await getImagePath({ type: "logo", fileName: game().logoImagePath }),
+        data: await getImagePath({ type: "logo", fileName: originalGame().logoImagePath }),
       });
 
-    game().iconImagePath &&
+    originalGame().iconImagePath &&
       setIconImage({
         type: "local",
-        data: await getImagePath({ type: "icon", fileName: game().iconImagePath }),
+        data: await getImagePath({ type: "icon", fileName: originalGame().iconImagePath }),
       });
   });
 
@@ -188,8 +188,22 @@ export function EditGameModal() {
               }
             }
           }}
-          onContextMenu={() => {
-            setLocatedGridImage(undefined);
+          onContextMenu={(e) => {
+            // alskdjaskldj
+            openContextMenu(e, [
+              {
+                title: "remove grid image",
+                onClick: () => {
+                  console.log("yooo");
+                },
+              },
+              {
+                title: "revert to old image",
+                onClick: () => {
+                  console.log("back to old");
+                },
+              },
+            ]);
           }}
           class="tooltip-center aspect-[2/3] h-[400px] cursor-pointer overflow-hidden bg-[#f1f1f1] p-0 max-large:h-[300px] dark:bg-[#1c1c1c]"
           data-tooltip={
