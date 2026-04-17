@@ -21,7 +21,7 @@ import { closeModal, modalShowCloseConfirm } from "@/stores/modalStore.js";
 import { translateText } from "@/utils/translateText";
 import { getImagePath } from "../../data/storage/imageStroage";
 import { selectedGame } from "../../stores/selectedGameStore";
-import { openContextMenu } from "../../stores/contextMenuStore";
+import { clearContextMenuData, openContextMenu } from "../../stores/contextMenuStore";
 
 export function EditGameModal() {
   const selectedDataContext = useContext(SelectedDataContext);
@@ -86,6 +86,73 @@ export function EditGameModal() {
     const result = await gameSearchResults(gameName());
 
     setSearchResults(result);
+  }
+
+  async function handleContextMenu(e, type) {
+    let originalImage;
+    let currentImage;
+    let setCurrentImage;
+
+    switch (type) {
+      case "grid":
+        originalImage = originalGame().gridImagePath;
+        currentImage = gridImage;
+        setCurrentImage = setGridImage;
+        break;
+
+      case "hero":
+        originalImage = originalGame().heroImagePath;
+        currentImage = heroImage;
+        setCurrentImage = setHeroImage;
+        break;
+
+      case "logo":
+        originalImage = originalGame().logoImagePath;
+        currentImage = logoImage;
+        setCurrentImage = setLogoImage;
+        break;
+
+      case "icon":
+        originalImage = originalGame().iconImagePath;
+        currentImage = iconImage;
+        setCurrentImage = setIconImage;
+        break;
+    }
+
+    if (!originalImage && !currentImage().data) return;
+
+    const currentImagePath = currentImage().data;
+
+    let options = [];
+
+    if (currentImagePath) {
+      options.push({
+        title: `remove ${type} image`,
+        onClick: () => {
+          setCurrentImage({ type: "local", data: undefined });
+        },
+      });
+    }
+
+    if (originalImage) {
+      const originalImagePath = await getImagePath({ type: type, fileName: originalImage });
+
+      if (currentImagePath !== originalImagePath || (!currentImagePath && originalImagePath)) {
+        options.push({
+          title: "revert to old image",
+          onClick: () => {
+            setCurrentImage({
+              type: "local",
+              data: originalImagePath,
+            });
+
+            clearContextMenuData();
+          },
+        });
+      }
+    }
+
+    openContextMenu(e, options);
   }
 
   return (
@@ -188,22 +255,8 @@ export function EditGameModal() {
               }
             }
           }}
-          onContextMenu={(e) => {
-            // alskdjaskldj
-            openContextMenu(e, [
-              {
-                title: "remove grid image",
-                onClick: () => {
-                  console.log("yooo");
-                },
-              },
-              {
-                title: "revert to old image",
-                onClick: () => {
-                  console.log("back to old");
-                },
-              },
-            ]);
+          onContextMenu={async (e) => {
+            await handleContextMenu(e, "grid");
           }}
           class="tooltip-center aspect-[2/3] h-[400px] cursor-pointer overflow-hidden bg-[#f1f1f1] p-0 max-large:h-[300px] dark:bg-[#1c1c1c]"
           data-tooltip={
@@ -267,8 +320,8 @@ export function EditGameModal() {
                   }
                 }
               }}
-              onContextMenu={() => {
-                setLocatedHeroImage(undefined);
+              onContextMenu={async (e) => {
+                await handleContextMenu(e, "hero");
               }}
               class="tooltip-center aspect-[67/26] h-[350px] cursor-pointer bg-[#f1f1f1] p-0 max-large:h-[250px] dark:bg-[#1c1c1c]"
               data-tooltip={
@@ -320,8 +373,8 @@ export function EditGameModal() {
               onClick={() => {
                 selectImageFileLocation(setLogoImage);
               }}
-              onContextMenu={() => {
-                setLocatedLogo(undefined);
+              onContextMenu={async (e) => {
+                await handleContextMenu(e, "logo");
               }}
               onScroll={() => {}}
               onWheel={(e) => {
@@ -388,8 +441,8 @@ export function EditGameModal() {
               onClick={() => {
                 selectImageFileLocation(setIconImage);
               }}
-              onContextMenu={() => {
-                setLocatedIcon(undefined);
+              onContextMenu={async (e) => {
+                await handleContextMenu(e, "icon");
               }}
               onScroll={() => {}}
               onWheel={(e) => {

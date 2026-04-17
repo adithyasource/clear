@@ -270,7 +270,7 @@ function App() {
     document.documentElement.classList.add("dark");
 
     // only shows the window after the ui has been rendered
-    // invoke("show_window");
+    invoke("show_window");
 
     addEventListeners();
     applicationStateContext.setSystemPlatform(await invoke("get_platform"));
