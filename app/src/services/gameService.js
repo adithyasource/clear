@@ -31,7 +31,7 @@ export async function addGame({ name, favourite, gameLocation, gridImage, heroIm
   const gridImagePath = await processImage({ imageType: "grid", imageData: gridImage });
   const heroImagePath = await processImage({ imageType: "hero", imageData: heroImage });
   const logoImagePath = await processImage({ imageType: "logo", imageData: logoImage });
-  const iconimagePath = await processImage({ imageType: "icon", imageData: iconImage });
+  const iconImagePath = await processImage({ imageType: "icon", imageData: iconImage });
 
   setLibraryData(
     produce((data) => {
@@ -42,7 +42,7 @@ export async function addGame({ name, favourite, gameLocation, gridImage, heroIm
         gridImagePath,
         heroImagePath,
         logoImagePath,
-        iconimagePath,
+        iconImagePath,
       };
 
       return data;

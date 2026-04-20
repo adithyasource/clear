@@ -90,9 +90,13 @@ export function EditGameModal() {
   async function searchGameName() {
     setSearchResults(undefined);
 
-    const result = await gameSearchResults(gameName());
+    try {
+      const result = await gameSearchResults(gameName());
 
-    setSearchResults(result);
+      setSearchResults(result);
+    } catch (e) {
+      triggerToast(e.message);
+    }
   }
 
   async function handleContextMenu(e, type) {

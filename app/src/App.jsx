@@ -27,7 +27,7 @@ import { NewGameModal } from "./components/modal/NewGameModal.jsx";
 import { NewFolderModal } from "./components/modal/NewFolderModal.jsx";
 import { NotepadModal } from "./components/modal/NotepadModal.jsx";
 import { SettingsModal } from "./components/modal/SettingsModal.jsx";
-import { toggleSideBar } from "./services/sidebarService.js";
+import { toggleSideBar } from "./services/userSettingsService.js";
 
 function App() {
   const uiContext = useContext(UIContext);

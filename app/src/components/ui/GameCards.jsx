@@ -106,10 +106,10 @@ export function GameCards(props) {
                   />
                 </Show>
 
-                <div class="absolute inset-0 duration-500 motion-reduce:duration-100 dark:bg-blend-screen dark:blur-[30px] dark:group-hover:blur-[50px]">
+                <div class="absolute inset-0 opacity-80 duration-500 motion-reduce:duration-100 dark:bg-blend-screen dark:blur-[30px] dark:group-hover:blur-[50px]">
                   <img
                     class="absolute inset-0 opacity-0 duration-500 motion-reduce:duration-100 dark:opacity-[40%] dark:group-hover:opacity-60"
-                    src={imagePath(gameId) ? convertFileSrc(imagePath(gameId)) : ""}
+                    src={grid()}
                     alt=""
                   />
                   <div class="aspect-[2/3] w-full bg-[#000] opacity-[0%] dark:bg-[#fff] dark:opacity-[10%]" alt="" />

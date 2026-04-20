@@ -55,9 +55,13 @@ export function NewGameModal() {
   async function searchGameName() {
     setSearchResults(undefined);
 
-    const result = await gameSearchResults(gameName());
+    try {
+      const result = await gameSearchResults(gameName());
 
-    setSearchResults(result);
+      setSearchResults(result);
+    } catch (e) {
+      triggerToast(e.message);
+    }
   }
 
   return (

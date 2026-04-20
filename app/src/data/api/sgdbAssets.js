@@ -15,7 +15,7 @@ export async function gameSearchResults(searchQuery) {
 
     return searchResults.data;
   } catch (err) {
-    throw new Error("could not find that game:", err);
+    throw new Error("could not find that game", err);
   }
 }
 
