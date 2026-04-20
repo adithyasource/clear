@@ -20,6 +20,8 @@ import { closeModal, modalShowCloseConfirm } from "@/stores/modalStore.js";
 import { translateText } from "@/utils/translateText";
 import { LoadingTextAndIcon } from "@/components/modal/Loading";
 import { libraryData } from "@/stores/libraryStore";
+import { LoadingModal } from "./Loading";
+import { openModal } from "../../stores/modalStore";
 
 export function NewGameModal() {
   const selectedDataContext = useContext(SelectedDataContext);
@@ -84,15 +86,24 @@ export function NewGameModal() {
             onClick={() => {
               // openDialog("loading");
 
-              addGame({
-                name: gameName(),
-                favourite: favourite(),
-                gameLocation: gameLocation(),
-                gridImage: gridImage(),
-                heroImage: heroImage(),
-                logoImage: logoImage(),
-                iconImage: iconImage(),
-              });
+              try {
+                openModal({
+                  type: "loading",
+                  component: LoadingModal,
+                });
+
+                addGame({
+                  name: gameName(),
+                  favourite: favourite(),
+                  gameLocation: gameLocation(),
+                  gridImage: gridImage(),
+                  heroImage: heroImage(),
+                  logoImage: logoImage(),
+                  iconImage: iconImage(),
+                });
+              } catch (e) {
+                triggerToast(`error: ${e.message}`);
+              }
 
               closeModal(true);
 

@@ -22,6 +22,8 @@ import { getData } from "@/services/libraryService.js";
 import { writeUpdateData } from "./services/libraryService.js";
 import { libraryData, setLibraryData } from "./stores/libraryStore.js";
 import { ContextMenu } from "./components/ui/ContextMenu.jsx";
+import { openModal } from "./stores/modalStore.js";
+import { LoadingModal } from "./components/modal/Loading.jsx";
 
 function App() {
   const uiContext = useContext(UIContext);

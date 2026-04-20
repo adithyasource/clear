@@ -42,7 +42,7 @@ export function GamePopUpModal() {
           <button type="button" class="invisible-button-gamepopup pointer-events-none" />
 
           <Show
-            when={game().gameLocation}
+            when={game()?.gameLocation}
             fallback={
               <button
                 type="button"

@@ -23,6 +23,8 @@ import { getImagePath } from "../../data/storage/imageStroage";
 import { selectedGame } from "../../stores/selectedGameStore";
 import { clearContextMenuData, openContextMenu } from "../../stores/contextMenuStore";
 import { updateGame } from "../../services/gameService";
+import { openModal } from "../../stores/modalStore";
+import { LoadingModal } from "./Loading";
 
 export function EditGameModal() {
   const selectedDataContext = useContext(SelectedDataContext);
@@ -185,6 +187,11 @@ export function EditGameModal() {
             type="button"
             onClick={async () => {
               try {
+                openModal({
+                  type: "loading",
+                  component: LoadingModal,
+                });
+
                 await updateGame(selectedGame(), {
                   name: gameName(),
                   favourite: favourite(),
