@@ -25,6 +25,7 @@ import { translateText } from "@/utils/translateText";
 import { setSelectedFolder } from "../../stores/selectedFolderStore";
 import { EditFolderModal } from "../modal/EditFolderModal";
 import { toggleSideBar } from "../../services/userSettingsService";
+import { setSearch } from "../../stores/searchStore";
 
 export function SideBar() {
   const uiContext = useContext(UIContext);
@@ -254,7 +255,7 @@ export function SideBar() {
               class="hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] w-full bg-[#E8E8E8] text-black dark:bg-[#232323] dark:text-white"
               placeholder={translateText("search")}
               onInput={(e) => {
-                applicationStateContext.setSearchValue(e.currentTarget.value);
+                setSearch(e.currentTarget.value);
               }}
             />
           </form>

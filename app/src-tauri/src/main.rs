@@ -6,7 +6,6 @@ use std::fs;
 use std::io;
 use std::path::PathBuf;
 use std::process::{Command, Stdio};
-use tauri::{Manager, Window};
 #[cfg(target_os = "windows")]
 use winreg::enums::*;
 #[cfg(target_os = "windows")]
@@ -98,12 +97,6 @@ fn read_steam_vdf() -> String {
 }
 
 #[tauri::command]
-fn show_window(window: Window) {
-    window.show().unwrap();
-    window.set_focus().ok();
-}
-
-#[tauri::command]
 fn download_image(link: &str, location: &str) {
     let command_str = format!("Invoke-WebRequest '{}' -Outfile '{}'", link, location);
 
@@ -190,7 +183,6 @@ fn main() {
             open_location,
             close_app,
             read_steam_vdf,
-            show_window,
             download_image,
             check_connection,
             get_platform,

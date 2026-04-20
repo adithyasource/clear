@@ -31,7 +31,6 @@
         "minHeight": 390,
         "minWidth": 640,
         "theme": "Dark",
-        "visible": false,
         "useHttpsScheme": true,
         "dragDropEnabled": false
       }

@@ -1,6 +1,6 @@
 // biome-ignore assist/source/organizeImports: <explanation>
 import { invoke } from "@tauri-apps/api/core";
-import { createEffect, For, onMount, Show, useContext } from "solid-js";
+import { createEffect, createMemo, For, onMount, Show, useContext } from "solid-js";
 import { ModalFrame } from "@/components/modal/ModalFrame";
 import { SideBar } from "@/components/sidebar/SideBar.jsx";
 import { GameCards } from "@/components/ui/GameCards.jsx";
@@ -27,6 +27,7 @@ import { NewFolderModal } from "./components/modal/NewFolderModal.jsx";
 import { NotepadModal } from "./components/modal/NotepadModal.jsx";
 import { SettingsModal } from "./components/modal/SettingsModal.jsx";
 import { toggleSideBar } from "./services/userSettingsService.js";
+import { search } from "./stores/searchStore.js";
 
 function App() {
   const uiContext = useContext(UIContext);
@@ -69,6 +70,24 @@ function App() {
       "--outline-color",
       libraryData.userSettings.currentTheme === "light" ? "#000000" : "#ffffff",
     );
+  });
+
+  const searchResults = createMemo(() => {
+    const query = search()?.toLowerCase().trim();
+    if (!query) return;
+
+    const searchResults = [];
+
+    for (const id in libraryData.games) {
+      const game = libraryData.games[id];
+      const result = fuzzysearch(search(), game.name.toLowerCase().replace("-", " "));
+      if (result === true) {
+        searchResults.push(id);
+      }
+
+      console.log(searchResults);
+    }
+    return searchResults;
   });
 
   function closeApp() {
@@ -268,9 +287,6 @@ function App() {
     // loading app by default in dark mode so there's no bright flash of white while getData fetches preferences
     document.documentElement.classList.add("dark");
 
-    // only shows the window after the ui has been rendered
-    invoke("show_window");
-
     addEventListeners();
     applicationStateContext.setSystemPlatform(await invoke("get_platform"));
 
@@ -314,12 +330,7 @@ function App() {
           <SideBar />
         </Show>
 
-        <Show
-          when={
-            libraryData.folders.length === 0 &&
-            (applicationStateContext.searchValue() === "" || applicationStateContext.searchValue() === undefined)
-          }
-        >
+        <Show when={libraryData.folders.length === 0}>
           <div
             class={`absolute flex h-[100vh] w-full flex-col items-center justify-center overflow-y-scroll py-[20px] pr-[30px] ${
               libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
@@ -385,12 +396,7 @@ function App() {
               : "large:pl-[30px] pl-[30px]"
           }`}
         >
-          <Show
-            when={
-              libraryData.folders &&
-              (applicationStateContext.searchValue() === "" || applicationStateContext.searchValue() === undefined)
-            }
-          >
+          <Show when={libraryData.folders && !search()}>
             <For each={libraryData.folders}>
               {(folder) => {
                 return (
@@ -413,50 +419,26 @@ function App() {
               }}
             </For>
           </Show>
-          <Show
-            when={applicationStateContext.searchValue() !== "" && applicationStateContext.searchValue() !== undefined}
-          >
-            {() => {
-              const searchResults = [];
-              const allGameNames = [];
 
-              if (applicationStateContext.searchValue() !== "" && applicationStateContext.searchValue() !== undefined) {
-                for (const key in libraryData.games) {
-                  allGameNames.push(key);
-                }
-              }
-
-              for (const libraryGame of Object.keys(libraryData.games)) {
-                const result = fuzzysearch(
-                  applicationStateContext.searchValue(),
-                  libraryGame.toLowerCase().replace("-", " "),
-                );
-                if (result === true) {
-                  searchResults.push(libraryGame);
-                }
-              }
-
-              return (
-                <div>
-                  <div
-                    class={`foldersDiv mt-4 grid gap-5 ${returnGridStyleForGameCard(
-                      libraryData.userSettings.zoomLevel,
-                      libraryData.userSettings.showSideBar,
-                    )}`}
-                  >
-                    <GameCards gamesList={searchResults} />
+          <Show when={search()}>
+            <div>
+              <div
+                class={`foldersDiv mt-4 grid gap-5 ${returnGridStyleForGameCard(
+                  libraryData.userSettings.zoomLevel,
+                  libraryData.userSettings.showSideBar,
+                )}`}
+              >
+                <GameCards gamesList={searchResults()} />
+              </div>
+              <div class="items-center">
+                <Show when={searchResults()?.length === 0}>
+                  <div class="flex h-[calc(100vh-100px)] w-full items-center justify-center gap-3 align-middle">
+                    <EmptyTray />
+                    {translateText("no games found")}
                   </div>
-                  <div class="items-center">
-                    <Show when={searchResults.length === 0}>
-                      <div class="flex h-[calc(100vh-100px)] w-full items-center justify-center gap-3 align-middle">
-                        <EmptyTray />
-                        {translateText("no games found")}
-                      </div>
-                    </Show>
-                  </div>
-                </div>
-              );
-            }}
+                </Show>
+              </div>
+            </div>
           </Show>
         </div>
       </div>

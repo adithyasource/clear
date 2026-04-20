@@ -172,7 +172,7 @@ export function NewGameModal() {
             }
           }}
           onContextMenu={() => {
-            setLocatedGridImage(undefined);
+            setGridImage({ type: "local", data: undefined });
           }}
           class="tooltip-center aspect-[2/3] h-[400px] cursor-pointer overflow-hidden bg-[#f1f1f1] p-0 max-large:h-[300px] dark:bg-[#1c1c1c]"
           data-tooltip={
@@ -237,7 +237,7 @@ export function NewGameModal() {
                 }
               }}
               onContextMenu={() => {
-                setLocatedHeroImage(undefined);
+                setHeroImage({ type: "local", data: undefined });
               }}
               class="tooltip-center aspect-[67/26] h-[350px] cursor-pointer bg-[#f1f1f1] p-0 max-large:h-[250px] dark:bg-[#1c1c1c]"
               data-tooltip={
@@ -290,7 +290,7 @@ export function NewGameModal() {
                 selectImageFileLocation(setLogoImage);
               }}
               onContextMenu={() => {
-                setLocatedLogo(undefined);
+                setLogoImage({ type: "local", data: undefined });
               }}
               onScroll={() => {}}
               onWheel={(e) => {
@@ -358,7 +358,7 @@ export function NewGameModal() {
                 selectImageFileLocation(setIconImage);
               }}
               onContextMenu={() => {
-                setLocatedIcon(undefined);
+                setIconImage({ type: "local", data: undefined });
               }}
               onScroll={() => {}}
               onWheel={(e) => {
