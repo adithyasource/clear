@@ -1,20 +1,39 @@
 import { convertFileSrc } from "@tauri-apps/api/core";
-import { Show, useContext } from "solid-js";
-import { ApplicationStateContext, locationJoin, openGame, SelectedDataContext } from "@/Globals.jsx";
+import { createResource, Show } from "solid-js";
 import { GamePopUpModal } from "@/components/modal/GamePopUp.jsx";
+import { openGame } from "@/Globals.jsx";
 import { openModal } from "@/stores/modalStore.js";
 import { translateText } from "@/utils/translateText";
+import { libraryData } from "../../stores/libraryStore";
 import { setSelectedGame } from "../../stores/selectedGameStore";
+import { getImagePath } from "../../data/storage/imageStroage";
 
-export function GameCardSideBar({ gameId, game, gameIndex, folderName, folderIndex }) {
-  const selectedDataContext = useContext(SelectedDataContext);
-  const applicationStateContext = useContext(ApplicationStateContext);
+export function GameCardSideBar({ gameId, gameIndex, folderName, folderIndex }) {
+  const game = () => libraryData.games[gameId];
+
+  const [iconImageFile] = createResource(
+    // track changes from the image path
+    () => game().iconImagePath,
+    async (path) => {
+      if (!path) {
+        return null;
+      }
+      const fullPath = await getImagePath({ type: "icon", fileName: path });
+      console.log(fullPath);
+      return convertFileSrc(fullPath);
+    },
+  );
+
+  const icon = () => iconImageFile();
+
+  console.log(icon());
+  console.log(game().iconImagePath);
 
   return (
     <button
       type="button"
       class={`!flex sideBarGame cursor-grab gap-[5px] bg-transparent p-0 ${gameIndex === 0 ? "mt-4" : "mt-5"}`}
-      data-tooltip={game.gameLocation ? translateText("play") : translateText("no game file")}
+      data-tooltip={game().gameLocation ? translateText("play") : translateText("no game file")}
       data-game-id={gameId}
       draggable={true}
       onDragStart={(e) => {
@@ -33,7 +52,7 @@ export function GameCardSideBar({ gameId, game, gameIndex, folderName, folderInd
       }}
       onClick={async (e) => {
         if (e.ctrlKey) {
-          openGame(game.gameLocation);
+          openGame(game().gameLocation);
           return;
         }
 
@@ -49,15 +68,11 @@ export function GameCardSideBar({ gameId, game, gameIndex, folderName, folderInd
         });
       }}
     >
-      <Show when={game.icon}>
-        <img
-          src={convertFileSrc(locationJoin([applicationStateContext.appDataDirPath(), "icons", game.icon]))}
-          alt=""
-          class="gameIconImage aspect-square h-[16px]"
-        />
+      <Show when={game().iconImagePath}>
+        <img src={icon()} alt="" class="gameIconImage aspect-square h-[16px]" />
       </Show>
       <span class="text-[#00000080] active:text-[#0000003a] dark:text-[#ffffff80] active:dark:text-[#ffffff3a]">
-        {game.name}
+        {game().name}
       </span>
     </button>
   );
