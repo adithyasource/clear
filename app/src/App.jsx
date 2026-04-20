@@ -13,7 +13,6 @@ import {
   checkIfConnectedToInternet,
   importSteamGames,
   openDialog,
-  toggleSideBar,
   triggerToast,
   UIContext,
 } from "./Globals.jsx";
@@ -22,8 +21,13 @@ import { getData } from "@/services/libraryService.js";
 import { writeUpdateData } from "./services/libraryService.js";
 import { libraryData, setLibraryData } from "./stores/libraryStore.js";
 import { ContextMenu } from "./components/ui/ContextMenu.jsx";
-import { openModal } from "./stores/modalStore.js";
+import { closeModal, modalState, openModal } from "./stores/modalStore.js";
 import { LoadingModal } from "./components/modal/Loading.jsx";
+import { NewGameModal } from "./components/modal/NewGameModal.jsx";
+import { NewFolderModal } from "./components/modal/NewFolderModal.jsx";
+import { NotepadModal } from "./components/modal/NotepadModal.jsx";
+import { SettingsModal } from "./components/modal/SettingsModal.jsx";
+import { toggleSideBar } from "./services/sidebarService.js";
 
 function App() {
   const uiContext = useContext(UIContext);
@@ -166,71 +170,65 @@ function App() {
 
           // focuses game search bar
           case "KeyF":
-            if (!anyDialogOpen) {
-              e.preventDefault();
-              document.querySelector("#searchInput").focus();
-            } else {
-              triggerToast(translateText("close current dialog before opening another"));
+            e.preventDefault();
+            if (modalState()) {
+              triggerToast(translateText("close current dialog"));
+              return;
             }
+            document.querySelector("#searchInput").focus();
             break;
 
           // opens new game modal
           case "KeyN":
             e.preventDefault();
-            if (!anyDialogOpen) {
-              openDialog("newGame");
-            } else {
-              if (!uiContext.showNewGameModal()) {
-                triggerToast(translateText("close current dialog before opening another"));
-              }
+            if (modalState()) {
+              triggerToast(translateText("close current dialog before opening another"));
+              return;
             }
+            openModal({ type: "newGame", component: NewGameModal });
             break;
 
           // opens new folder modal
           case "KeyM":
             e.preventDefault();
-            if (!anyDialogOpen) {
-              openDialog("newFolder");
-            } else {
-              if (!uiContext.showNewFolderModal()) {
-                triggerToast(translateText("close current dialog before opening another"));
-              }
+            if (modalState()) {
+              triggerToast(translateText("close current dialog before opening another"));
+              return;
             }
+            openModal({ type: "newFolder", component: NewFolderModal });
             break;
 
           // opens notepad modal
           case "KeyL":
             e.preventDefault();
-            if (!anyDialogOpen) {
-              openDialog("notepad");
-            } else {
-              if (!uiContext.showNotepadModal()) {
-                triggerToast(translateText("close current dialog before opening another"));
-              }
+            if (modalState()) {
+              triggerToast(translateText("close current dialog before opening another"));
+              return;
             }
+            openModal({ type: "notepad", component: NotepadModal });
             break;
 
           // opens settings modal
           case "Comma":
-            if (!anyDialogOpen) {
-              e.preventDefault();
-              openDialog("settings");
-            } else {
-              if (!uiContext.showSettingsModal()) {
-                triggerToast(translateText("close current dialog before opening another"));
-              }
+            e.preventDefault();
+            if (modalState()) {
+              triggerToast(translateText("close current dialog before opening another"));
+              return;
             }
+            openModal({ type: "settings", component: SettingsModal });
             break;
 
           // toggles sidebar
           case "Backslash":
-            if (!anyDialogOpen) {
-              e.preventDefault();
-              toggleSideBar();
-              document.querySelector("#searchInput").blur();
-            } else {
+            e.preventDefault();
+            if (modalState()) {
               triggerToast(translateText("close current dialog before toggling sidebar"));
+              return;
             }
+
+            toggleSideBar();
+
+            document.querySelector("#searchInput")?.blur();
             break;
 
           // reload shortcut doesn't work on macos for some reason

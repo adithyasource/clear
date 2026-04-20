@@ -83,16 +83,14 @@ export function NewGameModal() {
           </button>
           <button
             type="button"
-            onClick={() => {
-              // openDialog("loading");
-
+            onClick={async () => {
               try {
                 openModal({
                   type: "loading",
                   component: LoadingModal,
                 });
 
-                addGame({
+                await addGame({
                   name: gameName(),
                   favourite: favourite(),
                   gameLocation: gameLocation(),

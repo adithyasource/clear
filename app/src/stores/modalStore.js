@@ -4,7 +4,7 @@ const [modalState, setModalState] = createSignal(null);
 const [modalVisible, setModalVisible] = createSignal(false);
 const [modalShowCloseConfirm, setModalShowCloseConfirm] = createSignal(false);
 
-async function openModal({ type, component, confirmWhileClosing, onClose }) {
+async function openModal({ type, component, confirmWhileClosing = false, onClose }) {
   const state = modalState();
   if (state) {
     // we need to close old with animation and open new modal
