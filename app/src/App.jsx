@@ -1,3 +1,4 @@
+// biome-ignore assist/source/organizeImports: <explanation>
 import { invoke } from "@tauri-apps/api/core";
 import { createEffect, For, onMount, Show, useContext } from "solid-js";
 import { ModalFrame } from "@/components/modal/ModalFrame";
@@ -12,7 +13,6 @@ import {
   ApplicationStateContext,
   checkIfConnectedToInternet,
   importSteamGames,
-  openDialog,
   triggerToast,
   UIContext,
 } from "./Globals.jsx";
@@ -21,8 +21,7 @@ import { getData } from "@/services/libraryService.js";
 import { writeUpdateData } from "./services/libraryService.js";
 import { libraryData, setLibraryData } from "./stores/libraryStore.js";
 import { ContextMenu } from "./components/ui/ContextMenu.jsx";
-import { closeModal, modalState, openModal } from "./stores/modalStore.js";
-import { LoadingModal } from "./components/modal/Loading.jsx";
+import { modalState, openModal } from "./stores/modalStore.js";
 import { NewGameModal } from "./components/modal/NewGameModal.jsx";
 import { NewFolderModal } from "./components/modal/NewFolderModal.jsx";
 import { NotepadModal } from "./components/modal/NotepadModal.jsx";
