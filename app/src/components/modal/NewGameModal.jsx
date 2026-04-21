@@ -433,15 +433,17 @@ export function NewGameModal() {
               <button
                 type="button"
                 class="small-btn mt-0 mr-2 w-max px-3 py-1"
-                onClick={() => {
+                onClick={async () => {
                   if (!gameName()) {
                     triggerToast(translateText("no game name"));
                     return;
                   }
 
-                  searchGameName();
+                  setFetchingAssetsLoading(true);
+                  await searchGameName();
                   selectedDataContext.setSelectedGameId(undefined);
                   setSearchResults(undefined);
+                  setFetchingAssetsLoading(false);
                 }}
               >
                 <Show when={!fetchingAssetsLoading()} fallback={LoadingTextAndIcon()}>
