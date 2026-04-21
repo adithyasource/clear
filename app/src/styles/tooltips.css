@@ -1,0 +1,74 @@
+/* TOOLTIP ---------------------------------- */
+
+[class*="tooltip-"] {
+  position: relative;
+}
+
+[class*="tooltip-"]::after {
+  position: absolute;
+  content: attr(data-tooltip);
+  width: max-content;
+  padding: 2px 8px;
+  z-index: 999999;
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  display: none;
+
+  @apply border-2 border-solid bg-[#E8E8E8cc] text-black border-[#00000010];
+}
+
+.dark [class*="tooltip-"]::after {
+  @apply bg-[#272727cc] text-white border-[#ffffff10];
+}
+
+/* visibility ---------------- */
+
+[class*="tooltip-"]:hover::after,
+body.user-is-tabbing [class*="tooltip-"]:focus::after {
+  display: block;
+  animation: normalFadeIn 0.2s ease forwards;
+}
+
+[class*="tooltip-delayed-"]:hover::after,
+body.user-is-tabbing [class*="tooltip-delayed-"]:focus::after {
+  display: block;
+  animation: normalFadeIn 0.2s ease 0.4s forwards;
+}
+
+/* positioning --------------- */
+
+.tooltip-top::after,
+.tooltip-delayed-top::after {
+  top: -100%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+}
+
+.tooltip-bottom::after,
+.tooltip-delayed-bottom::after {
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  margin-top: 5px;
+}
+
+.tooltip-center::after,
+.tooltip-delayed-center::after {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.tooltip-left::after,
+.tooltip-delayed-left::after {
+  top: 50%;
+  right: 300%;
+  transform: translate(50%, -50%);
+  margin-right: 5px;
+}
+
+.tooltip-right::after,
+.tooltip-delayed-right::after {
+  right: 5%;
+  transform: translate(0%, -17%);
+}

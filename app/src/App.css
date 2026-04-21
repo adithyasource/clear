@@ -1,4 +1,9 @@
 @import "tailwindcss";
+@import url("./styles/scrollbar.css");
+@import url("./styles/buttons-input.css");
+@import url("./styles/animations.css");
+@import url("./styles/tooltips.css");
+@import url("./styles/a11y.css");
 
 @custom-variant dark (&:is(.dark *));
 
@@ -9,153 +14,26 @@
   --breakpoint-large: 1500px;
 }
 
-/* tailwind styles (for inaccessable selectors in html) */
+/* BASE ------------------------------------- */
 
-@layer components {
-  html,
-  body {
-    @apply dark:bg-[#121212] bg-[#FFFFFC];
-  }
-
-  [class*="tooltip-"]::after {
-    @apply dark:bg-[#272727cc] bg-[#E8E8E8cc] dark:text-white text-black border-2 border-solid border-[#00000010] dark:border-[#ffffff10];
-  }
-
-  *::-webkit-scrollbar-thumb {
-    @apply bg-[#E8E8E8] dark:bg-[#1c1c1c];
-  }
-
-  #sideBarFolders:hover::-webkit-scrollbar-thumb {
-    @apply bg-[#E8E8E8] dark:bg-[#232323];
-  }
+html,
+body {
+  @apply bg-[#FFFFFC] text-black dark:bg-[#121212] dark:text-white;
+  height: 100%;
+  overflow: hidden;
 }
-
-.title {
-  @apply text-3xl opacity-50;
-}
-
-/* styling scrollbars */
-
-#sideBarFolders:hover::-webkit-scrollbar {
-  width: 5px;
-}
-
-#sideBarFolders:hover::-webkit-scrollbar {
-  display: block;
-}
-
-#sideBarFolders:hover::-webkit-scrollbar-track {
-  margin: 5px;
-}
-
-#sideBarFolders::-webkit-scrollbar {
-  display: none;
-}
-
-.SGDBGamesContainer::-webkit-scrollbar {
-  display: none;
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  margin: 10px;
-  background-color: #00000000;
-}
-
-/* animation keyframes */
-
-@keyframes dialogFadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.99);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes dialogFadeOut {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  to {
-    opacity: 0;
-    transform: scale(0.99);
-  }
-}
-
-@keyframes dialogFadeInShorter {
-  from {
-    opacity: 0.6;
-    transform: scale(0.99);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes loadingFadeOut {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes normalFadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes normalFadeOut {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-  }
-}
-
-/* setting base styles */
 
 * {
   font-size: 14px;
   font-weight: normal;
   user-select: none;
   color-scheme: dark;
+  font-family: var(--font-family);
 }
 
-html,
 body {
-  height: 100%;
-  overflow: hidden;
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  font-size: 16px;
 }
 
 button:focus,
@@ -175,88 +53,12 @@ select {
 
 dialog {
   border: none !important;
-  background-color: #00000000;
+  background-color: transparent;
   opacity: 0;
 }
 
-.panelButton {
-  padding: 10px;
-  border: 0;
-}
-
-body {
-  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
-  font-size: 16px;
-}
-
-.sideBarFolder {
-  display: flex;
-  flex-direction: column;
-  justify-items: center;
-  justify-content: space-between;
-  padding: 10px;
-  margin: 0px 0px 12px 0px;
-}
-
-.titleButton {
-  width: 48px;
-  height: 32px;
-  padding: 0px 10px 0px 18px;
-  border: 0;
-  margin: 0;
-  background: transparent;
-  outline: 0;
-}
-
-.titleButton svg {
-  width: 10px;
-  height: 10px;
-}
-
-/* elements with animations */
-
-.standardButton {
-  display: flex;
-  justify-items: center;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  gap: 5px;
-  transition: 0.2s;
-}
-
-.icon-btn {
-  @apply h-12 flex items-center justify-between gap-2 px-3 transition text-black bg-[#E8E8E8] hover:bg-[#d6d6d6] dark:text-white dark:bg-[#232323] dark:hover:bg-[#2b2b2b] cursor-pointer;
-}
-
-.icon-btn-transparent {
-  @apply  h-12 flex items-center justify-between gap-2 px-3 transition text-black bg-[#E8E8E8]/80
-          hover:bg-[#d6d6d6]/80 dark:text-white dark:bg-[#232323]/80 dark:hover:bg-[#2b2b2b]/80 cursor-pointer
-          backdrop-blur-[10px] hover:backdrop-blur-[5px] focus:backdrop-blur-[5px];
-}
-
-.btn {
-  @apply  h-12 px-3 transition text-black bg-[#E8E8E8] hover:bg-[#d6d6d6] dark:text-white dark:bg-[#232323]
-          dark:hover:bg-[#2b2b2b] cursor-pointer;
-}
-
-.btn-transparent {
-  @apply  h-12 px-3 transition text-black bg-[#E8E8E8]/80 hover:bg-[#d6d6d6]/80 dark:text-white
-          dark:bg-[#232323]/80 dark:hover:bg-[#2b2b2b]/80 cursor-pointer backdrop-blur-[10px]
-          hover:backdrop-blur-[5px] focus:backdrop-blur-[5px];
-}
-
-.small-btn {
-  @apply h-8 px-2 text-black hover:bg-[#d6d6d6] dark:bg-[#1c1c1c] dark:text-white dark:hover:bg-[#2b2b2b] cursor-pointer bg-[#f1f1f1] text-[#ffffff80] transition
-}
-
-.input-field {
-  @apply hover:bg-[#d6d6d6] dark:hover:bg-[#2b2b2b] bg-[#E8E8E8] text-black dark:bg-[#232323] dark:text-white p-3 transition
-}
-
-input,
-#searchInput {
-  transition: 0.2s;
+.title {
+  @apply text-3xl opacity-50 text-black dark:text-white;
 }
 
 #modal.showModal {
@@ -268,7 +70,6 @@ input,
 }
 
 .loading::before {
-  opacity: 1;
   animation: loadingFadeOut 0.3s;
   opacity: 0;
 }
@@ -277,177 +78,19 @@ input,
   animation: spin 3s linear infinite;
 }
 
-.toast:popover-open {
-  opacity: 1;
-  animation:
-    normalFadeIn 0.2s,
-    normalFadeOut 0.2s 1.3s;
-}
-
 .toast {
   top: 95%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-/* * tooltip related */
-
-/*
-
-- [class*="value"] will select if value exists in class 
-- we aren't using the simpler [data-tooltip] because of ctrl-hold behaviours,
-- the tooltip should only be visible once the class has been added to the element
-
-*/
-
-/* original positioning of right tooltip */
-[class*="tooltip-"] {
-  position: relative;
+.toast:popover-open {
+  animation:
+    normalFadeIn 0.2s,
+    normalFadeOut 0.2s 1.3s;
 }
 
-/* position of :after elements determined by ancestor */
-[class*="tooltip-"]::after {
-  position: absolute;
-  content: attr(data-tooltip);
-  width: max-content;
-  padding: 2px 8px;
-  z-index: 100000000000000000 !important;
-  backdrop-filter: blur(10px);
-  opacity: 0;
-  display: none;
-}
-
-[class*="tooltip-"]:hover::after {
-  display: block;
-  opacity: 0;
-  animation: normalFadeIn 0.2s ease forwards;
-}
-
-[class*="tooltip-delayed-"]:hover::after {
-  display: block;
-  opacity: 0;
-  animation: normalFadeIn 0.2s ease 0.4s forwards;
-}
-
-.tooltip-top::after,
-.tooltip-delayed-top::after {
-  top: -100%;
-  left: 50%;
-  transform: translate(-50%, -100%);
-}
-
-.tooltip-bottom::after,
-.tooltip-delayed-bottom::after {
-  top: 100%;
-  left: 50%;
-  transform: translate(-50%, 0%);
-  margin-top: 5px;
-}
-
-.tooltip-center::after,
-.tooltip-delayed-center::after {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.tooltip-left::after,
-.tooltip-delayed-left::after {
-  transform: translate(50%, -50%);
-  top: 50%;
-  right: 300%;
-  margin-right: 5px;
-}
-
-.tooltip-right::after,
-.tooltip-delayed-right::after {
-  transform: translate(0%, -17%);
-  right: 5%;
-}
-
-body.user-is-tabbing {
-  [class*="tooltip-"]:focus::after {
-    display: block;
-    opacity: 0;
-    animation: normalFadeIn 0.2s ease forwards;
-  }
-
-  [class*="tooltip-delayed-"]:focus::after {
-    display: block;
-    opacity: 0;
-    animation: normalFadeIn 0.2s ease 0.4s forwards;
-  }
-}
-
-/* removing all animations for people with animations turned off */
-
-@media (prefers-reduced-motion) {
-  .standardButton {
-    transition: 0s;
-  }
-
-  input,
-  #searchInput {
-    transition: 0s;
-  }
-
-  dialog.showDialog {
-    animation: dialogFadeIn 0s ease forwards;
-  }
-
-  dialog.hideDialog {
-    animation: dialogFadeOut 0s ease forwards;
-  }
-
-  .loading {
-    opacity: 1;
-    animation: loadingFadeOut 0s;
-    opacity: 0;
-  }
-
-  .loadingIcon {
-    animation: spin 0s linear infinite;
-  }
-
-  .toast {
-    opacity: 1;
-    animation:
-      dialogFadeIn 0s,
-      dialogFadeOut 0s 2.3s;
-  }
-
-  [class*="tooltip-"]:hover::after,
-  [class*="tooltip-"]:focus::after {
-    animation: normalFadeIn 0s ease forwards;
-  }
-
-  .toast:popover-open {
-    opacity: 1;
-    animation:
-      normalFadeIn 0s,
-      normalFadeOut 0s 1.3s;
-  }
-
-  [class*="tooltip-delayed-"]:hover::after {
-    animation: normalFadeIn 0s ease 0.4s forwards;
-  }
-
-  body.user-is-tabbing {
-    [class*="tooltip-"]:focus::after {
-      animation: normalFadeIn 0s ease forwards;
-    }
-
-    [class*="tooltip-delayed-"]:focus::after {
-      animation: normalFadeIn 0s ease 0.4s forwards;
-    }
-  }
-}
-
-/* dynamic styles */
-
-* {
-  font-family: var(--font-family);
-}
+/* MISC ------------------------------------- */
 
 *:not(body, svg, #loading, .game-card-sidebar, .game-card-icon),
 [class*="tooltip-"]:after {
@@ -458,10 +101,4 @@ body.user-is-tabbing {
   box-shadow: 0 -3px 0 0 #646464;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-}
-
-body.user-is-tabbing button:not(.invisible-button-gamepopup):focus,
-body.user-is-tabbing input:focus,
-body.user-is-tabbing select:focus {
-  outline: 1px solid var(--outline-color);
 }

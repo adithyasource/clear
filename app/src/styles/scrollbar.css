@@ -1,0 +1,40 @@
+/* SCROLLBARS ------------------------------- */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  margin: 10px;
+  background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  @apply bg-[#E8E8E8];
+}
+
+.dark *::-webkit-scrollbar-thumb {
+  @apply bg-[#1c1c1c];
+}
+
+#sideBarFolders::-webkit-scrollbar,
+.SGDBGamesContainer::-webkit-scrollbar {
+  display: none;
+}
+
+#sideBarFolders:hover::-webkit-scrollbar {
+  width: 5px;
+  display: block;
+}
+
+#sideBarFolders:hover::-webkit-scrollbar-track {
+  margin: 5px;
+}
+
+#sideBarFolders:hover::-webkit-scrollbar-thumb {
+  @apply bg-[#E8E8E8];
+}
+
+.dark #sideBarFolders:hover::-webkit-scrollbar-thumb {
+  @apply bg-[#232323];
+}

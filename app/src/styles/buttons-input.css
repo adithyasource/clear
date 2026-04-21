@@ -1,0 +1,41 @@
+/* BUTTONS ---------------------------------- */
+
+.standardButton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 5px;
+  transition: 0.2s;
+}
+
+.icon-btn {
+  @apply h-12 flex items-center justify-between gap-2 px-3 transition text-black bg-[#E8E8E8] hover:bg-[#d6d6d6] dark:text-white dark:bg-[#232323] dark:hover:bg-[#2b2b2b] cursor-pointer;
+}
+
+.icon-btn-transparent {
+  @apply h-12 flex items-center justify-between gap-2 px-3 transition text-black bg-[#E8E8E8]/80 hover:bg-[#d6d6d6]/80 dark:text-white dark:bg-[#232323]/80 dark:hover:bg-[#2b2b2b]/80 cursor-pointer backdrop-blur-[10px] hover:backdrop-blur-[5px] focus:backdrop-blur-[5px];
+}
+
+.btn {
+  @apply h-12 px-3 transition text-black bg-[#E8E8E8] hover:bg-[#d6d6d6] dark:text-white dark:bg-[#232323] dark:hover:bg-[#2b2b2b] cursor-pointer;
+}
+
+.btn-transparent {
+  @apply h-12 px-3 transition text-black bg-[#E8E8E8]/80 hover:bg-[#d6d6d6]/80 dark:text-white dark:bg-[#232323]/80 dark:hover:bg-[#2b2b2b]/80 cursor-pointer backdrop-blur-[10px] hover:backdrop-blur-[5px] focus:backdrop-blur-[5px];
+}
+
+.small-btn {
+  @apply h-8 px-2 transition cursor-pointer bg-[#f1f1f1] text-[#ffffff80] text-black hover:bg-[#d6d6d6] dark:bg-[#1c1c1c] dark:text-white dark:hover:bg-[#2b2b2b];
+}
+
+/* INPUT ------------------------------------ */
+
+.input-field {
+  @apply p-3 transition bg-[#E8E8E8] text-black hover:bg-[#d6d6d6] dark:bg-[#232323] dark:text-white dark:hover:bg-[#2b2b2b];
+}
+
+input,
+#searchInput {
+  transition: 0.2s;
+}

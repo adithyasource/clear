@@ -1,0 +1,42 @@
+/* ACCESSIBILITY ---------------------------- */
+
+body.user-is-tabbing button:not(.invisible-button-gamepopup):focus,
+body.user-is-tabbing input:focus,
+body.user-is-tabbing select:focus {
+  outline: 1px solid var(--outline-color);
+}
+
+/* REDUCED MOTION --------------------------- */
+
+@media (prefers-reduced-motion) {
+  .standardButton,
+  input,
+  #searchInput {
+    transition: 0s;
+  }
+
+  dialog.showDialog {
+    animation: dialogFadeIn 0s forwards;
+  }
+  dialog.hideDialog {
+    animation: dialogFadeOut 0s forwards;
+  }
+
+  .loading {
+    animation: none;
+  }
+  .loadingIcon {
+    animation: none;
+  }
+
+  .toast:popover-open {
+    animation:
+      normalFadeIn 0s,
+      normalFadeOut 0s 1.3s;
+  }
+
+  [class*="tooltip-"]:hover::after,
+  [class*="tooltip-"]:focus::after {
+    animation: none;
+  }
+}
