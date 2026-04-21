@@ -19,12 +19,12 @@ export function SettingsModal() {
       <div class="w-[70%] border-2 border-[#1212121f] border-solid bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
         <div class="flex justify-between">
           <div>
-            <p class="text-[#000000] text-[25px] dark:text-[#ffffff80]">{translateText("settings")}</p>
+            <h1 class="title">{translateText("settings")}</h1>
           </div>
 
           <button
             type="button"
-            class="standardButton !w-max !gap-0 !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom aspect-square bg-[#E8E8E8] dark:bg-[#232323]"
+            class="tooltip-delayed-bottom btn w-max"
             onClick={() => {
               closeModal();
               getData();
@@ -47,11 +47,11 @@ export function SettingsModal() {
           >
             <Show
               when={libraryData.userSettings.roundedBorders}
-              fallback={<div class="">{translateText("rounded borders")}</div>}
+              fallback={<div class="">{translateText("rounded-sm borders")}</div>}
             >
               <div class="relative">
-                <div class="">{translateText("rounded borders")}</div>
-                <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("rounded borders")}</div>
+                <div class="">{translateText("rounded-sm borders")}</div>
+                <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("rounded-sm borders")}</div>
               </div>
             </Show>
           </button>
@@ -157,7 +157,7 @@ export function SettingsModal() {
           <div class="mt-[35px] flex items-start gap-3">
             <button
               type="button"
-              class="standardButton !m-0 !w-max !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] flex items-center bg-[#E8E8E8] dark:bg-[#232323]"
+              class="standardButton m-0! w-max! text-black! hover:bg-[#d6d6d6]! dark:text-white! dark:hover:bg-[#2b2b2b]! flex items-center bg-[#E8E8E8] dark:bg-[#232323]"
               onClick={() => {
                 invoke("open_location", {
                   location: "https://clear.adithya.zip/update",
@@ -174,7 +174,7 @@ export function SettingsModal() {
           <div>
             <button
               type="button"
-              class="standardButton tooltip-bottom !flex !w-max !gap-3 !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] bg-[#E8E8E8] dark:bg-[#232323]"
+              class="tooltip-bottom icon-btn"
               data-tooltip={translateText("might not work perfectly!")}
               onClick={() => {
                 if (libraryData.folders.steam !== undefined) {
@@ -208,7 +208,7 @@ export function SettingsModal() {
           <div class="flex items-start gap-3">
             <button
               type="button"
-              class="standardButton !m-0 !w-max !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] flex items-center bg-[#E8E8E8] dark:bg-[#232323]"
+              class="btn w-max"
               onClick={async () => {
                 const appDataDirPath = await appDataDir();
 

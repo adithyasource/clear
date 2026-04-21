@@ -1,4 +1,4 @@
-/** biome-ignore-all lint/a11y/noStaticElementInteractions: <explanation> */
+/** biome-ignore-all lint/a11y/noStaticElementInteractions: <explanatioa> */
 
 import { createMemo, createSignal, For, onMount, Show, useContext } from "solid-js";
 import { produce } from "solid-js/store";
@@ -29,8 +29,6 @@ import { setSearch } from "../../stores/searchStore";
 
 export function SideBar() {
   const uiContext = useContext(UIContext);
-  const selectedDataContext = useContext(SelectedDataContext);
-  const applicationStateContext = useContext(ApplicationStateContext);
 
   const [showContentSkipButton, setShowContentSkipButton] = createSignal(false);
 
@@ -49,7 +47,7 @@ export function SideBar() {
   });
 
   function clearDragStyles() {
-    document.querySelectorAll(".sideBarGame").forEach((el) => {
+    document.querySelectorAll(".game-card-sidebar").forEach((el) => {
       el.classList.remove("currentlyDragging");
       el.classList.remove("dragging");
     });
@@ -175,9 +173,9 @@ export function SideBar() {
     console.log("dragging over game");
 
     if (document.querySelectorAll(".sideBarFolder:is(.dragging)")[0] === undefined) {
-      const siblings = [...e.srcElement.querySelectorAll(".sideBarGame:not(.dragging)")];
+      const siblings = [...e.srcElement.querySelectorAll(".game-card-sidebar:not(.dragging)")];
 
-      const allGames = document.querySelectorAll(".sideBarGame");
+      const allGames = document.querySelectorAll(".game-card-sidebar");
 
       for (const game of allGames) {
         game.classList.remove("currentlyDragging");
@@ -203,7 +201,7 @@ export function SideBar() {
     const gameId = e.dataTransfer.getData("gameId");
 
     if (document.querySelectorAll(".sideBarFolder:is(.dragging)")[0] === undefined) {
-      const siblings = [...e.srcElement.querySelectorAll(".sideBarGame:not(.dragging)")];
+      const siblings = [...e.srcElement.querySelectorAll(".game-card-sidebar:not(.dragging)")];
 
       const nextSibling = siblings.find((sibling) => {
         let compensatedY = "";
@@ -236,8 +234,8 @@ export function SideBar() {
   });
 
   return (
-    <div class="sideBar relative z-10 flex h-[100vh] w-[20%] flex-col py-[20px] pl-[20px] text-black min-[1500px]:w-[15%]">
-      <div id="sideBarTop">
+    <div class="sideBar relative z-10 flex h-screen w-90 flex-col py-4 pl-4">
+      <div>
         <div class="flex items-center justify-between gap-[15px]">
           <form
             onSubmit={(e) => {
@@ -252,7 +250,7 @@ export function SideBar() {
               type="text"
               id="searchInput"
               name=""
-              class="hover:!bg-[#d6d6d6] dark:hover:!bg-[#2b2b2b] w-full bg-[#E8E8E8] text-black dark:bg-[#232323] dark:text-white"
+              class="input-field w-full"
               placeholder={translateText("search")}
               onInput={(e) => {
                 setSearch(e.currentTarget.value);
@@ -279,7 +277,7 @@ export function SideBar() {
         <Show when={showContentSkipButton()}>
           <button
             type="button"
-            class="standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] mt-[12px] bg-[#E8E8E8] dark:bg-[#232323]"
+            class="btn mt-[12px] w-full text-left"
             onClick={() => {
               setShowContentSkipButton(false);
 
@@ -327,7 +325,7 @@ export function SideBar() {
             {(folder, folderIndex) => {
               return (
                 <div
-                  class="sideBarFolder !py-2 bg-[#f1f1f1] dark:bg-[#1c1c1c]"
+                  class="sideBarFolder py-2! bg-[#f1f1f1] dark:bg-[#1c1c1c]"
                   id={folder.name}
                   draggable={true}
                   data-folder-index={folderIndex()}
@@ -366,7 +364,7 @@ export function SideBar() {
 
                     <button
                       type="button"
-                      class="tooltip-delayed-bottom w-[25.25px] p-2 duration-150 hover:bg-[#D6D6D6] motion-reduce:duration-0 dark:hover:bg-[#232323]"
+                      class="tooltip-delayed-bottom small-btn"
                       onClick={() => {
                         setSelectedFolder(folderIndex());
 
@@ -404,7 +402,7 @@ export function SideBar() {
                         />
                       )}
                     </For>
-                    <p class="sideBarGame mt-[10px] h-[3px] w-full cursor-grab">&nbsp;</p>
+                    <p class="game-card-sidebar mt-[10px] h-[3px] w-full cursor-grab">&nbsp;</p>
                   </Show>
                 </div>
               );
@@ -463,7 +461,7 @@ export function SideBar() {
         <div class="">
           <button
             type="button"
-            class="standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] mt-[12px] bg-[#E8E8E8] dark:bg-[#232323]"
+            class="icon-btn mt-[12px] w-full"
             onClick={() => {
               openModal({ type: "newGame", component: NewGameModal, confirmWhileClosing: true });
 
@@ -477,7 +475,7 @@ export function SideBar() {
           </button>
           <button
             type="button"
-            class="standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] mt-[12px] bg-[#E8E8E8] dark:bg-[#232323]"
+            class="icon-btn mt-[12px] w-full"
             onClick={() => {
               openModal({ type: "newFolder", component: NewFolderModal, confirmWhileClosing: true });
             }}
@@ -498,9 +496,7 @@ export function SideBar() {
         >
           <button
             type="button"
-            class={`standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] mt-[12px] bg-[#E8E8E8] dark:bg-[#232323] ${
-              uiContext.showNewVersionAvailable() ? "!w-[80%]" : ""
-            } whitespace-nowrap`}
+            class={`icon-btn mt-[12px] w-full ${uiContext.showNewVersionAvailable() ? "w-[80%]!" : ""} whitespace-nowrap`}
             onClick={() => {
               openModal({ type: "notepad", component: NotepadModal, confirmWhileClosing: false });
             }}
@@ -512,7 +508,7 @@ export function SideBar() {
           </button>
           <button
             type="button"
-            class="standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] mt-[12px] bg-[#E8E8E8] dark:bg-[#232323]"
+            class="icon-btn mt-[12px] w-full"
             onClick={() => {
               openModal({ type: "settings", component: SettingsModal, confirmWhileClosing: false });
             }}

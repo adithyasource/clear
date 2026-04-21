@@ -38,15 +38,15 @@ export function NotepadModal() {
       <div class="w-[50%] border-2 border-[#1212121f] border-solid bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
         <div class="flex justify-between">
           <div>
-            <p class="text-[#000000] text-[25px] dark:text-[#ffffff80]">
+            <h1 class="title">
               {translateText("notepad")}
               <Show when={libraryData.notepad !== notepadValue()}>*</Show>
-            </p>
+            </h1>
           </div>
 
           <button
             type="button"
-            class="standardButton !w-max !gap-0 !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom aspect-square bg-[#E8E8E8] dark:bg-[#232323]"
+            class="tooltip-delayed-bottom btn w-max"
             onClick={() => {
               closeModal();
               getData();
@@ -61,7 +61,7 @@ export function NotepadModal() {
             setNotepadValue(e.target.value);
             debounceSaveNotepad();
           }}
-          class="mt-6 h-[40vh] w-full resize-none bg-transparent focus:outline-none"
+          class="mt-6 h-[40vh] w-full resize-none bg-transparent focus:outline-hidden"
           placeholder={translateText("write anything you want over here!")}
           spellcheck="false"
           value={notepadValue()}

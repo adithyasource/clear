@@ -46,10 +46,10 @@ export function GamePopUpModal() {
             fallback={
               <button
                 type="button"
-                class="!flex standardButton !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-bottom focus:!bg-[#d6d6d6] dark:focus:!bg-[#2b2b2b] w-max cursor-not-allowed bg-[#E8E8E8] hover:backdrop-blur-[5px] focus:backdrop-blur-[5px] dark:bg-[#232323]"
+                class="tooltip-bottom icon-btn-transparent w-max cursor-not-allowed!"
                 data-tooltip={translateText("no game file")}
               >
-                <div class="!w-max opacity-50">{translateText("play")}</div>
+                <div class="w-max! opacity-50">{translateText("play")}</div>
                 <div class="opacity-50">
                   <Play />
                 </div>
@@ -58,19 +58,19 @@ export function GamePopUpModal() {
           >
             <button
               type="button"
-              class="standardButton !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] focus:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] dark:focus:!bg-[#2b2b2b] bg-[#E8E8E8] hover:backdrop-blur-[5px] focus:backdrop-blur-[5px] dark:bg-[#232323]"
+              class="icon-btn-transparent w-max"
               onClick={() => {
                 openGame(game().gameLocation);
               }}
             >
-              <div class="!w-max">{translateText("play")}</div>
+              <div class="w-max!">{translateText("play")}</div>
               <Play />
             </button>
           </Show>
 
           <button
             type="button"
-            class="standardButton !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom focus:!bg-[#d6d6d6] dark:focus:!bg-[#2b2b2b] bg-[#E8E8E8] hover:backdrop-blur-[5px] focus:backdrop-blur-[5px] dark:bg-[#232323]"
+            class="tooltip-delayed-bottom btn-transparent"
             onClick={() => {
               openModal({
                 type: "editGame",
@@ -87,7 +87,7 @@ export function GamePopUpModal() {
           </button>
           <button
             type="button"
-            class="standardButton !bg-opacity-80 !text-black !backdrop-blur-[10px] hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom focus:!bg-[#d6d6d6] dark:focus:!bg-[#2b2b2b] bg-[#E8E8E8] hover:backdrop-blur-[5px] focus:backdrop-blur-[5px] dark:bg-[#232323]"
+            class="tooltip-delayed-bottom btn-transparent"
             onClick={() => {
               closeModal(true);
             }}
@@ -98,16 +98,16 @@ export function GamePopUpModal() {
         </div>
         <Show
           when={hero()}
-          fallback={<div class="aspect-[96/31] h-[350px] bg-[#f1f1f1] max-large:h-[270px] dark:bg-[#1c1c1c]" />}
+          fallback={<div class="aspect-96/31 h-[350px] bg-[#f1f1f1] max-large:h-[270px] dark:bg-[#1c1c1c]" />}
         >
-          <img src={hero()} alt="" class="aspect-[96/31] h-[350px] max-large:h-[270px]" />
+          <img src={hero()} alt="" class="aspect-96/31 h-[350px] max-large:h-[270px]" />
         </Show>
 
         <div class="absolute bottom-[30px] left-[25px] flex h-[70px] w-[300px] items-center align-middle max-large:bottom-[15px]">
           <Show
             when={logo()}
             fallback={
-              <div class="dark:!bg-[#272727] absolute bottom-[5px] h-[90px] w-[250px] bg-[#E8E8E8] max-large:h-[70px] max-large:w-[170px]" />
+              <div class="dark:bg-[#272727]! absolute bottom-[5px] h-[90px] w-[250px] bg-[#E8E8E8] max-large:h-[70px] max-large:w-[170px]" />
             }
           >
             <img

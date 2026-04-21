@@ -25,7 +25,7 @@ export function ContextMenu() {
     <>
       {menuData() && (
         <div
-          class="fixed inset-0 z-[999999] h-screen w-screen"
+          class="fixed inset-0 z-999999 h-screen w-screen"
           onClick={clearContextMenuData}
           onContextMenu={clearContextMenuData}
         >
@@ -41,7 +41,7 @@ export function ContextMenu() {
               {(item, index) => (
                 <button
                   data-index={index}
-                  class="!text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] bg-[#E8E8E8] dark:bg-[#232323]"
+                  class="text-black! hover:bg-[#d6d6d6]! dark:text-white! dark:hover:bg-[#2b2b2b]! bg-[#E8E8E8] dark:bg-[#232323]"
                   type="button"
                   onClick={item.onClick}
                 >

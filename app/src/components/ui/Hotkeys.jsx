@@ -11,7 +11,7 @@ export function Hotkeys(props) {
     <>
       <div class={`mt-[35px] grid gap-y-4 ${props.onSettingsPage ? "grid-cols-3" : "grid-cols-2"}`}>
         <div class="flex items-center gap-3">
-          <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+          <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
             {modifierKeyPrefix} + n
           </div>
 
@@ -19,35 +19,35 @@ export function Hotkeys(props) {
         </div>
 
         <div class="flex items-center gap-3">
-          <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+          <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
             {modifierKeyPrefix} + ,
           </div>
 
           {translateText("open settings")}
         </div>
         <div class="flex items-center gap-3">
-          <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+          <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
             {modifierKeyPrefix} + f
           </div>
 
           {translateText("search bar")}
         </div>
         <div class="flex items-center gap-3">
-          <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+          <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
             {modifierKeyPrefix} + m
           </div>
 
           {translateText("new folder")}
         </div>
         <div class="flex items-center gap-3">
-          <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+          <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
             {modifierKeyPrefix} + l
           </div>
 
           {translateText("open notepad")}
         </div>
         <div class="flex items-center gap-3">
-          <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+          <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
             {modifierKeyPrefix} + \\
           </div>
 
@@ -56,14 +56,14 @@ export function Hotkeys(props) {
 
         <Show when={props.onSettingsPage}>
           <div class="flex items-center gap-3">
-            <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+            <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
               {modifierKeyPrefix} + w
             </div>
 
             {translateText("close app")}
           </div>
           <div class="flex items-center gap-3">
-            <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+            <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
               {modifierKeyPrefix} - / =
             </div>
 
@@ -71,7 +71,7 @@ export function Hotkeys(props) {
           </div>
 
           <div class="flex items-center gap-3">
-            <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+            <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
               {modifierKeyPrefix} + click
             </div>
 
@@ -83,21 +83,21 @@ export function Hotkeys(props) {
       <Show when={!props.onSettingsPage}>
         <div class="mt-[35px] grid gap-y-4">
           <div class="flex items-center gap-3">
-            <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+            <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
               {modifierKeyPrefix} + f
             </div>
 
             {translateText("search bar")}
           </div>
           <div class="flex items-center gap-3">
-            <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+            <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
               {modifierKeyPrefix} + \\
             </div>
 
             {translateText("hide sidebar")}
           </div>
           <div class="flex items-center gap-3">
-            <div class="w-[max-content] bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+            <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
               {modifierKeyPrefix} + click
             </div>
 

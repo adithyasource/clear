@@ -167,7 +167,7 @@ export const textLanguages = {
     ru: "Доступно новое обновление!",
     fr: "Nouvelle mise à jour disponible!",
   },
-  "rounded borders": {
+  "rounded-sm borders": {
     jp: "丸い境界線",
     es: "bordes redondeados",
     hi: "गोलाकार सीमाएँ",

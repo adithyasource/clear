@@ -154,9 +154,9 @@ function App() {
 
       if (e[modifierKey]) {
         // "play" tooltip added to sidebar game and game card if user is also hovering on a specific element
-        for (const sideBarGame of document.querySelectorAll(".sideBarGame")) {
-          sideBarGame.classList.add("tooltip-right");
-          sideBarGame.style.cursor = "pointer";
+        for (const gameCardSidebar of document.querySelectorAll(".game-card-sidebar")) {
+          gameCardSidebar.classList.add("tooltip-right");
+          gameCardSidebar.style.cursor = "pointer";
         }
         for (const gameCard of document.querySelectorAll(".gameCard")) {
           gameCard.classList.add("tooltip-center");
@@ -267,13 +267,13 @@ function App() {
 
   document.addEventListener("keyup", () => {
     // resets sidebar cursor back to grab when ctrl/cmd is let go of
-    for (const sideBarGame of document.querySelectorAll(".sideBarGame")) {
-      sideBarGame.style.cursor = "grab";
+    for (const gameCardSidebar of document.querySelectorAll(".game-card-sidebar")) {
+      gameCardSidebar.style.cursor = "grab";
     }
 
     // hides "play" tooltip from sidebar game / game card when ctrl/cmd is let go of
-    for (const sideBarGame of document.querySelectorAll(".sideBarGame")) {
-      sideBarGame.classList.remove("tooltip-right");
+    for (const gameCardSidebar of document.querySelectorAll(".game-card-sidebar")) {
+      gameCardSidebar.classList.remove("tooltip-right");
     }
     for (const gameCard of document.querySelectorAll(".gameCard")) {
       gameCard.classList.remove("tooltip-center");
@@ -313,11 +313,11 @@ function App() {
       <ContextMenu />
       <ModalFrame />
 
-      <div class="flex h-full gap-[30px] overflow-y-hidden">
+      <div class="flex gap-[30px]">
         <Show when={libraryData.userSettings.showSideBar === false && applicationStateContext.windowWidth() >= 1000}>
           <button
             type="button"
-            class="!absolute tooltip-delayed-left top-[32px] right-[31px] z-20 w-[25.25px] cursor-pointer p-2 duration-150 hover:bg-[#D6D6D6] motion-reduce:duration-0 dark:hover:bg-[#232323]"
+            class="absolute! tooltip-delayed-left top-[32px] right-[31px] z-20 w-[25.25px] cursor-pointer p-2 duration-150 hover:bg-[#D6D6D6] motion-reduce:duration-0 dark:hover:bg-[#232323]"
             onClick={() => {
               toggleSideBar();
             }}
@@ -329,16 +329,15 @@ function App() {
         <Show when={libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000}>
           <SideBar />
         </Show>
-
         <Show when={libraryData.folders.length === 0}>
           <div
-            class={`absolute flex h-[100vh] w-full flex-col items-center justify-center overflow-y-scroll py-[20px] pr-[30px] ${
+            class={`absolute flex h-screen w-full flex-col items-center justify-center overflow-y-scroll py-[20px] pr-[30px] ${
               libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
                 ? "large:pl-[17%] pl-[23%]"
                 : "large:pl-[30px] pl-[30px]"
             }`}
           >
-            <div class="!z-50">
+            <div class="z-50!">
               <p class="text-[#000000] dark:text-[#ffffff80]">
                 {translateText("hey there! thank you so much for using clear")}
                 <br />
@@ -352,7 +351,7 @@ function App() {
               <div class="mt-[35px] flex gap-6">
                 <button
                   type="button"
-                  class="standardButton tooltip-bottom !flex !w-max !gap-3 !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] bg-[#E8E8E8] dark:bg-[#232323]"
+                  class="standardButton tooltip-bottom flex! w-max! gap-3! bg-[#E8E8E8] text-black! hover:bg-[#d6d6d6]! dark:bg-[#232323] dark:text-white! dark:hover:bg-[#2b2b2b]!"
                   data-tooltip={translateText("might not work perfectly!")}
                   onClick={() => {
                     if (libraryData.folders.steam !== undefined) {
@@ -390,11 +389,7 @@ function App() {
           </div>
         </Show>
         <div
-          class={`!rounded-[0px] absolute h-[100vh] w-full overflow-y-scroll py-[20px] pr-[30px] ${
-            libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
-              ? "large:pl-[17%] pl-[23%]"
-              : "large:pl-[30px] pl-[30px]"
-          }`}
+          class={`h-screen w-full overflow-y-scroll rounded-none! py-5 ${(!libraryData.userSettings.showSideBar || applicationStateContext.windowWidth() <= 1000) && "px-7"}`}
         >
           <Show when={libraryData.folders && !search()}>
             <For each={libraryData.folders}>
@@ -403,7 +398,7 @@ function App() {
                   <Show when={folder.games.length !== 0 && !folder.hide}>
                     <div class="mb-[40px]">
                       <Show when={libraryData.userSettings.folderTitle}>
-                        <p class="text-[#000000] text-[25px] dark:text-[#ffffff80]">{folder.name}</p>
+                        <h1 class="title">{folder.name}</h1>
                       </Show>
                       <div
                         class={`foldersDiv mt-4 grid gap-5 ${returnGridStyleForGameCard(

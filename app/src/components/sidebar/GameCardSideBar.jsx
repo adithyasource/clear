@@ -32,7 +32,7 @@ export function GameCardSideBar({ gameId, gameIndex, folderName, folderIndex }) 
   return (
     <button
       type="button"
-      class={`!flex sideBarGame cursor-grab gap-[5px] bg-transparent p-0 ${gameIndex === 0 ? "mt-4" : "mt-5"}`}
+      class={`flex! game-card-sidebar cursor-grab items-center gap-[5px] p-0 ${gameIndex === 0 ? "mt-4" : "mt-5"}`}
       data-tooltip={game().gameLocation ? translateText("play") : translateText("no game file")}
       data-game-id={gameId}
       draggable={true}
@@ -69,9 +69,9 @@ export function GameCardSideBar({ gameId, gameIndex, folderName, folderIndex }) 
       }}
     >
       <Show when={game().iconImagePath}>
-        <img src={icon()} alt="" class="gameIconImage aspect-square h-[16px]" />
+        <img src={icon()} alt="" class="game-card-icon aspect-square h-[16px]" />
       </Show>
-      <span class="text-[#00000080] active:text-[#0000003a] dark:text-[#ffffff80] active:dark:text-[#ffffff3a]">
+      <span class="text-black/50 transition active:text-black/80 dark:text-white/50 dark:active:text-white/80">
         {game().name}
       </span>
     </button>

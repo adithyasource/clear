@@ -167,10 +167,10 @@ export function EditGameModal() {
   }
 
   return (
-    <div class="flex w-[84rem] flex-col items-center justify-center gap-3 max-large:w-[61rem]">
+    <div class="flex w-336 flex-col items-center justify-center gap-3 max-large:w-244">
       <div class="flex w-full justify-between">
         <div>
-          <p class="text-[#00000080] text-[25px] dark:text-[#ffffff80]">{translateText("add new game")}</p>
+          <h1 class="title">{translateText("add new game")}</h1>
         </div>
         <div class="flex items-center gap-4">
           <button
@@ -180,10 +180,10 @@ export function EditGameModal() {
               setFavourite((x) => !x);
             }}
           >
-            <Show when={favourite()} fallback={<div class="!w-max">{translateText("favourite")}</div>}>
+            <Show when={favourite()} fallback={<div class="w-max!">{translateText("favourite")}</div>}>
               <div class="relative">
-                <div class="!w-max">{translateText("favourite")}</div>
-                <div class="!w-max absolute inset-0 opacity-70 blur-[5px]">{translateText("favourite")}</div>
+                <div class="w-max!">{translateText("favourite")}</div>
+                <div class="w-max! absolute inset-0 opacity-70 blur-[5px]">{translateText("favourite")}</div>
               </div>
             </Show>
           </button>
@@ -211,15 +211,15 @@ export function EditGameModal() {
 
               closeModal(true);
             }}
-            class="standardButton !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] flex items-center gap-1 bg-[#E8E8E8] dark:bg-[#232323]"
+            class="icon-btn"
           >
-            <p class="!w-max">{translateText("save")}</p>
+            <p class="w-max!">{translateText("save")}</p>
 
             <SaveDisk />
           </button>
           <button
             type="button"
-            class="standardButton !w-max !h-full !gap-0 !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom flex items-center bg-[#E8E8E8] dark:bg-[#232323]"
+            class="tooltip-delayed-bottom btn w-max"
             onClick={() => {
               closeModal();
             }}
@@ -234,7 +234,7 @@ export function EditGameModal() {
         </div>
       </div>
 
-      <div class="flex gap-[1rem]">
+      <div class="flex gap-4">
         {/* grid image card */}
 
         <button
@@ -270,7 +270,7 @@ export function EditGameModal() {
           onContextMenu={async (e) => {
             await handleContextMenu(e, "grid");
           }}
-          class="tooltip-center aspect-[2/3] h-[400px] cursor-pointer overflow-hidden bg-[#f1f1f1] p-0 max-large:h-[300px] dark:bg-[#1c1c1c]"
+          class="tooltip-center aspect-2/3 h-[400px] cursor-pointer overflow-hidden bg-[#f1f1f1] p-0 max-large:h-[300px] dark:bg-[#1c1c1c]"
           data-tooltip={
             gridImage().type === "remote"
               ? showGridImageLoading() === false
@@ -335,7 +335,7 @@ export function EditGameModal() {
               onContextMenu={async (e) => {
                 await handleContextMenu(e, "hero");
               }}
-              class="tooltip-center aspect-[67/26] h-[350px] cursor-pointer bg-[#f1f1f1] p-0 max-large:h-[250px] dark:bg-[#1c1c1c]"
+              class="tooltip-center aspect-67/26 h-[350px] cursor-pointer bg-[#f1f1f1] p-0 max-large:h-[250px] dark:bg-[#1c1c1c]"
               data-tooltip={
                 heroImage().type === "remote"
                   ? showHeroImageLoading() === false
@@ -356,7 +356,7 @@ export function EditGameModal() {
                         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                 }
                 alt=""
-                class={`aspect-[96/31] h-full w-full ${showHeroImageLoading() ? "opacity-0" : ""}`}
+                class={`aspect-96/31 h-full w-full ${showHeroImageLoading() ? "opacity-0" : ""}`}
                 onLoad={() => {
                   setShowHeroImageLoading(false);
                 }}
@@ -374,7 +374,7 @@ export function EditGameModal() {
                   setShowHeroImageLoading(false);
                 }}
                 alt=""
-                class="absolute inset-0 -z-10 aspect-[96/31] h-full w-full opacity-[0.4] blur-[80px]"
+                class="absolute inset-0 -z-10 aspect-96/31 h-full w-full opacity-[0.4] blur-[80px]"
               />
             </button>
 
@@ -412,10 +412,10 @@ export function EditGameModal() {
                   }
                 }
               }}
-              class={`!absolute !p-[2px] tooltip-center bottom-[70px] left-[20px] z-[100] h-[90px] w-[250px] cursor-pointer max-large:h-[90px] max-large:w-[243px] ${
+              class={`!absolute p-[2px]! tooltip-center bottom-[70px] left-[20px] z-100 h-[90px] w-[250px] cursor-pointer max-large:h-[90px] max-large:w-[243px] ${
                 logoImage().data
-                  ? "!outline-[2px] !outline-[#E8E8E880] hover:bg-[#E8E8E84D] hover:outline-dashed focus:bg-[#E8E8E84D] !outline:dark:bg-[#27272780] focus:dark:bg-[#2727274D] hover:dark:bg-[#2727274D]"
-                  : "dark:!bg-[#272727] bg-[#E8E8E8]"
+                  ? "outline-2! outline-[#E8E8E880]! hover:bg-[#E8E8E84D] hover:outline-dashed focus:bg-[#E8E8E84D] !outline:dark:bg-[#27272780] dark:focus:bg-[#2727274D] dark:hover:bg-[#2727274D]"
+                  : "dark:bg-[#272727]! bg-[#E8E8E8]"
               } `}
               data-tooltip={
                 logoImage().type === "remote"
@@ -437,7 +437,7 @@ export function EditGameModal() {
                         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                 }
                 alt=""
-                class={`!object-scale-down h-full w-full ${showLogoImageLoading() ? "opacity-0" : ""}`}
+                class={`object-scale-down! h-full w-full ${showLogoImageLoading() ? "opacity-0" : ""}`}
                 onLoad={() => {
                   setShowLogoImageLoading(false);
                 }}
@@ -445,7 +445,7 @@ export function EditGameModal() {
             </button>
           </div>
 
-          {/* h-[40px] w-[40px] !bg-[#E8E8E8] dark:!bg-[#272727] */}
+          {/* h-[40px] w-[40px] bg-[#E8E8E8]! dark:bg-[#272727]! */}
 
           <div class="flex cursor-pointer items-center gap-3">
             <button
@@ -483,8 +483,8 @@ export function EditGameModal() {
               }}
               class={`group tooltip-bottom relative p-0 ${
                 iconImage().data
-                  ? "!outline-[2px] !outline-[#E8E8E880] hover:outline-dashed !outline:dark:bg-[#27272780]"
-                  : "dark:!bg-[#272727] bg-[#E8E8E8]"
+                  ? "outline-2! outline-[#E8E8E880]! hover:outline-dashed !outline:dark:bg-[#27272780]"
+                  : "dark:bg-[#272727]! bg-[#E8E8E8]"
               }`}
               data-tooltip={
                 iconImage().type === "remote"
@@ -506,33 +506,29 @@ export function EditGameModal() {
                         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                 }
                 alt=""
-                class={`!object-scale-down h-[40px] w-[40px] ${showIconImageLoading() ? "opacity-0" : ""}`}
+                class={`object-scale-down! h-[40px] w-[40px] ${showIconImageLoading() ? "opacity-0" : ""}`}
                 onLoad={() => {
                   setShowIconImageLoading(false);
                 }}
               />
             </button>
 
-            <div
-              class="gameInput flex items-center bg-[#E8E8E8cc] backdrop-blur-[10px] dark:bg-[#272727cc]"
-              style={{ "flex-grow": "1" }}
-            >
+            <div class="gameInput flex items-center bg-[#E8E8E8cc] backdrop-blur-[10px] dark:bg-[#272727cc] grow">
               <input
                 aria-autocomplete="none"
                 type="text"
                 name=""
-                style={{ "flex-grow": "1" }}
                 id=""
                 onInput={(e) => {
                   setGameName(e.currentTarget.value);
                 }}
                 value={gameName()}
-                class="!bg-transparent"
+                class="input-field grow bg-transparent!"
                 placeholder={translateText("name of game")}
               />
               <button
                 type="button"
-                class="standardButton !mr-2 !mt-0 !w-max !text-black hover:!bg-[#d6d6d6] dark:!bg-[#1c1c1c] dark:!text-white dark:hover:!bg-[#2b2b2b] cursor-pointer bg-[#f1f1f1] px-3 py-1 text-[#ffffff80]"
+                class="standardButton mr-2! mt-0! w-max! text-black! hover:bg-[#d6d6d6]! dark:bg-[#1c1c1c]! dark:text-white! dark:hover:bg-[#2b2b2b]! cursor-pointer bg-[#f1f1f1] px-3 py-1 text-[#ffffff80]"
                 onClick={() => {
                   if (!gameName()) {
                     triggerToast(translateText("no game name"));
@@ -564,7 +560,7 @@ export function EditGameModal() {
               </button>
               <button
                 type="button"
-                class="standardButton !mr-2 !mt-0 !w-max !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] cursor-pointer bg-[#f1f1f1] px-3 py-1 text-[#ffffff80] dark:bg-[#1c1c1c]"
+                class="standardButton mr-2! mt-0! w-max! text-black! hover:bg-[#d6d6d6]! dark:text-white! dark:hover:bg-[#2b2b2b]! cursor-pointer bg-[#f1f1f1] px-3 py-1 text-[#ffffff80] dark:bg-[#1c1c1c]"
                 onClick={() => {
                   gameName() === undefined
                     ? invoke("open_location", {
@@ -605,7 +601,7 @@ export function EditGameModal() {
               onContextMenu={() => {
                 setGameLocation(undefined);
               }}
-              class="standardButton !mt-0 !w-max !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] bg-[#E8E8E8] dark:bg-[#232323]"
+              class="btn w-max"
             >
               {gameLocation() === undefined ? translateText("locate game") : getExecutableFileName(gameLocation())}
             </button>
@@ -613,7 +609,7 @@ export function EditGameModal() {
         </div>
       </div>
 
-      <div class="flex w-[84rem] justify-between max-large:w-[61rem]">
+      <div class="flex w-336 justify-between max-large:w-244">
         <span class="opacity-50">{translateText("right click to undo / empty image selection")}</span>
         <Show when={searchResults() && selectedDataContext.selectedGameId() === undefined}>
           <span class="opacity-80">{translateText("select the official name of your game")}</span>
@@ -622,7 +618,7 @@ export function EditGameModal() {
 
       <Show when={searchResults()}>
         <Show when={selectedDataContext.selectedGameId() === undefined}>
-          <div class="gameInput flex w-[84rem] bg-[#E8E8E8cc] backdrop-blur-[10px] max-large:w-[61rem] dark:bg-[#272727cc]">
+          <div class="gameInput flex w-336 bg-[#E8E8E8cc] backdrop-blur-[10px] max-large:w-244 dark:bg-[#272727cc]">
             <button
               type="button"
               onClick={() => {
@@ -639,7 +635,7 @@ export function EditGameModal() {
                   return (
                     <button
                       type="button"
-                      class="flex-shrink-0"
+                      class="shrink-0"
                       onClick={async () => {
                         setSearchResults(undefined);
 

@@ -1,8 +1,13 @@
-/* setting up tailwind */
+@import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-thin: 850px;
+  --breakpoint-medium: 1000px;
+  --breakpoint-large: 1500px;
+}
 
 /* tailwind styles (for inaccessable selectors in html) */
 
@@ -23,6 +28,10 @@
   #sideBarFolders:hover::-webkit-scrollbar-thumb {
     @apply bg-[#E8E8E8] dark:bg-[#232323];
   }
+}
+
+.title {
+  @apply text-3xl opacity-50;
 }
 
 /* styling scrollbars */
@@ -137,8 +146,6 @@
 /* setting base styles */
 
 * {
-  padding: 0;
-  margin: 0;
   font-size: 14px;
   font-weight: normal;
   user-select: none;
@@ -148,7 +155,6 @@
 html,
 body {
   height: 100%;
-  margin: 0;
   overflow: hidden;
 }
 
@@ -173,8 +179,6 @@ dialog {
   opacity: 0;
 }
 
-button,
-input,
 .panelButton {
   padding: 10px;
   border: 0;
@@ -219,6 +223,35 @@ body {
   width: 100%;
   gap: 5px;
   transition: 0.2s;
+}
+
+.icon-btn {
+  @apply h-12 flex items-center justify-between gap-2 px-3 transition text-black bg-[#E8E8E8] hover:bg-[#d6d6d6] dark:text-white dark:bg-[#232323] dark:hover:bg-[#2b2b2b] cursor-pointer;
+}
+
+.icon-btn-transparent {
+  @apply  h-12 flex items-center justify-between gap-2 px-3 transition text-black bg-[#E8E8E8]/80
+          hover:bg-[#d6d6d6]/80 dark:text-white dark:bg-[#232323]/80 dark:hover:bg-[#2b2b2b]/80 cursor-pointer
+          backdrop-blur-[10px] hover:backdrop-blur-[5px] focus:backdrop-blur-[5px];
+}
+
+.btn {
+  @apply  h-12 px-3 transition text-black bg-[#E8E8E8] hover:bg-[#d6d6d6] dark:text-white dark:bg-[#232323]
+          dark:hover:bg-[#2b2b2b] cursor-pointer;
+}
+
+.btn-transparent {
+  @apply  h-12 px-3 transition text-black bg-[#E8E8E8]/80 hover:bg-[#d6d6d6]/80 dark:text-white
+          dark:bg-[#232323]/80 dark:hover:bg-[#2b2b2b]/80 cursor-pointer backdrop-blur-[10px]
+          hover:backdrop-blur-[5px] focus:backdrop-blur-[5px];
+}
+
+.small-btn {
+  @apply h-8 px-2 text-black hover:bg-[#d6d6d6] dark:bg-[#1c1c1c] dark:text-white dark:hover:bg-[#2b2b2b] cursor-pointer bg-[#f1f1f1] text-[#ffffff80] transition
+}
+
+.input-field {
+  @apply hover:bg-[#d6d6d6] dark:hover:bg-[#2b2b2b] bg-[#E8E8E8] text-black dark:bg-[#232323] dark:text-white p-3 transition
 }
 
 input,
@@ -414,10 +447,9 @@ body.user-is-tabbing {
 
 * {
   font-family: var(--font-family);
-  color: var(--text-color);
 }
 
-*:not(body, svg, #loading, .sideBarGame, .gameIconImage),
+*:not(body, svg, #loading, .game-card-sidebar, .game-card-icon),
 [class*="tooltip-"]:after {
   border-radius: var(--border-radius);
 }

@@ -16,7 +16,7 @@ export function NewFolderModal() {
           class={`flex justify-between ${libraryData.userSettings.language !== "en" ? "large:flex-row flex-col" : ""} `}
         >
           <div>
-            <p class="text-[#000000] text-[25px] dark:text-[#ffffff80]">{translateText("add new folder")}</p>
+            <h1 class="title">{translateText("add new folder")}</h1>
           </div>
           <div class="flex items-center gap-5">
             <button
@@ -40,14 +40,14 @@ export function NewFolderModal() {
 
                 closeModal(true);
               }}
-              class="standardButton !w-max !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] flex items-center bg-[#E8E8E8] dark:bg-[#232323]"
+              class="icon-btn w-max"
             >
               {translateText("save")}
               <SaveDisk />
             </button>
             <button
               type="button"
-              class="standardButton !w-max !h-full !gap-0 !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom flex items-center bg-[#E8E8E8] dark:bg-[#232323]"
+              class="tooltip-delayed-bottom btn"
               onClick={() => {
                 closeModal();
               }}
@@ -67,7 +67,7 @@ export function NewFolderModal() {
             type="text"
             name=""
             id=""
-            class="!text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] w-full bg-[#E8E8E8] dark:bg-[#232323]"
+            class="input-field w-full"
             onInput={(e) => {
               setFolderName(e.currentTarget.value);
             }}

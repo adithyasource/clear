@@ -49,7 +49,7 @@ export function LanguageSelector(props) {
       class={
         props.onSettingsPage
           ? "w-full p-0 text-left"
-          : "standardButton !w-max !justify-between !p-4 !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] relative flex cursor-pointer items-center bg-[#E8E8E8] dark:bg-[#232323]"
+          : "standardButton w-max! justify-between! p-4! text-black! hover:bg-[#d6d6d6]! dark:text-white! dark:hover:bg-[#2b2b2b]! relative flex cursor-pointer items-center bg-[#E8E8E8] dark:bg-[#232323]"
       }
     >
       <span class="text-[#12121280] dark:text-[#ffffff80]">[{translateText("language")}]</span>
@@ -57,7 +57,7 @@ export function LanguageSelector(props) {
       {returnLanguageFullName(libraryData.userSettings.language)}
       <Show when={props.onSettingsPage ? uiContext.showSettingsLanguageSelector() : showLanguageSelector()}>
         <div
-          class={`absolute z-[100000] flex flex-col gap-4 border-2 border-[#1212121f] border-solid bg-[#FFFFFC] p-3 dark:border-[#ffffff1f] dark:bg-[#121212] ${
+          class={`absolute z-100000 flex flex-col gap-4 border-2 border-[#1212121f] border-solid bg-[#FFFFFC] p-3 dark:border-[#ffffff1f] dark:bg-[#121212] ${
             props.onSettingsPage ? "top-[150%]" : "top-[120%] left-[1%]"
           }`}
           onMouseLeave={() => {

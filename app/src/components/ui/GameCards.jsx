@@ -68,16 +68,16 @@ export function GameCards(props) {
                     fallback={
                       <div class="relative flex items-center justify-center">
                         <Show when={!libraryData.userSettings.gameTitle}>
-                          <span class="!max-w-[50%] absolute z-[100]">{gameId}</span>
+                          <span class="max-w-[50%]! absolute z-100">{gameId}</span>
                         </Show>
 
-                        <div class="relative z-10 mb-[7px] aspect-[2/3] w-full bg-[#F1F1F1] group-hover:outline-none group-hover:outline-[#0000001f] group-hover:outline-[2px] dark:bg-[#1C1C1C] dark:group-hover:outline-[#ffffff1f]" />
+                        <div class="relative z-10 mb-[7px] aspect-2/3 w-full bg-[#F1F1F1] group-hover:outline-hidden group-hover:outline-[#0000001f] group-hover:outline-2 dark:bg-[#1C1C1C] dark:group-hover:outline-[#ffffff1f]" />
                       </div>
                     }
                   >
                     <div class="relative flex items-center justify-center">
                       <img
-                        class="relative z-10 mb-[7px] aspect-[2/3] w-full group-hover:outline-none group-hover:outline-[#0000001f] group-hover:outline-[2px] dark:group-hover:outline-[#ffffff1f]"
+                        class="relative z-10 mb-[7px] aspect-2/3 w-full group-hover:outline-hidden group-hover:outline-[#0000001f] group-hover:outline-2 dark:group-hover:outline-[#ffffff1f]"
                         src={grid()}
                         alt=""
                       />
@@ -92,14 +92,14 @@ export function GameCards(props) {
                   fallback={
                     <div class="relative flex items-center justify-center">
                       <Show when={!libraryData.userSettings.gameTitle}>
-                        <span class="!max-w-[50%] absolute z-[100]">{gameId}</span>
+                        <span class="max-w-[50%]! absolute z-100">{gameId}</span>
                       </Show>
-                      <div class="relative z-10 mb-[7px] aspect-[2/3] w-full bg-[#F1F1F1] outline-none outline-[#0000001c] outline-[4px] duration-200 hover:outline-[#0000003b] motion-reduce:duration-100 dark:bg-[#1C1C1C] dark:outline-[#ffffff1a] dark:outline-[2px] dark:group-hover:outline-[#ffffff3b]" />
+                      <div class="relative z-10 mb-[7px] aspect-2/3 w-full bg-[#F1F1F1] outline-hidden outline-[#0000001c] outline-4 duration-200 hover:outline-[#0000003b] motion-reduce:duration-100 dark:bg-[#1C1C1C] dark:outline-[#ffffff1a] dark:outline-2 dark:group-hover:outline-[#ffffff3b]" />
                     </div>
                   }
                 >
                   <img
-                    class="relative z-10 mb-[7px] outline-none outline-[#0000001c] outline-[4px] duration-200 hover:outline-[#0000003b] motion-reduce:duration-100 dark:outline-[#ffffff1a] dark:outline-[2px] dark:group-hover:outline-[#ffffff3b]"
+                    class="relative z-10 mb-[7px] outline-hidden outline-[#0000001c] outline-4 duration-200 hover:outline-[#0000003b] motion-reduce:duration-100 dark:outline-[#ffffff1a] dark:outline-2 dark:group-hover:outline-[#ffffff3b]"
                     src={grid()}
                     alt=""
                     width="100%"
@@ -108,11 +108,11 @@ export function GameCards(props) {
 
                 <div class="absolute inset-0 opacity-80 duration-500 motion-reduce:duration-100 dark:bg-blend-screen dark:blur-[30px] dark:group-hover:blur-[50px]">
                   <img
-                    class="absolute inset-0 opacity-0 duration-500 motion-reduce:duration-100 dark:opacity-[40%] dark:group-hover:opacity-60"
+                    class="absolute inset-0 opacity-0 duration-500 motion-reduce:duration-100 dark:opacity-40 dark:group-hover:opacity-60"
                     src={grid()}
                     alt=""
                   />
-                  <div class="aspect-[2/3] w-full bg-[#000] opacity-[0%] dark:bg-[#fff] dark:opacity-[10%]" alt="" />
+                  <div class="aspect-2/3 w-full bg-black opacity-0 dark:bg-white dark:opacity-10" alt="" />
                 </div>
               </div>
             </Show>

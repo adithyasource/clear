@@ -49,9 +49,9 @@ export function EditFolderModal() {
             class={`flex justify-between ${libraryData.userSettings.language !== "en" ? "large:flex-row flex-col" : ""} `}
           >
             <div>
-              <p class="text-[#000000] text-[25px] dark:text-[#ffffff80]">
+              <h1 class="title">
                 {translateText("edit")} {folder().name}
-              </p>
+              </h1>
             </div>
 
             <div class="flex items-center gap-5">
@@ -91,11 +91,7 @@ export function EditFolderModal() {
                 </Switch>
               </button>
 
-              <button
-                type="button"
-                onClick={saveChanges}
-                class="standardButton !w-max !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] flex items-center bg-[#E8E8E8] dark:bg-[#232323]"
-              >
+              <button type="button" onClick={saveChanges} class="icon-btn w-max">
                 {translateText("save")}
                 <SaveDisk />
               </button>
@@ -109,7 +105,7 @@ export function EditFolderModal() {
                     setShowDeleteConfirm(false);
                   }, 1500);
                 }}
-                class="standardButton !w-max !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] flex items-center bg-[#E8E8E8] dark:bg-[#232323]"
+                class="icon-btn w-max"
               >
                 <span class="text-[#FF3636]">
                   {showDeleteConfirm() ? translateText("confirm?") : translateText("delete")}
@@ -119,7 +115,7 @@ export function EditFolderModal() {
 
               <button
                 type="button"
-                class="standardButton !w-max !h-full !gap-0 !text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] tooltip-delayed-bottom flex items-center bg-[#E8E8E8] dark:bg-[#232323]"
+                class="w-max icon-btn "
                 onClick={() => {
                   closeModal();
                 }}
@@ -140,7 +136,7 @@ export function EditFolderModal() {
               type="text"
               name=""
               id=""
-              class="!text-black hover:!bg-[#d6d6d6] dark:!text-white dark:hover:!bg-[#2b2b2b] w-full bg-[#E8E8E8] dark:bg-[#232323]"
+              class="input-field w-full"
               onInput={(e) => {
                 setEditedFolderName(e.currentTarget.value);
               }}
