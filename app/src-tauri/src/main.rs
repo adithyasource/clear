@@ -1,5 +1,8 @@
 // prevents additional console window on windows in release, do not remove!!
-#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+#![cfg_attr(
+    all(not(debug_assertions), target_os = "windows"),
+    windows_subsystem = "windows"
+)]
 
 use std::env;
 use std::fs;
@@ -146,35 +149,6 @@ fn delete_assets(hero_image: &str, grid_image: &str, logo: &str, icon: &str) {
     }
 }
 
-#[tauri::command]
-fn check_connection() -> String {
-    let (command, args) = if cfg!(target_os = "windows") {
-        (
-            "cmd",
-            vec![
-                "/C",
-                "ping -n 1 www.google.com > nul && echo true || echo false",
-            ],
-        )
-    } else {
-        (
-            "sh",
-            vec![
-                "-c",
-                "ping -c 1 www.google.com > /dev/null && echo true || echo false",
-            ],
-        )
-    };
-
-    let output = Command::new(command)
-        .args(args)
-        .output()
-        .expect("failed to execute process");
-
-    let output_str = String::from_utf8_lossy(&output.stdout);
-    output_str.trim().to_string()
-}
-
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
@@ -184,7 +158,6 @@ fn main() {
             close_app,
             read_steam_vdf,
             download_image,
-            check_connection,
             get_platform,
             delete_assets
         ])

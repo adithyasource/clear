@@ -494,15 +494,18 @@ export async function toggleSideBar() {
 }
 
 export async function checkIfConnectedToInternet() {
-  let connectedToInternet = await invoke("check_connection");
+  try {
+    await fetch("https://www.gstatic.com/generate_204", {
+      method: "GET",
+      cache: "no-cache",
+      mode: "no-cors", // key
+    });
 
-  connectedToInternet = connectedToInternet === "true";
-
-  if (!connectedToInternet) {
+    return true;
+  } catch {
     triggerToast("not connected to the internet :(");
+    return false;
   }
-
-  return connectedToInternet;
 }
 
 export function locationJoin(locationsList) {

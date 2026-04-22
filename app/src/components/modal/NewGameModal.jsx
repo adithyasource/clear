@@ -22,6 +22,7 @@ import { LoadingTextAndIcon } from "@/components/modal/Loading";
 import { libraryData } from "@/stores/libraryStore";
 import { LoadingModal } from "./Loading";
 import { openModal } from "../../stores/modalStore";
+import { checkIfConnectedToInternet } from "../../Globals";
 
 export function NewGameModal() {
   const selectedDataContext = useContext(SelectedDataContext);
@@ -34,6 +35,8 @@ export function NewGameModal() {
   const [showIconImageLoading, setShowIconImageLoading] = createSignal(false);
 
   const [gameLocation, setGameLocation] = createSignal();
+
+  const [showRightClickTip, setShowRightClickTip] = createSignal(false);
 
   const [gameName, setGameName] = createSignal("");
   const [favourite, setFavourite] = createSignal(false);
@@ -53,6 +56,10 @@ export function NewGameModal() {
   });
 
   async function searchGameName() {
+    if (!(await checkIfConnectedToInternet())) {
+      return;
+    }
+
     setSearchResults(undefined);
 
     try {

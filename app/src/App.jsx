@@ -290,6 +290,8 @@ function App() {
     addEventListeners();
     applicationStateContext.setSystemPlatform(await invoke("get_platform"));
 
+    console.log(await checkIfConnectedToInternet());
+
     if (await checkIfConnectedToInternet()) {
       try {
         // checks latest version and stores it in variable
