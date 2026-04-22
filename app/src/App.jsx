@@ -392,7 +392,7 @@ function App() {
           </div>
         </Show>
         <div
-          class={`h-screen w-full overflow-y-scroll rounded-none! py-5 ${(!libraryData.userSettings.showSideBar || applicationStateContext.windowWidth() <= 1000) && "px-7"}`}
+          class={`h-screen w-full overflow-y-scroll rounded-none! py-5 ${!libraryData.userSettings.showSideBar || applicationStateContext.windowWidth() <= 1000 ? "px-7" : "pr-7"}`}
         >
           <Show when={libraryData.folders && !search()}>
             <For each={libraryData.folders}>
