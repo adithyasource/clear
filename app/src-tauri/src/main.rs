@@ -89,7 +89,9 @@ fn show_window(window: Window) {
 }
 
 #[tauri::command]
-fn download_image(link: &str, location: &str) {
+async fn download_image(link: String, location: String) -> Result<(), String> {
+    use std::process::Command;
+
     let mut command = if cfg!(target_os = "windows") {
         let mut cmd = Command::new("powershell");
         cmd.args([
@@ -101,7 +103,7 @@ fn download_image(link: &str, location: &str) {
         cmd
     } else {
         let mut cmd = Command::new("curl");
-        cmd.args(["-L", "-s", "-o", location, link]);
+        cmd.args(["-L", "-s", "-o", &location, &link]);
         cmd
     };
 
@@ -111,7 +113,15 @@ fn download_image(link: &str, location: &str) {
         command.creation_flags(0x08000000);
     }
 
-    let _ = command.spawn(); // don't block UI
+    let status = command
+        .status() // <-- wait here
+        .map_err(|e| e.to_string())?;
+
+    if status.success() {
+        Ok(())
+    } else {
+        Err("Download failed".into())
+    }
 }
 
 #[tauri::command]
