@@ -8,7 +8,8 @@ use std::env;
 use std::fs;
 use std::io;
 use std::path::PathBuf;
-use std::process::{Command, Stdio};
+use std::process::Command;
+use tauri::Window;
 #[cfg(target_os = "windows")]
 use winreg::enums::*;
 #[cfg(target_os = "windows")]
@@ -16,34 +17,16 @@ use winreg::RegKey;
 
 #[tauri::command]
 fn open_location(location: &str) {
-    let mut command = if cfg!(target_os = "windows") {
-        let mut cmd = Command::new("cmd");
-        cmd.args(&["/C", "start", "", location]);
-        cmd
+    let _ = if cfg!(target_os = "windows") {
+        Command::new("explorer").arg(location).spawn()
     } else {
-        let mut cmd = Command::new("open");
-        cmd.arg(location);
-        cmd
+        Command::new("open").arg(location).spawn()
     };
-
-    #[cfg(target_os = "windows")]
-    {
-        use std::os::windows::process::CommandExt;
-        command.creation_flags(0x08000000);
-    }
-
-    let _ = command.stdout(Stdio::null()).stderr(Stdio::null()).spawn();
 }
 
 #[tauri::command]
-fn close_app() {
-    std::process::exit(0x0);
-}
-
-#[tauri::command]
-fn get_platform() -> String {
-    let platform = env::consts::OS;
-    return platform.to_string();
+fn get_platform() -> &'static str {
+    std::env::consts::OS
 }
 
 #[cfg(target_os = "windows")]
@@ -100,16 +83,25 @@ fn read_steam_vdf() -> String {
 }
 
 #[tauri::command]
-fn download_image(link: &str, location: &str) {
-    let command_str = format!("Invoke-WebRequest '{}' -Outfile '{}'", link, location);
+fn show_window(window: Window) {
+    window.show().unwrap();
+    window.set_focus().ok();
+}
 
+#[tauri::command]
+fn download_image(link: &str, location: &str) {
     let mut command = if cfg!(target_os = "windows") {
         let mut cmd = Command::new("powershell");
-        cmd.arg("-Command").arg(command_str);
+        cmd.args([
+            "-NoProfile",
+            "-NonInteractive",
+            "-Command",
+            &format!("Invoke-WebRequest -Uri '{}' -OutFile '{}'", link, location),
+        ]);
         cmd
     } else {
         let mut cmd = Command::new("curl");
-        cmd.args(&["-o", location, link]);
+        cmd.args(["-L", "-s", "-o", location, link]);
         cmd
     };
 
@@ -119,33 +111,13 @@ fn download_image(link: &str, location: &str) {
         command.creation_flags(0x08000000);
     }
 
-    let _ = command.status();
+    let _ = command.spawn(); // don't block UI
 }
 
 #[tauri::command]
-fn delete_assets(hero_image: &str, grid_image: &str, logo: &str, icon: &str) {
-    let files = [hero_image, grid_image, logo, icon];
-
-    for file in files.iter() {
-        let mut command = if cfg!(target_os = "windows") {
-            let command_str = format!(" Remove-Item -Force \"{}\"", file);
-
-            let mut cmd = Command::new("powershell");
-            cmd.arg("-Command").arg(command_str);
-            cmd
-        } else {
-            let mut cmd = Command::new("rm");
-            cmd.arg("-f").arg(file);
-            cmd
-        };
-
-        #[cfg(target_os = "windows")]
-        {
-            use std::os::windows::process::CommandExt;
-            command.creation_flags(0x08000000);
-        }
-
-        let _ = command.status();
+fn delete_assets(hero: &str, grid: &str, logo: &str, icon: &str) {
+    for file in [hero, grid, logo, icon] {
+        let _ = std::fs::remove_file(file);
     }
 }
 
@@ -155,10 +127,10 @@ fn main() {
         .plugin(tauri_plugin_fs::init())
         .invoke_handler(tauri::generate_handler![
             open_location,
-            close_app,
             read_steam_vdf,
             download_image,
             get_platform,
+            show_window,
             delete_assets
         ])
         .run(tauri::generate_context!())

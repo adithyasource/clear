@@ -28,6 +28,7 @@ import { NotepadModal } from "./components/modal/NotepadModal.jsx";
 import { SettingsModal } from "./components/modal/SettingsModal.jsx";
 import { toggleSideBar } from "./services/userSettingsService.js";
 import { search } from "./stores/searchStore.js";
+import { getCurrentWindow } from "@tauri-apps/api/window";
 
 function App() {
   const uiContext = useContext(UIContext);
@@ -91,7 +92,7 @@ function App() {
   });
 
   function closeApp() {
-    invoke("close_app");
+    getCurrentWindow().close();
   }
 
   function handleTabAndMouseBehaviour() {
@@ -290,7 +291,7 @@ function App() {
     addEventListeners();
     applicationStateContext.setSystemPlatform(await invoke("get_platform"));
 
-    console.log(await checkIfConnectedToInternet());
+    invoke("show_window");
 
     if (await checkIfConnectedToInternet()) {
       try {

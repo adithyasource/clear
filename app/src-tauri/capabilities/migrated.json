@@ -2,9 +2,7 @@
   "identifier": "migrated",
   "description": "permissions that were migrated from v1",
   "local": true,
-  "windows": [
-    "main"
-  ],
+  "windows": ["main"],
   "permissions": [
     "core:default",
     "core:path:default",
@@ -16,13 +14,12 @@
     "fs:allow-exists",
     {
       "identifier": "fs:scope",
-      "allow": [
-        "$APPDATA/**",
-        "**"
-      ]
+      "allow": ["$APPDATA/**", "**"]
     },
     "dialog:allow-open",
     "fs:default",
-    "dialog:default"
+    "dialog:default",
+    "core:window:allow-close"
   ]
 }
+

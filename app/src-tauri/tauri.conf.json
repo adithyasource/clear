@@ -32,7 +32,8 @@
         "minWidth": 640,
         "theme": "Dark",
         "useHttpsScheme": true,
-        "dragDropEnabled": false
+        "dragDropEnabled": false,
+        "visible": false
       }
     ]
   }
