@@ -506,7 +506,7 @@ export function EditGameModal() {
                         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                 }
                 alt=""
-                class={`h-[40px] w-[40px] object-scale-down! ${showIconImageLoading() ? "opacity-0" : ""}`}
+                class={`h-12 w-12 object-scale-down! ${showIconImageLoading() ? "opacity-0" : ""}`}
                 onLoad={() => {
                   setShowIconImageLoading(false);
                 }}

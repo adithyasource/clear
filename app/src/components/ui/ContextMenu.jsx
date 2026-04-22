@@ -31,7 +31,7 @@ export function ContextMenu() {
         >
           <div
             id="menu"
-            class="absolute w-max bg-[#E8E8E8] p-2 dark:bg-[#232323]"
+            class="absolute flex w-max flex-col gap-1 bg-[#E8E8E8cc] p-2 backdrop-blur-[10px] dark:bg-[#272727cc]"
             style={{
               top: `${menuData().position[1]}px`,
               left: `${menuData().position[0]}px`,
@@ -39,12 +39,7 @@ export function ContextMenu() {
           >
             <For each={menuData().items}>
               {(item, index) => (
-                <button
-                  data-index={index}
-                  class="text-black! hover:bg-[#d6d6d6]! dark:text-white! dark:hover:bg-[#2b2b2b]! bg-[#E8E8E8] dark:bg-[#232323]"
-                  type="button"
-                  onClick={item.onClick}
-                >
+                <button data-index={index} class="small-btn" type="button" onClick={item.onClick}>
                   {item.title}
                 </button>
               )}

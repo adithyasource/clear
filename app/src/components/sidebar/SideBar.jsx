@@ -59,24 +59,42 @@ export function SideBar() {
   }
 
   function parseTransferIndex(val) {
-    return val === "undefined" ? undefined : Number(val);
+    if (val === "undefined" || val === "" || val === null) {
+      return undefined;
+    }
+    return Number(val);
   }
 
   async function moveGame({ gameId, toGameIndex, toFolderIndex, fromFolderIndex }) {
-    const movingFromUncategorized = fromFolderIndex === undefined;
-
     setLibraryData(
       produce((data) => {
-        if (!movingFromUncategorized) {
-          const fromGameIndex = data.folders[fromFolderIndex].games.indexOf(gameId);
+        // finding the game in all folders to make sure it is removed correctly
+        let foundFromFolderIndex = fromFolderIndex;
+        let fromGameIndex = -1;
 
-          data.folders[fromFolderIndex].games.splice(fromGameIndex, 1);
+        if (fromFolderIndex !== undefined && data.folders[fromFolderIndex]) {
+          fromGameIndex = data.folders[fromFolderIndex].games.indexOf(gameId);
+        }
 
-          if (fromFolderIndex === toFolderIndex && fromGameIndex < toGameIndex) {
+        // if the game is not found in the fromFolderIndex, search all folders
+        if (fromGameIndex === -1) {
+          for (let i = 0; i < data.folders.length; i++) {
+            const index = data.folders[i].games.indexOf(gameId);
+            if (index !== -1) {
+              foundFromFolderIndex = i;
+              fromGameIndex = index;
+              break;
+            }
+          }
+        }
+
+        if (fromGameIndex !== -1) {
+          data.folders[foundFromFolderIndex].games.splice(fromGameIndex, 1);
+
+          if (foundFromFolderIndex === toFolderIndex && fromGameIndex < toGameIndex) {
             toGameIndex--;
           }
         }
-        console.log(data);
 
         if (toGameIndex === -1) {
           data.folders[toFolderIndex].games.push(gameId);
@@ -420,15 +438,16 @@ export function SideBar() {
             data-folder-index={-1}
             onDrop={async (e) => {
               const gameId = e.dataTransfer.getData("gameId");
-              const oldFolderName = e.dataTransfer.getData("oldFolderName");
-
-              const fromIndex = libraryData.folders.findIndex((f) => f.name === oldFolderName);
-
-              const index = libraryData.folders[fromIndex].games.indexOf(gameId);
 
               setLibraryData(
                 produce((data) => {
-                  data.folders[fromIndex].games.splice(index, 1);
+                  for (let i = 0; i < data.folders.length; i++) {
+                    const index = data.folders[i].games.indexOf(gameId);
+                    if (index !== -1) {
+                      data.folders[i].games.splice(index, 1);
+                      break;
+                    }
+                  }
                   return data;
                 }),
               );

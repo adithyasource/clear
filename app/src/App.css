@@ -98,6 +98,7 @@ dialog {
 }
 
 .currentlyDragging {
+  width: 100%;
   box-shadow: 0 -3px 0 0 #646464;
   border-top-left-radius: 0;
   border-top-right-radius: 0;

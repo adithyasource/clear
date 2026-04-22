@@ -159,6 +159,9 @@ export function NewGameModal() {
               }
             }
           }}
+          onMouseOver={(e) => {
+            showRightClickTip(true);
+          }}
           onKeyDown={(e) => {
             if (gridImage().type === "remote") {
               if (e.key === "ArrowRight" || e.key === "ArrowUp") {
@@ -316,10 +319,10 @@ export function NewGameModal() {
                   }
                 }
               }}
-              class={`!absolute p-[2px]! tooltip-center bottom-[70px] left-[20px] z-100 h-[90px] w-[250px] cursor-pointer max-large:h-[90px] max-large:w-[243px] ${
+              class={`!absolute tooltip-center bottom-[70px] left-[20px] z-100 h-[90px] w-[250px] cursor-pointer p-[2px]! max-large:h-[90px] max-large:w-[243px] ${
                 logoImage().data
-                  ? "outline-2! outline-[#E8E8E880]! hover:bg-[#E8E8E84D] hover:outline-dashed focus:bg-[#E8E8E84D] !outline:dark:bg-[#27272780] dark:focus:bg-[#2727274D] dark:hover:bg-[#2727274D]"
-                  : "dark:bg-[#272727]! bg-[#E8E8E8]"
+                  ? "outline-none outline-2! outline-[#E8E8E880]! hover:bg-[#E8E8E84D] hover:outline-dashed focus:bg-[#E8E8E84D] !outline:dark:bg-[#27272780] dark:focus:bg-[#2727274D] dark:hover:bg-[#2727274D]"
+                  : "bg-[#E8E8E8] dark:bg-[#272727]!"
               } `}
               data-tooltip={
                 logoImage().type === "remote"
@@ -385,9 +388,9 @@ export function NewGameModal() {
                   }
                 }
               }}
-              class={`group tooltip-bottom relative p-0 ${
+              class={`group tooltip-bottom relative cursor-pointer p-0 ${
                 iconImage().data
-                  ? "outline-2! outline-[#E8E8E880]! hover:outline-dashed !outline:dark:bg-[#27272780]"
+                  ? "outline-none outline-2! outline-[#E8E8E880]! hover:outline-dashed !outline:dark:bg-[#27272780]"
                   : "bg-[#E8E8E8] dark:bg-[#272727]!"
               }`}
               data-tooltip={
@@ -441,8 +444,6 @@ export function NewGameModal() {
 
                   setFetchingAssetsLoading(true);
                   await searchGameName();
-                  selectedDataContext.setSelectedGameId(undefined);
-                  setSearchResults(undefined);
                   setFetchingAssetsLoading(false);
                 }}
               >
@@ -516,7 +517,9 @@ export function NewGameModal() {
       </div>
 
       <div class="flex w-336 justify-between max-large:w-244">
-        <span class="opacity-50">{translateText("right click to empty image selection")}</span>
+        <Show when={showRightClickTip()}>
+          <span class="opacity-50">{translateText("right click to empty image selection")}</span>
+        </Show>
         <Show when={searchResults() && selectedDataContext.selectedGameId() === undefined}>
           <span class="opacity-80">{translateText("select the official name of your game")}</span>
         </Show>
