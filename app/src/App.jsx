@@ -291,8 +291,6 @@ function App() {
     addEventListeners();
     applicationStateContext.setSystemPlatform(await invoke("get_platform"));
 
-    invoke("show_window");
-
     if (await checkIfConnectedToInternet()) {
       try {
         // checks latest version and stores it in variable

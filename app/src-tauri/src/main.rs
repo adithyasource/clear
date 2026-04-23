@@ -9,7 +9,6 @@ use std::fs;
 use std::io;
 use std::path::PathBuf;
 use std::process::Command;
-use tauri::Window;
 #[cfg(target_os = "windows")]
 use winreg::enums::*;
 #[cfg(target_os = "windows")]
@@ -83,12 +82,6 @@ fn read_steam_vdf() -> String {
 }
 
 #[tauri::command]
-fn show_window(window: Window) {
-    window.show().unwrap();
-    window.set_focus().ok();
-}
-
-#[tauri::command]
 async fn download_image(link: String, location: String) -> Result<(), String> {
     use std::process::Command;
 
@@ -131,7 +124,8 @@ fn delete_asset(path: String) -> Result<(), String> {
 
 fn main() {
     tauri::Builder::default()
-        .plugin(tauri_plugin_single_instance::init(|app, args, cwd| {}))
+        .plugin(tauri_plugin_window_state::Builder::new().build())
+        .plugin(tauri_plugin_single_instance::init(|_app, _args, _cwd| {}))
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
         .invoke_handler(tauri::generate_handler![
@@ -139,7 +133,6 @@ fn main() {
             read_steam_vdf,
             download_image,
             get_platform,
-            show_window,
             delete_asset
         ])
         .run(tauri::generate_context!())
