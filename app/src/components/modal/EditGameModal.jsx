@@ -612,30 +612,30 @@ export function EditGameModal() {
       <div class="flex w-336 justify-between max-large:w-244">
         <span class="opacity-50">{translateText("right click to undo / empty image selection")}</span>
         <Show when={searchResults() && selectedDataContext.selectedGameId() === undefined}>
-          <span class="opacity-80">{translateText("select the official name of your game")}</span>
+          <span class="opacity-80">{translateText("select the official name of your game (shift+scroll)")}</span>
         </Show>
       </div>
 
       <Show when={searchResults()}>
         <Show when={selectedDataContext.selectedGameId() === undefined}>
-          <div class="gameInput flex w-336 bg-[#E8E8E8cc] backdrop-blur-[10px] max-large:w-244 dark:bg-[#272727cc]">
+          <div class="gameInput flex h-12 w-full gap-2 bg-[#E8E8E8cc] px-2 backdrop-blur-[10px] dark:bg-[#272727cc]">
             <button
               type="button"
               onClick={() => {
                 document.getElementById("SGDBGamesContainer").scrollLeft -= 40;
               }}
-              class="tooltip-delayed-bottom"
+              class="tooltip-delayed-bottom cursor-pointer"
               data-tooltip={translateText("scroll left")}
             >
               <ChevronArrow />
             </button>
-            <div id="SGDBGamesContainer" class="SGDBGamesContainer flex gap-[5px] overflow-x-auto scroll-smooth">
+            <div id="SGDBGamesContainer" class="SGDBGamesContainer flex gap-6 overflow-x-auto scroll-smooth">
               <For each={searchResults()}>
                 {(foundGame) => {
                   return (
                     <button
                       type="button"
-                      class="shrink-0"
+                      class="shrink-0 cursor-pointer"
                       onClick={async () => {
                         setSearchResults(undefined);
 
@@ -663,7 +663,7 @@ export function EditGameModal() {
               onClick={() => {
                 document.getElementById("SGDBGamesContainer").scrollLeft += 40;
               }}
-              class="tooltip-delayed-bottom"
+              class="tooltip-delayed-bottom cursor-pointer"
               data-tooltip={translateText("scroll right")}
             >
               <div class="rotate-180">

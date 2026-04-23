@@ -50,6 +50,9 @@ export function NewGameModal() {
 
   const [fetchingAssetsLoading, setFetchingAssetsLoading] = createSignal(false);
 
+  // for sgdb official game name picker scroll
+  let scrollInterval;
+
   createEffect(() => {
     console.log("type:", logoImage().type);
     console.log("data:", logoImage().data);
@@ -528,7 +531,7 @@ export function NewGameModal() {
           <span class="opacity-50">{translateText("right click to empty image selection")}</span>
         </Show>
         <Show when={searchResults() && selectedDataContext.selectedGameId() === undefined}>
-          <span class="opacity-80">{translateText("select the official name of your game")}</span>
+          <span class="opacity-80">{translateText("select the official name of your game (shift+scroll)")}</span>
         </Show>
       </div>
 
@@ -540,7 +543,7 @@ export function NewGameModal() {
               onClick={() => {
                 document.getElementById("SGDBGamesContainer").scrollLeft -= 40;
               }}
-              class="tooltip-delayed-bottom"
+              class="tooltip-delayed-bottom cursor-pointer"
               data-tooltip={translateText("scroll left")}
             >
               <ChevronArrow />
@@ -551,7 +554,7 @@ export function NewGameModal() {
                   return (
                     <button
                       type="button"
-                      class="shrink-0"
+                      class="shrink-0 cursor-pointer"
                       onClick={async () => {
                         setSearchResults(undefined);
 
@@ -576,10 +579,10 @@ export function NewGameModal() {
             </div>
             <button
               type="button"
-              onClick={() => {
+              onMouseDown={() => {
                 document.getElementById("SGDBGamesContainer").scrollLeft += 40;
               }}
-              class="tooltip-delayed-bottom"
+              class="tooltip-delayed-bottom cursor-pointer"
               data-tooltip={translateText("scroll right")}
             >
               <div class="rotate-180">

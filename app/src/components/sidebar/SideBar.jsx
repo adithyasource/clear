@@ -7,7 +7,7 @@ import { NewGameModal } from "@/components/modal/NewGameModal.jsx";
 import { NotepadModal } from "@/components/modal/NotepadModal.jsx";
 import { SettingsModal } from "@/components/modal/SettingsModal.jsx";
 import { GameCardSideBar } from "@/components/sidebar/GameCardSideBar.jsx";
-import { ApplicationStateContext, openDialog, SelectedDataContext, triggerToast, UIContext } from "@/Globals.jsx";
+import { triggerToast, UIContext } from "@/Globals.jsx";
 import {
   ChevronArrows,
   Edit,
@@ -22,10 +22,10 @@ import { writeUpdateData } from "@/services/libraryService";
 import { libraryData, setLibraryData } from "@/stores/libraryStore.js";
 import { openModal } from "@/stores/modalStore";
 import { translateText } from "@/utils/translateText";
-import { setSelectedFolder } from "../../stores/selectedFolderStore";
-import { EditFolderModal } from "../modal/EditFolderModal";
 import { toggleSideBar } from "../../services/userSettingsService";
 import { setSearch } from "../../stores/searchStore";
+import { setSelectedFolder } from "../../stores/selectedFolderStore";
+import { EditFolderModal } from "../modal/EditFolderModal";
 
 export function SideBar() {
   const uiContext = useContext(UIContext);
