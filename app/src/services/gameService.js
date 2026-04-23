@@ -52,6 +52,33 @@ export async function addGame({ name, favourite, gameLocation, gridImage, heroIm
   await writeUpdateData();
 }
 
+export async function deleteGame({ gameId }) {
+  const game = libraryData.games[gameId];
+
+  for (const key of ["grid", "hero", "logo", "icon"]) {
+    const pathField = `${key}ImagePath`;
+    if (game[pathField]) {
+      deleteImage({ type: key, fileName: game[pathField] });
+    }
+  }
+
+  setLibraryData(
+    produce((data) => {
+      // deleting game obj
+      delete data.games[gameId];
+
+      // removing from folder
+      for (const folder of data.folders) {
+        folder.games = folder.games.filter((id) => id !== gameId);
+      }
+
+      return data;
+    }),
+  );
+
+  await writeUpdateData();
+}
+
 export async function updateGame(gameId, newData) {
   console.log(gameId);
   console.log(newData);

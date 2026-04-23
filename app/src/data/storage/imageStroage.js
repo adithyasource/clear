@@ -67,4 +67,16 @@ export async function downloadImageIntoBin({ type, origin }) {
   }
 }
 
-export async function deleteImage({ type, fileName }) {}
+export async function deleteImage({ type, fileName }) {
+  try {
+    const finalPath = await getImagePath({ type, fileName });
+
+    console.log(finalPath);
+
+    await invoke("delete_asset", {
+      path: finalPath,
+    });
+  } catch (err) {
+    throw new Error("image could not be deleted: ", err);
+  }
+}

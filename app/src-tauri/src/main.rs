@@ -125,10 +125,8 @@ async fn download_image(link: String, location: String) -> Result<(), String> {
 }
 
 #[tauri::command]
-fn delete_assets(hero: &str, grid: &str, logo: &str, icon: &str) {
-    for file in [hero, grid, logo, icon] {
-        let _ = std::fs::remove_file(file);
-    }
+fn delete_asset(path: String) -> Result<(), String> {
+    std::fs::remove_file(&path).map_err(|e| e.to_string())
 }
 
 fn main() {
@@ -142,7 +140,7 @@ fn main() {
             download_image,
             get_platform,
             show_window,
-            delete_assets
+            delete_asset
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

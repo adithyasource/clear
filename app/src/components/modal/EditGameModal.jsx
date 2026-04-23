@@ -9,7 +9,7 @@ import {
   triggerToast,
   UIContext,
 } from "@/Globals.jsx";
-import { ChevronArrow, Close, SaveDisk } from "@/libraries/Icons.jsx";
+import { ChevronArrow, Close, SaveDisk, TrashDelete } from "@/libraries/Icons.jsx";
 import {
   changeImageRemoteLocationIndex,
   fetchGameAssets,
@@ -20,10 +20,10 @@ import { libraryData } from "@/stores/libraryStore";
 import { closeModal, modalShowCloseConfirm } from "@/stores/modalStore.js";
 import { translateText } from "@/utils/translateText";
 import { getImagePath } from "../../data/storage/imageStroage";
-import { selectedGame } from "../../stores/selectedGameStore";
+import { deleteGame, updateGame } from "../../services/gameService";
 import { clearContextMenuData, openContextMenu } from "../../stores/contextMenuStore";
-import { updateGame } from "../../services/gameService";
 import { openModal } from "../../stores/modalStore";
+import { selectedGame } from "../../stores/selectedGameStore";
 import { LoadingModal } from "./Loading";
 
 export function EditGameModal() {
@@ -47,6 +47,25 @@ export function EditGameModal() {
   const [heroImage, setHeroImage] = createSignal({ type: "local", data: undefined });
   const [logoImage, setLogoImage] = createSignal({ type: "local", data: undefined });
   const [iconImage, setIconImage] = createSignal({ type: "local", data: undefined });
+
+  const [showDeleteConfirm, setShowDeleteConfirm] = createSignal(false);
+
+  async function deleteGameHandler() {
+    // setting folder index before since close modal will
+    // clear out the selected context
+    const gameId = selectedGame();
+
+    closeModal(true);
+
+    // setting timeout cause closemodal animation
+    setTimeout(async () => {
+      try {
+        await deleteGame({ gameId });
+      } catch (e) {
+        triggerToast(`error deleting folder: ${e.message}`);
+      }
+    }, 220);
+  }
 
   onMount(async () => {
     originalGame().name && setGameName(originalGame().name);
@@ -183,7 +202,7 @@ export function EditGameModal() {
             <Show when={favourite()} fallback={<div class="w-max!">{translateText("favourite")}</div>}>
               <div class="relative">
                 <div class="w-max!">{translateText("favourite")}</div>
-                <div class="w-max! absolute inset-0 opacity-70 blur-[5px]">{translateText("favourite")}</div>
+                <div class="absolute inset-0 w-max! opacity-70 blur-[5px]">{translateText("favourite")}</div>
               </div>
             </Show>
           </button>
@@ -216,6 +235,21 @@ export function EditGameModal() {
             <p class="w-max!">{translateText("save")}</p>
 
             <SaveDisk />
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              showDeleteConfirm() ? deleteGameHandler() : setShowDeleteConfirm(true);
+              setTimeout(() => {
+                setShowDeleteConfirm(false);
+              }, 1500);
+            }}
+            class="icon-btn"
+          >
+            <span class="w-max text-[#FF3636]">
+              {showDeleteConfirm() ? translateText("confirm?") : translateText("delete")}
+            </span>
+            <TrashDelete />
           </button>
           <button
             type="button"
