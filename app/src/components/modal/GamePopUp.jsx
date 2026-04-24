@@ -1,6 +1,7 @@
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { createResource, Show } from "solid-js";
-import { openDialog, openGame } from "@/Globals.jsx";
+import { openDialog } from "@/Globals.jsx";
+import { openGame } from "@/services/gameService.js";
 import { Close, Play, Settings } from "@/libraries/Icons.jsx";
 import { closeModal } from "@/stores/modalStore.js";
 import { translateText } from "@/utils/translateText";
@@ -9,6 +10,7 @@ import { libraryData } from "../../stores/libraryStore";
 import { selectedGame, setSelectedGame } from "../../stores/selectedGameStore";
 import { EditGameModal } from "./EditGameModal";
 import { openModal } from "../../stores/modalStore";
+import { triggerToast } from "@/stores/toastStore.js";
 
 export function GamePopUpModal() {
   const game = () => libraryData.games[selectedGame()];
@@ -59,8 +61,16 @@ export function GamePopUpModal() {
             <button
               type="button"
               class="icon-btn-transparent w-max"
-              onClick={() => {
-                openGame(game().gameLocation);
+              onClick={async () => {
+                try {
+                  const res = await openGame(game().gameLocation);
+                  if (res?.ok) {
+                    triggerToast(res.message);
+                  }
+                } catch (err) {
+                  triggerToast(err.message);
+                }
+                return;
               }}
             >
               <div class="w-max!">{translateText("play")}</div>

@@ -2,7 +2,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { appDataDir } from "@tauri-apps/api/path";
 import { BaseDirectory, copyFile, mkdir } from "@tauri-apps/plugin-fs";
 import { folderInBaseDirExists } from "@/data/storage/fileStorage.js";
-import { locationJoin } from "@/Globals.jsx";
+import { locationJoin } from "@/utils/locationJoin.js";
 import { generateId } from "@/utils/generateId.js";
 
 export async function getImageBinPath(type) {

@@ -6,7 +6,7 @@ export function Toast() {
   return (
     <Show when={toastVisible()}>
       <div
-        class={`btn toast absolute top-[95%] left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 ${toastVisible() ? "show" : ""}`}
+        class={`btn toast absolute top-[95%] left-1/2 z-99999 -translate-x-1/2 -translate-y-1/2 p-3 ${toastVisible() ? "show" : ""}`}
         onMouseEnter={pauseTimer}
         onMouseLeave={startTimer}
         onClick={copyMessage}

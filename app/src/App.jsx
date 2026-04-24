@@ -88,10 +88,6 @@ function App() {
     return searchResults;
   });
 
-  function closeApp() {
-    getCurrentWindow().close();
-  }
-
   function handleTabAndMouseBehaviour() {
     // adds user-is-tabbing to body whenever tab is used
     // used for changing tooltip delay
@@ -181,7 +177,7 @@ function App() {
           // closes the app
           case "KeyW":
             e.preventDefault();
-            closeApp();
+            getCurrentWindow().close();
             break;
 
           // focuses game search bar

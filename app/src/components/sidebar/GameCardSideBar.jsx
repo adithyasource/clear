@@ -1,12 +1,13 @@
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { createResource, Show } from "solid-js";
 import { GamePopUpModal } from "@/components/modal/GamePopUp.jsx";
-import { openGame } from "@/Globals.jsx";
+import { openGame } from "@/services/gameService.js";
 import { openModal } from "@/stores/modalStore.js";
 import { translateText } from "@/utils/translateText";
 import { libraryData } from "../../stores/libraryStore";
 import { setSelectedGame } from "../../stores/selectedGameStore";
 import { getImagePath } from "../../data/storage/imageStroage";
+import { triggerToast } from "@/stores/toastStore.js";
 
 export function GameCardSideBar({ gameId, gameIndex, folderName, folderIndex }) {
   const game = () => libraryData.games[gameId];
@@ -51,8 +52,15 @@ export function GameCardSideBar({ gameId, gameIndex, folderName, folderIndex }) 
         e.srcElement.classList.remove("dragging");
       }}
       onClick={async (e) => {
-        if (e.ctrlKey) {
-          openGame(game().gameLocation);
+        if (e.ctrlKey && game().gameLocation) {
+          try {
+            const res = await openGame(game().gameLocation);
+            if (res?.ok) {
+              triggerToast(res.message);
+            }
+          } catch (err) {
+            triggerToast(err.message);
+          }
           return;
         }
 

@@ -13,6 +13,8 @@ function startCloseTimer() {
 }
 
 export function triggerToast(message) {
+  clearTimeout(toastTimeout);
+  setToastVisible(false);
   setToastMessage(message);
   setToastVisible(true);
   startCloseTimer();

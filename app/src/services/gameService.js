@@ -1,13 +1,16 @@
+import { invoke } from "@tauri-apps/api/core";
+import { getCurrentWindow } from "@tauri-apps/api/window";
 import { produce } from "solid-js/store";
 import { gameAssetResults } from "@/data/api/sgdbAssets";
 import { copyImageIntoBin, downloadImageIntoBin } from "@/data/storage/imageStroage";
 import { pickExecutable, pickImage } from "@/data/system/locateDialog";
-import { triggerToast } from "@/stores/toastStore.js";
 import { setLibraryData } from "@/stores/libraryStore";
+import { triggerToast } from "@/stores/toastStore.js";
 import { generateId } from "@/utils/generateId";
-import { writeUpdateData } from "./libraryService";
-import { libraryData } from "../stores/libraryStore";
+import { translateText } from "@/utils/translateText";
 import { deleteImage, getImagePath } from "../data/storage/imageStroage";
+import { libraryData } from "../stores/libraryStore";
+import { writeUpdateData } from "./libraryService";
 
 export async function processImage({ imageType, imageData }) {
   if (!imageData.data) return;
@@ -197,5 +200,29 @@ export async function fetchGameAssets({ gameId, setters }) {
     }
   } catch (err) {
     triggerToast(err);
+  }
+}
+
+export async function openGame(gameLocation) {
+  if (!gameLocation) {
+    throw new Error(translateText("no game file provided!"));
+  }
+
+  try {
+    await invoke("open_location", {
+      location: gameLocation,
+    });
+
+    console.log(libraryData.userSettings.quitAfterOpen);
+    if (libraryData.userSettings.quitAfterOpen) {
+      getCurrentWindow().close();
+    } else {
+      return {
+        ok: true,
+        message: translateText("game launched! enjoy your session!"),
+      };
+    }
+  } catch (err) {
+    throw new Error(err.message);
   }
 }

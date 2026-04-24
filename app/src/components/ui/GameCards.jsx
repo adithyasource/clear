@@ -1,12 +1,13 @@
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { createResource, For, Show } from "solid-js";
 import { GamePopUpModal } from "@/components/modal/GamePopUp.jsx";
-import { openGame } from "@/Globals.jsx";
+import { openGame } from "@/services/gameService.js";
 import { openModal } from "@/stores/modalStore.js";
 import { translateText } from "@/utils/translateText";
 import { getImagePath } from "../../data/storage/imageStroage";
 import { libraryData } from "@/stores/libraryStore";
 import { setSelectedGame } from "../../stores/selectedGameStore";
+import { triggerToast } from "@/stores/toastStore.js";
 
 export function GameCards(props) {
   return (
@@ -44,7 +45,14 @@ export function GameCards(props) {
             }}
             onClick={async (e) => {
               if (e.ctrlKey && game().gameLocation) {
-                openGame(game().gameLocation);
+                try {
+                  const res = await openGame(game().gameLocation);
+                  if (res?.ok) {
+                    triggerToast(res.message);
+                  }
+                } catch (err) {
+                  triggerToast(err.message);
+                }
                 return;
               }
               await setSelectedGame(gameId);
