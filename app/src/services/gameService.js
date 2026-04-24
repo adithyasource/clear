@@ -2,7 +2,7 @@ import { produce } from "solid-js/store";
 import { gameAssetResults } from "@/data/api/sgdbAssets";
 import { copyImageIntoBin, downloadImageIntoBin } from "@/data/storage/imageStroage";
 import { pickExecutable, pickImage } from "@/data/system/locateDialog";
-import { triggerToast } from "@/Globals";
+import { triggerToast } from "@/stores/toastStore.js";
 import { setLibraryData } from "@/stores/libraryStore";
 import { generateId } from "@/utils/generateId";
 import { writeUpdateData } from "./libraryService";

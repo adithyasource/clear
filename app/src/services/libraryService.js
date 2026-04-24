@@ -1,6 +1,6 @@
 import { dataFileRead, dataFileWrite } from "@/data/storage/fileStorage.js";
-import { triggerToast } from "@/Globals.jsx";
 import { libraryData, setLibraryData } from "@/stores/libraryStore.js";
+import { triggerToast } from "@/stores/toastStore.js";
 
 export async function getData() {
   let data;

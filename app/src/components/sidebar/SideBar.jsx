@@ -7,7 +7,7 @@ import { NewGameModal } from "@/components/modal/NewGameModal.jsx";
 import { NotepadModal } from "@/components/modal/NotepadModal.jsx";
 import { SettingsModal } from "@/components/modal/SettingsModal.jsx";
 import { GameCardSideBar } from "@/components/sidebar/GameCardSideBar.jsx";
-import { triggerToast, UIContext } from "@/Globals.jsx";
+import { UIContext } from "@/Globals.jsx";
 import {
   ChevronArrows,
   Edit,
@@ -21,6 +21,7 @@ import {
 import { writeUpdateData } from "@/services/libraryService";
 import { libraryData, setLibraryData } from "@/stores/libraryStore.js";
 import { openModal } from "@/stores/modalStore";
+import { triggerToast } from "@/stores/toastStore.js";
 import { translateText } from "@/utils/translateText";
 import { toggleSideBar } from "../../services/userSettingsService";
 import { setSearch } from "../../stores/searchStore";

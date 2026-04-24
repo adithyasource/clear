@@ -78,16 +78,14 @@ dialog {
   animation: spin 3s linear infinite;
 }
 
-.toast {
-  top: 95%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.toast.show {
+  animation:
+    normalFadeIn 0.2s forwards,
+    normalFadeOut 0.2s 1.3s forwards;
 }
 
-.toast:popover-open {
-  animation:
-    normalFadeIn 0.2s,
-    normalFadeOut 0.2s 1.3s;
+.toast.show:hover {
+  animation-play-state: paused;
 }
 
 /* MISC ------------------------------------- */

@@ -1,6 +1,6 @@
 // biome-ignore assist/source/organizeImports: <explanation>
 import { invoke } from "@tauri-apps/api/core";
-import { createEffect, createMemo, For, onMount, Show, useContext } from "solid-js";
+import { createEffect, createMemo, createSignal, For, onMount, Show, useContext } from "solid-js";
 import { ModalFrame } from "@/components/modal/ModalFrame";
 import { SideBar } from "@/components/sidebar/SideBar.jsx";
 import { GameCards } from "@/components/ui/GameCards.jsx";
@@ -9,13 +9,7 @@ import { LanguageSelector } from "@/components/ui/LanguageSelector.jsx";
 import { ChevronArrows, EmptyTray, Steam } from "@/libraries/Icons.jsx";
 import { fuzzysearch } from "@/utils/fuzzysearch.js";
 import { translateText } from "@/utils/translateText";
-import {
-  ApplicationStateContext,
-  checkIfConnectedToInternet,
-  importSteamGames,
-  triggerToast,
-  UIContext,
-} from "./Globals.jsx";
+import { ApplicationStateContext, checkIfConnectedToInternet, importSteamGames } from "./Globals.jsx";
 import "./App.css";
 import { getData } from "@/services/libraryService.js";
 import { writeUpdateData } from "./services/libraryService.js";
@@ -29,10 +23,19 @@ import { SettingsModal } from "./components/modal/SettingsModal.jsx";
 import { toggleSideBar } from "./services/userSettingsService.js";
 import { search } from "./stores/searchStore.js";
 import { getCurrentWindow } from "@tauri-apps/api/window";
+import {
+  setShowNewVersionAvailable,
+  setUserIsTabbing,
+  windowWidth,
+  setWindowWidth,
+} from "./stores/applicationStore.js";
+import { Toast } from "@/components/Toast.jsx";
+import { triggerToast } from "@/stores/toastStore.js";
 
 function App() {
-  const uiContext = useContext(UIContext);
   const applicationStateContext = useContext(ApplicationStateContext);
+
+  const [showImportAndOverwriteConfirm, setShowImportAndOverwriteConfirm] = createSignal(false);
 
   // setting up effects for styles that can be changed in settings
   createEffect(() => {
@@ -104,7 +107,7 @@ function App() {
         document.body.classList.add("user-is-tabbing");
         self.removeEventListener("keydown", handleFirstTab);
         self.addEventListener("mousedown", handleMouseDown);
-        uiContext.setUserIsTabbing(document.body.classList.contains("user-is-tabbing"));
+        setUserIsTabbing(document.body.classList.contains("user-is-tabbing"));
       }
     }
 
@@ -112,7 +115,7 @@ function App() {
       document.body.classList.remove("user-is-tabbing");
       self.removeEventListener("mousedown", handleMouseDown);
       self.addEventListener("keydown", handleFirstTab);
-      uiContext.setUserIsTabbing(document.body.classList.contains("user-is-tabbing"));
+      setUserIsTabbing(document.body.classList.contains("user-is-tabbing"));
     }
 
     self.addEventListener("keydown", handleFirstTab);
@@ -146,7 +149,7 @@ function App() {
 
     // storing window width in application state context
     self.addEventListener("resize", () => {
-      applicationStateContext.setWindowWidth(self.innerWidth);
+      setWindowWidth(self.innerWidth);
     });
 
     // keyboard handling
@@ -301,8 +304,8 @@ function App() {
         // shows new version indicators if update is available
         applicationStateContext.latestVersion().replaceAll(".", "") >
         applicationStateContext.appVersion().replaceAll(".", "")
-          ? uiContext.setShowNewVersionAvailable(true)
-          : uiContext.setShowNewVersionAvailable(false);
+          ? setShowNewVersionAvailable(true)
+          : setShowNewVersionAvailable(false);
       } catch (error) {
         triggerToast(`could not check if newer version available: ${error.message.toLowerCase()}`);
       }
@@ -315,7 +318,7 @@ function App() {
       <ModalFrame />
 
       <div class="flex gap-[30px]">
-        <Show when={libraryData.userSettings.showSideBar === false && applicationStateContext.windowWidth() >= 1000}>
+        <Show when={libraryData.userSettings.showSideBar === false && windowWidth() >= 1000}>
           <button
             type="button"
             class="absolute! tooltip-delayed-left top-[32px] right-[31px] z-20 w-[25.25px] cursor-pointer p-2 duration-150 hover:bg-[#D6D6D6] motion-reduce:duration-0 dark:hover:bg-[#232323]"
@@ -327,13 +330,13 @@ function App() {
             <ChevronArrows classProp="rotate-180" />
           </button>
         </Show>
-        <Show when={libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000}>
+        <Show when={libraryData.userSettings.showSideBar && windowWidth() >= 1000}>
           <SideBar />
         </Show>
         <Show when={libraryData.folders.length === 0}>
           <div
             class={`absolute flex h-screen w-full flex-col items-center justify-center overflow-y-scroll py-[20px] pr-[30px] ${
-              libraryData.userSettings.showSideBar && applicationStateContext.windowWidth() >= 1000
+              libraryData.userSettings.showSideBar && windowWidth() >= 1000
                 ? "large:pl-[17%] pl-[23%]"
                 : "large:pl-[30px] pl-[30px]"
             }`}
@@ -356,12 +359,10 @@ function App() {
                   data-tooltip={translateText("might not work perfectly!")}
                   onClick={() => {
                     if (libraryData.folders.steam !== undefined) {
-                      uiContext.showImportAndOverwriteConfirm()
-                        ? importSteamGames()
-                        : uiContext.setShowImportAndOverwriteConfirm(true);
+                      showImportAndOverwriteConfirm() ? importSteamGames() : setShowImportAndOverwriteConfirm(true);
 
                       setTimeout(() => {
-                        uiContext.setShowImportAndOverwriteConfirm(false);
+                        setShowImportAndOverwriteConfirm(false);
                       }, 2500);
                     } else {
                       importSteamGames();
@@ -370,7 +371,7 @@ function App() {
                 >
                   <Show when={libraryData.folders.steam !== undefined} fallback={translateText("import Steam games")}>
                     <Show
-                      when={uiContext.showImportAndOverwriteConfirm() === true}
+                      when={showImportAndOverwriteConfirm() === true}
                       fallback={translateText("import Steam games")}
                     >
                       <span class="text-[#FF3636]">
@@ -390,7 +391,7 @@ function App() {
           </div>
         </Show>
         <div
-          class={`h-screen w-full overflow-y-scroll rounded-none! py-5 ${!libraryData.userSettings.showSideBar || applicationStateContext.windowWidth() <= 1000 ? "px-7" : "pr-7"}`}
+          class={`h-screen w-full overflow-y-scroll rounded-none! py-5 ${!libraryData.userSettings.showSideBar || windowWidth() <= 1000 ? "px-7" : "pr-7"}`}
         >
           <Show when={libraryData.folders && !search()}>
             <For each={libraryData.folders}>
@@ -438,19 +439,7 @@ function App() {
           </Show>
         </div>
       </div>
-
-      <div
-        popover
-        class="toast bg-[#E8E8E8] p-[10px] text-black hover:bg-[#d6d6d6] dark:bg-[#232323] dark:text-white dark:hover:bg-[#2b2b2b]"
-      >
-        {applicationStateContext.toastMessage()}
-      </div>
-
-      <div id="abovePage">
-        <Show when={uiContext.showLoadingModal()}>
-          <Loading />
-        </Show>
-      </div>
+      <Toast />
     </>
   );
 }

@@ -2,13 +2,8 @@ import { convertFileSrc, invoke } from "@tauri-apps/api/core";
 import { createEffect, createSignal, For, Match, onMount, Show, Switch, useContext } from "solid-js";
 import { LoadingTextAndIcon } from "@/components/modal/Loading";
 import { gameSearchResults } from "@/data/api/sgdbAssets.js";
-import {
-  ApplicationStateContext,
-  getExecutableFileName,
-  SelectedDataContext,
-  triggerToast,
-  UIContext,
-} from "@/Globals.jsx";
+import { ApplicationStateContext, getExecutableFileName, SelectedDataContext, UIContext } from "@/Globals.jsx";
+import { triggerToast } from "@/stores/toastStore.js";
 import { ChevronArrow, Close, SaveDisk, TrashDelete } from "@/libraries/Icons.jsx";
 import {
   changeImageRemoteLocationIndex,

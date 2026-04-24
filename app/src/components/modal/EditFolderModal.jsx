@@ -1,10 +1,10 @@
 import { createSignal, Match, Show, Switch } from "solid-js";
-import { triggerToast } from "@/Globals.jsx";
 import { Close, SaveDisk, TrashDelete } from "@/libraries/Icons.jsx";
 import { translateText } from "@/utils/translateText";
 import { deleteFolder, updateFolder } from "../../services/folderService";
 import { libraryData } from "../../stores/libraryStore";
 import { closeModal, modalShowCloseConfirm } from "../../stores/modalStore";
+import { triggerToast } from "@/stores/toastStore.js";
 import { selectedFolder } from "../../stores/selectedFolderStore";
 
 export function EditFolderModal() {

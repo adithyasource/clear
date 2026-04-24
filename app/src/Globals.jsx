@@ -4,7 +4,6 @@ import { BaseDirectory, exists, mkdir, readTextFile, writeTextFile } from "@taur
 import { createContext, createSignal } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import { closeModal } from "@/stores/modalStore.js";
-import { textLanguages } from "@/Text.js";
 import { parseVDF } from "@/utils/parseVDF.js";
 import { translateText } from "@/utils/translateText";
 
@@ -404,23 +403,6 @@ export async function updateData() {
   await writeTextFile("data.json", JSON.stringify(libraryData, null, 4), {
     baseDir: BaseDirectory.AppData,
   }).then(getData());
-}
-
-let toastTimeout = setTimeout(() => {}, 0);
-
-export function triggerToast(message) {
-  document.querySelector(".toast").hidePopover();
-  setTimeout(() => {
-    document.querySelector(".toast").showPopover();
-  }, 20);
-
-  console.error(`toast triggered: ${message}`);
-
-  setToastMessage(message);
-  clearTimeout(toastTimeout);
-  toastTimeout = setTimeout(() => {
-    document.querySelector(".toast").hidePopover();
-  }, 1500);
 }
 
 export function openDialog(dialogData) {
