@@ -1,11 +1,9 @@
 import { Show, useContext } from "solid-js";
-import { ApplicationStateContext } from "@/Globals.jsx";
+import { SYSTEM_PLATFORM } from "@/stores/applicationStore";
 import { translateText } from "@/utils/translateText";
 
 export function Hotkeys(props) {
-  const applicationStateContext = useContext(ApplicationStateContext);
-
-  const modifierKeyPrefix = applicationStateContext.systemPlatform() === "windows" ? "ctrl" : "⌘";
+  const modifierKeyPrefix = SYSTEM_PLATFORM === "windows" ? "ctrl" : "⌘";
 
   return (
     <>

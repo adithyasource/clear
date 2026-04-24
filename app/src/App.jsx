@@ -1,6 +1,6 @@
 // biome-ignore assist/source/organizeImports: <explanation>
-import { invoke } from "@tauri-apps/api/core";
-import { createEffect, createMemo, createSignal, For, onMount, Show, useContext } from "solid-js";
+
+import { createEffect, createMemo, createSignal, For, onMount, Show } from "solid-js";
 import { ModalFrame } from "@/components/modal/ModalFrame";
 import { SideBar } from "@/components/sidebar/SideBar.jsx";
 import { GameCards } from "@/components/ui/GameCards.jsx";
@@ -9,32 +9,26 @@ import { LanguageSelector } from "@/components/ui/LanguageSelector.jsx";
 import { ChevronArrows, EmptyTray, Steam } from "@/libraries/Icons.jsx";
 import { fuzzysearch } from "@/utils/fuzzysearch.js";
 import { translateText } from "@/utils/translateText";
-import { ApplicationStateContext, checkIfConnectedToInternet, importSteamGames } from "./Globals.jsx";
+import { importSteamGames } from "./Globals.jsx";
 import "./App.css";
+import { getCurrentWindow } from "@tauri-apps/api/window";
+import { Toast } from "@/components/Toast.jsx";
 import { getData } from "@/services/libraryService.js";
-import { writeUpdateData } from "./services/libraryService.js";
-import { libraryData, setLibraryData } from "./stores/libraryStore.js";
-import { ContextMenu } from "./components/ui/ContextMenu.jsx";
-import { modalState, openModal } from "./stores/modalStore.js";
-import { NewGameModal } from "./components/modal/NewGameModal.jsx";
+import { triggerToast } from "@/stores/toastStore.js";
 import { NewFolderModal } from "./components/modal/NewFolderModal.jsx";
+import { NewGameModal } from "./components/modal/NewGameModal.jsx";
 import { NotepadModal } from "./components/modal/NotepadModal.jsx";
 import { SettingsModal } from "./components/modal/SettingsModal.jsx";
+import { ContextMenu } from "./components/ui/ContextMenu.jsx";
+import { writeUpdateData } from "./services/libraryService.js";
 import { toggleSideBar } from "./services/userSettingsService.js";
+import { SYSTEM_PLATFORM, setUserIsTabbing, setWindowWidth, windowWidth } from "./stores/applicationStore.js";
+import { libraryData, setLibraryData } from "./stores/libraryStore.js";
+import { modalState, openModal } from "./stores/modalStore.js";
 import { search } from "./stores/searchStore.js";
-import { getCurrentWindow } from "@tauri-apps/api/window";
-import {
-  setShowNewVersionAvailable,
-  setUserIsTabbing,
-  windowWidth,
-  setWindowWidth,
-} from "./stores/applicationStore.js";
-import { Toast } from "@/components/Toast.jsx";
-import { triggerToast } from "@/stores/toastStore.js";
+import { checkIfConnectedToInternet, checkIfConnectedToServer } from "@/utils/internet.js";
 
 function App() {
-  const applicationStateContext = useContext(ApplicationStateContext);
-
   const [showImportAndOverwriteConfirm, setShowImportAndOverwriteConfirm] = createSignal(false);
 
   // setting up effects for styles that can be changed in settings
@@ -154,7 +148,7 @@ function App() {
 
     // keyboard handling
     document.addEventListener("keydown", (e) => {
-      const modifierKey = applicationStateContext.systemPlatform() === "windows" ? "ctrlKey" : "metaKey";
+      const modifierKey = SYSTEM_PLATFORM === "windows" ? "ctrlKey" : "metaKey";
 
       if (e[modifierKey]) {
         // "play" tooltip added to sidebar game and game card if user is also hovering on a specific element
@@ -292,23 +286,12 @@ function App() {
     document.documentElement.classList.add("dark");
 
     addEventListeners();
-    applicationStateContext.setSystemPlatform(await invoke("get_platform"));
 
-    if (await checkIfConnectedToInternet()) {
-      try {
-        // checks latest version and stores it in variable
-        const response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?version=a`);
-        const clearVersion = await response.json();
-        applicationStateContext.setLatestVersion(clearVersion.clearVersion);
-
-        // shows new version indicators if update is available
-        applicationStateContext.latestVersion().replaceAll(".", "") >
-        applicationStateContext.appVersion().replaceAll(".", "")
-          ? setShowNewVersionAvailable(true)
-          : setShowNewVersionAvailable(false);
-      } catch (error) {
-        triggerToast(`could not check if newer version available: ${error.message.toLowerCase()}`);
-      }
+    try {
+      await checkIfConnectedToInternet();
+      await checkIfConnectedToServer();
+    } catch (err) {
+      triggerToast(err.message);
     }
   });
 

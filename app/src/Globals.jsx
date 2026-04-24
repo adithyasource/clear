@@ -6,6 +6,8 @@ import { createStore, produce } from "solid-js/store";
 import { closeModal } from "@/stores/modalStore.js";
 import { parseVDF } from "@/utils/parseVDF.js";
 import { translateText } from "@/utils/translateText";
+import { SYSTEM_PLATFORM } from "@/stores/applicationStore.js";
+import { checkIfConnectedToInternet } from "@/utils/internet.js";
 
 export const GlobalContext = createContext();
 export const UIContext = createContext();
@@ -56,7 +58,6 @@ const [currentGames, setCurrentGames] = createSignal([]);
 const [currentFolders, setCurrentFolders] = createSignal([]);
 const [searchValue, setSearchValue] = createSignal();
 const [toastMessage, setToastMessage] = createSignal("");
-const [appVersion, setAppVersion] = createSignal("1.1.1");
 const [systemPlatform, setSystemPlatform] = createSignal("");
 const [latestVersion, setLatestVersion] = createSignal("");
 const [appDataDirPath, setAppDataDirPath] = createSignal({});
@@ -130,8 +131,6 @@ export function ApplicationStateContextProvider(props) {
     setSearchValue,
     toastMessage,
     setToastMessage,
-    appVersion,
-    setAppVersion,
     systemPlatform,
     setSystemPlatform,
     latestVersion,
@@ -475,23 +474,8 @@ export async function toggleSideBar() {
   await updateData();
 }
 
-export async function checkIfConnectedToInternet() {
-  try {
-    await fetch("https://www.gstatic.com/generate_204", {
-      method: "GET",
-      cache: "no-cache",
-      mode: "no-cors", // key
-    });
-
-    return true;
-  } catch {
-    triggerToast("not connected to the internet :(");
-    return false;
-  }
-}
-
 export function locationJoin(locationsList) {
-  if (systemPlatform() === "windows") {
+  if (SYSTEM_PLATFORM === "windows") {
     return locationsList.join("\\");
   }
 
@@ -505,7 +489,7 @@ export function getExecutableFileName(location) {
 }
 
 export function getExecutableParentFolder(location) {
-  if (systemPlatform() === "windows") {
+  if (SYSTEM_PLATFORM === "windows") {
     return location.toString().split("\\").slice(0, -1).join("\\");
   }
 

@@ -283,6 +283,19 @@ def handleRequest():
     return "hey there, how'd you end up here? this is the main website: https://clear.adithya.zip"
 
 
+@app.route("/health", methods=["GET"])
+def health():
+    response = jsonify({"status": "ok"})
+    response.status_code = 200
+
+    response.headers.add(
+        "Access-Control-Allow-Origin",
+        getCORSURL(request, response),
+    )
+
+    return response
+
+
 if __name__ == "__main__":
     from waitress import serve
 

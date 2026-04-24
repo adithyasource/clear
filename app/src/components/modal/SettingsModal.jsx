@@ -9,6 +9,7 @@ import { LanguageSelector } from "@/components/ui/LanguageSelector.jsx";
 import { translateText } from "@/utils/translateText";
 import { libraryData, setLibraryData } from "@/stores/libraryStore";
 import { writeUpdateData } from "@/services/libraryService";
+import { CLEAR_VERSION } from "@/stores/applicationStore.js";
 
 export function SettingsModal() {
   const uiContext = useContext(UIContext);
@@ -229,7 +230,7 @@ export function SettingsModal() {
 
         <div class="mt-[35px] flex justify-between">
           <div>
-            clear <span class="text-[#12121280] dark:text-[#ffffff80]">v{applicationStateContext.appVersion()}</span>
+            clear <span class="text-[#12121280] dark:text-[#ffffff80]">v{CLEAR_VERSION}</span>
           </div>
           <button
             type="button"

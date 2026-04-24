@@ -17,7 +17,7 @@ import { LoadingTextAndIcon } from "@/components/modal/Loading";
 import { libraryData } from "@/stores/libraryStore";
 import { LoadingModal } from "./Loading";
 import { openModal } from "../../stores/modalStore";
-import { checkIfConnectedToInternet } from "../../Globals";
+import { checkIfConnectedToInternet } from "@/utils/internet.js";
 
 export function NewGameModal() {
   const selectedDataContext = useContext(SelectedDataContext);

@@ -1,5 +1,7 @@
+import { SYSTEM_PLATFORM } from "@/stores/applicationStore";
+
 export function locationJoin(locationsList) {
-  if (systemPlatform() === "windows") {
+  if (SYSTEM_PLATFORM === "windows") {
     return locationsList.join("\\");
   }
 
