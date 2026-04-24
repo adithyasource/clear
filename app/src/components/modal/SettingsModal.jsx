@@ -1,19 +1,17 @@
 import { invoke } from "@tauri-apps/api/core";
 import { appDataDir } from "@tauri-apps/api/path";
-import { Show, useContext } from "solid-js";
-import { ApplicationStateContext, getData, importSteamGames, UIContext } from "@/Globals.jsx";
-import { Close, Steam } from "@/libraries/Icons.jsx";
-import { closeModal } from "@/stores/modalStore.js";
+import { createSignal, Show } from "solid-js";
 import { Hotkeys } from "@/components/ui/Hotkeys.jsx";
 import { LanguageSelector } from "@/components/ui/LanguageSelector.jsx";
-import { translateText } from "@/utils/translateText";
-import { libraryData, setLibraryData } from "@/stores/libraryStore";
+import { Close, Steam } from "@/libraries/Icons.jsx";
 import { writeUpdateData } from "@/services/libraryService";
 import { CLEAR_VERSION } from "@/stores/applicationStore.js";
+import { libraryData, setLibraryData } from "@/stores/libraryStore";
+import { closeModal } from "@/stores/modalStore.js";
+import { translateText } from "@/utils/translateText";
 
 export function SettingsModal() {
-  const uiContext = useContext(UIContext);
-  const applicationStateContext = useContext(ApplicationStateContext);
+  const [showImportAndOverwriteConfirm, setShowImportAndOverwriteConfirm] = createSignal(false);
 
   return (
     <div class="flex h-screen w-screen items-center justify-center bg-[#d1d1d166] align-middle dark:bg-[#12121266]">
@@ -28,7 +26,6 @@ export function SettingsModal() {
             class="tooltip-delayed-bottom btn w-max"
             onClick={() => {
               closeModal();
-              getData();
             }}
             data-tooltip={translateText("close")}
           >
@@ -154,23 +151,6 @@ export function SettingsModal() {
           </div>
         </div>
 
-        <Show when={uiContext.showNewVersionAvailable()}>
-          <div class="mt-[35px] flex items-start gap-3">
-            <button
-              type="button"
-              class="standardButton m-0! w-max! text-black! hover:bg-[#d6d6d6]! dark:text-white! dark:hover:bg-[#2b2b2b]! flex items-center bg-[#E8E8E8] dark:bg-[#232323]"
-              onClick={() => {
-                invoke("open_location", {
-                  location: "https://clear.adithya.zip/update",
-                });
-              }}
-            >
-              {translateText("new update available!")}
-              <span class="text-[#12121280] dark:text-[#ffffff80]">v{applicationStateContext.latestVersion()}</span>
-            </button>
-          </div>
-        </Show>
-
         <div class="mt-[35px] flex flex-row items-start gap-4">
           <div>
             <button
@@ -179,12 +159,10 @@ export function SettingsModal() {
               data-tooltip={translateText("might not work perfectly!")}
               onClick={() => {
                 if (libraryData.folders.steam !== undefined) {
-                  uiContext.showImportAndOverwriteConfirm()
-                    ? importSteamGames()
-                    : uiContext.setShowImportAndOverwriteConfirm(true);
+                  showImportAndOverwriteConfirm() ? importSteamGames() : setShowImportAndOverwriteConfirm(true);
 
                   setTimeout(() => {
-                    uiContext.setShowImportAndOverwriteConfirm(false);
+                    setShowImportAndOverwriteConfirm(false);
                   }, 2500);
                 } else {
                   importSteamGames();
@@ -192,10 +170,7 @@ export function SettingsModal() {
               }}
             >
               <Show when={libraryData.folders.steam !== undefined} fallback={translateText("import Steam games")}>
-                <Show
-                  when={uiContext.showImportAndOverwriteConfirm() === true}
-                  fallback={translateText("import Steam games")}
-                >
+                <Show when={showImportAndOverwriteConfirm() === true} fallback={translateText("import Steam games")}>
                   <span class="text-[#FF3636]">
                     {translateText("current 'steam' folder will be overwritten. confirm?")}
                   </span>

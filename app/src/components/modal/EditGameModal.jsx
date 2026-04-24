@@ -1,31 +1,28 @@
 import { convertFileSrc, invoke } from "@tauri-apps/api/core";
-import { createEffect, createSignal, For, Match, onMount, Show, Switch, useContext } from "solid-js";
+import { createEffect, createSignal, For, Match, onMount, Show, Switch } from "solid-js";
 import { LoadingTextAndIcon } from "@/components/modal/Loading";
+import { LoadingModal } from "@/components/modal/Loading.jsx";
 import { gameSearchResults } from "@/data/api/sgdbAssets.js";
-import { ApplicationStateContext, getExecutableFileName, SelectedDataContext, UIContext } from "@/Globals.jsx";
-import { triggerToast } from "@/stores/toastStore.js";
+import { getImagePath } from "@/data/storage/imageStroage";
 import { ChevronArrow, Close, SaveDisk, TrashDelete } from "@/libraries/Icons.jsx";
+import { deleteGame, updateGame } from "@/services/gameService";
 import {
   changeImageRemoteLocationIndex,
   fetchGameAssets,
   selectGameLocation,
   selectImageFileLocation,
 } from "@/services/gameService.js";
+import { userIsTabbing, windowWidth } from "@/stores/applicationStore";
+import { clearContextMenuData, openContextMenu } from "@/stores/contextMenuStore";
 import { libraryData } from "@/stores/libraryStore";
+import { openModal } from "@/stores/modalStore";
 import { closeModal, modalShowCloseConfirm } from "@/stores/modalStore.js";
+import { selectedGame } from "@/stores/selectedGameStore";
+import { triggerToast } from "@/stores/toastStore.js";
+import { getExecutableFileName } from "@/utils/paths.js";
 import { translateText } from "@/utils/translateText";
-import { getImagePath } from "../../data/storage/imageStroage";
-import { deleteGame, updateGame } from "../../services/gameService";
-import { clearContextMenuData, openContextMenu } from "../../stores/contextMenuStore";
-import { openModal } from "../../stores/modalStore";
-import { selectedGame } from "../../stores/selectedGameStore";
-import { LoadingModal } from "./Loading";
 
 export function EditGameModal() {
-  const selectedDataContext = useContext(SelectedDataContext);
-  const applicationStateContext = useContext(ApplicationStateContext);
-  const uiContext = useContext(UIContext);
-
   const originalGame = () => libraryData.games[selectedGame()];
 
   const [showGridImageLoading, setShowGridImageLoading] = createSignal(false);
@@ -303,7 +300,7 @@ export function EditGameModal() {
           data-tooltip={
             gridImage().type === "remote"
               ? showGridImageLoading() === false
-                ? uiContext.userIsTabbing()
+                ? userIsTabbing()
                   ? `${gridImage().index} / ${gridImage().data.length - 1} ${translateText("arrow keys")}`
                   : `${gridImage().index} / ${gridImage().data.length - 1} ${translateText("scroll")}`
                 : `${gridImage().index} / ${gridImage().data.length - 1} ${translateText("loading")}`
@@ -368,7 +365,7 @@ export function EditGameModal() {
               data-tooltip={
                 heroImage().type === "remote"
                   ? showHeroImageLoading() === false
-                    ? uiContext.userIsTabbing()
+                    ? userIsTabbing()
                       ? `${heroImage().index} / ${heroImage().data.length - 1} ${translateText("arrow keys")}`
                       : `${heroImage().index} / ${heroImage().data.length - 1} ${translateText("scroll")}`
                     : `${heroImage().index} / ${heroImage().data.length - 1} ${translateText("loading")}`
@@ -449,7 +446,7 @@ export function EditGameModal() {
               data-tooltip={
                 logoImage().type === "remote"
                   ? showLogoImageLoading() === false
-                    ? uiContext.userIsTabbing()
+                    ? userIsTabbing()
                       ? `${logoImage().index} / ${logoImage().data.length - 1} ${translateText("arrow keys")}`
                       : `${logoImage().index} / ${logoImage().data.length - 1} ${translateText("scroll")}`
                     : `${logoImage().index} / ${logoImage().data.length - 1} ${translateText("loading")}`
@@ -518,7 +515,7 @@ export function EditGameModal() {
               data-tooltip={
                 iconImage().type === "remote"
                   ? showIconImageLoading() === false
-                    ? uiContext.userIsTabbing()
+                    ? userIsTabbing()
                       ? `${iconImage().index} / ${iconImage().data.length - 1} ${translateText("arrow keys")}`
                       : `${iconImage().index} / ${iconImage().data.length - 1} ${translateText("scroll")}`
                     : `${iconImage().index} / ${iconImage().data.length - 1} ${translateText("loading")}`
@@ -565,21 +562,16 @@ export function EditGameModal() {
                   }
 
                   searchGameName();
-                  selectedDataContext.setSelectedGameId(undefined);
                   setSearchResults(undefined);
                 }}
               >
                 <Show when={!fetchingAssetsLoading()} fallback={LoadingTextAndIcon()}>
                   <Switch>
-                    <Match
-                      when={libraryData.userSettings.language === "fr" && applicationStateContext.windowWidth() >= 1500}
-                    >
+                    <Match when={libraryData.userSettings.language === "fr" && windowWidth() >= 1500}>
                       {translateText("auto find assets")}
                     </Match>
 
-                    <Match
-                      when={libraryData.userSettings.language === "fr" && applicationStateContext.windowWidth() <= 1500}
-                    >
+                    <Match when={libraryData.userSettings.language === "fr" && windowWidth() <= 1500}>
                       <p class="w-[70px] text-clip text-[10px]">{translateText("auto find assets")}</p>
                     </Match>
 
@@ -605,15 +597,11 @@ export function EditGameModal() {
                 }}
               >
                 <Switch>
-                  <Match
-                    when={libraryData.userSettings.language === "fr" && applicationStateContext.windowWidth() >= 1500}
-                  >
+                  <Match when={libraryData.userSettings.language === "fr" && windowWidth() >= 1500}>
                     {translateText("find assets")}
                   </Match>
 
-                  <Match
-                    when={libraryData.userSettings.language === "fr" && applicationStateContext.windowWidth() <= 1500}
-                  >
+                  <Match when={libraryData.userSettings.language === "fr" && windowWidth() <= 1500}>
                     <p class="w-[100px] text-clip text-[10px]">{translateText("find assets")}</p>
                   </Match>
 
@@ -640,67 +628,65 @@ export function EditGameModal() {
 
       <div class="flex w-336 justify-between max-large:w-244">
         <span class="opacity-50">{translateText("right click to undo / empty image selection")}</span>
-        <Show when={searchResults() && selectedDataContext.selectedGameId() === undefined}>
+        <Show when={searchResults()}>
           <span class="opacity-80">{translateText("select the official name of your game (shift+scroll)")}</span>
         </Show>
       </div>
 
       <Show when={searchResults()}>
-        <Show when={selectedDataContext.selectedGameId() === undefined}>
-          <div class="gameInput flex h-12 w-full gap-2 bg-[#E8E8E8cc] px-2 backdrop-blur-[10px] dark:bg-[#272727cc]">
-            <button
-              type="button"
-              onClick={() => {
-                document.getElementById("SGDBGamesContainer").scrollLeft -= 40;
-              }}
-              class="tooltip-delayed-bottom cursor-pointer"
-              data-tooltip={translateText("scroll left")}
-            >
-              <ChevronArrow />
-            </button>
-            <div id="SGDBGamesContainer" class="SGDBGamesContainer flex gap-6 overflow-x-auto scroll-smooth">
-              <For each={searchResults()}>
-                {(foundGame) => {
-                  return (
-                    <button
-                      type="button"
-                      class="shrink-0 cursor-pointer"
-                      onClick={async () => {
-                        setSearchResults(undefined);
+        <div class="gameInput flex h-12 w-full gap-2 bg-[#E8E8E8cc] px-2 backdrop-blur-[10px] dark:bg-[#272727cc]">
+          <button
+            type="button"
+            onClick={() => {
+              document.getElementById("SGDBGamesContainer").scrollLeft -= 40;
+            }}
+            class="tooltip-delayed-bottom cursor-pointer"
+            data-tooltip={translateText("scroll left")}
+          >
+            <ChevronArrow />
+          </button>
+          <div id="SGDBGamesContainer" class="SGDBGamesContainer flex gap-6 overflow-x-auto scroll-smooth">
+            <For each={searchResults()}>
+              {(foundGame) => {
+                return (
+                  <button
+                    type="button"
+                    class="shrink-0 cursor-pointer"
+                    onClick={async () => {
+                      setSearchResults(undefined);
 
-                        setFetchingAssetsLoading(true);
-                        await fetchGameAssets({
-                          gameId: foundGame.id,
-                          setters: {
-                            grid: setGridImage,
-                            hero: setHeroImage,
-                            logo: setLogoImage,
-                            icon: setIconImage,
-                          },
-                        });
-                        setFetchingAssetsLoading(false);
-                      }}
-                    >
-                      {foundGame.name}
-                    </button>
-                  );
-                }}
-              </For>
-            </div>
-            <button
-              type="button"
-              onClick={() => {
-                document.getElementById("SGDBGamesContainer").scrollLeft += 40;
+                      setFetchingAssetsLoading(true);
+                      await fetchGameAssets({
+                        gameId: foundGame.id,
+                        setters: {
+                          grid: setGridImage,
+                          hero: setHeroImage,
+                          logo: setLogoImage,
+                          icon: setIconImage,
+                        },
+                      });
+                      setFetchingAssetsLoading(false);
+                    }}
+                  >
+                    {foundGame.name}
+                  </button>
+                );
               }}
-              class="tooltip-delayed-bottom cursor-pointer"
-              data-tooltip={translateText("scroll right")}
-            >
-              <div class="rotate-180">
-                <ChevronArrow />
-              </div>
-            </button>
+            </For>
           </div>
-        </Show>
+          <button
+            type="button"
+            onClick={() => {
+              document.getElementById("SGDBGamesContainer").scrollLeft += 40;
+            }}
+            class="tooltip-delayed-bottom cursor-pointer"
+            data-tooltip={translateText("scroll right")}
+          >
+            <div class="rotate-180">
+              <ChevronArrow />
+            </div>
+          </button>
+        </div>
       </Show>
     </div>
   );

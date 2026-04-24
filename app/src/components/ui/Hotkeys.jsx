@@ -1,4 +1,4 @@
-import { Show, useContext } from "solid-js";
+import { Show } from "solid-js";
 import { SYSTEM_PLATFORM } from "@/stores/applicationStore";
 import { translateText } from "@/utils/translateText";
 

@@ -1,6 +1,5 @@
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { createResource, Show } from "solid-js";
-import { openDialog } from "@/Globals.jsx";
 import { openGame } from "@/services/gameService.js";
 import { Close, Play, Settings } from "@/libraries/Icons.jsx";
 import { closeModal } from "@/stores/modalStore.js";

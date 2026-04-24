@@ -1,23 +1,13 @@
 /** biome-ignore-all lint/a11y/noStaticElementInteractions: <explanatioa> */
 
-import { createMemo, createSignal, For, onMount, Show, useContext } from "solid-js";
+import { createMemo, createSignal, For, onMount, Show } from "solid-js";
 import { produce } from "solid-js/store";
 import { NewFolderModal } from "@/components/modal/NewFolderModal.jsx";
 import { NewGameModal } from "@/components/modal/NewGameModal.jsx";
 import { NotepadModal } from "@/components/modal/NotepadModal.jsx";
 import { SettingsModal } from "@/components/modal/SettingsModal.jsx";
 import { GameCardSideBar } from "@/components/sidebar/GameCardSideBar.jsx";
-import { UIContext } from "@/Globals.jsx";
-import {
-  ChevronArrows,
-  Edit,
-  EyeClosed,
-  Folder,
-  GameController,
-  Notepad,
-  Settings,
-  UpdateDownload,
-} from "@/libraries/Icons.jsx";
+import { ChevronArrows, Edit, EyeClosed, Folder, GameController, Notepad, Settings } from "@/libraries/Icons.jsx";
 import { writeUpdateData } from "@/services/libraryService";
 import { libraryData, setLibraryData } from "@/stores/libraryStore.js";
 import { openModal } from "@/stores/modalStore";
@@ -29,8 +19,6 @@ import { setSelectedFolder } from "../../stores/selectedFolderStore";
 import { EditFolderModal } from "../modal/EditFolderModal";
 
 export function SideBar() {
-  const uiContext = useContext(UIContext);
-
   const [showContentSkipButton, setShowContentSkipButton] = createSignal(false);
 
   let scrollY = " ";
@@ -516,7 +504,7 @@ export function SideBar() {
         >
           <button
             type="button"
-            class={`icon-btn mt-[12px] w-full ${uiContext.showNewVersionAvailable() ? "w-[80%]!" : ""} whitespace-nowrap`}
+            class={"icon-btn mt-[12px] w-full whitespace-nowrap"}
             onClick={() => {
               openModal({ type: "notepad", component: NotepadModal, confirmWhileClosing: false });
             }}
@@ -534,13 +522,6 @@ export function SideBar() {
             }}
           >
             {translateText("settings")}
-            <Show when={uiContext.showNewVersionAvailable()}>
-              <div class="tooltip-delayed-top" data-tooltip={translateText("new update available!")}>
-                <div class="opacity-50">
-                  <UpdateDownload />
-                </div>
-              </div>
-            </Show>
             <div class="opacity-50">
               <Settings />
             </div>

@@ -1,4 +1,3 @@
-import { useContext } from "solid-js";
 import { Loading as LoadingIcon } from "@/libraries/Icons.jsx";
 import { translateText } from "@/utils/translateText";
 

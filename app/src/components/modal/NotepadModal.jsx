@@ -1,10 +1,9 @@
 import { createSignal, onCleanup } from "solid-js";
-import { getData } from "@/Globals.jsx";
 import { Close } from "@/libraries/Icons.jsx";
+import { updateNotepadData } from "@/services/notepadService";
 import { libraryData } from "@/stores/libraryStore";
 import { closeModal } from "@/stores/modalStore.js";
 import { translateText } from "@/utils/translateText";
-import { updateNotepadData } from "../../services/notepadService";
 
 export function NotepadModal() {
   const [notepadValue, setNotepadValue] = createSignal("");
@@ -49,7 +48,6 @@ export function NotepadModal() {
             class="tooltip-delayed-bottom btn w-max"
             onClick={() => {
               closeModal();
-              getData();
             }}
             data-tooltip={translateText("close")}
           >

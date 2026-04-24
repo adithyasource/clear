@@ -9,7 +9,6 @@ import { LanguageSelector } from "@/components/ui/LanguageSelector.jsx";
 import { ChevronArrows, EmptyTray, Steam } from "@/libraries/Icons.jsx";
 import { fuzzysearch } from "@/utils/fuzzysearch.js";
 import { translateText } from "@/utils/translateText";
-import { importSteamGames } from "./Globals.jsx";
 import "./App.css";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { Toast } from "@/components/Toast.jsx";

@@ -1,12 +1,11 @@
-import { createSignal, Show, useContext } from "solid-js";
-import { UIContext } from "@/Globals.jsx";
+/** biome-ignore-all lint/a11y/noStaticElementInteractions: <explanation> */
+import { createSignal, Show } from "solid-js";
 import { writeUpdateData } from "@/services/libraryService.js";
 import { libraryData, setLibraryData } from "@/stores/libraryStore.js";
 import { translateText } from "@/utils/translateText";
 
 export function LanguageSelector(props) {
-  const uiContext = useContext(UIContext);
-
+  const [showSettingsLanguageSelector, setShowSettingsLanguageSelector] = createSignal(false);
   const [showLanguageSelector, setShowLanguageSelector] = createSignal(false);
 
   async function changeLanguage(lang) {
@@ -15,7 +14,7 @@ export function LanguageSelector(props) {
     console.log(libraryData);
     await writeUpdateData();
     setShowLanguageSelector(false);
-    uiContext.setShowSettingsLanguageSelector(false);
+    setShowSettingsLanguageSelector(false);
   }
 
   function returnLanguageFullName(shortName) {
@@ -40,32 +39,30 @@ export function LanguageSelector(props) {
     <button
       type="button"
       onClick={() => {
-        props.onSettingsPage
-          ? uiContext.setShowSettingsLanguageSelector((x) => !x)
-          : setShowLanguageSelector((x) => !x);
+        props.onSettingsPage ? setShowSettingsLanguageSelector((x) => !x) : setShowLanguageSelector((x) => !x);
 
         document.getElementById("firstDropdownItem").focus();
       }}
       class={
         props.onSettingsPage
           ? "w-full p-0 text-left"
-          : "standardButton w-max! justify-between! p-4! text-black! hover:bg-[#d6d6d6]! dark:text-white! dark:hover:bg-[#2b2b2b]! relative flex cursor-pointer items-center bg-[#E8E8E8] dark:bg-[#232323]"
+          : "standardButton justify-between! relative flex w-max! cursor-pointer items-center bg-[#E8E8E8] p-4! text-black! hover:bg-[#d6d6d6]! dark:bg-[#232323] dark:text-white! dark:hover:bg-[#2b2b2b]!"
       }
     >
       <span class="text-[#12121280] dark:text-[#ffffff80]">[{translateText("language")}]</span>
       &nbsp;
       {returnLanguageFullName(libraryData.userSettings.language)}
-      <Show when={props.onSettingsPage ? uiContext.showSettingsLanguageSelector() : showLanguageSelector()}>
+      <Show when={props.onSettingsPage ? showSettingsLanguageSelector() : showLanguageSelector()}>
         <div
           class={`absolute z-100000 flex flex-col gap-4 border-2 border-[#1212121f] border-solid bg-[#FFFFFC] p-3 dark:border-[#ffffff1f] dark:bg-[#121212] ${
             props.onSettingsPage ? "top-[150%]" : "top-[120%] left-[1%]"
           }`}
           onMouseLeave={() => {
-            props.onSettingsPage ? uiContext.setShowSettingsLanguageSelector(false) : setShowLanguageSelector(false);
+            props.onSettingsPage ? setShowSettingsLanguageSelector(false) : setShowLanguageSelector(false);
           }}
           onKeyDown={(e) => {
             if (e.key === "Escape") {
-              props.onSettingsPage ? uiContext.setShowSettingsLanguageSelector(false) : setShowLanguageSelector(false);
+              props.onSettingsPage ? setShowSettingsLanguageSelector(false) : setShowLanguageSelector(false);
             }
           }}
         >
@@ -119,9 +116,7 @@ export function LanguageSelector(props) {
             type="button"
             onKeyDown={(e) => {
               if (e.key === "Tab") {
-                props.onSettingsPage
-                  ? uiContext.setShowSettingsLanguageSelector(false)
-                  : setShowLanguageSelector(false);
+                props.onSettingsPage ? setShowSettingsLanguageSelector(false) : setShowLanguageSelector(false);
               }
             }}
             class="p-0 text-left text-[#12121280] duration-150 hover:text-[#121212cc] motion-reduce:duration-0 dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
