@@ -1,7 +1,7 @@
-import { SYSTEM_PLATFORM } from "@/stores/applicationStore";
+import { systemPlatform } from "@/stores/applicationStore";
 
 export function locationJoin(locationsList) {
-  if (SYSTEM_PLATFORM === "windows") {
+  if (systemPlatform() === "windows") {
     return locationsList.join("\\");
   }
 
@@ -15,7 +15,7 @@ export function getExecutableFileName(location) {
 }
 
 export function getExecutableParentFolder(location) {
-  if (SYSTEM_PLATFORM === "windows") {
+  if (systemPlatform() === "windows") {
     return location.toString().split("\\").slice(0, -1).join("\\");
   }
 

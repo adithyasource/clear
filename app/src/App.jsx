@@ -21,7 +21,13 @@ import { SettingsModal } from "./components/modal/SettingsModal.jsx";
 import { ContextMenu } from "./components/ui/ContextMenu.jsx";
 import { writeUpdateData } from "./services/libraryService.js";
 import { toggleSideBar } from "./services/userSettingsService.js";
-import { SYSTEM_PLATFORM, setUserIsTabbing, setWindowWidth, windowWidth } from "./stores/applicationStore.js";
+import {
+  systemPlatform,
+  initApplicationStore,
+  setUserIsTabbing,
+  setWindowWidth,
+  windowWidth,
+} from "./stores/applicationStore.js";
 import { libraryData, setLibraryData } from "./stores/libraryStore.js";
 import { modalState, openModal } from "./stores/modalStore.js";
 import { search } from "./stores/searchStore.js";
@@ -143,7 +149,7 @@ function App() {
 
     // keyboard handling
     document.addEventListener("keydown", (e) => {
-      const modifierKey = SYSTEM_PLATFORM === "windows" ? "ctrlKey" : "metaKey";
+      const modifierKey = systemPlatform() === "windows" ? "ctrlKey" : "metaKey";
 
       if (e[modifierKey]) {
         // "play" tooltip added to sidebar game and game card if user is also hovering on a specific element
@@ -276,6 +282,8 @@ function App() {
   onMount(async () => {
     // fetches library data and populates the ui
     getData();
+
+    initApplicationStore();
 
     // loading app by default in dark mode so there's no bright flash of white while getData fetches preferences
     document.documentElement.classList.add("dark");

@@ -1,9 +1,9 @@
 import { Show } from "solid-js";
-import { SYSTEM_PLATFORM } from "@/stores/applicationStore";
+import { systemPlatform } from "@/stores/applicationStore";
 import { translateText } from "@/utils/translateText";
 
 export function Hotkeys(props) {
-  const modifierKeyPrefix = SYSTEM_PLATFORM === "windows" ? "ctrl" : "⌘";
+  const modifierKeyPrefix = systemPlatform() === "windows" ? "ctrl" : "⌘";
 
   return (
     <>
