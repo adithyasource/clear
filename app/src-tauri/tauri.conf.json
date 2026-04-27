@@ -8,13 +8,19 @@
   "bundle": {
     "active": true,
     "targets": ["nsis", "msi", "dmg", "app"],
-    "icon": ["icons/128x128.png", "icons/icon.ico"]
+    "icon": ["icons/128x128.png", "icons/icon.ico"],
+    "createUpdaterArtifacts": true
   },
   "productName": "clear",
   "mainBinaryName": "clear",
   "version": "1.1.0",
   "identifier": "com.adithya.clear",
-  "plugins": {},
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDFCRDFGMEI3NzA2RUMyOTAKUldTUXdtNXd0L0RSR3lZbDBnaFM0enA4clVkNE9xbEVlalBiNUR2WjZYRStTT3VzaWxpSDBDOVoK",
+      "endpoints": ["https://github.com/adithyasource/clear/releases/latest/download/latest.json"]
+    }
+  },
   "app": {
     "withGlobalTauri": false,
     "security": {
