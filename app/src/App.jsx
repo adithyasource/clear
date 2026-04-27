@@ -14,24 +14,25 @@ import { getCurrentWindow } from "@tauri-apps/api/window";
 import { Toast } from "@/components/Toast.jsx";
 import { getData } from "@/services/libraryService.js";
 import { triggerToast } from "@/stores/toastStore.js";
+import { checkIfConnectedToInternet, checkIfConnectedToServer } from "@/utils/internet.js";
 import { NewFolderModal } from "./components/modal/NewFolderModal.jsx";
 import { NewGameModal } from "./components/modal/NewGameModal.jsx";
 import { NotepadModal } from "./components/modal/NotepadModal.jsx";
 import { SettingsModal } from "./components/modal/SettingsModal.jsx";
 import { ContextMenu } from "./components/ui/ContextMenu.jsx";
 import { writeUpdateData } from "./services/libraryService.js";
+import { checkForUpdatesAndNotify } from "./services/updaterService.js";
 import { toggleSideBar } from "./services/userSettingsService.js";
 import {
-  systemPlatform,
   initApplicationStore,
   setUserIsTabbing,
   setWindowWidth,
+  systemPlatform,
   windowWidth,
 } from "./stores/applicationStore.js";
 import { libraryData, setLibraryData } from "./stores/libraryStore.js";
 import { modalState, openModal } from "./stores/modalStore.js";
 import { search } from "./stores/searchStore.js";
-import { checkIfConnectedToInternet, checkIfConnectedToServer } from "@/utils/internet.js";
 
 function App() {
   const [showImportAndOverwriteConfirm, setShowImportAndOverwriteConfirm] = createSignal(false);
@@ -293,6 +294,12 @@ function App() {
     try {
       await checkIfConnectedToInternet();
       await checkIfConnectedToServer();
+    } catch (err) {
+      triggerToast(err.message);
+    }
+
+    try {
+      await checkForUpdatesAndNotify();
     } catch (err) {
       triggerToast(err.message);
     }
