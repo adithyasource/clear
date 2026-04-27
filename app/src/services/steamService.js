@@ -31,7 +31,7 @@ export async function importSteamGames() {
     const steamVDFData = await invoke("read_steam_vdf");
 
     if (!steamVDFData || steamVDFData === "error") {
-      throw new Error("Failed to read Steam library");
+      throw new Error("failed to read Steam library");
     }
 
     const steamData = parseVDF(steamVDFData);
@@ -72,7 +72,7 @@ export async function importSteamGames() {
         setLibraryData(
           produce((data) => {
             data.games[gameId] = {
-              location: `steam://rungameid/${steamId}`,
+              gameLocation: `steam://rungameid/${steamId}`,
               name,
               gridImagePath: grid,
               heroImagePath: hero,
