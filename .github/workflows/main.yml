@@ -26,6 +26,8 @@ jobs:
             args: ""
 
     runs-on: ${{ matrix.platform }}
+    env:
+      VITE_CLEAR_API_URL: ${{ secrets.VITE_CLEAR_API_URL }}
     defaults:
       run:
         working-directory: app
@@ -70,7 +72,7 @@ jobs:
           projectPath: app
           tagName: __VERSION__
           releaseName: clear v__VERSION__
-          releaseBody: See the assets to download and install this version.
+          releaseBody: 1.1.0 re-release version.
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
