@@ -9,9 +9,47 @@ import { CLEAR_VERSION } from "@/stores/applicationStore.js";
 import { libraryData, setLibraryData } from "@/stores/libraryStore";
 import { closeModal } from "@/stores/modalStore.js";
 import { translateText } from "@/utils/translateText";
+import { importSteamGames } from "../../services/steamService";
+import { triggerToast } from "@/stores/toastStore";
+import { openModal } from "../../stores/modalStore";
+import { LoadingModal } from "./Loading";
 
 export function SettingsModal() {
   const [showImportAndOverwriteConfirm, setShowImportAndOverwriteConfirm] = createSignal(false);
+
+  async function handleImportSteamGames() {
+    const hasSteamFolder = Boolean(libraryData.folders["imported from steam"]);
+    let shouldImport = false;
+
+    if (hasSteamFolder) {
+      if (showImportAndOverwriteConfirm()) {
+        shouldImport = true;
+      } else {
+        setShowImportAndOverwriteConfirm(true);
+
+        setTimeout(() => {
+          setShowImportAndOverwriteConfirm(false);
+        }, 2500);
+      }
+    } else {
+      shouldImport = true;
+    }
+
+    if (shouldImport) {
+      try {
+        openModal({
+          type: "loading",
+          component: LoadingModal,
+        });
+
+        await importSteamGames();
+
+        closeModal(true);
+      } catch (err) {
+        triggerToast(`error: ${err.message}`);
+      }
+    }
+  }
 
   return (
     <div class="flex h-screen w-screen items-center justify-center bg-[#d1d1d166] align-middle dark:bg-[#12121266]">
@@ -157,17 +195,7 @@ export function SettingsModal() {
               type="button"
               class="tooltip-bottom icon-btn"
               data-tooltip={translateText("might not work perfectly!")}
-              onClick={() => {
-                if (libraryData.folders.steam !== undefined) {
-                  showImportAndOverwriteConfirm() ? importSteamGames() : setShowImportAndOverwriteConfirm(true);
-
-                  setTimeout(() => {
-                    setShowImportAndOverwriteConfirm(false);
-                  }, 2500);
-                } else {
-                  importSteamGames();
-                }
-              }}
+              onClick={handleImportSteamGames}
             >
               <Show when={libraryData.folders.steam !== undefined} fallback={translateText("import Steam games")}>
                 <Show when={showImportAndOverwriteConfirm() === true} fallback={translateText("import Steam games")}>

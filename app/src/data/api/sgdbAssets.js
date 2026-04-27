@@ -19,9 +19,9 @@ export async function gameSearchResults(searchQuery) {
   }
 }
 
-export async function gameAssetResults(gameId) {
+export async function gameAssetResults(gameId, length = 50) {
   try {
-    const response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?assets=${gameId}`);
+    const response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?assets=${gameId}&length=${length}`);
 
     const images = await response.json();
 
@@ -39,5 +39,24 @@ export async function gameAssetResults(gameId) {
     };
   } catch (err) {
     throw new Error(`failed to download any assets: ${err}`);
+  }
+}
+
+export async function steamGameSearchResults(steamId) {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?steamID=${steamId}`);
+    const searchResults = await response.json();
+
+    if (searchResults.data.length === 0) {
+      throw new Error("empty results");
+    }
+
+    if (!searchResults.success) {
+      throw new Error("search unsuccessful");
+    }
+
+    return searchResults;
+  } catch (err) {
+    throw new Error("could not find that game", err);
   }
 }
