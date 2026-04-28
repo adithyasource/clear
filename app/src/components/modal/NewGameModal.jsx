@@ -2,7 +2,6 @@ import { convertFileSrc, invoke } from "@tauri-apps/api/core";
 import { createEffect, createSignal, For, Match, Show, Switch } from "solid-js";
 import { LoadingTextAndIcon } from "@/components/modal/Loading";
 import { gameSearchResults } from "@/data/api/sgdbAssets.js";
-import { getExecutableFileName } from "@/utils/paths.js";
 import { ChevronArrow, Close, SaveDisk } from "@/libraries/Icons.jsx";
 import {
   addGame,
@@ -15,6 +14,7 @@ import { libraryData } from "@/stores/libraryStore";
 import { closeModal, modalShowCloseConfirm } from "@/stores/modalStore.js";
 import { triggerToast } from "@/stores/toastStore.js";
 import { checkIfConnectedToInternet } from "@/utils/internet.js";
+import { getExecutableFileName } from "@/utils/paths.js";
 import { translateText } from "@/utils/translateText";
 import { userIsTabbing, windowWidth } from "../../stores/applicationStore";
 import { openModal } from "../../stores/modalStore";
@@ -51,13 +51,11 @@ export function NewGameModal() {
   });
 
   async function searchGameName() {
-    if (!(await checkIfConnectedToInternet())) {
-      return;
-    }
-
     setSearchResults(undefined);
 
     try {
+      await checkIfConnectedToInternet();
+
       const result = await gameSearchResults(gameName());
 
       setSearchResults(result);
@@ -83,7 +81,7 @@ export function NewGameModal() {
             <Show when={favourite()} fallback={<div class="w-max!">{translateText("favourite")}</div>}>
               <div class="relative">
                 <div class="w-max!">{translateText("favourite")}</div>
-                <div class="w-max! absolute inset-0 opacity-70 blur-[5px]">{translateText("favourite")}</div>
+                <div class="absolute inset-0 w-max! opacity-70 blur-[5px]">{translateText("favourite")}</div>
               </div>
             </Show>
           </button>
@@ -161,7 +159,7 @@ export function NewGameModal() {
               }
             }
           }}
-          onMouseOver={(e) => {
+          onMouseOver={(_e) => {
             showRightClickTip(true);
           }}
           onKeyDown={(e) => {
@@ -346,7 +344,7 @@ export function NewGameModal() {
                         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                 }
                 alt=""
-                class={`object-scale-down! h-full w-full ${showLogoImageLoading() ? "opacity-0" : ""}`}
+                class={`h-full w-full object-scale-down! ${showLogoImageLoading() ? "opacity-0" : ""}`}
                 onLoad={() => {
                   setShowLogoImageLoading(false);
                 }}
@@ -502,7 +500,7 @@ export function NewGameModal() {
               onContextMenu={() => {
                 setGameLocation(undefined);
               }}
-              class="mt-0! w-max btn"
+              class="btn mt-0! w-max"
             >
               {gameLocation() === undefined ? translateText("locate game") : getExecutableFileName(gameLocation())}
             </button>
@@ -540,18 +538,27 @@ export function NewGameModal() {
                     class="shrink-0 cursor-pointer"
                     onClick={async () => {
                       setSearchResults(undefined);
-
                       setFetchingAssetsLoading(true);
-                      await fetchGameAssets({
-                        gameId: foundGame.id,
-                        setters: {
-                          grid: setGridImage,
-                          hero: setHeroImage,
-                          logo: setLogoImage,
-                          icon: setIconImage,
-                        },
-                      });
-                      setFetchingAssetsLoading(false);
+
+                      try {
+                        const { warning } = await fetchGameAssets({
+                          gameId: foundGame.id,
+                          setters: {
+                            grid: setGridImage,
+                            hero: setHeroImage,
+                            logo: setLogoImage,
+                            icon: setIconImage,
+                          },
+                        });
+
+                        if (warning) {
+                          triggerToast(warning);
+                        }
+                      } catch (e) {
+                        triggerToast(e.message);
+                      } finally {
+                        setFetchingAssetsLoading(false);
+                      }
                     }}
                   >
                     {foundGame.name}

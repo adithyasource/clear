@@ -2,8 +2,9 @@ import { invoke } from "@tauri-apps/api/core";
 import { appDataDir } from "@tauri-apps/api/path";
 import { BaseDirectory, copyFile, mkdir } from "@tauri-apps/plugin-fs";
 import { folderInBaseDirExists } from "@/data/storage/fileStorage.js";
-import { locationJoin } from "@/utils/paths.js";
+import { getErrorMessage, logError } from "@/utils/errorHandling";
 import { generateId } from "@/utils/generateId.js";
+import { locationJoin } from "@/utils/paths.js";
 
 export async function getImageBinPath(type) {
   const appDataDirPath = await appDataDir();
@@ -20,7 +21,8 @@ export async function getImageBinPath(type) {
 
     return locationJoin([appDataDirPath, type]);
   } catch (err) {
-    throw new Error(`could not find / create path for image bin: ${err}`);
+    await logError(`imageStorage.getImageBinPath.${type}`, err);
+    throw new Error(`could not find / create path for image bin: ${getErrorMessage(err)}`, { cause: err });
   }
 }
 
@@ -30,7 +32,8 @@ export async function getImagePath({ type, fileName }) {
 
     return locationJoin([binPath, fileName]);
   } catch (err) {
-    throw new Error(`could not find image path: ${err}`);
+    await logError(`imageStorage.getImagePath.${type}`, err);
+    throw new Error(`could not find image path: ${getErrorMessage(err)}`, { cause: err });
   }
 }
 
@@ -46,7 +49,8 @@ export async function copyImageIntoBin({ type, origin }) {
 
     return fileName;
   } catch (err) {
-    throw new Error("image could not be downloaded: ", err);
+    await logError(`imageStorage.copyImageIntoBin.${type}`, err);
+    throw new Error(`image could not be copied: ${getErrorMessage(err)}`, { cause: err });
   }
 }
 
@@ -63,7 +67,8 @@ export async function downloadImageIntoBin({ type, origin }) {
 
     return fileName;
   } catch (err) {
-    throw new Error("image could not be downloaded: ", err);
+    await logError(`imageStorage.downloadImageIntoBin.${type}`, err);
+    throw new Error(`image could not be downloaded: ${getErrorMessage(err)}`, { cause: err });
   }
 }
 
@@ -77,6 +82,7 @@ export async function deleteImage({ type, fileName }) {
       path: finalPath,
     });
   } catch (err) {
-    throw new Error("image could not be deleted: ", err);
+    await logError(`imageStorage.deleteImage.${type}`, err);
+    throw new Error(`image could not be deleted: ${getErrorMessage(err)}`, { cause: err });
   }
 }

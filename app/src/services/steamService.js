@@ -5,6 +5,7 @@ import { gameAssetResults, steamGameSearchResults } from "../data/api/sgdbAssets
 import { downloadImageIntoBin } from "../data/storage/imageStroage";
 import { setLibraryData } from "../stores/libraryStore";
 import { setTotalImportedSteamGames, setTotalSteamGames } from "../stores/steamStore";
+import { getErrorMessage, logError } from "../utils/errorHandling";
 import { generateId } from "../utils/generateId";
 import { parseVDF } from "../utils/parseVDF";
 import { writeUpdateData } from "./libraryService";
@@ -84,7 +85,7 @@ export async function importSteamGames() {
 
         allGameIds.push(gameId);
       } catch (err) {
-        console.error(`failed importing ${steamId}`, err);
+        await logError(`steamService.importSteamGames.import.${steamId}`, err);
       } finally {
         setTotalImportedSteamGames((x) => x + 1);
       }
@@ -103,7 +104,8 @@ export async function importSteamGames() {
 
     await writeUpdateData();
   } catch (err) {
-    throw new Error("steam import failed:", err);
+    await logError("steamService.importSteamGames", err);
+    throw new Error(`steam import failed: ${getErrorMessage(err)}`, { cause: err });
   } finally {
     setTotalImportedSteamGames(0);
     setTotalSteamGames(0);

@@ -8,9 +8,9 @@ import { writeUpdateData } from "@/services/libraryService";
 import { CLEAR_VERSION } from "@/stores/applicationStore.js";
 import { libraryData, setLibraryData } from "@/stores/libraryStore";
 import { closeModal } from "@/stores/modalStore.js";
+import { triggerToast } from "@/stores/toastStore";
 import { translateText } from "@/utils/translateText";
 import { importSteamGames } from "../../services/steamService";
-import { triggerToast } from "@/stores/toastStore";
 import { openModal } from "../../stores/modalStore";
 import { LoadingModal } from "./Loading";
 
@@ -18,7 +18,7 @@ export function SettingsModal() {
   const [showImportAndOverwriteConfirm, setShowImportAndOverwriteConfirm] = createSignal(false);
 
   async function handleImportSteamGames() {
-    const hasSteamFolder = Boolean(libraryData.folders["imported from steam"]);
+    const hasSteamFolder = libraryData.folders.some((folder) => folder.name === "imported from steam");
     let shouldImport = false;
 
     if (hasSteamFolder) {
@@ -46,6 +46,7 @@ export function SettingsModal() {
 
         closeModal(true);
       } catch (err) {
+        closeModal(true);
         triggerToast(`error: ${err.message}`);
       }
     }
@@ -197,8 +198,8 @@ export function SettingsModal() {
               data-tooltip={translateText("might not work perfectly!")}
               onClick={handleImportSteamGames}
             >
-              <Show when={libraryData.folders.steam !== undefined} fallback={translateText("import Steam games")}>
-                <Show when={showImportAndOverwriteConfirm() === true} fallback={translateText("import Steam games")}>
+              <Show when={!libraryData.folders["imported from steam"]} fallback={translateText("import Steam games")}>
+                <Show when={showImportAndOverwriteConfirm()} fallback={translateText("import Steam games")}>
                   <span class="text-[#FF3636]">
                     {translateText("current 'steam' folder will be overwritten. confirm?")}
                   </span>

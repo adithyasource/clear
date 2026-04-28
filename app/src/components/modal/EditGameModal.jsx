@@ -145,7 +145,7 @@ export function EditGameModal() {
 
     const currentImagePath = currentImage().data;
 
-    let options = [];
+    const options = [];
 
     if (currentImagePath) {
       options.push({
@@ -463,7 +463,7 @@ export function EditGameModal() {
                         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
                 }
                 alt=""
-                class={`object-scale-down! h-full w-full ${showLogoImageLoading() ? "opacity-0" : ""}`}
+                class={`h-full w-full object-scale-down! ${showLogoImageLoading() ? "opacity-0" : ""}`}
                 onLoad={() => {
                   setShowLogoImageLoading(false);
                 }}
@@ -654,18 +654,27 @@ export function EditGameModal() {
                     class="shrink-0 cursor-pointer"
                     onClick={async () => {
                       setSearchResults(undefined);
-
                       setFetchingAssetsLoading(true);
-                      await fetchGameAssets({
-                        gameId: foundGame.id,
-                        setters: {
-                          grid: setGridImage,
-                          hero: setHeroImage,
-                          logo: setLogoImage,
-                          icon: setIconImage,
-                        },
-                      });
-                      setFetchingAssetsLoading(false);
+
+                      try {
+                        const { warning } = await fetchGameAssets({
+                          gameId: foundGame.id,
+                          setters: {
+                            grid: setGridImage,
+                            hero: setHeroImage,
+                            logo: setLogoImage,
+                            icon: setIconImage,
+                          },
+                        });
+
+                        if (warning) {
+                          triggerToast(warning);
+                        }
+                      } catch (e) {
+                        triggerToast(e.message);
+                      } finally {
+                        setFetchingAssetsLoading(false);
+                      }
                     }}
                   >
                     {foundGame.name}

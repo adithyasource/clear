@@ -1,3 +1,4 @@
+import { getErrorMessage } from "@/utils/errorHandling";
 import { translateText } from "@/utils/translateText";
 
 export async function gameSearchResults(searchQuery) {
@@ -15,7 +16,7 @@ export async function gameSearchResults(searchQuery) {
 
     return searchResults.data;
   } catch (err) {
-    throw new Error("could not find that game", err);
+    throw new Error(`could not find that game: ${getErrorMessage(err)}`, { cause: err });
   }
 }
 
@@ -38,7 +39,7 @@ export async function gameAssetResults(gameId, length = 50) {
       warning: missing.length > 0 ? `${translateText("couldn't find")}: ${missing.join(", ")}` : null,
     };
   } catch (err) {
-    throw new Error(`failed to download any assets: ${err}`);
+    throw new Error(`failed to download any assets: ${getErrorMessage(err)}`, { cause: err });
   }
 }
 
@@ -57,6 +58,6 @@ export async function steamGameSearchResults(steamId) {
 
     return searchResults;
   } catch (err) {
-    throw new Error("could not find that game", err);
+    throw new Error(`could not find that game: ${getErrorMessage(err)}`, { cause: err });
   }
 }

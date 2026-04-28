@@ -1,5 +1,3 @@
-// biome-ignore assist/source/organizeImports: <explanation>
-
 import { createEffect, createMemo, createSignal, For, onMount, Show } from "solid-js";
 import { ModalFrame } from "@/components/modal/ModalFrame";
 import { SideBar } from "@/components/sidebar/SideBar.jsx";
@@ -7,6 +5,7 @@ import { GameCards } from "@/components/ui/GameCards.jsx";
 import { Hotkeys } from "@/components/ui/Hotkeys.jsx";
 import { LanguageSelector } from "@/components/ui/LanguageSelector.jsx";
 import { ChevronArrows, EmptyTray, Steam } from "@/libraries/Icons.jsx";
+import { getErrorMessage, logError } from "@/utils/errorHandling";
 import { fuzzysearch } from "@/utils/fuzzysearch.js";
 import { translateText } from "@/utils/translateText";
 import "./App.css";
@@ -281,8 +280,21 @@ function App() {
   });
 
   onMount(async () => {
+    self.addEventListener("error", (event) => {
+      logError("app.windowError", event.error ?? new Error(event.message));
+    });
+
+    self.addEventListener("unhandledrejection", (event) => {
+      logError("app.unhandledRejection", event.reason);
+      triggerToast(getErrorMessage(event.reason));
+    });
+
     // fetches library data and populates the ui
-    getData();
+    try {
+      await getData();
+    } catch (err) {
+      triggerToast(err.message);
+    }
 
     initApplicationStore();
 
@@ -350,19 +362,34 @@ function App() {
                   type="button"
                   class="standardButton tooltip-bottom flex! w-max! gap-3! bg-[#E8E8E8] text-black! hover:bg-[#d6d6d6]! dark:bg-[#232323] dark:text-white! dark:hover:bg-[#2b2b2b]!"
                   data-tooltip={translateText("might not work perfectly!")}
-                  onClick={() => {
-                    if (libraryData.folders.steam !== undefined) {
-                      showImportAndOverwriteConfirm() ? importSteamGames() : setShowImportAndOverwriteConfirm(true);
+                  onClick={async () => {
+                    if (libraryData.folders.some((folder) => folder.name === "imported from steam")) {
+                      if (showImportAndOverwriteConfirm()) {
+                        try {
+                          await importSteamGames();
+                        } catch (err) {
+                          triggerToast(`error: ${err.message}`);
+                        }
+                      } else {
+                        setShowImportAndOverwriteConfirm(true);
 
-                      setTimeout(() => {
-                        setShowImportAndOverwriteConfirm(false);
-                      }, 2500);
+                        setTimeout(() => {
+                          setShowImportAndOverwriteConfirm(false);
+                        }, 2500);
+                      }
                     } else {
-                      importSteamGames();
+                      try {
+                        await importSteamGames();
+                      } catch (err) {
+                        triggerToast(`error: ${err.message}`);
+                      }
                     }
                   }}
                 >
-                  <Show when={libraryData.folders.steam !== undefined} fallback={translateText("import Steam games")}>
+                  <Show
+                    when={libraryData.folders.some((folder) => folder.name === "imported from steam")}
+                    fallback={translateText("import Steam games")}
+                  >
                     <Show
                       when={showImportAndOverwriteConfirm() === true}
                       fallback={translateText("import Steam games")}

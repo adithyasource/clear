@@ -1,22 +1,28 @@
 import { dataFileRead, dataFileWrite } from "@/data/storage/fileStorage.js";
 import { libraryData, setLibraryData } from "@/stores/libraryStore.js";
-import { triggerToast } from "@/stores/toastStore.js";
+import { logError } from "@/utils/errorHandling";
 
 export async function getData() {
-  let data;
   try {
-    data = await dataFileRead();
+    const data = await dataFileRead();
 
     setLibraryData(data);
     console.log("data fetched");
 
     return data;
   } catch (err) {
-    triggerToast(err);
+    await logError("libraryService.getData", err);
+    throw new Error("failed to load library data", { cause: err });
   }
 }
 
 export async function writeUpdateData() {
   console.log(libraryData);
-  await dataFileWrite(libraryData);
+
+  try {
+    await dataFileWrite(libraryData);
+  } catch (err) {
+    await logError("libraryService.writeUpdateData", err);
+    throw new Error("failed to save library data", { cause: err });
+  }
 }

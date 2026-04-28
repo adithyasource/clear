@@ -1,4 +1,5 @@
 import { open } from "@tauri-apps/plugin-dialog";
+import { logError } from "@/utils/errorHandling";
 
 async function openLocateDialog(filters) {
   try {
@@ -7,7 +8,8 @@ async function openLocateDialog(filters) {
       filters: [filters],
     });
   } catch (err) {
-    console.error("file dialog open error:", err);
+    await logError("locateDialog.openLocateDialog", err);
+    return null;
   }
 }
 

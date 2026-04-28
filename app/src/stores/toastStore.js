@@ -1,4 +1,5 @@
 import { createSignal } from "solid-js";
+import { getErrorMessage } from "@/utils/errorHandling";
 
 export const [toastMessage, setToastMessage] = createSignal("");
 export const [toastVisible, setToastVisible] = createSignal(false);
@@ -15,7 +16,7 @@ function startCloseTimer() {
 export function triggerToast(message) {
   clearTimeout(toastTimeout);
   setToastVisible(false);
-  setToastMessage(message);
+  setToastMessage(getErrorMessage(message));
   setToastVisible(true);
   startCloseTimer();
 }

@@ -1,4 +1,5 @@
 import { BaseDirectory, exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
+import { logError } from "@/utils/errorHandling";
 
 const defaultData = {
   games: {},
@@ -22,16 +23,12 @@ async function dataFileExists() {
     const result = await exists("data.json", { baseDir: BaseDirectory.AppData });
     return result;
   } catch (err) {
-    console.error("error checking datafile existence:", err);
+    await logError("fileStorage.dataFileExists", err);
     return false;
   }
 }
 
 export async function dataFileWrite(json) {
-  if (!dataFileExists()) {
-    throw new Error("data file doesnt exist");
-  }
-
   await writeTextFile("data.json", JSON.stringify(json, null, 4), {
     baseDir: BaseDirectory.AppData,
   });
@@ -48,8 +45,12 @@ export async function dataFileRead() {
     });
 
     if (!content) {
-      console.error("data file was empty, replaced with default data");
-      dataFileWrite(defaultData);
+      await logError(
+        "fileStorage.dataFileRead.emptyFile",
+        new Error("data file was empty, replaced with default data"),
+      );
+      await dataFileWrite(defaultData);
+      return defaultData;
     }
 
     let parsed;
@@ -67,7 +68,7 @@ export async function dataFileRead() {
 
     return parsed;
   } catch (err) {
-    console.error("error reading datafile:", err);
+    await logError("fileStorage.dataFileRead", err);
     return defaultData;
   }
 }
@@ -76,7 +77,7 @@ export async function folderInBaseDirExists(folderName) {
   try {
     return await exists(folderName, { baseDir: BaseDirectory.AppData });
   } catch (err) {
-    console.error("error checking folder existence:", err);
+    await logError("fileStorage.folderInBaseDirExists", err);
     return false;
   }
 }

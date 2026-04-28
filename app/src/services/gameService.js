@@ -5,7 +5,7 @@ import { gameAssetResults } from "@/data/api/sgdbAssets";
 import { copyImageIntoBin, downloadImageIntoBin } from "@/data/storage/imageStroage";
 import { pickExecutable, pickImage } from "@/data/system/locateDialog";
 import { setLibraryData } from "@/stores/libraryStore";
-import { triggerToast } from "@/stores/toastStore.js";
+import { getErrorMessage, logError } from "@/utils/errorHandling";
 import { generateId } from "@/utils/generateId";
 import { translateText } from "@/utils/translateText";
 import { deleteImage, getImagePath } from "../data/storage/imageStroage";
@@ -61,7 +61,7 @@ export async function deleteGame({ gameId }) {
   for (const key of ["grid", "hero", "logo", "icon"]) {
     const pathField = `${key}ImagePath`;
     if (game[pathField]) {
-      deleteImage({ type: key, fileName: game[pathField] });
+      await deleteImage({ type: key, fileName: game[pathField] });
     }
   }
 
@@ -87,7 +87,7 @@ export async function updateGame(gameId, newData) {
   console.log(newData);
   const game = libraryData.games[gameId];
 
-  let deletionList = [];
+  const deletionList = [];
 
   const updatedGame = JSON.parse(JSON.stringify(game));
 
@@ -95,7 +95,7 @@ export async function updateGame(gameId, newData) {
     const field = `${key}Image`;
     const pathField = `${key}ImagePath`;
 
-    let newValue = newData[field];
+    const newValue = newData[field];
     const newValueData = newValue.data;
 
     const oldValueFile = game[pathField];
@@ -195,11 +195,10 @@ export async function fetchGameAssets({ gameId, setters }) {
     selectImageRemoteLocation({ data: images.logos, index: 0, setter: setters.logo });
     selectImageRemoteLocation({ data: images.icons, index: 0, setter: setters.icon });
 
-    if (warning) {
-      triggerToast(warning);
-    }
+    return { warning };
   } catch (err) {
-    triggerToast(err);
+    await logError("gameService.fetchGameAssets", err);
+    throw new Error(getErrorMessage(err), { cause: err });
   }
 }
 
@@ -223,6 +222,7 @@ export async function openGame(gameLocation) {
       };
     }
   } catch (err) {
-    throw new Error(err.message);
+    await logError("gameService.openGame", err);
+    throw new Error(getErrorMessage(err), { cause: err });
   }
 }
