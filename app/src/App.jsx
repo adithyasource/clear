@@ -1,4 +1,4 @@
-import { createEffect, createMemo, createSignal, For, onMount, Show } from "solid-js";
+import { createEffect, createMemo, For, onMount, Show } from "solid-js";
 import { ModalFrame } from "@/components/modal/ModalFrame";
 import { SideBar } from "@/components/sidebar/SideBar.jsx";
 import { GameCards } from "@/components/ui/GameCards.jsx";
@@ -20,6 +20,8 @@ import { NotepadModal } from "./components/modal/NotepadModal.jsx";
 import { SettingsModal } from "./components/modal/SettingsModal.jsx";
 import { ContextMenu } from "./components/ui/ContextMenu.jsx";
 import { writeUpdateData } from "./services/libraryService.js";
+import { importSteamGames } from "./services/steamService.js";
+import { checkForUpdatesAndNotify } from "./services/updaterService.js";
 import { toggleSideBar } from "./services/userSettingsService.js";
 import {
   initApplicationStore,
@@ -31,7 +33,6 @@ import {
 import { libraryData, setLibraryData } from "./stores/libraryStore.js";
 import { closeModal, modalState, openModal } from "./stores/modalStore.js";
 import { search } from "./stores/searchStore.js";
-import { importSteamGames } from "./services/steamService.js";
 
 function App() {
   async function handleImportSteamGames() {
