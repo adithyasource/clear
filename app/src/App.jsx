@@ -324,11 +324,11 @@ function App() {
       triggerToast(err.message);
     }
 
-    // try {
-    //   await checkForUpdatesAndNotify();
-    // } catch (err) {
-    //   triggerToast(err.message);
-    // }
+    try {
+      await checkForUpdatesAndNotify();
+    } catch (err) {
+      triggerToast(err.message);
+    }
   });
 
   return (
