@@ -1,8 +1,7 @@
 /** biome-ignore-all lint/a11y/noStaticElementInteractions: <explanation> */
 /** biome-ignore-all lint/a11y/useKeyWithClickEvents: <explanation> */
 import { For, onCleanup, onMount } from "solid-js";
-import { modalVisible } from "@/stores/modalStore";
-import { menuData, clearContextMenuData } from "../../stores/contextMenuStore";
+import { clearContextMenuData, menuData } from "../../stores/contextMenuStore";
 
 export function ContextMenu() {
   onMount(() => {
@@ -31,7 +30,7 @@ export function ContextMenu() {
         >
           <div
             id="menu"
-            class="absolute flex w-max flex-col gap-1 bg-[#E8E8E8cc] p-2 backdrop-blur-[10px] dark:bg-[#272727cc]"
+            class="absolute z-100000 flex flex-col gap-4 border-2 border-[#1212121f] border-solid bg-[#FFFFFC] p-2 dark:border-[#ffffff1f] dark:bg-[#121212]"
             style={{
               top: `${menuData().position[1]}px`,
               left: `${menuData().position[0]}px`,

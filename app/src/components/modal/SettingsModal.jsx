@@ -84,11 +84,11 @@ export function SettingsModal() {
           >
             <Show
               when={libraryData.userSettings.roundedBorders}
-              fallback={<div class="">{translateText("rounded-sm borders")}</div>}
+              fallback={<div class="">{translateText("rounded borders")}</div>}
             >
               <div class="relative">
-                <div class="">{translateText("rounded-sm borders")}</div>
-                <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("rounded-sm borders")}</div>
+                <div class="">{translateText("rounded borders")}</div>
+                <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("rounded borders")}</div>
               </div>
             </Show>
           </button>
@@ -201,7 +201,7 @@ export function SettingsModal() {
               <Show when={!libraryData.folders["imported from steam"]} fallback={translateText("import Steam games")}>
                 <Show when={showImportAndOverwriteConfirm()} fallback={translateText("import Steam games")}>
                   <span class="text-[#FF3636]">
-                    {translateText("current 'steam' folder will be overwritten. confirm?")}
+                    {translateText("'imported from steam' folder will be overwritten. confirm?")}
                   </span>
                 </Show>
               </Show>

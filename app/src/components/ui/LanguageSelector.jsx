@@ -4,7 +4,7 @@ import { writeUpdateData } from "@/services/libraryService.js";
 import { libraryData, setLibraryData } from "@/stores/libraryStore.js";
 import { translateText } from "@/utils/translateText";
 
-export function LanguageSelector(props) {
+export function LanguageSelector({ onSettingsPage }) {
   const [showSettingsLanguageSelector, setShowSettingsLanguageSelector] = createSignal(false);
   const [showLanguageSelector, setShowLanguageSelector] = createSignal(false);
 
@@ -39,36 +39,32 @@ export function LanguageSelector(props) {
     <button
       type="button"
       onClick={() => {
-        props.onSettingsPage ? setShowSettingsLanguageSelector((x) => !x) : setShowLanguageSelector((x) => !x);
+        onSettingsPage ? setShowSettingsLanguageSelector((x) => !x) : setShowLanguageSelector((x) => !x);
 
         document.getElementById("firstDropdownItem").focus();
       }}
-      class={
-        props.onSettingsPage
-          ? "w-full p-0 text-left"
-          : "standardButton justify-between! relative flex w-max! cursor-pointer items-center bg-[#E8E8E8] p-4! text-black! hover:bg-[#d6d6d6]! dark:bg-[#232323] dark:text-white! dark:hover:bg-[#2b2b2b]!"
-      }
+      class={onSettingsPage ? "w-full cursor-pointer p-0 text-left" : "btn relative"}
     >
       <span class="text-[#12121280] dark:text-[#ffffff80]">[{translateText("language")}]</span>
       &nbsp;
       {returnLanguageFullName(libraryData.userSettings.language)}
-      <Show when={props.onSettingsPage ? showSettingsLanguageSelector() : showLanguageSelector()}>
+      <Show when={onSettingsPage ? showSettingsLanguageSelector() : showLanguageSelector()}>
         <div
           class={`absolute z-100000 flex flex-col gap-4 border-2 border-[#1212121f] border-solid bg-[#FFFFFC] p-3 dark:border-[#ffffff1f] dark:bg-[#121212] ${
-            props.onSettingsPage ? "top-[150%]" : "top-[120%] left-[1%]"
+            onSettingsPage ? "top-[150%]" : "top-[120%] left-[1%]"
           }`}
           onMouseLeave={() => {
-            props.onSettingsPage ? setShowSettingsLanguageSelector(false) : setShowLanguageSelector(false);
+            onSettingsPage ? setShowSettingsLanguageSelector(false) : setShowLanguageSelector(false);
           }}
           onKeyDown={(e) => {
             if (e.key === "Escape") {
-              props.onSettingsPage ? setShowSettingsLanguageSelector(false) : setShowLanguageSelector(false);
+              onSettingsPage ? setShowSettingsLanguageSelector(false) : setShowLanguageSelector(false);
             }
           }}
         >
           <button
             type="button"
-            class="p-0 text-left text-[#12121280] duration-150 hover:text-[#121212cc] motion-reduce:duration-0 dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
+            class="language-item"
             id="firstDropdownItem"
             onClick={() => {
               changeLanguage("en");
@@ -78,7 +74,7 @@ export function LanguageSelector(props) {
           </button>
           <button
             type="button"
-            class="p-0 text-left text-[#12121280] duration-75 hover:text-[#121212cc] motion-reduce:duration-0 dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
+            class="language-item"
             onClick={() => {
               changeLanguage("fr");
             }}
@@ -87,7 +83,7 @@ export function LanguageSelector(props) {
           </button>
           <button
             type="button"
-            class="p-0 text-left text-[#12121280] duration-75 hover:text-[#121212cc] motion-reduce:duration-0 dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
+            class="language-item"
             onClick={() => {
               changeLanguage("ru");
             }}
@@ -96,7 +92,7 @@ export function LanguageSelector(props) {
           </button>
           <button
             type="button"
-            class="p-0 text-left text-[#12121280] duration-150 hover:text-[#121212cc] motion-reduce:duration-0 dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
+            class="language-item"
             onClick={() => {
               changeLanguage("jp");
             }}
@@ -105,7 +101,7 @@ export function LanguageSelector(props) {
           </button>
           <button
             type="button"
-            class="p-0 text-left text-[#12121280] duration-150 hover:text-[#121212cc] motion-reduce:duration-0 dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
+            class="language-item"
             onClick={() => {
               changeLanguage("es");
             }}
@@ -116,10 +112,10 @@ export function LanguageSelector(props) {
             type="button"
             onKeyDown={(e) => {
               if (e.key === "Tab") {
-                props.onSettingsPage ? setShowSettingsLanguageSelector(false) : setShowLanguageSelector(false);
+                onSettingsPage ? setShowSettingsLanguageSelector(false) : setShowLanguageSelector(false);
               }
             }}
-            class="p-0 text-left text-[#12121280] duration-150 hover:text-[#121212cc] motion-reduce:duration-0 dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]"
+            class="language-item"
             onClick={() => {
               changeLanguage("hi");
             }}

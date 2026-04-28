@@ -7,7 +7,7 @@ export function Hotkeys(props) {
 
   return (
     <>
-      <div class={`mt-[35px] grid gap-y-4 ${props.onSettingsPage ? "grid-cols-3" : "grid-cols-2"}`}>
+      <div class={`mt-8.75 grid gap-y-4 ${props.onSettingsPage ? "grid-cols-3" : "grid-cols-2"}`}>
         <div class="flex items-center gap-3">
           <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
             {modifierKeyPrefix} + n
@@ -79,7 +79,7 @@ export function Hotkeys(props) {
       </div>
 
       <Show when={!props.onSettingsPage}>
-        <div class="mt-[35px] grid gap-y-4">
+        <div class="mt-8.75 grid gap-y-4">
           <div class="flex items-center gap-3">
             <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
               {modifierKeyPrefix} + f

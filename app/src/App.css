@@ -61,6 +61,12 @@ dialog {
   @apply text-3xl opacity-50 text-black dark:text-white;
 }
 
+.language-item {
+  @apply  p-0 text-left text-[#12121280] duration-150 hover:text-[#121212cc]
+          motion-reduce:duration-0 dark:text-[#ffffff80] dark:hover:text-[#ffffffcc]
+          cursor-pointer w-max
+}
+
 #modal.showModal {
   animation: dialogFadeIn 0.3s ease forwards;
 }

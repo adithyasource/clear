@@ -112,20 +112,15 @@ export function GamePopUpModal() {
           <img src={hero()} alt="" class="aspect-96/31 h-[350px] max-large:h-[270px]" />
         </Show>
 
-        <div class="absolute bottom-[30px] left-[25px] flex h-[70px] w-[300px] items-center align-middle max-large:bottom-[15px]">
-          <Show
-            when={logo()}
-            fallback={
-              <div class="dark:bg-[#272727]! absolute bottom-[5px] h-[90px] w-[250px] bg-[#E8E8E8] max-large:h-[70px] max-large:w-[170px]" />
-            }
-          >
+        <Show when={logo()}>
+          <div class="absolute bottom-[30px] left-[25px] flex h-[70px] w-[300px] items-center align-middle max-large:bottom-[15px]">
             <img
               src={logo()}
               alt=""
               class="relative aspect-auto max-h-[100px] max-w-[400px] max-large:max-h-[70px] max-large:max-w-[300px]"
             />
-          </Show>
-        </div>
+          </div>
+        </Show>
       </div>
     </div>
   );

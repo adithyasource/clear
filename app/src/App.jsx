@@ -20,7 +20,6 @@ import { NotepadModal } from "./components/modal/NotepadModal.jsx";
 import { SettingsModal } from "./components/modal/SettingsModal.jsx";
 import { ContextMenu } from "./components/ui/ContextMenu.jsx";
 import { writeUpdateData } from "./services/libraryService.js";
-import { checkForUpdatesAndNotify } from "./services/updaterService.js";
 import { toggleSideBar } from "./services/userSettingsService.js";
 import {
   initApplicationStore,
@@ -30,11 +29,26 @@ import {
   windowWidth,
 } from "./stores/applicationStore.js";
 import { libraryData, setLibraryData } from "./stores/libraryStore.js";
-import { modalState, openModal } from "./stores/modalStore.js";
+import { closeModal, modalState, openModal } from "./stores/modalStore.js";
 import { search } from "./stores/searchStore.js";
+import { importSteamGames } from "./services/steamService.js";
 
 function App() {
-  const [showImportAndOverwriteConfirm, setShowImportAndOverwriteConfirm] = createSignal(false);
+  async function handleImportSteamGames() {
+    try {
+      openModal({
+        type: "loading",
+        component: LoadingModal,
+      });
+
+      await importSteamGames();
+
+      closeModal(true);
+    } catch (err) {
+      closeModal(true);
+      triggerToast(`error: ${err.message}`);
+    }
+  }
 
   // setting up effects for styles that can be changed in settings
   createEffect(() => {
@@ -310,11 +324,11 @@ function App() {
       triggerToast(err.message);
     }
 
-    try {
-      await checkForUpdatesAndNotify();
-    } catch (err) {
-      triggerToast(err.message);
-    }
+    // try {
+    //   await checkForUpdatesAndNotify();
+    // } catch (err) {
+    //   triggerToast(err.message);
+    // }
   });
 
   return (
@@ -322,11 +336,11 @@ function App() {
       <ContextMenu />
       <ModalFrame />
 
-      <div class="flex gap-[30px]">
+      <div class="flex gap-7.5">
         <Show when={libraryData.userSettings.showSideBar === false && windowWidth() >= 1000}>
           <button
             type="button"
-            class="absolute! tooltip-delayed-left top-[32px] right-[31px] z-20 w-[25.25px] cursor-pointer p-2 duration-150 hover:bg-[#D6D6D6] motion-reduce:duration-0 dark:hover:bg-[#232323]"
+            class="absolute! tooltip-delayed-left top-8 right-7 z-20 w-[25.25px] cursor-pointer p-2 duration-150 hover:bg-[#D6D6D6] motion-reduce:duration-0 dark:hover:bg-[#232323]"
             onClick={() => {
               toggleSideBar();
             }}
@@ -340,10 +354,10 @@ function App() {
         </Show>
         <Show when={libraryData.folders.length === 0}>
           <div
-            class={`absolute flex h-screen w-full flex-col items-center justify-center overflow-y-scroll py-[20px] pr-[30px] ${
+            class={`absolute flex h-screen w-full flex-col items-center justify-center overflow-y-scroll py-5 pr-7.5 ${
               libraryData.userSettings.showSideBar && windowWidth() >= 1000
                 ? "large:pl-[17%] pl-[23%]"
-                : "large:pl-[30px] pl-[30px]"
+                : "large:pl-7.5 pl-7.5"
             }`}
           >
             <div class="z-50!">
@@ -357,49 +371,13 @@ function App() {
                 <br />- {translateText("don't forget to check out the settings!")}
               </p>
 
-              <div class="mt-[35px] flex gap-6">
+              <div class="mt-8.5 flex gap-6">
                 <button
                   type="button"
-                  class="standardButton tooltip-bottom flex! w-max! gap-3! bg-[#E8E8E8] text-black! hover:bg-[#d6d6d6]! dark:bg-[#232323] dark:text-white! dark:hover:bg-[#2b2b2b]!"
+                  class="standardButton tooltip-bottom icon-btn w-max!"
                   data-tooltip={translateText("might not work perfectly!")}
-                  onClick={async () => {
-                    if (libraryData.folders.some((folder) => folder.name === "imported from steam")) {
-                      if (showImportAndOverwriteConfirm()) {
-                        try {
-                          await importSteamGames();
-                        } catch (err) {
-                          triggerToast(`error: ${err.message}`);
-                        }
-                      } else {
-                        setShowImportAndOverwriteConfirm(true);
-
-                        setTimeout(() => {
-                          setShowImportAndOverwriteConfirm(false);
-                        }, 2500);
-                      }
-                    } else {
-                      try {
-                        await importSteamGames();
-                      } catch (err) {
-                        triggerToast(`error: ${err.message}`);
-                      }
-                    }
-                  }}
+                  onClick={handleImportSteamGames}
                 >
-                  <Show
-                    when={libraryData.folders.some((folder) => folder.name === "imported from steam")}
-                    fallback={translateText("import Steam games")}
-                  >
-                    <Show
-                      when={showImportAndOverwriteConfirm() === true}
-                      fallback={translateText("import Steam games")}
-                    >
-                      <span class="text-[#FF3636]">
-                        {translateText("current 'steam' folder will be overwritten. confirm?")}
-                      </span>
-                    </Show>
-                  </Show>
-
                   <Steam />
                 </button>
 
@@ -418,7 +396,7 @@ function App() {
               {(folder) => {
                 return (
                   <Show when={folder.games.length !== 0 && !folder.hide}>
-                    <div class="mb-[40px]">
+                    <div class="mb-10">
                       <Show when={libraryData.userSettings.folderTitle}>
                         <h1 class="title">{folder.name}</h1>
                       </Show>

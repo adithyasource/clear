@@ -1,8 +1,6 @@
 import { produce } from "solid-js/store";
 import { setLibraryData } from "@/stores/libraryStore";
 import { writeUpdateData } from "./libraryService";
-import { setSelectedFolder } from "../stores/selectedFolderStore";
-import { batch } from "solid-js";
 
 export async function addFolder({ name, hide }) {
   if (!name) {
