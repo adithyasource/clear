@@ -243,7 +243,7 @@ function App() {
           </Show>
 
           <Show when={search()}>
-            <div>
+            <div class="pl-2">
               <div
                 class={`mt-4 grid gap-5 ${returnGridStyleForGameCard(
                   libraryData.userSettings.zoomLevel,
