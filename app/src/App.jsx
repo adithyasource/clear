@@ -213,20 +213,22 @@ function App() {
             </div>
           </div>
         </Show>
+
+        {/* seperating out pr and pl here and adding it back in the folder is because we want to fix the style for the tabbing */}
         <div
-          class={`h-screen w-full overflow-y-scroll rounded-none! py-5 ${!libraryData.userSettings.showSideBar || windowWidth() <= 1000 ? "px-7" : "pr-7"}`}
+          class={`h-screen w-full overflow-y-scroll rounded-none! py-5 ${!libraryData.userSettings.showSideBar || windowWidth() <= 1000 ? "pr-7 pl-5" : "pr-7"}`}
         >
           <Show when={libraryData.folders && !search()}>
             <For each={libraryData.folders}>
               {(folder) => {
                 return (
                   <Show when={folder.games.length !== 0 && !folder.hide}>
-                    <div class="mb-10">
+                    <div class="mb-10 pl-2">
                       <Show when={libraryData.userSettings.folderTitle}>
                         <h1 class="title">{folder.name}</h1>
                       </Show>
                       <div
-                        class={`foldersDiv mt-4 grid gap-5 ${returnGridStyleForGameCard(
+                        class={`mt-4 grid gap-5 ${returnGridStyleForGameCard(
                           libraryData.userSettings.zoomLevel,
                           libraryData.userSettings.showSideBar,
                         )}`}
@@ -243,7 +245,7 @@ function App() {
           <Show when={search()}>
             <div>
               <div
-                class={`foldersDiv mt-4 grid gap-5 ${returnGridStyleForGameCard(
+                class={`mt-4 grid gap-5 ${returnGridStyleForGameCard(
                   libraryData.userSettings.zoomLevel,
                   libraryData.userSettings.showSideBar,
                 )}`}

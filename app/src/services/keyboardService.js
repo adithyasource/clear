@@ -5,7 +5,7 @@ import { NotepadModal } from "@/components/modal/NotepadModal.jsx";
 import { SettingsModal } from "@/components/modal/SettingsModal.jsx";
 import { writeUpdateData } from "@/services/libraryService.js";
 import { toggleSideBar } from "@/services/userSettingsService.js";
-import { setUserIsTabbing, systemPlatform } from "@/stores/applicationStore";
+import { setUserIsTabbing, systemPlatform, setWindowWidth } from "@/stores/applicationStore";
 import { setLibraryData } from "@/stores/libraryStore.js";
 import { modalState, openModal } from "@/stores/modalStore.js";
 import { triggerToast } from "@/stores/toastStore.js";

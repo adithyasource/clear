@@ -94,6 +94,16 @@ dialog {
   animation-play-state: paused;
 }
 
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+dialog:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #ffffff80 !important;
+  outline-offset: 3px;
+}
+
 /* MISC ------------------------------------- */
 
 *:not(body, svg, #loading, .game-card-sidebar, .game-card-icon),
