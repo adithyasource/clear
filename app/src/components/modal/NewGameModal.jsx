@@ -1,5 +1,6 @@
+/** biome-ignore-all lint/a11y/useKeyWithMouseEvents: <explanation> */
 import { convertFileSrc, invoke } from "@tauri-apps/api/core";
-import { createEffect, createSignal, For, Match, Show, Switch } from "solid-js";
+import { createEffect, createSignal, For, Match, onCleanup, onMount, Show, Switch } from "solid-js";
 import { LoadingTextAndIcon } from "@/components/modal/Loading";
 import { gameSearchResults } from "@/data/api/sgdbAssets.js";
 import { ChevronArrow, Close, SaveDisk } from "@/libraries/Icons.jsx";
@@ -29,6 +30,7 @@ export function NewGameModal() {
   const [gameLocation, setGameLocation] = createSignal();
 
   const [showRightClickTip, setShowRightClickTip] = createSignal(false);
+  const [hoveredAsset, setHoveredAsset] = createSignal(null);
 
   const [gameName, setGameName] = createSignal("");
   const [favourite, setFavourite] = createSignal(false);
@@ -63,6 +65,61 @@ export function NewGameModal() {
       triggerToast(e.message);
     }
   }
+
+  function changeHoveredAsset(changeBy) {
+    switch (hoveredAsset()) {
+      case "grid":
+        if (gridImage().type === "remote") {
+          changeImageRemoteLocationIndex({ setter: setGridImage, changeBy });
+          if (changeBy > 0) setShowGridImageLoading(true);
+        }
+        break;
+      case "hero":
+        if (heroImage().type === "remote") {
+          changeImageRemoteLocationIndex({ setter: setHeroImage, changeBy });
+          if (changeBy > 0) setShowHeroImageLoading(true);
+        }
+        break;
+      case "logo":
+        if (logoImage().type === "remote") {
+          changeImageRemoteLocationIndex({ setter: setLogoImage, changeBy });
+          if (changeBy > 0) setShowLogoImageLoading(true);
+        }
+        break;
+      case "icon":
+        if (iconImage().type === "remote") {
+          changeImageRemoteLocationIndex({ setter: setIconImage, changeBy });
+          if (changeBy > 0) setShowIconImageLoading(true);
+        }
+        break;
+    }
+  }
+
+  function isTypingTarget(element) {
+    return element instanceof HTMLInputElement;
+  }
+
+  onMount(() => {
+    function handleHoveredAssetKeyDown(e) {
+      if (userIsTabbing() || !hoveredAsset() || isTypingTarget(document.activeElement)) return;
+
+      if (e.key === "a" || e.key === "A") {
+        e.preventDefault();
+        changeHoveredAsset(-1);
+      }
+
+      if (e.key === "d" || e.key === "D") {
+        e.preventDefault();
+        changeHoveredAsset(1);
+      }
+    }
+
+    document.addEventListener("keydown", handleHoveredAssetKeyDown);
+
+    onCleanup(() => {
+      document.removeEventListener("keydown", handleHoveredAssetKeyDown);
+    });
+  });
 
   return (
     <div class="flex w-336 flex-col items-center justify-center gap-3 max-large:w-244">
@@ -147,20 +204,14 @@ export function NewGameModal() {
             selectImageFileLocation(setGridImage);
           }}
           onScroll={() => {}}
-          onWheel={(e) => {
-            if (gridImage().type === "remote") {
-              if (e.deltaY <= 0) {
-                setShowGridImageLoading(true);
-                changeImageRemoteLocationIndex({ setter: setGridImage, changeBy: 1 });
-              }
-
-              if (e.deltaY >= 0) {
-                changeImageRemoteLocationIndex({ setter: setGridImage, changeBy: -1 });
-              }
-            }
-          }}
           onMouseOver={(_e) => {
             showRightClickTip(true);
+          }}
+          onMouseEnter={() => {
+            setHoveredAsset("grid");
+          }}
+          onMouseLeave={() => {
+            setHoveredAsset(null);
           }}
           onKeyDown={(e) => {
             if (gridImage().type === "remote") {
@@ -183,7 +234,7 @@ export function NewGameModal() {
               ? showGridImageLoading() === false
                 ? userIsTabbing()
                   ? `${gridImage().index} / ${gridImage().data.length - 1} ${translateText("arrow keys")}`
-                  : `${gridImage().index} / ${gridImage().data.length - 1} ${translateText("scroll")}`
+                  : `${gridImage().index} / ${gridImage().data.length - 1} (a / d scroll)`
                 : `${gridImage().index} / ${gridImage().data.length - 1} ${translateText("loading")}`
               : translateText("grid/cover")
           }
@@ -227,6 +278,12 @@ export function NewGameModal() {
                   }
                 }
               }}
+              onMouseEnter={() => {
+                setHoveredAsset("hero");
+              }}
+              onMouseLeave={() => {
+                setHoveredAsset(null);
+              }}
               onKeyDown={(e) => {
                 if (heroImage().type === "remote") {
                   if (e.key === "ArrowRight" || e.key === "ArrowUp") {
@@ -248,7 +305,7 @@ export function NewGameModal() {
                   ? showHeroImageLoading() === false
                     ? userIsTabbing()
                       ? `${heroImage().index} / ${heroImage().data.length - 1} ${translateText("arrow keys")}`
-                      : `${heroImage().index} / ${heroImage().data.length - 1} ${translateText("scroll")}`
+                      : `${heroImage().index} / ${heroImage().data.length - 1} (a / d scroll)`
                     : `${heroImage().index} / ${heroImage().data.length - 1} ${translateText("loading")}`
                   : translateText("hero")
               }
@@ -307,6 +364,12 @@ export function NewGameModal() {
                   changeImageRemoteLocationIndex({ setter: setLogoImage, changeBy: -1 });
                 }
               }}
+              onMouseEnter={() => {
+                setHoveredAsset("logo");
+              }}
+              onMouseLeave={() => {
+                setHoveredAsset(null);
+              }}
               onKeyDown={(e) => {
                 if (logoImage().type === "remote") {
                   if (e.key === "ArrowRight" || e.key === "ArrowUp") {
@@ -319,7 +382,7 @@ export function NewGameModal() {
                   }
                 }
               }}
-              class={`!absolute tooltip-center bottom-[70px] left-[20px] z-100 h-[90px] w-[250px] cursor-pointer p-[2px]! max-large:h-[90px] max-large:w-[243px] ${
+              class={`absolute! tooltip-center bottom-[70px] left-[20px] z-100 h-[90px] w-[250px] cursor-pointer p-[2px]! max-large:h-[90px] max-large:w-[243px] ${
                 logoImage().data
                   ? "outline-none outline-2! outline-[#E8E8E880]! hover:bg-[#E8E8E84D] hover:outline-dashed focus:bg-[#E8E8E84D] !outline:dark:bg-[#27272780] dark:focus:bg-[#2727274D] dark:hover:bg-[#2727274D]"
                   : "bg-[#E8E8E8] dark:bg-[#272727]!"
@@ -329,7 +392,7 @@ export function NewGameModal() {
                   ? showLogoImageLoading() === false
                     ? userIsTabbing()
                       ? `${logoImage().index} / ${logoImage().data.length - 1} ${translateText("arrow keys")}`
-                      : `${logoImage().index} / ${logoImage().data.length - 1} ${translateText("scroll")}`
+                      : `${logoImage().index} / ${logoImage().data.length - 1} (a / d scroll)`
                     : `${logoImage().index} / ${logoImage().data.length - 1} ${translateText("loading")}`
                   : translateText("logo")
               }
@@ -376,6 +439,12 @@ export function NewGameModal() {
                   }
                 }
               }}
+              onMouseEnter={() => {
+                setHoveredAsset("icon");
+              }}
+              onMouseLeave={() => {
+                setHoveredAsset(null);
+              }}
               onKeyDown={(e) => {
                 if (iconImage().type === "remote") {
                   if (e.key === "ArrowRight" || e.key === "ArrowUp") {
@@ -398,7 +467,7 @@ export function NewGameModal() {
                   ? showIconImageLoading() === false
                     ? userIsTabbing()
                       ? `${iconImage().index} / ${iconImage().data.length - 1} ${translateText("arrow keys")}`
-                      : `${iconImage().index} / ${iconImage().data.length - 1} ${translateText("scroll")}`
+                      : `${iconImage().index} / ${iconImage().data.length - 1} (a / d scroll)`
                     : `${iconImage().index} / ${iconImage().data.length - 1} ${translateText("loading")}`
                   : translateText("icon")
               }
