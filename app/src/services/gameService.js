@@ -190,10 +190,18 @@ export async function fetchGameAssets({ gameId, setters }) {
 
     console.log(images, warning);
 
-    selectImageRemoteLocation({ data: images.grids, index: 0, setter: setters.grid });
-    selectImageRemoteLocation({ data: images.heroes, index: 0, setter: setters.hero });
-    selectImageRemoteLocation({ data: images.logos, index: 0, setter: setters.logo });
-    selectImageRemoteLocation({ data: images.icons, index: 0, setter: setters.icon });
+    if (images.grids.length) {
+      selectImageRemoteLocation({ data: images.grids, index: 0, setter: setters.grid });
+    }
+    if (images.heroes.length) {
+      selectImageRemoteLocation({ data: images.heroes, index: 0, setter: setters.hero });
+    }
+    if (images.logos.length) {
+      selectImageRemoteLocation({ data: images.logos, index: 0, setter: setters.logo });
+    }
+    if (images.icons.length) {
+      selectImageRemoteLocation({ data: images.icons, index: 0, setter: setters.icon });
+    }
 
     return { warning };
   } catch (err) {

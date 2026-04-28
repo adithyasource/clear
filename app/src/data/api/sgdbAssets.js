@@ -26,8 +26,9 @@ export async function gameAssetResults(gameId, length = 50) {
 
     const images = await response.json();
 
+    // filtering only falsy values and then getting their keys
     const missing = Object.entries(images)
-      .filter(([_, v]) => !v)
+      .filter(([_, v]) => v.length === 0)
       .map(([k]) => k);
 
     if (missing.length === 4) {
@@ -36,7 +37,7 @@ export async function gameAssetResults(gameId, length = 50) {
 
     return {
       images,
-      warning: missing.length > 0 ? `${translateText("couldn't find")}: ${missing.join(", ")}` : null,
+      warning: missing.length > 0 ? `${translateText("couldn't find")}: ${missing.join(", ")} for ${gameId}` : null,
     };
   } catch (err) {
     throw new Error(`failed to download any assets: ${getErrorMessage(err)}`, { cause: err });
