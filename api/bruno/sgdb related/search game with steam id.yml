@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{API_URL}}/v2/games/steam/409710"
+  url: "{{API_URL}}/games/steam/409710"
   auth: inherit
 
 settings:

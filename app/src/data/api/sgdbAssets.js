@@ -3,7 +3,7 @@ import { translateText } from "@/utils/translateText";
 
 export async function gameSearchResults(searchQuery) {
   try {
-    const response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/v2/games/search/${searchQuery}`);
+    const response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/games/search/${searchQuery}`);
     const searchResults = await response.json();
 
     console.log(searchResults);
@@ -24,7 +24,7 @@ export async function gameSearchResults(searchQuery) {
 
 export async function gameAssetResults(gameId) {
   try {
-    const response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/v2/games/assets/${gameId}`);
+    const response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/games/assets/${gameId}`);
 
     const images = await response.json();
 
@@ -48,7 +48,7 @@ export async function gameAssetResults(gameId) {
 
 export async function steamGameSearchResults(steamId) {
   try {
-    const response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/v2/games/steam/${steamId}`);
+    const response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/games/steam/${steamId}`);
     const searchResults = await response.json();
 
     if (searchResults.data.length === 0) {

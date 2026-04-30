@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{API_URL}}/v2/games/search/cyberpunk 2077"
+  url: "{{API_URL}}/games/search/cyberpunk 2077"
   auth: inherit
 
 settings:

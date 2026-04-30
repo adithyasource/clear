@@ -5,11 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{API_URL}}/v2/games/assets/5209422?length=1"
-  params:
-    - name: length
-      value: "1"
-      type: query
+  url: "{{API_URL}}/games/assets/5209422"
   auth: inherit
 
 settings:

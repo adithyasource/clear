@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{API_URL}}/v2/image?url=https://cdn2.steamgriddb.com/grid/f39b781760a403dedaa05587e8889c1a.png"
+  url: "{{API_URL}}/image?url=https://cdn2.steamgriddb.com/grid/f39b781760a403dedaa05587e8889c1a.png"
   params:
     - name: url
       value: https://cdn2.steamgriddb.com/grid/f39b781760a403dedaa05587e8889c1a.png
