@@ -23,7 +23,7 @@ app.get("/", (c) => {
   return c.json({ name: "clear api", versions: ["v1", "v2"] });
 });
 
-app.get("/version", (c) => c.json({ version: "1.0.0" }));
+app.get("/latest-client-version", (c) => c.json({ version: "1.0.0" }));
 app.get("/health", (c) => c.json({ status: "ok" }));
 
 app.get("/games/search/:name", async (c) => {
@@ -56,36 +56,6 @@ app.get("/games/assets/:id", async (c) => {
     heroes: format(heroes),
     logos: format(logos),
     icons: format(icons),
-  });
-});
-
-app.get("/image", async (c) => {
-  const url = c.req.query("url");
-
-  if (!url) {
-    return c.json({ error: "missing url" }, 400);
-  }
-
-  try {
-    const parsed = new URL(url);
-    if (!["http:", "https:"].includes(parsed.protocol)) {
-      return c.json({ error: "invalid protocol" }, 400);
-    }
-  } catch {
-    return c.json({ error: "invalid url" }, 400);
-  }
-
-  const res = await fetch(url);
-
-  if (!res.ok || !res.body) {
-    return c.json({ error: "image fetch failed" }, 502);
-  }
-
-  return new Response(res.body, {
-    headers: {
-      "Content-Type": res.headers.get("Content-Type") || "application/octet-stream",
-      "Cache-Control": "public, max-age=3600",
-    },
   });
 });
 
