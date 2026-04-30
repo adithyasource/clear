@@ -1,0 +1,4 @@
+name: DEVELOPMENT
+variables:
+  - name: API_URL
+    value: http://localhost:5173

@@ -1,0 +1,15 @@
+info:
+  name: get asset
+  type: http
+  seq: 10
+
+http:
+  method: GET
+  url: "{{API_URL}}/v2/games/5209422/grids"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -1,0 +1,15 @@
+info:
+  name: search game with steam id
+  type: http
+  seq: 9
+
+http:
+  method: GET
+  url: "{{API_URL}}/v2/games/steam/409710"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

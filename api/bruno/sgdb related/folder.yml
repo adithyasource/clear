@@ -1,0 +1,7 @@
+info:
+  name: sgdb related
+  type: folder
+  seq: 6
+
+request:
+  auth: inherit
