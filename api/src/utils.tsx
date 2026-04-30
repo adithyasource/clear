@@ -1,3 +1,7 @@
+export type envBindings = {
+  AUTH_TOKEN: string;
+};
+
 const API = "https://www.steamgriddb.com/api/v2";
 
 export function corsOrigin(origin?: string) {

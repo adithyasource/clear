@@ -1,9 +1,9 @@
 import { Hono } from "hono";
-import { corsOrigin } from "./utils";
+import { corsOrigin, type envBindings } from "./utils";
 import v1 from "./v1";
 import v2 from "./v2";
 
-const app = new Hono();
+const app = new Hono<{ Bindings: envBindings }>();
 
 app.use("*", async (c, next) => {
   c.header("Access-Control-Allow-Origin", corsOrigin(c.req.header("Origin")));

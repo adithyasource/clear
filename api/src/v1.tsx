@@ -1,11 +1,11 @@
 import { Hono } from "hono";
-import { apiFetch, getAssets } from "./utils";
+import { apiFetch, type envBindings, getAssets } from "./utils";
 
-const app = new Hono();
+const app = new Hono<{ Bindings: envBindings }>();
 
 app.get("/", async (c) => {
   const query = c.req.query();
-  const token = process.env.AUTH_TOKEN;
+  const token = c.env.AUTH_TOKEN;
 
   if (!Object.keys(query).length) {
     return c.json({ name: "clear api", version: "v1" });

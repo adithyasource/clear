@@ -1,35 +1,33 @@
 import { Hono } from "hono";
-import { apiFetch, getAssets } from "./utils";
+import { apiFetch, type envBindings, getAssets } from "./utils";
 
-const app = new Hono();
+const app = new Hono<{ Bindings: envBindings }>();
 
 app.get("/version", (c) => c.json({ version: "1.0.0" }));
 app.get("/health", (c) => c.json({ status: "ok" }));
 
 app.get("/games/search/:name", async (c) => {
-  return c.json(
-    await apiFetch(`/search/autocomplete/${encodeURIComponent(c.req.param("name"))}`, process.env.AUTH_TOKEN),
-  );
+  return c.json(await apiFetch(`/search/autocomplete/${encodeURIComponent(c.req.param("name"))}`, c.env.AUTH_TOKEN));
 });
 
 app.get("/games/steam/:id", async (c) => {
-  return c.json(await apiFetch(`/games/steam/${encodeURIComponent(c.req.param("id"))}`, process.env.AUTH_TOKEN));
+  return c.json(await apiFetch(`/games/steam/${encodeURIComponent(c.req.param("id"))}`, c.env.AUTH_TOKEN));
 });
 
 app.get("/games/:id/grids", async (c) => {
-  return c.json(await getAssets(c.req.param("id"), "grids", process.env.AUTH_TOKEN));
+  return c.json(await getAssets(c.req.param("id"), "grids", c.env.AUTH_TOKEN));
 });
 
 app.get("/games/:id/heroes", async (c) => {
-  return c.json(await getAssets(c.req.param("id"), "heroes", process.env.AUTH_TOKEN));
+  return c.json(await getAssets(c.req.param("id"), "heroes", c.env.AUTH_TOKEN));
 });
 
 app.get("/games/:id/logos", async (c) => {
-  return c.json(await getAssets(c.req.param("id"), "logos", process.env.AUTH_TOKEN));
+  return c.json(await getAssets(c.req.param("id"), "logos", c.env.AUTH_TOKEN));
 });
 
 app.get("/games/:id/icons", async (c) => {
-  return c.json(await getAssets(c.req.param("id"), "icons", process.env.AUTH_TOKEN));
+  return c.json(await getAssets(c.req.param("id"), "icons", c.env.AUTH_TOKEN));
 });
 
 app.get("/image", async (c) => {
