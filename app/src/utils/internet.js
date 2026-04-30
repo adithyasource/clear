@@ -14,7 +14,7 @@ export async function checkIfConnectedToInternet() {
 
 export async function checkIfConnectedToServer() {
   try {
-    const res = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/health`, {
+    const res = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/v2/health`, {
       method: "GET",
     });
 

@@ -43,11 +43,13 @@ export async function importSteamGames() {
 
         const { images } = await gameAssetResults(sgdbId, 1);
 
+        console.log(images);
+
         const [grid, hero, logo, icon] = await Promise.all([
-          safeDownload("grid", images.grids),
-          safeDownload("hero", images.heroes),
-          safeDownload("logo", images.logos),
-          safeDownload("icon", images.icons),
+          safeDownload("grid", [images.grids]),
+          safeDownload("hero", [images.heroes]),
+          safeDownload("logo", [images.logos]),
+          safeDownload("icon", [images.icons]),
         ]);
 
         const gameId = generateId();

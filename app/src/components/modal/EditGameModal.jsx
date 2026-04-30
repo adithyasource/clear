@@ -366,7 +366,7 @@ export function EditGameModal() {
           <img
             src={
               gridImage().type === "remote"
-                ? gridImage().data[gridImage().index]
+                ? gridImage().data[gridImage().index].thumb
                 : gridImage().type === "local" && gridImage().data
                   ? convertFileSrc(gridImage().data)
                   : // this is a gif which is completely empty
@@ -425,7 +425,7 @@ export function EditGameModal() {
               <img
                 src={
                   heroImage().type === "remote"
-                    ? heroImage().data[heroImage().index]
+                    ? heroImage().data[heroImage().index].thumb
                     : heroImage().type === "local" && heroImage().data
                       ? convertFileSrc(heroImage().data)
                       : // this is a gif which is completely empty
@@ -440,7 +440,7 @@ export function EditGameModal() {
               <img
                 src={
                   heroImage().type === "remote"
-                    ? heroImage().data[heroImage().index]
+                    ? heroImage().data[heroImage().index].thumb
                     : heroImage().type === "local" && heroImage().data
                       ? convertFileSrc(heroImage().data)
                       : // this is a gif which is completely empty
@@ -501,7 +501,7 @@ export function EditGameModal() {
               <img
                 src={
                   logoImage().type === "remote"
-                    ? logoImage().data[logoImage().index]
+                    ? logoImage().data[logoImage().index].thumb
                     : logoImage().type === "local" && logoImage().data
                       ? convertFileSrc(logoImage().data)
                       : // this is a gif which is completely empty
@@ -564,7 +564,7 @@ export function EditGameModal() {
               <img
                 src={
                   iconImage().type === "remote"
-                    ? iconImage().data[iconImage().index]
+                    ? iconImage().data[iconImage().index].thumb
                     : iconImage().type === "local" && iconImage().data
                       ? convertFileSrc(iconImage().data)
                       : // this is a gif which is completely empty

@@ -14,20 +14,30 @@ app.get("/games/steam/:id", async (c) => {
   return c.json(await apiFetch(`/games/steam/${encodeURIComponent(c.req.param("id"))}`, c.env.AUTH_TOKEN));
 });
 
-app.get("/games/:id/grids", async (c) => {
-  return c.json(await getAssets(c.req.param("id"), "grids", c.env.AUTH_TOKEN));
-});
+app.get("/games/assets/:id", async (c) => {
+  const token = c.env.AUTH_TOKEN;
 
-app.get("/games/:id/heroes", async (c) => {
-  return c.json(await getAssets(c.req.param("id"), "heroes", c.env.AUTH_TOKEN));
-});
+  const id = c.req.param("id");
+  const firstOnly = c.req.query("length") === "1";
 
-app.get("/games/:id/logos", async (c) => {
-  return c.json(await getAssets(c.req.param("id"), "logos", c.env.AUTH_TOKEN));
-});
+  const results = await Promise.allSettled([
+    getAssets(id, "grids", token),
+    getAssets(id, "heroes", token),
+    getAssets(id, "logos", token),
+    getAssets(id, "icons", token),
+  ]);
 
-app.get("/games/:id/icons", async (c) => {
-  return c.json(await getAssets(c.req.param("id"), "icons", c.env.AUTH_TOKEN));
+  // make sure that if not fullfilled, then empty array assigned
+  const [grids, heroes, logos, icons] = results.map((r) => (r.status === "fulfilled" ? r.value : []));
+
+  const format = (arr) => (firstOnly ? arr[0]?.url : arr.map((x) => ({ thumb: x.thumb, url: x.url })));
+
+  return c.json({
+    grids: format(grids),
+    heroes: format(heroes),
+    logos: format(logos),
+    icons: format(icons),
+  });
 });
 
 app.get("/image", async (c) => {
@@ -35,6 +45,15 @@ app.get("/image", async (c) => {
 
   if (!url) {
     return c.json({ error: "missing url" }, 400);
+  }
+
+  try {
+    const parsed = new URL(url);
+    if (!["http:", "https:"].includes(parsed.protocol)) {
+      return c.json({ error: "invalid protocol" }, 400);
+    }
+  } catch {
+    return c.json({ error: "invalid url" }, 400);
   }
 
   const res = await fetch(url);

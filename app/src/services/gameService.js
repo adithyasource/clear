@@ -20,7 +20,7 @@ export async function processImage({ imageType, imageData }) {
   if (imageData.type === "local") {
     fileName = await copyImageIntoBin({ type: imageType, origin: imageData.data });
   } else if (imageData.type === "remote") {
-    fileName = await downloadImageIntoBin({ type: imageType, origin: imageData.data[imageData.index] });
+    fileName = await downloadImageIntoBin({ type: imageType, origin: imageData.data[imageData.index].url });
   }
 
   return fileName;
@@ -110,7 +110,7 @@ export async function updateGame(gameId, newData) {
 
     if (newValue.type === "remote") {
       // will have to download new and delete old
-      updatedGame[pathField] = await downloadImageIntoBin({ type: key, origin: newValueData[newValue.index] });
+      updatedGame[pathField] = await downloadImageIntoBin({ type: key, origin: newValueData[newValue.index].url });
 
       if (oldValueFile) {
         deletionList.push({ type: key, fileName: oldValueFile });

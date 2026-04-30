@@ -3,8 +3,10 @@ import { translateText } from "@/utils/translateText";
 
 export async function gameSearchResults(searchQuery) {
   try {
-    const response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?gameName=${searchQuery}`);
+    const response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/v2/games/search/${searchQuery}`);
     const searchResults = await response.json();
+
+    console.log(searchResults);
 
     if (searchResults.data.length === 0) {
       throw new Error("empty results");
@@ -20,9 +22,9 @@ export async function gameSearchResults(searchQuery) {
   }
 }
 
-export async function gameAssetResults(gameId, length = 50) {
+export async function gameAssetResults(gameId, length) {
   try {
-    const response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?assets=${gameId}&length=${length}`);
+    const response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/v2/games/assets/${gameId}?length=${length}`);
 
     const images = await response.json();
 
@@ -46,7 +48,7 @@ export async function gameAssetResults(gameId, length = 50) {
 
 export async function steamGameSearchResults(steamId) {
   try {
-    const response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/?steamID=${steamId}`);
+    const response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/v2/games/steam/${steamId}`);
     const searchResults = await response.json();
 
     if (searchResults.data.length === 0) {

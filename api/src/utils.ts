@@ -1,16 +1,9 @@
 export type envBindings = {
   AUTH_TOKEN: string;
+  RUNNING_ENV: "development" | "production";
 };
 
 const API = "https://www.steamgriddb.com/api/v2";
-
-export function corsOrigin(origin?: string) {
-  if (!origin) return "*";
-
-  const allowed = new Set(["https://clear.adithya.zip", "https://tauri.localhost", "tauri://localhost"]);
-
-  return allowed.has(origin) ? origin : "*";
-}
 
 export async function apiFetch(path: string, token?: string) {
   const res = await fetch(`${API}${path}`, {

@@ -1,21 +1,25 @@
 import { Hono } from "hono";
-import { corsOrigin, type envBindings } from "./utils";
+import { cors } from "hono/cors";
+import type { envBindings } from "./utils";
 import v1 from "./v1";
 import v2 from "./v2";
 
 const app = new Hono<{ Bindings: envBindings }>();
 
-app.use("*", async (c, next) => {
-  c.header("Access-Control-Allow-Origin", corsOrigin(c.req.header("Origin")));
-  c.header("Access-Control-Allow-Methods", "GET,OPTIONS");
-  c.header("Access-Control-Allow-Headers", "Content-Type,Authorization");
+app.use(
+  "*",
+  cors({
+    origin: (origin, c) => {
+      if (c.env.RUNNING_ENV === "development") return "*";
 
-  if (c.req.method === "OPTIONS") {
-    return c.body(null, 204);
-  }
+      const allowed = ["https://tauri.localhost", "tauri://localhost"];
 
-  await next();
-});
+      return allowed.includes(origin) ? origin : "";
+    },
+    allowMethods: ["GET", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization"],
+  }),
+);
 
 app.get("/", (c) => {
   return c.json({ name: "clear api", versions: ["v1", "v2"] });
