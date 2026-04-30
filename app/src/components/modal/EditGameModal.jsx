@@ -659,7 +659,7 @@ export function EditGameModal() {
               }}
               class="btn w-max"
             >
-              {gameLocation() === undefined ? translateText("locate game") : getExecutableFileName(gameLocation())}
+              {!gameLocation() ? translateText("locate game") : getExecutableFileName(gameLocation())}
             </button>
           </div>
         </div>

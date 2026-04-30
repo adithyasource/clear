@@ -18,13 +18,14 @@ async function safeDownload(type, arr) {
   }
 }
 
-const BATCH_SIZE = 5;
-
-export async function importSteamGames(signal) {
+export async function importSteamGames() {
   try {
     await Promise.all([checkIfConnectedToInternet(), checkIfConnectedToServer()]);
 
-    const steamGameIds = await invoke("read_steam_vdf");
+    let steamGameIds = await invoke("read_steam_vdf");
+
+    // ignoring steam common redist from installing
+    steamGameIds = steamGameIds.filter((x) => x !== 228980);
 
     setTotalSteamGames(steamGameIds.length);
 
@@ -33,62 +34,45 @@ export async function importSteamGames(signal) {
 
     let processed = 0;
 
-    for (let i = 0; i < steamGameIds.length; i += BATCH_SIZE) {
-      if (signal?.aborted) throw new Error("import cancelled");
+    for (const steamId of steamGameIds) {
+      try {
+        const gameData = await steamGameSearchResults(steamId);
+        if (!gameData?.success) continue;
 
-      const batch = steamGameIds.slice(i, i + BATCH_SIZE);
+        const { id: sgdbId, name } = gameData.data;
 
-      const results = await Promise.all(
-        batch.map(async (steamId) => {
-          try {
-            const gameData = await steamGameSearchResults(steamId);
-            if (!gameData?.success) return null;
+        const { images } = await gameAssetResults(sgdbId, 1);
 
-            const { id: sgdbId, name } = gameData.data;
+        const [grid, hero, logo, icon] = await Promise.all([
+          safeDownload("grid", images.grids),
+          safeDownload("hero", images.heroes),
+          safeDownload("logo", images.logos),
+          safeDownload("icon", images.icons),
+        ]);
 
-            const { images } = await gameAssetResults(sgdbId, 1);
+        const gameId = generateId();
 
-            const [grid, hero, logo, icon] = await Promise.all([
-              safeDownload("grid", images.grids),
-              safeDownload("hero", images.heroes),
-              safeDownload("logo", images.logos),
-              safeDownload("icon", images.icons),
-            ]);
+        const gameLocation = `steam://rungameid/${steamId}`;
 
-            const gameId = generateId();
+        newGames[gameId] = {
+          gameLocation,
+          name,
+          gridImagePath: grid,
+          heroImagePath: hero,
+          logoImagePath: logo,
+          iconImagePath: icon,
+        };
 
-            return {
-              gameId,
-              steamId,
-              game: {
-                gameLocation: `steam://rungameid/${steamId}`,
-                name,
-                gridImagePath: grid,
-                heroImagePath: hero,
-                logoImagePath: logo,
-                iconImagePath: icon,
-              },
-            };
-          } catch (err) {
-            await logError(`steamService.importSteamGames.import.${steamId}`, err);
-            return null;
-          } finally {
-            processed++;
-            setTotalImportedSteamGames(processed);
-          }
-        }),
-      );
-
-      for (const result of results) {
-        if (!result) continue;
-
-        newGames[result.gameId] = result.game;
-        allGameIds.push(result.gameId);
+        allGameIds.push(gameId);
+      } catch (err) {
+        await logError(`steamService.importSteamGames.import.${steamId}`, err);
+      } finally {
+        processed++;
+        setTotalImportedSteamGames(processed);
       }
     }
 
-    allGameIds.sort();
-
+    // single atomic update
     setLibraryData(
       produce((data) => {
         data.folders = data.folders.filter((f) => f.name !== "imported from steam");

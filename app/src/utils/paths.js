@@ -11,10 +11,12 @@ export function locationJoin(locationsList) {
 export function getExecutableFileName(location) {
   // splits both / and \ paths since a library created on windows can be
   // viewed on macos and vice versa
-  if (location.toString().startsWith("steam")) {
-    return "steamId: 409710";
+  if (location.toString().startsWith("steam://")) {
+    const id = location.toString().split("/").pop();
+    return `steamId: ${id}`;
   }
-  return location.toString().split("\\").slice(-1).toString().split("/").slice(-1);
+
+  return location.toString().split("\\").pop().split("/").pop();
 }
 
 export function getExecutableParentFolder(location) {

@@ -1,15 +1,15 @@
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { createResource, Show } from "solid-js";
-import { openGame } from "@/services/gameService.js";
 import { Close, Play, Settings } from "@/libraries/Icons.jsx";
+import { openGame } from "@/services/gameService.js";
 import { closeModal } from "@/stores/modalStore.js";
+import { triggerToast } from "@/stores/toastStore.js";
 import { translateText } from "@/utils/translateText";
 import { getImagePath } from "../../data/storage/imageStroage";
 import { libraryData } from "../../stores/libraryStore";
+import { openModal } from "../../stores/modalStore";
 import { selectedGame, setSelectedGame } from "../../stores/selectedGameStore";
 import { EditGameModal } from "./EditGameModal";
-import { openModal } from "../../stores/modalStore";
-import { triggerToast } from "@/stores/toastStore.js";
 
 export function GamePopUpModal() {
   const game = () => libraryData.games[selectedGame()];
