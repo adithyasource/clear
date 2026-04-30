@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { apiFetch, type envBindings, getAssets } from "./utils";
+import { searchHLTB } from "./hltb";
 
 const app = new Hono<{ Bindings: envBindings }>();
 
@@ -38,25 +39,36 @@ app.get("/games/assets/:id", async (c) => {
   const token = c.env.AUTH_TOKEN;
 
   const id = c.req.param("id");
+  const toAssets = (result: PromiseSettledResult<Awaited<ReturnType<typeof getAssets>>>) =>
+    result.status === "fulfilled" ? result.value : [];
 
-  const results = await Promise.allSettled([
+  const [grids, heroes, logos, icons] = (await Promise.allSettled([
     getAssets(id, "grids", token),
     getAssets(id, "heroes", token),
     getAssets(id, "logos", token),
     getAssets(id, "icons", token),
-  ]);
-
-  // make sure that if not fullfilled, then empty array assigned
-  const [grids, heroes, logos, icons] = results.map((r) => (r.status === "fulfilled" ? r.value : []));
-
-  const format = (arr) => arr.map((x) => ({ thumb: x.thumb, url: x.url }));
+  ])).map(toAssets);
 
   return c.json({
-    grids: format(grids),
-    heroes: format(heroes),
-    logos: format(logos),
-    icons: format(icons),
+    grids,
+    heroes,
+    logos,
+    icons,
   });
+});
+
+app.get("/hltb/search/:name", async (c) => {
+  const name = c.req.param("name");
+  if (!name) {
+    return c.json({ error: 'Missing query parameter "name"' }, 400);
+  }
+
+  try {
+    const results = await searchHLTB(name);
+    return c.json(results);
+  } catch (error) {
+    return c.json({ error: error instanceof Error ? error.message : "server error" }, 500);
+  }
 });
 
 app.notFound((c) => c.json({ error: "not found" }, 404));
