@@ -18,7 +18,6 @@ app.get("/games/assets/:id", async (c) => {
   const token = c.env.AUTH_TOKEN;
 
   const id = c.req.param("id");
-  const firstOnly = c.req.query("length") === "1";
 
   const results = await Promise.allSettled([
     getAssets(id, "grids", token),
@@ -30,7 +29,7 @@ app.get("/games/assets/:id", async (c) => {
   // make sure that if not fullfilled, then empty array assigned
   const [grids, heroes, logos, icons] = results.map((r) => (r.status === "fulfilled" ? r.value : []));
 
-  const format = (arr) => (firstOnly ? arr[0]?.url : arr.map((x) => ({ thumb: x.thumb, url: x.url })));
+  const format = (arr) => arr.map((x) => ({ thumb: x.thumb, url: x.url }));
 
   return c.json({
     grids: format(grids),

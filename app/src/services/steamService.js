@@ -12,7 +12,7 @@ import { writeUpdateData } from "./libraryService";
 async function safeDownload(type, arr) {
   try {
     if (!arr?.[0]) return undefined;
-    return await downloadImageIntoBin({ type, origin: arr[0] });
+    return await downloadImageIntoBin({ type, origin: arr[0].url });
   } catch {
     return undefined; // fail silently for assets
   }
@@ -41,15 +41,15 @@ export async function importSteamGames() {
 
         const { id: sgdbId, name } = gameData.data;
 
-        const { images } = await gameAssetResults(sgdbId, 1);
+        const { images } = await gameAssetResults(sgdbId);
 
         console.log(images);
 
         const [grid, hero, logo, icon] = await Promise.all([
-          safeDownload("grid", [images.grids]),
-          safeDownload("hero", [images.heroes]),
-          safeDownload("logo", [images.logos]),
-          safeDownload("icon", [images.icons]),
+          safeDownload("grid", images.grids),
+          safeDownload("hero", images.heroes),
+          safeDownload("logo", images.logos),
+          safeDownload("icon", images.icons),
         ]);
 
         const gameId = generateId();

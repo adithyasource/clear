@@ -22,9 +22,9 @@ export async function gameSearchResults(searchQuery) {
   }
 }
 
-export async function gameAssetResults(gameId, length) {
+export async function gameAssetResults(gameId) {
   try {
-    const response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/v2/games/assets/${gameId}?length=${length}`);
+    const response = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/v2/games/assets/${gameId}`);
 
     const images = await response.json();
 
