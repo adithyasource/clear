@@ -3,11 +3,11 @@ import { createResource, Show } from "solid-js";
 import { GamePopUpModal } from "@/components/modal/GamePopUp.jsx";
 import { openGame } from "@/services/gameService.js";
 import { openModal } from "@/stores/modalStore.js";
+import { triggerToast } from "@/stores/toastStore.js";
 import { translateText } from "@/utils/translateText";
+import { getImagePath } from "../../data/storage/imageStroage";
 import { libraryData } from "../../stores/libraryStore";
 import { setSelectedGame } from "../../stores/selectedGameStore";
-import { getImagePath } from "../../data/storage/imageStroage";
-import { triggerToast } from "@/stores/toastStore.js";
 
 export function GameCardSideBar({ gameId, gameIndex, folderName, folderIndex }) {
   const game = () => libraryData.games[gameId];
@@ -33,7 +33,7 @@ export function GameCardSideBar({ gameId, gameIndex, folderName, folderIndex }) 
   return (
     <button
       type="button"
-      class={`flex! game-card-sidebar cursor-grab items-center gap-[5px] p-0 ${gameIndex === 0 ? "mt-4" : "mt-5"}`}
+      class={`flex! game-card-sidebar cursor-grab items-center gap-2.5 p-0 ${gameIndex === 0 ? "mt-4" : "mt-5"}`}
       data-tooltip={game().gameLocation ? translateText("play") : translateText("no game file")}
       data-game-id={gameId}
       draggable={true}
@@ -79,7 +79,7 @@ export function GameCardSideBar({ gameId, gameIndex, folderName, folderIndex }) 
       <Show when={game().iconImagePath}>
         <img src={icon()} alt="" class="game-card-icon aspect-square h-[16px]" />
       </Show>
-      <span class="text-black/50 transition active:text-black/80 dark:text-white/50 dark:active:text-white/80">
+      <span class="text-left text-black/50 transition active:text-black/80 dark:text-white/50 dark:active:text-white/80">
         {game().name}
       </span>
     </button>

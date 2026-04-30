@@ -126,7 +126,7 @@ export function GameCards(props) {
             </Show>
             <Show when={libraryData.userSettings.gameTitle}>
               <div class="flex items-start justify-between">
-                <span class="text-[#000000] dark:text-white">{game().name}</span>
+                <span class="text-left text-[#000000] dark:text-white">{game().name}</span>
               </div>
             </Show>
           </button>
