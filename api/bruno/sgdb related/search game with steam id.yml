@@ -1,7 +1,7 @@
 info:
   name: search game with steam id
   type: http
-  seq: 9
+  seq: 2
 
 http:
   method: GET

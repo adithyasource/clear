@@ -1,11 +1,15 @@
 info:
-  name: get asset
+  name: get multiple assets
   type: http
   seq: 10
 
 http:
   method: GET
-  url: "{{API_URL}}/v2/games/5209422/grids"
+  url: "{{API_URL}}/v2/games/assets/5209422?length=1"
+  params:
+    - name: length
+      value: "1"
+      type: query
   auth: inherit
 
 settings:

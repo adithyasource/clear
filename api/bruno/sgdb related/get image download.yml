@@ -1,7 +1,7 @@
 info:
   name: get image download
   type: http
-  seq: 11
+  seq: 3
 
 http:
   method: GET
