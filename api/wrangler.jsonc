@@ -3,7 +3,8 @@
   "name": "clear-api",
   "compatibility_date": "2026-04-30",
   "pages_build_output_dir": "./dist",
-  "compatibility_flags": ["nodejs_compat"]
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "src/index.ts"
   // "vars": {
   //   "MY_VAR": "my-variable"
   // },
@@ -30,4 +31,3 @@
   //   "binding": "AI"
   // }
 }
-
