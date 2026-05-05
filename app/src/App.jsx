@@ -60,10 +60,10 @@ function App() {
         fontFamily = "Helvetica, Arial, sans-serif";
         break;
       case "serif":
-        fontFamily = "Times New Roman";
+        fontFamily = "Times New Roman, serif";
         break;
       case "mono":
-        fontFamily = "IBM Plex Mono, Consolas";
+        fontFamily = "IBM Plex Mono, Consolas, monospace";
         break;
     }
     document.body.style.setProperty("--font-family", fontFamily);
