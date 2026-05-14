@@ -23,11 +23,18 @@ body {
   overflow: hidden;
 }
 
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
 * {
   font-size: 14px;
   font-weight: normal;
   user-select: none;
-  color-scheme: dark;
   font-family: var(--font-family);
 }
 
@@ -92,6 +99,19 @@ dialog {
 
 .toast.show:hover {
   animation-play-state: paused;
+}
+
+.gameCard img {
+  transition: outline-color 0.05s ease;
+  outline: 4px solid transparent;
+}
+
+.gameCard img:hover {
+  outline-color: #b3b3b3;
+}
+
+.dark .gameCard img:hover {
+  outline-color: #292929;
 }
 
 body.user-is-tabbing button:focus-visible,

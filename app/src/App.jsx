@@ -144,9 +144,6 @@ function App() {
 
     initApplicationStore();
 
-    // loading app by default in dark mode so there's no bright flash of white while getData fetches preferences
-    document.documentElement.classList.add("dark");
-
     addEventListeners();
 
     try {
