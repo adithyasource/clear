@@ -27,6 +27,13 @@ import { search } from "./stores/searchStore.js";
 function App() {
   async function handleImportSteamGames() {
     try {
+      await Promise.all([checkIfConnectedToInternet(), checkIfConnectedToServer()]);
+    } catch (e) {
+      triggerToast(e.message);
+      return;
+    }
+
+    try {
       openModal({
         type: "loading",
         component: LoadingModal,
@@ -143,10 +150,10 @@ function App() {
     addEventListeners();
 
     try {
-      await checkIfConnectedToInternet();
-      await checkIfConnectedToServer();
-    } catch (err) {
-      triggerToast(err.message);
+      await Promise.all([checkIfConnectedToInternet(), checkIfConnectedToServer()]);
+    } catch (e) {
+      triggerToast(e.message);
+      return;
     }
 
     // try {

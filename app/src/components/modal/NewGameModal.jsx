@@ -20,6 +20,7 @@ import { translateText } from "@/utils/translateText";
 import { userIsTabbing, windowWidth } from "../../stores/applicationStore";
 import { openModal } from "../../stores/modalStore";
 import { LoadingModal } from "./Loading";
+import { checkIfConnectedToServer } from "@/utils/internet.js";
 
 export function NewGameModal() {
   const [showGridImageLoading, setShowGridImageLoading] = createSignal(false);
@@ -56,8 +57,13 @@ export function NewGameModal() {
     setSearchResults(undefined);
 
     try {
-      await checkIfConnectedToInternet();
+      await Promise.all([checkIfConnectedToInternet(), checkIfConnectedToServer()]);
+    } catch (e) {
+      triggerToast(e.message);
+      return;
+    }
 
+    try {
       const result = await gameSearchResults(gameName());
 
       setSearchResults(result);
@@ -153,6 +159,15 @@ export function NewGameModal() {
           <button
             type="button"
             onClick={async () => {
+              if ([gridImage(), heroImage(), logoImage(), iconImage()].some((x) => x.type === "remote")) {
+                try {
+                  await Promise.all([checkIfConnectedToInternet(), checkIfConnectedToServer()]);
+                } catch (e) {
+                  triggerToast(e.message);
+                  return;
+                }
+              }
+
               try {
                 openModal({
                   type: "loading",

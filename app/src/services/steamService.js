@@ -1,6 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
 import { produce } from "solid-js/store";
-import { checkIfConnectedToInternet, checkIfConnectedToServer } from "@/utils/internet.js";
 import { gameAssetResults, steamGameSearchResults } from "../data/api/sgdbAssets";
 import { downloadImageIntoBin } from "../data/storage/imageStroage";
 import { setLibraryData } from "../stores/libraryStore";
@@ -20,8 +19,6 @@ async function safeDownload(type, arr) {
 
 export async function importSteamGames() {
   try {
-    await Promise.all([checkIfConnectedToInternet(), checkIfConnectedToServer()]);
-
     let steamGameIds = await invoke("read_steam_vdf");
 
     // ignoring steam common redist from installing

@@ -13,11 +13,19 @@ import { translateText } from "@/utils/translateText";
 import { importSteamGames } from "../../services/steamService";
 import { openModal } from "../../stores/modalStore";
 import { LoadingModal } from "./Loading";
+import { checkIfConnectedToInternet, checkIfConnectedToServer } from "@/utils/internet.js";
 
 export function SettingsModal() {
   const [showImportAndOverwriteConfirm, setShowImportAndOverwriteConfirm] = createSignal(false);
 
   async function handleImportSteamGames() {
+    try {
+      await Promise.all([checkIfConnectedToInternet(), checkIfConnectedToServer()]);
+    } catch (e) {
+      triggerToast(e.message);
+      return;
+    }
+
     const hasSteamFolder = libraryData.folders.some((folder) => folder.name === "imported from steam");
     let shouldImport = false;
 

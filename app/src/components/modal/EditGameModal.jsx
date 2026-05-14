@@ -21,6 +21,7 @@ import { selectedGame } from "@/stores/selectedGameStore";
 import { triggerToast } from "@/stores/toastStore.js";
 import { getExecutableFileName } from "@/utils/paths.js";
 import { translateText } from "@/utils/translateText";
+import { checkIfConnectedToInternet, checkIfConnectedToServer } from "@/utils/internet.js";
 
 export function EditGameModal() {
   const originalGame = () => libraryData.games[selectedGame()];
@@ -161,6 +162,13 @@ export function EditGameModal() {
   });
 
   async function searchGameName() {
+    try {
+      await Promise.all([checkIfConnectedToInternet(), checkIfConnectedToServer()]);
+    } catch (e) {
+      triggerToast(e.message);
+      return;
+    }
+
     setSearchResults(undefined);
 
     try {
@@ -263,6 +271,14 @@ export function EditGameModal() {
           <button
             type="button"
             onClick={async () => {
+              if ([gridImage(), heroImage(), logoImage(), iconImage()].some((x) => x.type === "remote")) {
+                try {
+                  await Promise.all([checkIfConnectedToInternet(), checkIfConnectedToServer()]);
+                } catch (e) {
+                  triggerToast(e.message);
+                  return;
+                }
+              }
               try {
                 openModal({
                   type: "loading",
