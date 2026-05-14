@@ -21,6 +21,7 @@ import { userIsTabbing, windowWidth } from "../../stores/applicationStore";
 import { openModal } from "../../stores/modalStore";
 import { LoadingModal } from "./Loading";
 import { checkIfConnectedToServer } from "@/utils/internet.js";
+import { getExecutableParentFolder } from "@/utils/paths.js";
 
 export function NewGameModal() {
   const [showGridImageLoading, setShowGridImageLoading] = createSignal(false);
@@ -554,8 +555,20 @@ export function NewGameModal() {
               onClick={() => {
                 selectGameLocation(setGameLocation);
               }}
-              onContextMenu={() => {
-                setGameLocation(undefined);
+              onAuxClick={(e) => {
+                e.preventDefault();
+                if (e.button === 2) {
+                  setGameLocation(undefined);
+                } else if (e.button === 1) {
+                  if (!gameLocation()) return;
+                  try {
+                    invoke("open_location", {
+                      location: getExecutableParentFolder(gameLocation()),
+                    });
+                  } catch (e) {
+                    triggerToast(e.message);
+                  }
+                }
               }}
               class="btn mt-0! w-max"
             >

@@ -22,6 +22,7 @@ import { triggerToast } from "@/stores/toastStore.js";
 import { getExecutableFileName } from "@/utils/paths.js";
 import { translateText } from "@/utils/translateText";
 import { checkIfConnectedToInternet, checkIfConnectedToServer } from "@/utils/internet.js";
+import { getExecutableParentFolder } from "../../utils/paths";
 
 export function EditGameModal() {
   const originalGame = () => libraryData.games[selectedGame()];
@@ -670,10 +671,23 @@ export function EditGameModal() {
               onClick={() => {
                 selectGameLocation(setGameLocation);
               }}
-              onContextMenu={() => {
-                setGameLocation(undefined);
+              onAuxClick={(e) => {
+                e.preventDefault();
+                if (e.button === 2) {
+                  setGameLocation(undefined);
+                } else if (e.button === 1) {
+                  if (!gameLocation()) return;
+                  try {
+                    invoke("open_location", {
+                      location: getExecutableParentFolder(gameLocation()),
+                    });
+                  } catch (e) {
+                    triggerToast(e.message);
+                  }
+                }
               }}
-              class="btn w-max"
+              class="btn tooltip-bottom w-max"
+              data-tooltip={translateText("right click to clear / middle click to open")}
             >
               {!gameLocation() ? translateText("locate game") : getExecutableFileName(gameLocation())}
             </button>
@@ -755,3 +769,4 @@ export function EditGameModal() {
     </div>
   );
 }
+

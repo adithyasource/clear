@@ -20,6 +20,10 @@ export function getExecutableFileName(location) {
 }
 
 export function getExecutableParentFolder(location) {
+  if (location.toString().startsWith("steam://")) {
+    throw new Error("no parent, location is a steam game");
+  }
+
   if (systemPlatform() === "windows") {
     return location.toString().split("\\").slice(0, -1).join("\\");
   }
