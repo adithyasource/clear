@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 import { appDataDir } from "@tauri-apps/api/path";
-import { createSignal, Show } from "solid-js";
+import { createSignal, onMount, Show } from "solid-js";
 import { Hotkeys } from "@/components/ui/Hotkeys.jsx";
 import { LanguageSelector } from "@/components/ui/LanguageSelector.jsx";
 import { Close, Steam } from "@/libraries/Icons.jsx";
@@ -14,9 +14,30 @@ import { importSteamGames } from "../../services/steamService";
 import { openModal } from "../../stores/modalStore";
 import { LoadingModal } from "./Loading";
 import { checkIfConnectedToInternet, checkIfConnectedToServer } from "@/utils/internet.js";
+import { Disconnected, Globe, Server } from "../../libraries/Icons";
 
 export function SettingsModal() {
   const [showImportAndOverwriteConfirm, setShowImportAndOverwriteConfirm] = createSignal(false);
+  const [connectedToInternet, setConnectedToInternet] = createSignal();
+  const [connectedToServer, setConnectedToServer] = createSignal();
+
+  onMount(async () => await checkConnections());
+
+  async function checkConnections() {
+    try {
+      await checkIfConnectedToInternet();
+      setConnectedToInternet(true);
+    } catch {
+      setConnectedToInternet(false);
+    }
+
+    try {
+      await checkIfConnectedToServer();
+      setConnectedToServer(true);
+    } catch {
+      setConnectedToServer(false);
+    }
+  }
 
   async function handleImportSteamGames() {
     try {
@@ -241,8 +262,36 @@ export function SettingsModal() {
         <Hotkeys onSettingsPage={true} />
 
         <div class="mt-[35px] flex justify-between">
-          <div>
-            clear <span class="text-[#12121280] dark:text-[#ffffff80]">v{CLEAR_VERSION}</span>
+          <div class="flex items-center gap-2">
+            <button
+              class="small-btn tooltip-bottom"
+              data-tooltip={translateText("re-test connection")}
+              type="button"
+              onClick={checkConnections}
+            >
+              clear <span class="text-[#12121280] dark:text-[#ffffff80]">v{CLEAR_VERSION}</span>
+            </button>
+            {connectedToInternet() ? (
+              <>
+                <div data-tooltip={translateText("connected to internet")} class="tooltip-bottom">
+                  <Globe />
+                </div>
+
+                {connectedToServer() ? (
+                  <div data-tooltip={translateText("connected to server")} class="tooltip-bottom">
+                    <Server />
+                  </div>
+                ) : (
+                  <div data-tooltip={translateText("not connected to server")} class="tooltip-bottom">
+                    <Disconnected />
+                  </div>
+                )}
+              </>
+            ) : (
+              <div data-tooltip={translateText("not connected to internet")} class="tooltip-bottom">
+                <Disconnected />
+              </div>
+            )}
           </div>
           <button
             type="button"

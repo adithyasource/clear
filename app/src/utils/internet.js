@@ -27,3 +27,19 @@ export async function checkIfConnectedToServer() {
     throw new Error("not connected to the server :(");
   }
 }
+
+export async function checkLatestVersion() {
+  try {
+    const res = await fetch(`${import.meta.env.VITE_CLEAR_API_URL}/latest-client-version`, {
+      method: "GET",
+    });
+
+    if (!res.ok) {
+      throw new Error(`server responded with ${res.status}`);
+    }
+
+    return await res.json();
+  } catch {
+    throw new Error("not connected to the server :(");
+  }
+}

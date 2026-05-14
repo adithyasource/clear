@@ -324,3 +324,44 @@ export function ChevronArrow() {
     </svg>
   );
 }
+
+export function Globe() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M22 12C22 17.5228 17.5228 22 12 22M22 12C22 6.47715 17.5228 2 12 2M22 12H2M12 22C6.47715 22 2 17.5228 2 12M12 22C14.4744 19.4749 16 15.8145 16 11.9999C16 8.18526 14.4744 4.52507 12 2M12 22C9.52563 19.4749 8 15.8145 8 11.9999C8 8.18526 9.52563 4.52507 12 2M2 12C2 6.47715 6.47715 2 12 2"
+        class="stroke-[#00000080] dark:stroke-[#ffffff80]"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function Server() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M5 15.5H19M5 8.5H19M9.01611 12.0161L9 12M9.01611 5.01611L9 5M9.01611 19.0161L9 19M7 22.5H17C18.1046 22.5 19 21.6046 19 20.5V3.5C19 2.39543 18.1046 1.5 17 1.5H7C5.89543 1.5 5 2.39543 5 3.5V20.5C5 21.6046 5.89543 22.5 7 22.5Z"
+        class="stroke-[#00000080] dark:stroke-[#ffffff80]"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}
+export function Disconnected() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M17 13V18M17 21V21.1M2 6C4.88494 4.10123 8.31702 3 12 3C15.683 3 19.1151 4.10123 22 6M4.99996 9.8774C7.05917 8.6054 9.44995 7.87744 12 7.87744C14.55 7.87744 16.9407 8.6054 19 9.8774M9.07354 13.4549C10.0119 13.0016 11.0216 12.7549 12.0735 12.7549C12.5589 12.7549 13.0354 12.8074 13.5 12.9086M11.9181 17.1464L11.902 17.1303"
+        class="stroke-[#00000080] dark:stroke-[#ffffff80]"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}
