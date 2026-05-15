@@ -40,8 +40,6 @@ export function GamePopUpModal() {
       <img src={hero()} alt="" class="absolute -z-10 h-[350px] opacity-[0.4] blur-[80px] max-large:h-[270px]" />
       <div class="relative">
         <div class="absolute right-[30px] bottom-[30px] flex gap-[15px]">
-          <button type="button" class="invisible-button-gamepopup pointer-events-none" />
-
           <Show
             when={game()?.gameLocation}
             fallback={
