@@ -1,7 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 import { appDataDir } from "@tauri-apps/api/path";
-import { BaseDirectory, copyFile, mkdir } from "@tauri-apps/plugin-fs";
-import { folderInBaseDirExists } from "@/data/storage/fileStorage.js";
+import { BaseDirectory, copyFile, exists, mkdir } from "@tauri-apps/plugin-fs";
 import { getErrorMessage, logError } from "@/utils/errorHandling";
 import { generateId } from "@/utils/generateId.js";
 import { locationJoin } from "@/utils/paths.js";
@@ -10,14 +9,12 @@ export async function getImageBinPath(type) {
   const appDataDirPath = await appDataDir();
 
   try {
-    if (await folderInBaseDirExists(type)) {
-      return locationJoin([appDataDirPath, type]);
+    if (!(await exists(type, { baseDir: BaseDirectory.AppData }))) {
+      await mkdir(type, {
+        baseDir: BaseDirectory.AppData,
+        recursive: true,
+      });
     }
-
-    await mkdir(type, {
-      baseDir: BaseDirectory.AppData,
-      recursive: true,
-    });
 
     return locationJoin([appDataDirPath, type]);
   } catch (err) {

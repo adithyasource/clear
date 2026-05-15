@@ -1,7 +1,11 @@
-import { BaseDirectory, exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
+import { BaseDirectory, exists, mkdir, readDir, readTextFile, remove, rename, writeTextFile } from "@tauri-apps/plugin-fs";
 import { logError } from "@/utils/errorHandling";
+import { generateId } from "@/utils/generateId.js";
+
+const DATA_VERSION = 2;
 
 const defaultData = {
+  dataVersion: DATA_VERSION,
   games: {},
   folders: [],
   notepad: "",
@@ -17,6 +21,161 @@ const defaultData = {
     zoomLevel: 1,
   },
 };
+
+async function migrateLegacyAssetFolders() {
+  const folderRenames = [
+    ["grids", "grid"],
+    ["heroes", "hero"],
+    ["icons", "icon"],
+    ["logos", "logo"],
+  ];
+
+  for (const [oldName, newName] of folderRenames) {
+    const oldExists = await exists(oldName, { baseDir: BaseDirectory.AppData });
+    if (!oldExists) continue;
+
+    const newExists = await exists(newName, { baseDir: BaseDirectory.AppData });
+
+    if (!newExists) {
+      await rename(oldName, newName, {
+        oldPathBaseDir: BaseDirectory.AppData,
+        newPathBaseDir: BaseDirectory.AppData,
+      });
+      continue;
+    }
+
+    await mkdir(newName, {
+      baseDir: BaseDirectory.AppData,
+      recursive: true,
+    });
+
+    const legacyEntries = await readDir(oldName, {
+      baseDir: BaseDirectory.AppData,
+    });
+
+    for (const entry of legacyEntries) {
+      if (!entry.name) continue;
+
+      await rename(`${oldName}/${entry.name}`, `${newName}/${entry.name}`, {
+        oldPathBaseDir: BaseDirectory.AppData,
+        newPathBaseDir: BaseDirectory.AppData,
+      });
+    }
+
+    await remove(oldName, {
+      baseDir: BaseDirectory.AppData,
+      recursive: true,
+    });
+  }
+}
+
+function migrateV1ToV2(data) {
+  const oldGameIdToNewGameId = {};
+  const originalGameEntries = Object.entries(data.games || {});
+  const usedGameIds = new Set();
+
+  function createUniqueGameId() {
+    let newGameId = generateId();
+
+    while (usedGameIds.has(newGameId)) {
+      newGameId = generateId();
+    }
+
+    usedGameIds.add(newGameId);
+    return newGameId;
+  }
+
+  const games = Object.fromEntries(
+    originalGameEntries.map(([gameId, game]) => {
+      const safeGame = game && typeof game === "object" ? game : {};
+      const normalizedGameId = createUniqueGameId();
+
+      oldGameIdToNewGameId[gameId] = normalizedGameId;
+
+      return [
+        normalizedGameId,
+        {
+          name: safeGame.name || gameId,
+          gameLocation: safeGame.location ?? "",
+          favourite: safeGame.favourite ?? false,
+          gridImagePath: safeGame.gridImage ?? null,
+          heroImagePath: safeGame.heroImage ?? null,
+          logoImagePath: safeGame.logo ?? null,
+          iconImagePath: safeGame.iconImage ?? null,
+        },
+      ];
+    }),
+  );
+
+  const folders = Object.values(data.folders || {})
+    .sort((a, b) => (a?.index ?? 0) - (b?.index ?? 0))
+    .map((folder) => ({
+      name: folder?.name || "",
+      hide: folder?.hide ?? false,
+      games: Array.isArray(folder?.games)
+        ? folder.games.map((gameId) => oldGameIdToNewGameId[gameId]).filter(Boolean)
+        : [],
+    }));
+
+  return {
+    ...defaultData,
+    ...data,
+    dataVersion: DATA_VERSION,
+    games,
+    folders,
+    notepad: data.notepad ?? defaultData.notepad,
+    userSettings: {
+      ...defaultData.userSettings,
+      ...(data.userSettings || {}),
+    },
+  };
+}
+
+function normalizeV2Data(data) {
+  if (!data || typeof data !== "object") {
+    return defaultData;
+  }
+
+  const games = Object.fromEntries(
+    Object.entries(data.games || {}).map(([gameId, game]) => {
+      const safeGame = game && typeof game === "object" ? game : {};
+
+      return [
+        gameId,
+        {
+          name: safeGame.name || gameId,
+          gameLocation: safeGame.gameLocation ?? "",
+          favourite: safeGame.favourite ?? false,
+          gridImagePath: safeGame.gridImagePath ?? null,
+          heroImagePath: safeGame.heroImagePath ?? null,
+          logoImagePath: safeGame.logoImagePath ?? null,
+          iconImagePath: safeGame.iconImagePath ?? null,
+        },
+      ];
+    }),
+  );
+
+  const folders = Array.isArray(data.folders)
+    ? data.folders.map((folder) => ({
+        name: folder?.name || "",
+        hide: folder?.hide ?? false,
+        games: Array.isArray(folder?.games) ? folder.games : [],
+      }))
+    : [];
+
+  return {
+    ...defaultData,
+    ...data,
+    dataVersion: DATA_VERSION,
+    games,
+    folders,
+    notepad: data.notepad ?? defaultData.notepad,
+    userSettings: {
+      ...defaultData.userSettings,
+      ...(data.userSettings || {}),
+    },
+  };
+}
 
 async function dataFileExists() {
   try {
@@ -66,18 +225,23 @@ export async function dataFileRead() {
       throw new Error("invalid data structure");
     }
 
-    return parsed;
+    let migratedData;
+
+    if (parsed.dataVersion == null) {
+      await migrateLegacyAssetFolders();
+      migratedData = migrateV1ToV2(parsed);
+    } else {
+      migratedData = normalizeV2Data(parsed);
+    }
+
+    if (JSON.stringify(parsed) !== JSON.stringify(migratedData)) {
+      await dataFileWrite(migratedData);
+    }
+
+    return migratedData;
   } catch (err) {
     await logError("fileStorage.dataFileRead", err);
     return defaultData;
   }
 }
 
-export async function folderInBaseDirExists(folderName) {
-  try {
-    return await exists(folderName, { baseDir: BaseDirectory.AppData });
-  } catch (err) {
-    await logError("fileStorage.folderInBaseDirExists", err);
-    return false;
-  }
-}
