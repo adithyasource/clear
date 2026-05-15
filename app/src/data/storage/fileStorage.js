@@ -101,7 +101,7 @@ function migrateV1ToV2(data) {
           gridImagePath: safeGame.gridImage ?? null,
           heroImagePath: safeGame.heroImage ?? null,
           logoImagePath: safeGame.logo ?? null,
-          iconImagePath: safeGame.iconImage ?? null,
+          iconImagePath: safeGame.icon ?? null,
         },
       ];
     }),
