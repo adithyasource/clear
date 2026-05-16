@@ -158,7 +158,7 @@ function App() {
       <ContextMenu />
       <ModalFrame />
 
-      <div class="relative h-screen w-full overflow-hidden">
+      <div class="relative h-screen overflow-hidden">
         <Show when={libraryData.userSettings.showSideBar === false && windowWidth() >= 1000}>
           <button
             type="button"
@@ -172,12 +172,12 @@ function App() {
           </button>
         </Show>
         <Show when={libraryData.userSettings.showSideBar && windowWidth() >= 1000}>
-          <div class="fixed top-0 left-0 z-10 w-screen">
+          <div class="fixed top-0 left-0 z-10 w-[calc(10rem+10%)]">
             <SideBar />
           </div>
         </Show>
         <Show when={libraryData.folders.length === 0}>
-          <div class="absolute flex h-screen w-full flex-col items-center justify-center overflow-y-scroll py-5 pr-7.5">
+          <div class="absolute flex h-screen flex-col items-center justify-center overflow-y-scroll py-5 pr-7.5">
             <div class="z-50!">
               <p class="subtle-text">
                 {translateText("hey there! thank you so much for using clear")}
@@ -210,7 +210,7 @@ function App() {
 
         {/* seperating out pr and pl here and adding it back in the folder is because we want to fix the style for the tabbing */}
         <div
-          class={`h-screen w-full overflow-y-scroll rounded-none! py-5 pr-7 ${
+          class={`h-screen overflow-y-scroll rounded-none! py-5 pr-7 ${
             libraryData.userSettings.showSideBar && windowWidth() >= 1000 ? "pl-[calc(11.5rem+10%)]" : "pl-5"
           }`}
         >
