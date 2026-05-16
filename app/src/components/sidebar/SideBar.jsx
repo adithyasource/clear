@@ -241,7 +241,7 @@ export function SideBar() {
   });
 
   return (
-    <div class="sideBar z-10 w-80 py-4 pl-4">
+    <div class="sideBar z-10 w-[calc(10rem+10%)] py-4 pl-4">
       <div>
         <div class="flex items-center justify-between gap-[15px]">
           <form

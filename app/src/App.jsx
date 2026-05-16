@@ -172,7 +172,7 @@ function App() {
           </button>
         </Show>
         <Show when={libraryData.userSettings.showSideBar && windowWidth() >= 1000}>
-          <div class="fixed top-0 left-0 z-10">
+          <div class="fixed top-0 left-0 z-10 w-screen">
             <SideBar />
           </div>
         </Show>
@@ -211,7 +211,7 @@ function App() {
         {/* seperating out pr and pl here and adding it back in the folder is because we want to fix the style for the tabbing */}
         <div
           class={`h-screen w-full overflow-y-scroll rounded-none! py-5 pr-7 ${
-            libraryData.userSettings.showSideBar && windowWidth() >= 1000 ? "pl-86" : "pl-5"
+            libraryData.userSettings.showSideBar && windowWidth() >= 1000 ? "pl-[calc(11.5rem+10%)]" : "pl-5"
           }`}
         >
           <Show when={libraryData.folders && !search()}>
