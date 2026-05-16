@@ -65,6 +65,7 @@ body.user-is-tabbing [class*="tooltip-delayed-"]:focus::after {
 
 .tooltip-right::after,
 .tooltip-delayed-right::after {
+  top: 5%;
   right: 5%;
   transform: translate(0%, -17%);
 }
