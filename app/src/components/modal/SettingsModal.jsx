@@ -213,7 +213,7 @@ export function SettingsModal() {
             <span class="text-muted">[{translateText("theme")}]</span>
             <div class="">{translateText(libraryData.userSettings.currentTheme) || translateText("dark")}</div>
           </button>
-          <div class="relative flex cursor-pointer gap-2">
+          <div class="relative z-999999 flex cursor-pointer gap-2">
             <LanguageSelector onSettingsPage={true} />
           </div>
         </div>

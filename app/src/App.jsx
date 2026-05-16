@@ -21,6 +21,7 @@ import { initApplicationStore, windowWidth } from "./stores/applicationStore.js"
 import { libraryData } from "./stores/libraryStore.js";
 import { closeModal, openModal } from "./stores/modalStore.js";
 import { search } from "./stores/searchStore.js";
+import { LoadingModal } from "./components/modal/Loading.jsx";
 
 // import { checkForUpdatesAndNotify } from "@/services/updaterService.js";
 
@@ -199,6 +200,7 @@ function App() {
                   data-tooltip={translateText("might not work perfectly!")}
                   onClick={handleImportSteamGames}
                 >
+                  {translateText("import Steam games")}
                   <Steam />
                 </button>
 

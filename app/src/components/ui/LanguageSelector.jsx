@@ -50,7 +50,7 @@ export function LanguageSelector({ onSettingsPage }) {
       {returnLanguageFullName(libraryData.userSettings.language)}
       <Show when={onSettingsPage ? showSettingsLanguageSelector() : showLanguageSelector()}>
         <div
-          class={`absolute z-100000 flex flex-col gap-4 panel-surface p-3 ${
+          class={`panel-surface absolute z-999999! flex flex-col gap-4 p-3 ${
             onSettingsPage ? "top-[150%]" : "top-[120%] left-[1%]"
           }`}
           onMouseLeave={() => {
