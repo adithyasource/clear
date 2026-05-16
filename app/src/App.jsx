@@ -50,10 +50,10 @@ function App() {
 
   // setting up effects for styles that can be changed in settings
   createEffect(() => {
-    document.body.style.setProperty(
-      "--text-color",
-      libraryData.userSettings.currentTheme === "light" ? "#000000" : "#ffffff",
-    );
+    // document.body.style.setProperty(
+    //   "--text-color",
+    //   libraryData.userSettings.currentTheme === "light" ? "#000000" : "#ffffff",
+    // );
 
     libraryData.userSettings.currentTheme === "light"
       ? document.documentElement.classList.remove("dark")

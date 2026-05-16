@@ -332,7 +332,7 @@ export function SideBar() {
             {(folder, folderIndex) => {
               return (
                 <div
-                  class="sideBarFolder mb-3 bg-[#f1f1f1] px-3 py-2 dark:bg-[#1c1c1c]"
+                  class="sideBarFolder mb-3 bg-card px-3 py-2 dark:bg-[#1c1c1c]"
                   id={folder.name}
                   draggable={true}
                   data-folder-index={folderIndex()}
@@ -419,7 +419,7 @@ export function SideBar() {
           {/* uncategorized games */}
 
           <div
-            class="sideBarFolder mb-3 bg-[#f1f1f1] px-3 py-2 dark:bg-[#1c1c1c]"
+            class="sideBarFolder mb-3 bg-card px-3 py-2 dark:bg-[#1c1c1c]"
             id="uncategorizedFolder"
             onDragOver={(e) => {
               e.preventDefault();

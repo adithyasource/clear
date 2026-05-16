@@ -1,0 +1,25 @@
+@layer base {
+  :root {
+    --background: #ffffff;
+    --foreground: #000000;
+    --card: #d2d2d2;
+  }
+
+  .dark {
+    --background: #121212;
+    --foreground: #ffffff;
+    --card: #1c1c1c;
+  }
+
+  .black {
+    --background: #000;
+    --foreground: #fff;
+    --card: #121212;
+  }
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+}

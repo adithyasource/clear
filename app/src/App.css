@@ -4,12 +4,13 @@
 @import url("./styles/animations.css");
 @import url("./styles/tooltips.css");
 @import url("./styles/a11y.css");
+@import url("./styles/themes.css");
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant black (&:is(.black *));
 
 @theme {
   --breakpoint-*: initial;
-  --breakpoint-thin: 850px;
   --breakpoint-medium: 1000px;
   --breakpoint-large: 1500px;
 }
@@ -18,17 +19,10 @@
 
 html,
 body {
-  @apply bg-[#FFFFFC] text-black dark:bg-[#121212] dark:text-white;
+  background: var(--background);
+  color: var(--foreground);
   height: 100%;
   overflow: hidden;
-}
-
-:root {
-  color-scheme: light;
-}
-
-.dark {
-  color-scheme: dark;
 }
 
 * {
