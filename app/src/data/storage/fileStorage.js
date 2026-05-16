@@ -1,4 +1,13 @@
-import { BaseDirectory, exists, mkdir, readDir, readTextFile, remove, rename, writeTextFile } from "@tauri-apps/plugin-fs";
+import {
+  BaseDirectory,
+  exists,
+  mkdir,
+  readDir,
+  readTextFile,
+  remove,
+  rename,
+  writeTextFile,
+} from "@tauri-apps/plugin-fs";
 import { logError } from "@/utils/errorHandling";
 import { generateId } from "@/utils/generateId.js";
 
@@ -244,4 +253,3 @@ export async function dataFileRead() {
     return defaultData;
   }
 }
-

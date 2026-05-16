@@ -14,14 +14,12 @@ import {
 import { libraryData } from "@/stores/libraryStore";
 import { closeModal, modalShowCloseConfirm } from "@/stores/modalStore.js";
 import { triggerToast } from "@/stores/toastStore.js";
-import { checkIfConnectedToInternet } from "@/utils/internet.js";
-import { getExecutableFileName } from "@/utils/paths.js";
+import { checkIfConnectedToInternet, checkIfConnectedToServer } from "@/utils/internet.js";
+import { getExecutableFileName, getExecutableParentFolder } from "@/utils/paths.js";
 import { translateText } from "@/utils/translateText";
 import { userIsTabbing, windowWidth } from "../../stores/applicationStore";
 import { openModal } from "../../stores/modalStore";
 import { LoadingModal } from "./Loading";
-import { checkIfConnectedToServer } from "@/utils/internet.js";
-import { getExecutableParentFolder } from "@/utils/paths.js";
 
 export function NewGameModal() {
   const [showGridImageLoading, setShowGridImageLoading] = createSignal(false);

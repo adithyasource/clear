@@ -19,9 +19,9 @@ import { openModal } from "@/stores/modalStore";
 import { closeModal, modalShowCloseConfirm } from "@/stores/modalStore.js";
 import { selectedGame } from "@/stores/selectedGameStore";
 import { triggerToast } from "@/stores/toastStore.js";
+import { checkIfConnectedToInternet, checkIfConnectedToServer } from "@/utils/internet.js";
 import { getExecutableFileName } from "@/utils/paths.js";
 import { translateText } from "@/utils/translateText";
-import { checkIfConnectedToInternet, checkIfConnectedToServer } from "@/utils/internet.js";
 import { getExecutableParentFolder } from "../../utils/paths";
 
 export function EditGameModal() {
@@ -769,4 +769,3 @@ export function EditGameModal() {
     </div>
   );
 }
-

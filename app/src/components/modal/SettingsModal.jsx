@@ -9,12 +9,12 @@ import { CLEAR_VERSION } from "@/stores/applicationStore.js";
 import { libraryData, setLibraryData } from "@/stores/libraryStore";
 import { closeModal } from "@/stores/modalStore.js";
 import { triggerToast } from "@/stores/toastStore";
+import { checkIfConnectedToInternet, checkIfConnectedToServer } from "@/utils/internet.js";
 import { translateText } from "@/utils/translateText";
+import { Disconnected, Globe, Server } from "../../libraries/Icons";
 import { importSteamGames } from "../../services/steamService";
 import { openModal } from "../../stores/modalStore";
 import { LoadingModal } from "./Loading";
-import { checkIfConnectedToInternet, checkIfConnectedToServer } from "@/utils/internet.js";
-import { Disconnected, Globe, Server } from "../../libraries/Icons";
 
 export function SettingsModal() {
   const [showImportAndOverwriteConfirm, setShowImportAndOverwriteConfirm] = createSignal(false);
