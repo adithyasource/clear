@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { apiFetch, type envBindings, getAssets } from "./utils";
 import { searchHLTB } from "./hltb";
+import { apiFetch, type envBindings, getAssets } from "./utils";
 
 const app = new Hono<{ Bindings: envBindings }>();
 
@@ -42,12 +42,14 @@ app.get("/games/assets/:id", async (c) => {
   const toAssets = (result: PromiseSettledResult<Awaited<ReturnType<typeof getAssets>>>) =>
     result.status === "fulfilled" ? result.value : [];
 
-  const [grids, heroes, logos, icons] = (await Promise.allSettled([
-    getAssets(id, "grids", token),
-    getAssets(id, "heroes", token),
-    getAssets(id, "logos", token),
-    getAssets(id, "icons", token),
-  ])).map(toAssets);
+  const [grids, heroes, logos, icons] = (
+    await Promise.allSettled([
+      getAssets(id, "grids", token),
+      getAssets(id, "heroes", token),
+      getAssets(id, "logos", token),
+      getAssets(id, "icons", token),
+    ])
+  ).map(toAssets);
 
   return c.json({
     grids,
