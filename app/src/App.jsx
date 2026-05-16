@@ -158,11 +158,11 @@ function App() {
       <ContextMenu />
       <ModalFrame />
 
-      <div class="flex gap-7.5">
+      <div class="relative h-screen w-full overflow-hidden">
         <Show when={libraryData.userSettings.showSideBar === false && windowWidth() >= 1000}>
           <button
             type="button"
-            class="absolute! tooltip-delayed-left top-8 right-7 z-20 w-[25.25px] cursor-pointer p-2 duration-150 card-hover"
+            class="fixed! tooltip-delayed-left card-hover top-8 right-7 z-20 w-[25.25px] cursor-pointer p-2 duration-150"
             onClick={() => {
               toggleSideBar();
             }}
@@ -172,16 +172,12 @@ function App() {
           </button>
         </Show>
         <Show when={libraryData.userSettings.showSideBar && windowWidth() >= 1000}>
-          <SideBar />
+          <div class="fixed top-0 left-0 z-10">
+            <SideBar />
+          </div>
         </Show>
         <Show when={libraryData.folders.length === 0}>
-          <div
-            class={`absolute flex h-screen w-full flex-col items-center justify-center overflow-y-scroll py-5 pr-7.5 ${
-              libraryData.userSettings.showSideBar && windowWidth() >= 1000
-                ? "large:pl-[17%] pl-[23%]"
-                : "large:pl-7.5 pl-7.5"
-            }`}
-          >
+          <div class="absolute flex h-screen w-full flex-col items-center justify-center overflow-y-scroll py-5 pr-7.5">
             <div class="z-50!">
               <p class="subtle-text">
                 {translateText("hey there! thank you so much for using clear")}
@@ -214,7 +210,9 @@ function App() {
 
         {/* seperating out pr and pl here and adding it back in the folder is because we want to fix the style for the tabbing */}
         <div
-          class={`h-screen w-full overflow-y-scroll rounded-none! py-5 ${!libraryData.userSettings.showSideBar || windowWidth() <= 1000 ? "pr-7 pl-5" : "pr-7"}`}
+          class={`h-screen w-full overflow-y-scroll rounded-none! py-5 pr-7 ${
+            libraryData.userSettings.showSideBar && windowWidth() >= 1000 ? "pl-86" : "pl-5"
+          }`}
         >
           <Show when={libraryData.folders && !search()}>
             <For each={libraryData.folders}>

@@ -241,7 +241,7 @@ export function SideBar() {
   });
 
   return (
-    <div class="sideBar relative z-10 flex h-screen w-90 flex-col py-4 pl-4">
+    <div class="sideBar z-10 w-80 py-4 pl-4">
       <div>
         <div class="flex items-center justify-between gap-[15px]">
           <form
@@ -315,8 +315,8 @@ export function SideBar() {
           id="sideBarFolders"
           class={`mt-4 overflow-auto ${
             libraryData.userSettings.language === "fr"
-              ? "large:h-[calc(100vh-275px)] medium:h-[calc(100vh-330px)]"
-              : "h-[calc(100vh-275px)]"
+              ? "large:h-[calc(100vh-18rem)] medium:h-[calc(100vh-22rem)]"
+              : "h-[calc(100vh-18rem)]"
           } `}
           // drag over and drop are triggered when folders inside are dragged over and dropped in the sidebar
           onDragOver={(e) => {
@@ -465,68 +465,64 @@ export function SideBar() {
         </div>
       </div>
 
-      <div id="sideBarBottom" class="absolute bottom-[20px] w-[calc(100%-2px)] pr-[20px]">
-        <div class="">
-          <button
-            type="button"
-            class="icon-btn mt-[12px] w-full"
-            onClick={() => {
-              openModal({ type: "newGame", component: NewGameModal, confirmWhileClosing: true });
+      <button
+        type="button"
+        class="icon-btn mt-[12px] w-full"
+        onClick={() => {
+          openModal({ type: "newGame", component: NewGameModal, confirmWhileClosing: true });
 
-              console.log(JSON.stringify(libraryData.games));
-            }}
-          >
-            {translateText("add game")}
-            <div class="opacity-50">
-              <GameController />
-            </div>
-          </button>
-          <button
-            type="button"
-            class="icon-btn mt-[12px] w-full"
-            onClick={() => {
-              openModal({ type: "newFolder", component: NewFolderModal, confirmWhileClosing: true });
-            }}
-          >
-            {translateText("add folder")}
-            <div class="opacity-50">
-              <Folder />
-            </div>
-          </button>
+          console.log(JSON.stringify(libraryData.games));
+        }}
+      >
+        {translateText("add game")}
+        <div class="opacity-50">
+          <GameController />
         </div>
+      </button>
+      <button
+        type="button"
+        class="icon-btn mt-[12px] w-full"
+        onClick={() => {
+          openModal({ type: "newFolder", component: NewFolderModal, confirmWhileClosing: true });
+        }}
+      >
+        {translateText("add folder")}
+        <div class="opacity-50">
+          <Folder />
+        </div>
+      </button>
 
-        <div
-          class={`flex ${
-            libraryData.userSettings.language === "fr"
-              ? "large:flex-row flex-col medium:flex-col gap-0 large:gap-3 medium:gap-0"
-              : "gap-3"
-          }`}
+      <div
+        class={`flex ${
+          libraryData.userSettings.language === "fr"
+            ? "large:flex-row flex-col medium:flex-col gap-0 large:gap-3 medium:gap-0"
+            : "gap-3"
+        }`}
+      >
+        <button
+          type="button"
+          class={"icon-btn mt-[12px] w-full whitespace-nowrap"}
+          onClick={() => {
+            openModal({ type: "notepad", component: NotepadModal, confirmWhileClosing: false });
+          }}
         >
-          <button
-            type="button"
-            class={"icon-btn mt-[12px] w-full whitespace-nowrap"}
-            onClick={() => {
-              openModal({ type: "notepad", component: NotepadModal, confirmWhileClosing: false });
-            }}
-          >
-            {translateText("notepad")}
-            <div class="opacity-50">
-              <Notepad />
-            </div>
-          </button>
-          <button
-            type="button"
-            class="icon-btn mt-[12px] w-full"
-            onClick={() => {
-              openModal({ type: "settings", component: SettingsModal, confirmWhileClosing: false });
-            }}
-          >
-            {translateText("settings")}
-            <div class="opacity-50">
-              <Settings />
-            </div>
-          </button>
-        </div>
+          {translateText("notepad")}
+          <div class="opacity-50">
+            <Notepad />
+          </div>
+        </button>
+        <button
+          type="button"
+          class="icon-btn mt-[12px] w-full"
+          onClick={() => {
+            openModal({ type: "settings", component: SettingsModal, confirmWhileClosing: false });
+          }}
+        >
+          {translateText("settings")}
+          <div class="opacity-50">
+            <Settings />
+          </div>
+        </button>
       </div>
     </div>
   );
