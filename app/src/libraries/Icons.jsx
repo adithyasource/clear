@@ -8,14 +8,14 @@ export function ChevronArrows({ classProp }) {
     <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class={classProp}>
       <path
         d="M6 11L1 6L6 1"
-        class="stroke-[#00000080] dark:stroke-[#ffffff80]"
+        class="stroke-muted"
         stroke-width="1.3"
         stroke-linecap="round"
         stroke-linejoin="round"
       />
       <path
         d="M11 11L6 6L11 1"
-        class="stroke-[#00000080] dark:stroke-[#ffffff80]"
+        class="stroke-muted"
         stroke-width="1.3"
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -29,21 +29,21 @@ export function EyeClosed() {
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path
         d="M2 2L22 22"
-        class="stroke-[#00000080] dark:stroke-[#ffffff80]"
+        class="stroke-muted"
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
       />
       <path
         d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 5.05822C11.3254 5.02013 11.6588 5 12 5C18.3636 5 22 12 22 12C22 12 21.3082 13.3317 20 14.8335"
-        class="stroke-[#00000080] dark:stroke-[#ffffff80]"
+        class="stroke-muted"
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
       />
       <path
         d="M14 14.2362C13.4692 14.7112 12.7684 15.0001 12 15.0001C10.3431 15.0001 9 13.657 9 12.0001C9 11.1764 9.33193 10.4303 9.86932 9.88818"
-        class="stroke-[#00000080] dark:stroke-[#ffffff80]"
+        class="stroke-muted"
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -57,7 +57,7 @@ export function Edit() {
     <svg width="14" height="14" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path
         d="M2.5 11.5L12.5 1.50002C13.3284 0.671585 14.6716 0.671585 15.5 1.50002C16.3284 2.32845 16.3284 3.67159 15.5 4.50002L5.5 14.5L1.5 15.5L2.5 11.5Z"
-        class="stroke-[#00000080] dark:stroke-[#ffffff80]"
+        class="stroke-muted"
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -73,7 +73,7 @@ export function GameController() {
       width="18"
       height="18"
       viewBox="0 0 24 24"
-      class="stroke-[#000000] dark:stroke-[#ffffff]"
+      class="stroke-foreground"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -93,7 +93,7 @@ export function Folder() {
       aria-hidden="true"
       width="18"
       height="18"
-      class="stroke-[#000000] dark:stroke-[#ffffff]"
+      class="stroke-foreground"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -115,7 +115,7 @@ export function Notepad() {
       aria-hidden="true"
       width="18"
       height="18"
-      class="stroke-[#000000] dark:stroke-[#ffffff]"
+      class="stroke-foreground"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -139,7 +139,7 @@ export function Settings() {
       height="18"
       viewBox="0 0 24 24"
       fill="none"
-      class="stroke-[#000000] dark:stroke-[#ffffff]"
+      class="stroke-foreground"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
@@ -163,26 +163,26 @@ export function Steam() {
     <svg aria-hidden="true" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M9.33521 10.141L10.8362 11.166L11.8246 12.667L15.0096 10.3973L11.5683 6.88281"
-        class="fill-[#00000080] dark:fill-[#ffffff80]"
+        class="fill-muted"
       />
       <path
         d="M15.0827 8.6404C16.0734 8.6404 16.8765 7.83728 16.8765 6.84657C16.8765 5.85586 16.0734 5.05273 15.0827 5.05273C14.0919 5.05273 13.2888 5.85586 13.2888 6.84657C13.2888 7.83728 14.0919 8.6404 15.0827 8.6404Z"
-        class="fill-[#00000080] dark:fill-[#ffffff80]"
+        class="fill-muted"
       />
       <path
         d="M9.18868 15.0834C10.4624 15.0834 11.495 14.0508 11.495 12.7771C11.495 11.5033 10.4624 10.4707 9.18868 10.4707C7.91492 10.4707 6.88232 11.5033 6.88232 12.7771C6.88232 14.0508 7.91492 15.0834 9.18868 15.0834Z"
-        class="stroke-[#00000080] dark:stroke-[#ffffff80]"
+        class="stroke-muted"
         stroke-width="0.695568"
       />
       <path
         d="M1.97681 9.81055L9.11554 12.7759"
-        class="stroke-[#00000080] dark:stroke-[#ffffff80]"
+        class="stroke-muted"
         stroke-width="2.92871"
         stroke-linecap="round"
       />
       <path
         d="M15.0827 9.81149C16.7204 9.81149 18.0481 8.48388 18.0481 6.84618C18.0481 5.20848 16.7204 3.88086 15.0827 3.88086C13.445 3.88086 12.1174 5.20848 12.1174 6.84618C12.1174 8.48388 13.445 9.81149 15.0827 9.81149Z"
-        class="stroke-[#00000080] dark:stroke-[#ffffff80]"
+        class="stroke-muted"
         stroke-width="1.17148"
       />
     </svg>
@@ -194,7 +194,7 @@ export function EmptyTray() {
     <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M3.04819 12H8.44444L10.2222 14H13.7778L15.5556 12H20.9361M6.70951 5.4902L3.27942 11.2785C3.09651 11.5871 3 11.9393 3 12.2981V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V12.2981C21 11.9393 20.9035 11.5871 20.7206 11.2785L17.2905 5.4902C17.1104 5.18633 16.7834 5 16.4302 5H7.5698C7.21659 5 6.88958 5.18633 6.70951 5.4902Z"
-        stroke="white"
+        class="stroke-muted"
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -208,21 +208,21 @@ export function SaveDisk() {
     <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M5 21H19C20.1046 21 21 20.1046 21 19V8.82843C21 8.29799 20.7893 7.78929 20.4142 7.41421L16.5858 3.58579C16.2107 3.21071 15.702 3 15.1716 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21Z"
-        class="stroke-black dark:stroke-white"
+        class="stroke-foreground"
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
       />
       <path
         d="M7 3V8H15V3"
-        class="stroke-black dark:stroke-white"
+        class="stroke-foreground"
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
       />
       <path
         d="M7 21V15H17V21"
-        class="stroke-black dark:stroke-white"
+        class="stroke-foreground"
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -236,13 +236,13 @@ export function TrashDelete() {
     <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M3 6H21M5 6V20C5 21.1046 5.89543 22 7 22H17C18.1046 22 19 21.1046 19 20V6M8 6V4C8 2.89543 8.89543 2 10 2H14C15.1046 2 16 2.89543 16 4V6"
-        stroke="#FF3636"
+        class="stroke-danger"
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
       />
-      <path d="M14 11V17" stroke="#FF3636" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-      <path d="M10 11V17" stroke="#FF3636" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M14 11V17" class="stroke-danger" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M10 11V17" class="stroke-danger" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
   );
 }
@@ -252,7 +252,7 @@ export function Close() {
     <svg width="16" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path
         d="M1 1L11 10.3369M1 10.3369L11 1"
-        stroke="#FF3636"
+        class="stroke-danger"
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -266,7 +266,7 @@ export function OpenExternal() {
     <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M5.63605 18.364L18.364 5.63603M18.364 5.63603L8.46446 5.63604M18.364 5.63603V15.5355"
-        class="stroke-black dark:stroke-white"
+        class="stroke-foreground"
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -280,7 +280,7 @@ export function Play() {
     <svg aria-hidden="true" width="13" height="16" viewBox="0 0 13 16" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M1.69727 14.3947V0.894745L12.1973 7.64474L1.69727 14.3947Z"
-        class="stroke-black dark:stroke-white"
+        class="stroke-foreground"
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -302,7 +302,7 @@ export function Loading() {
     >
       <path
         d="M16 16L19 19M18 12H22M8 8L5 5M16 8L19 5M8 16L5 19M2 12H6M12 2V6M12 18V22"
-        class="stroke-[#000000] dark:stroke-[#ffffff]"
+        class="stroke-foreground"
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -316,7 +316,7 @@ export function ChevronArrow() {
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path
         d="M14 8L10 12L14 16"
-        stroke="rgba(255,255,255,0.5)"
+        stroke="var(--foreground-muted)"
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -330,7 +330,7 @@ export function Globe() {
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M22 12C22 17.5228 17.5228 22 12 22M22 12C22 6.47715 17.5228 2 12 2M22 12H2M12 22C6.47715 22 2 17.5228 2 12M12 22C14.4744 19.4749 16 15.8145 16 11.9999C16 8.18526 14.4744 4.52507 12 2M12 22C9.52563 19.4749 8 15.8145 8 11.9999C8 8.18526 9.52563 4.52507 12 2M2 12C2 6.47715 6.47715 2 12 2"
-        class="stroke-[#00000080] dark:stroke-[#ffffff80]"
+        class="stroke-muted"
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -344,7 +344,7 @@ export function Server() {
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M5 15.5H19M5 8.5H19M9.01611 12.0161L9 12M9.01611 5.01611L9 5M9.01611 19.0161L9 19M7 22.5H17C18.1046 22.5 19 21.6046 19 20.5V3.5C19 2.39543 18.1046 1.5 17 1.5H7C5.89543 1.5 5 2.39543 5 3.5V20.5C5 21.6046 5.89543 22.5 7 22.5Z"
-        class="stroke-[#00000080] dark:stroke-[#ffffff80]"
+        class="stroke-muted"
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -357,7 +357,7 @@ export function Disconnected() {
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M17 13V18M17 21V21.1M2 6C4.88494 4.10123 8.31702 3 12 3C15.683 3 19.1151 4.10123 22 6M4.99996 9.8774C7.05917 8.6054 9.44995 7.87744 12 7.87744C14.55 7.87744 16.9407 8.6054 19 9.8774M9.07354 13.4549C10.0119 13.0016 11.0216 12.7549 12.0735 12.7549C12.5589 12.7549 13.0354 12.8074 13.5 12.9086M11.9181 17.1464L11.902 17.1303"
-        class="stroke-[#00000080] dark:stroke-[#ffffff80]"
+        class="stroke-muted"
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"

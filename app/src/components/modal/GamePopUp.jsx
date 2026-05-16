@@ -36,7 +36,7 @@ export function GamePopUpModal() {
   const logo = () => logoImageFile();
 
   return (
-    <div class="flex h-screen w-screen flex-col items-center justify-center bg-[#d1d1d166] px-[40px] dark:bg-[#12121266]">
+    <div class="flex h-screen w-screen flex-col items-center justify-center bg-overlay px-[40px]">
       <img src={hero()} alt="" class="absolute -z-10 h-[350px] opacity-[0.4] blur-[80px] max-large:h-[270px]" />
       <div class="relative">
         <div class="absolute right-[30px] bottom-[30px] flex gap-[15px]">
@@ -105,7 +105,7 @@ export function GamePopUpModal() {
         </div>
         <Show
           when={hero()}
-          fallback={<div class="aspect-96/31 h-[350px] bg-[#f1f1f1] max-large:h-[270px] dark:bg-[#1c1c1c]" />}
+          fallback={<div class="aspect-96/31 h-[350px] bg-media-placeholder max-large:h-[270px]" />}
         >
           <img src={hero()} alt="" class="aspect-96/31 h-[350px] max-large:h-[270px]" />
         </Show>

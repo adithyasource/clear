@@ -1,25 +1,133 @@
 @layer base {
   :root {
     --background: #ffffff;
-    --foreground: #000000;
+    --foreground: #121212;
+    --panel: #fffffc;
     --card: #d2d2d2;
+    --card-muted: #f1f1f1;
+    --card-hover: #d6d6d6;
+    --card-glass: #e8e8e8cc;
+    --card-glass-hover: #d6d6d6cc;
+    --input-solid: #e8e8e8;
+    --input-outline: #e8e8e880;
+    --input-hover: #e8e8e84d;
+    --border-subtle: #1212121f;
+    --foreground-muted: #12121280;
+    --foreground-muted-strong: #121212cc;
+    --overlay: #d1d1d166;
+    --overlay-strong: #d1d1d1cc;
+    --tooltip: #e8e8e8cc;
+    --tooltip-border: #00000010;
+    --scroll-thumb: #e8e8e8;
+    --scroll-thumb-hover: #e8e8e8;
+    --media-placeholder: #f1f1f1;
+    --game-outline: #0000001c;
+    --game-outline-hover: #0000003b;
+    --game-outline-group: #0000001f;
+    --game-title-muted: #00000080;
+    --card-contrast: #000000;
+    --media-glow: #00000000;
+    --focus-ring: #00000080;
+    --drag-indicator: #646464;
+    --danger: #ff3636;
   }
 
   .dark {
     --background: #121212;
     --foreground: #ffffff;
+    --panel: #121212;
     --card: #1c1c1c;
+    --card-muted: #1c1c1c;
+    --card-hover: #2b2b2b;
+    --card-glass: #272727cc;
+    --card-glass-hover: #2727274d;
+    --input-solid: #272727;
+    --input-outline: #e8e8e880;
+    --input-hover: #2727274d;
+    --border-subtle: #ffffff1f;
+    --foreground-muted: #ffffff80;
+    --foreground-muted-strong: #ffffffcc;
+    --overlay: #12121266;
+    --overlay-strong: #121212cc;
+    --tooltip: #272727cc;
+    --tooltip-border: #ffffff10;
+    --scroll-thumb: #1c1c1c;
+    --scroll-thumb-hover: #232323;
+    --media-placeholder: #1c1c1c;
+    --game-outline: #ffffff1a;
+    --game-outline-hover: #ffffff3b;
+    --game-outline-group: #ffffff1f;
+    --game-title-muted: #ffffff80;
+    --card-contrast: #ffffff;
+    --media-glow: #ffffff1a;
+    --focus-ring: #ffffff80;
+    --drag-indicator: #646464;
+    --danger: #ff3636;
   }
 
   .black {
-    --background: #000;
-    --foreground: #fff;
+    --background: #000000;
+    --foreground: #ffffff;
+    --panel: #000000;
     --card: #121212;
+    --card-muted: #121212;
+    --card-hover: #1f1f1f;
+    --card-glass: #1a1a1acc;
+    --card-glass-hover: #1a1a1a66;
+    --input-solid: #1a1a1a;
+    --input-outline: #ffffff40;
+    --input-hover: #1a1a1a66;
+    --border-subtle: #ffffff14;
+    --foreground-muted: #ffffff80;
+    --foreground-muted-strong: #ffffffcc;
+    --overlay: #00000066;
+    --overlay-strong: #000000cc;
+    --tooltip: #1a1a1acc;
+    --tooltip-border: #ffffff10;
+    --scroll-thumb: #121212;
+    --scroll-thumb-hover: #1f1f1f;
+    --media-placeholder: #121212;
+    --game-outline: #ffffff14;
+    --game-outline-hover: #ffffff33;
+    --game-outline-group: #ffffff1a;
+    --game-title-muted: #ffffff80;
+    --card-contrast: #ffffff;
+    --media-glow: #ffffff14;
+    --focus-ring: #ffffff80;
+    --drag-indicator: #555555;
+    --danger: #ff4d4d;
   }
 }
 
 @theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-panel: var(--panel);
   --color-card: var(--card);
+  --color-card-muted: var(--card-muted);
+  --color-card-hover: var(--card-hover);
+  --color-card-glass: var(--card-glass);
+  --color-card-glass-hover: var(--card-glass-hover);
+  --color-input-solid: var(--input-solid);
+  --color-input-outline: var(--input-outline);
+  --color-input-hover: var(--input-hover);
+  --color-border-subtle: var(--border-subtle);
+  --color-muted: var(--foreground-muted);
+  --color-muted-strong: var(--foreground-muted-strong);
+  --color-overlay: var(--overlay);
+  --color-overlay-strong: var(--overlay-strong);
+  --color-tooltip: var(--tooltip);
+  --color-tooltip-border: var(--tooltip-border);
+  --color-scroll-thumb: var(--scroll-thumb);
+  --color-scroll-thumb-hover: var(--scroll-thumb-hover);
+  --color-media-placeholder: var(--media-placeholder);
+  --color-game-outline: var(--game-outline);
+  --color-game-outline-hover: var(--game-outline-hover);
+  --color-game-outline-group: var(--game-outline-group);
+  --color-game-title-muted: var(--game-title-muted);
+  --color-card-contrast: var(--card-contrast);
+  --color-media-glow: var(--media-glow);
+  --color-focus-ring: var(--focus-ring);
+  --color-drag-indicator: var(--drag-indicator);
+  --color-danger: var(--danger);
 }

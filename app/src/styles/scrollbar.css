@@ -10,11 +10,7 @@
 }
 
 *::-webkit-scrollbar-thumb {
-  @apply bg-[#E8E8E8];
-}
-
-.dark *::-webkit-scrollbar-thumb {
-  @apply bg-[#1c1c1c];
+  @apply bg-scroll-thumb;
 }
 
 #sideBarFolders::-webkit-scrollbar,
@@ -32,9 +28,5 @@
 }
 
 #sideBarFolders:hover::-webkit-scrollbar-thumb {
-  @apply bg-[#E8E8E8];
-}
-
-.dark #sideBarFolders:hover::-webkit-scrollbar-thumb {
-  @apply bg-[#232323];
+  @apply bg-scroll-thumb-hover;
 }

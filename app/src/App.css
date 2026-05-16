@@ -15,6 +15,56 @@
   --breakpoint-large: 1500px;
 }
 
+@layer components {
+  .title {
+    @apply text-3xl! text-foreground opacity-50;
+  }
+
+  .language-item {
+    @apply w-max cursor-pointer p-0 text-left text-muted duration-150 hover:text-muted-strong motion-reduce:duration-0;
+  }
+
+  .panel-surface {
+    @apply border-2 border-solid border-border-subtle bg-panel;
+  }
+
+  .subtle-text {
+    @apply text-muted;
+  }
+
+  .danger-text {
+    @apply text-danger;
+  }
+
+  .card-hover {
+    @apply duration-150 hover:bg-card-hover motion-reduce:duration-0;
+  }
+
+  .hotkey-chip {
+    @apply w-max bg-card-muted px-3 py-1 text-muted;
+  }
+
+  .media-placeholder {
+    @apply bg-media-placeholder;
+  }
+
+  .glass-input {
+    @apply bg-card-glass backdrop-blur-[10px];
+  }
+
+  .asset-empty {
+    @apply bg-input-solid;
+  }
+
+  .asset-filled {
+    @apply outline-none outline-2! outline-input-outline! hover:bg-input-hover focus:bg-input-hover hover:outline-dashed dark:hover:bg-input-hover dark:focus:bg-input-hover;
+  }
+
+  .asset-filled-minimal {
+    @apply outline-none outline-2! outline-input-outline! hover:outline-dashed;
+  }
+}
+
 /* BASE ------------------------------------- */
 
 html,
@@ -34,7 +84,6 @@ body {
 
 body {
   font-family: "Segoe UI", Arial, Helvetica, sans-serif;
-  font-size: 16px;
 }
 
 button:focus,
@@ -56,14 +105,6 @@ dialog {
   border: none !important;
   background-color: transparent;
   opacity: 0;
-}
-
-.title {
-  @apply text-3xl opacity-50 text-black dark:text-white;
-}
-
-.language-item {
-  @apply p-0 text-left text-[#12121280] duration-150 hover:text-[#121212cc] motion-reduce:duration-0 dark:text-[#ffffff80] dark:hover:text-[#ffffffcc] cursor-pointer w-max;
 }
 
 #modal.showModal {
@@ -95,15 +136,11 @@ dialog {
 
 .gameCard img {
   transition: outline-color 0.05s ease;
-  outline: 4px solid transparent;
+  outline: 2px solid transparent;
 }
 
 .gameCard img:hover {
-  outline-color: #b3b3b3;
-}
-
-.dark .gameCard img:hover {
-  outline-color: #292929;
+  outline-color: var(--game-outline-hover);
 }
 
 body.user-is-tabbing button:focus-visible,
@@ -112,7 +149,7 @@ body.user-is-tabbing select:focus-visible,
 body.user-is-tabbing textarea:focus-visible,
 body.user-is-tabbing dialog:focus-visible,
 body.user-is-tabbing [tabindex]:focus-visible {
-  outline: 2px solid #ffffff80 !important;
+  outline: 2px solid var(--focus-ring) !important;
   outline-offset: 3px;
 }
 
@@ -125,7 +162,7 @@ body.user-is-tabbing [tabindex]:focus-visible {
 
 .currentlyDragging {
   width: 100%;
-  box-shadow: 0 -3px 0 0 #646464;
+  box-shadow: 0 -3px 0 0 var(--drag-indicator);
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }

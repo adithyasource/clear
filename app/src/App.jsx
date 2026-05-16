@@ -50,14 +50,13 @@ function App() {
 
   // setting up effects for styles that can be changed in settings
   createEffect(() => {
-    // document.body.style.setProperty(
-    //   "--text-color",
-    //   libraryData.userSettings.currentTheme === "light" ? "#000000" : "#ffffff",
-    // );
+    document.documentElement.classList.remove("dark", "black");
 
-    libraryData.userSettings.currentTheme === "light"
-      ? document.documentElement.classList.remove("dark")
-      : document.documentElement.classList.add("dark");
+    const currentTheme = libraryData.userSettings.currentTheme;
+
+    if (currentTheme === "light") return;
+
+    document.documentElement.classList.add(currentTheme);
   });
 
   createEffect(() => {
@@ -78,13 +77,6 @@ function App() {
 
   createEffect(() => {
     document.body.style.setProperty("--border-radius", libraryData.userSettings.roundedBorders ? "6px" : "0px");
-  });
-
-  createEffect(() => {
-    document.body.style.setProperty(
-      "--outline-color",
-      libraryData.userSettings.currentTheme === "light" ? "#000000" : "#ffffff",
-    );
   });
 
   const searchResults = createMemo(() => {
@@ -169,7 +161,7 @@ function App() {
         <Show when={libraryData.userSettings.showSideBar === false && windowWidth() >= 1000}>
           <button
             type="button"
-            class="absolute! tooltip-delayed-left top-8 right-7 z-20 w-[25.25px] cursor-pointer p-2 duration-150 hover:bg-[#D6D6D6] motion-reduce:duration-0 dark:hover:bg-[#232323]"
+            class="absolute! tooltip-delayed-left top-8 right-7 z-20 w-[25.25px] cursor-pointer p-2 duration-150 card-hover"
             onClick={() => {
               toggleSideBar();
             }}
@@ -190,7 +182,7 @@ function App() {
             }`}
           >
             <div class="z-50!">
-              <p class="text-[#000000] dark:text-[#ffffff80]">
+              <p class="subtle-text">
                 {translateText("hey there! thank you so much for using clear")}
                 <br />
                 <br />- {translateText("add some new games using the sidebar buttons")}

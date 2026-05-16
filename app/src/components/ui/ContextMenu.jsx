@@ -30,7 +30,7 @@ export function ContextMenu() {
         >
           <div
             id="menu"
-            class="absolute z-100000 flex flex-col gap-4 border-2 border-[#1212121f] border-solid bg-[#FFFFFC] p-2 dark:border-[#ffffff1f] dark:bg-[#121212]"
+            class="absolute z-100000 flex flex-col gap-4 panel-surface p-2"
             style={{
               top: `${menuData().position[1]}px`,
               left: `${menuData().position[0]}px`,

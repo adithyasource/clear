@@ -10,8 +10,8 @@ export function NewFolderModal() {
   const [hideFolder, setHideFolder] = createSignal(false);
 
   return (
-    <div class="flex h-screen w-screen items-center justify-center bg-[#d1d1d166] align-middle dark:bg-[#12121266]">
-      <div class="w-[60%] border-2 border-[#1212121f] border-solid bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
+    <div class="flex h-screen w-screen items-center justify-center bg-overlay align-middle">
+      <div class="w-[60%] panel-surface p-6">
         <div
           class={`flex justify-between ${libraryData.userSettings.language !== "en" ? "large:flex-row flex-col" : ""} `}
         >
@@ -54,7 +54,7 @@ export function NewFolderModal() {
               data-tooltip={translateText("close")}
             >
               {modalShowCloseConfirm() ? (
-                <span class="whitespace-nowrap text-[#FF3636]">{translateText("hit again to confirm")}</span>
+                <span class="danger-text whitespace-nowrap">{translateText("hit again to confirm")}</span>
               ) : (
                 <Close />
               )}

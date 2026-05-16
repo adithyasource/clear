@@ -317,7 +317,7 @@ export function EditGameModal() {
             }}
             class="icon-btn"
           >
-            <span class="w-max text-[#FF3636]">
+            <span class="danger-text w-max">
               {showDeleteConfirm() ? translateText("confirm?") : translateText("delete")}
             </span>
             <TrashDelete />
@@ -331,7 +331,7 @@ export function EditGameModal() {
             data-tooltip={translateText("close")}
           >
             {modalShowCloseConfirm() ? (
-              <span class="whitespace-nowrap text-[#FF3636]">{translateText("hit again to confirm")}</span>
+              <span class="danger-text whitespace-nowrap">{translateText("hit again to confirm")}</span>
             ) : (
               <Close />
             )}
@@ -369,7 +369,7 @@ export function EditGameModal() {
           onContextMenu={async (e) => {
             await handleContextMenu(e, "grid");
           }}
-          class="tooltip-center aspect-2/3 h-[400px] cursor-pointer overflow-hidden bg-[#f1f1f1] p-0 max-large:h-[300px] dark:bg-[#1c1c1c]"
+          class="tooltip-center aspect-2/3 h-[400px] cursor-pointer overflow-hidden bg-media-placeholder p-0 max-large:h-[300px]"
           data-tooltip={
             gridImage().type === "remote"
               ? showGridImageLoading() === false
@@ -428,7 +428,7 @@ export function EditGameModal() {
               onContextMenu={async (e) => {
                 await handleContextMenu(e, "hero");
               }}
-              class="tooltip-center aspect-67/26 h-[350px] cursor-pointer bg-[#f1f1f1] p-0 max-large:h-[250px] dark:bg-[#1c1c1c]"
+              class="tooltip-center aspect-67/26 h-[350px] cursor-pointer bg-media-placeholder p-0 max-large:h-[250px]"
               data-tooltip={
                 heroImage().type === "remote"
                   ? showHeroImageLoading() === false
@@ -502,8 +502,8 @@ export function EditGameModal() {
               }}
               class={`!absolute tooltip-center bottom-[70px] left-[20px] z-100 h-[90px] w-[250px] cursor-pointer p-[2px]! max-large:h-[90px] max-large:w-[243px] ${
                 logoImage().data
-                  ? "outline-none outline-2! outline-[#E8E8E880]! hover:bg-[#E8E8E84D] hover:outline-dashed focus:bg-[#E8E8E84D] !outline:dark:bg-[#27272780] dark:focus:bg-[#2727274D] dark:hover:bg-[#2727274D]"
-                  : "bg-[#E8E8E8] dark:bg-[#272727]!"
+                  ? "asset-filled"
+                  : "asset-empty"
               } `}
               data-tooltip={
                 logoImage().type === "remote"
@@ -533,7 +533,6 @@ export function EditGameModal() {
             </button>
           </div>
 
-          {/* h-[40px] w-[40px] bg-[#E8E8E8]! dark:bg-[#272727]! */}
 
           <div class="flex cursor-pointer items-center gap-3">
             <button
@@ -565,8 +564,8 @@ export function EditGameModal() {
               }}
               class={`group tooltip-bottom relative cursor-pointer p-0 ${
                 iconImage().data
-                  ? "outline-none outline-2! outline-[#E8E8E880]! hover:outline-dashed !outline:dark:bg-[#27272780]"
-                  : "bg-[#E8E8E8] dark:bg-[#272727]!"
+                  ? "asset-filled-minimal"
+                  : "asset-empty"
               }`}
               data-tooltip={
                 iconImage().type === "remote"
@@ -595,7 +594,7 @@ export function EditGameModal() {
               />
             </button>
 
-            <div class="gameInput flex grow items-center bg-[#E8E8E8cc] backdrop-blur-[10px] dark:bg-[#272727cc]">
+            <div class="gameInput glass-input flex grow items-center">
               <input
                 aria-autocomplete="none"
                 type="text"
@@ -610,7 +609,7 @@ export function EditGameModal() {
               />
               <button
                 type="button"
-                class="standardButton mt-0! mr-2! w-max! cursor-pointer bg-[#f1f1f1] px-3 py-1 text-[#ffffff80] text-black! hover:bg-[#d6d6d6]! dark:bg-[#1c1c1c]! dark:text-white! dark:hover:bg-[#2b2b2b]!"
+                class="small-btn mt-0! mr-2! w-max! px-3 py-1"
                 onClick={() => {
                   if (!gameName()) {
                     triggerToast(translateText("no game name"));
@@ -637,7 +636,7 @@ export function EditGameModal() {
               </button>
               <button
                 type="button"
-                class="standardButton mt-0! mr-2! w-max! cursor-pointer bg-[#f1f1f1] px-3 py-1 text-[#ffffff80] text-black! hover:bg-[#d6d6d6]! dark:bg-[#1c1c1c] dark:text-white! dark:hover:bg-[#2b2b2b]!"
+                class="small-btn mt-0! mr-2! w-max! px-3 py-1"
                 onClick={() => {
                   gameName() === undefined
                     ? invoke("open_location", {
@@ -703,7 +702,7 @@ export function EditGameModal() {
       </div>
 
       <Show when={searchResults()}>
-        <div class="gameInput flex h-12 w-full gap-2 bg-[#E8E8E8cc] px-2 backdrop-blur-[10px] dark:bg-[#272727cc]">
+        <div class="gameInput glass-input flex h-12 w-full gap-2 px-2">
           <button
             type="button"
             onClick={() => {

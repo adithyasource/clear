@@ -14,11 +14,7 @@
   opacity: 0;
   display: none;
 
-  @apply border-2 border-solid bg-[#E8E8E8cc] text-black border-[#00000010];
-}
-
-.dark [class*="tooltip-"]::after {
-  @apply bg-[#272727cc] text-white border-[#ffffff10];
+  @apply border-2 border-solid border-tooltip-border bg-tooltip text-foreground;
 }
 
 /* visibility ---------------- */

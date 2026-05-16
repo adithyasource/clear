@@ -266,7 +266,7 @@ export function SideBar() {
           </form>
           <button
             type="button"
-            class="tooltip-delayed-bottom w-[28px] cursor-pointer p-2 duration-150 hover:bg-[#D6D6D6] motion-reduce:duration-0 dark:hover:bg-[#232323]"
+            class="tooltip-delayed-bottom w-[28px] cursor-pointer p-2 duration-150 card-hover"
             onClick={() => {
               toggleSideBar();
             }}
@@ -332,7 +332,7 @@ export function SideBar() {
             {(folder, folderIndex) => {
               return (
                 <div
-                  class="sideBarFolder mb-3 bg-card px-3 py-2 dark:bg-[#1c1c1c]"
+                  class="sideBarFolder mb-3 bg-card px-3 py-2"
                   id={folder.name}
                   draggable={true}
                   data-folder-index={folderIndex()}
@@ -358,9 +358,9 @@ export function SideBar() {
                   <div class="flex cursor-move items-center gap-[10px]">
                     <Show
                       when={folder.games.length > 0}
-                      fallback={<s class="cursor-move break-all text-black dark:text-white">{folder.name}</s>}
+                      fallback={<s class="cursor-move break-all text-foreground">{folder.name}</s>}
                     >
-                      <span class="break-all text-black dark:text-white">{folder.name}</span>
+                      <span class="break-all text-foreground">{folder.name}</span>
                     </Show>
 
                     <Show when={folder.hide === true}>
@@ -419,7 +419,7 @@ export function SideBar() {
           {/* uncategorized games */}
 
           <div
-            class="sideBarFolder mb-3 bg-card px-3 py-2 dark:bg-[#1c1c1c]"
+            class="sideBarFolder mb-3 bg-card px-3 py-2"
             id="uncategorizedFolder"
             onDragOver={(e) => {
               e.preventDefault();
@@ -445,7 +445,7 @@ export function SideBar() {
             }}
           >
             <div class="flex cursor-default items-center gap-[10px]">
-              <p class="pd-3 text-[#00000080] dark:text-[#ffffff80]">{translateText("uncategorized")}</p>
+              <p class="pd-3 text-muted">{translateText("uncategorized")}</p>
             </div>
 
             <For each={uncategorizedGames()}>

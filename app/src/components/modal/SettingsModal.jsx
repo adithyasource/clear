@@ -82,8 +82,8 @@ export function SettingsModal() {
   }
 
   return (
-    <div class="flex h-screen w-screen items-center justify-center bg-[#d1d1d166] align-middle dark:bg-[#12121266]">
-      <div class="w-[70%] border-2 border-[#1212121f] border-solid bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
+    <div class="flex h-screen w-screen items-center justify-center bg-overlay align-middle">
+      <div class="w-[70%] panel-surface p-6">
         <div class="flex justify-between">
           <div>
             <h1 class="title">{translateText("settings")}</h1>
@@ -182,36 +182,35 @@ export function SettingsModal() {
           <button
             type="button"
             onClick={async () => {
-              switch (libraryData.userSettings.fontName) {
-                case "sans serif":
-                  setLibraryData("userSettings", "fontName", "serif");
-                  break;
-                case "serif":
-                  setLibraryData("userSettings", "fontName", "mono");
-                  break;
-                case "mono":
-                  setLibraryData("userSettings", "fontName", "sans serif");
-              }
+              const themes = ["sans serif", "serif", "mono"];
+              setLibraryData(
+                "userSettings",
+                "fontName",
+                themes[(themes.indexOf(libraryData.userSettings.fontName) + 1) % 3],
+              );
 
               await writeUpdateData();
             }}
             class="flex cursor-pointer gap-2 p-0 text-left"
           >
-            <span class="text-[#12121280] dark:text-[#ffffff80]">[{translateText("font")}]</span>
+            <span class="text-muted">[{translateText("font")}]</span>
             <div class="">{translateText(libraryData.userSettings.fontName) || translateText("sans serif")}</div>
           </button>
           <button
             type="button"
             onClick={async () => {
-              libraryData.userSettings.currentTheme === "dark"
-                ? setLibraryData("userSettings", "currentTheme", "light")
-                : setLibraryData("userSettings", "currentTheme", "dark");
+              const themes = ["dark", "black", "light"];
+              setLibraryData(
+                "userSettings",
+                "currentTheme",
+                themes[(themes.indexOf(libraryData.userSettings.currentTheme) + 1) % 3],
+              );
 
               await writeUpdateData();
             }}
             class="flex cursor-pointer gap-2 p-0 text-left"
           >
-            <span class="text-[#12121280] dark:text-[#ffffff80]">[{translateText("theme")}]</span>
+            <span class="text-muted">[{translateText("theme")}]</span>
             <div class="">{translateText(libraryData.userSettings.currentTheme) || translateText("dark")}</div>
           </button>
           <div class="relative flex cursor-pointer gap-2">
@@ -229,7 +228,7 @@ export function SettingsModal() {
             >
               <Show when={!libraryData.folders["imported from steam"]} fallback={translateText("import Steam games")}>
                 <Show when={showImportAndOverwriteConfirm()} fallback={translateText("import Steam games")}>
-                  <span class="text-[#FF3636]">
+                  <span class="danger-text">
                     {translateText("'imported from steam' folder will be overwritten. confirm?")}
                   </span>
                 </Show>
@@ -253,7 +252,7 @@ export function SettingsModal() {
             >
               {translateText("open library location")}
             </button>
-            <span class="w-[50%] text-[#12121280] dark:text-[#ffffff80]">
+            <span class="w-[50%] text-muted">
               {translateText("these are all the files that the app stores on your pc")}
             </span>
           </div>
@@ -269,7 +268,7 @@ export function SettingsModal() {
               type="button"
               onClick={checkConnections}
             >
-              clear <span class="text-[#12121280] dark:text-[#ffffff80]">v{CLEAR_VERSION}</span>
+              clear <span class="text-muted">v{CLEAR_VERSION}</span>
             </button>
             {connectedToInternet() ? (
               <>

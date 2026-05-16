@@ -45,12 +45,12 @@ export function LanguageSelector({ onSettingsPage }) {
       }}
       class={onSettingsPage ? "w-full cursor-pointer p-0 text-left" : "btn relative"}
     >
-      <span class="text-[#12121280] dark:text-[#ffffff80]">[{translateText("language")}]</span>
+      <span class="text-muted">[{translateText("language")}]</span>
       &nbsp;
       {returnLanguageFullName(libraryData.userSettings.language)}
       <Show when={onSettingsPage ? showSettingsLanguageSelector() : showLanguageSelector()}>
         <div
-          class={`absolute z-100000 flex flex-col gap-4 border-2 border-[#1212121f] border-solid bg-[#FFFFFC] p-3 dark:border-[#ffffff1f] dark:bg-[#121212] ${
+          class={`absolute z-100000 flex flex-col gap-4 panel-surface p-3 ${
             onSettingsPage ? "top-[150%]" : "top-[120%] left-[1%]"
           }`}
           onMouseLeave={() => {

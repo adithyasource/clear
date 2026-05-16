@@ -33,8 +33,8 @@ export function NotepadModal() {
   }, 50);
 
   return (
-    <div class="flex h-screen w-screen items-center justify-center bg-[#d1d1d166] align-middle dark:bg-[#12121266]">
-      <div class="w-[50%] border-2 border-[#1212121f] border-solid bg-[#FFFFFC] p-6 dark:border-[#ffffff1f] dark:bg-[#121212]">
+    <div class="flex h-screen w-screen items-center justify-center bg-overlay align-middle">
+      <div class="w-[50%] panel-surface p-6">
         <div class="flex justify-between">
           <div>
             <h1 class="title">

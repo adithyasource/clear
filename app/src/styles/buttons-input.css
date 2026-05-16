@@ -12,25 +12,25 @@
 .icon-btn {
   background-color: var(--card);
   color: var(--foreground) !important;
-  @apply h-12 flex items-center justify-between gap-2 px-3 transition hover:bg-[#d6d6d6] dark:hover:bg-[#2b2b2b] cursor-pointer;
+  @apply flex h-12 cursor-pointer items-center justify-between gap-2 px-3 transition hover:bg-card-hover;
 }
 
 .icon-btn-transparent {
-  @apply h-12 flex items-center justify-between gap-2 px-3 transition text-black bg-[#E8E8E8]/80 hover:bg-[#d6d6d6]/80 dark:text-white dark:bg-[#232323]/80 dark:hover:bg-[#2b2b2b]/80 cursor-pointer backdrop-blur-[10px] hover:backdrop-blur-[5px] focus:backdrop-blur-[5px];
+  @apply flex h-12 cursor-pointer items-center justify-between gap-2 bg-card-glass px-3 text-foreground transition hover:bg-card-glass-hover backdrop-blur-[10px] hover:backdrop-blur-[5px] focus:backdrop-blur-[5px];
 }
 
 .btn {
   background-color: var(--card);
   color: var(--foreground);
-  @apply h-12 px-3 transition hover:bg-[#d6d6d6] dark:bg-[#232323] dark:hover:bg-[#2b2b2b] cursor-pointer;
+  @apply h-12 cursor-pointer px-3 transition hover:bg-card-hover;
 }
 
 .btn-transparent {
-  @apply h-12 px-3 transition text-black bg-[#E8E8E8]/80 hover:bg-[#d6d6d6]/80 dark:text-white dark:bg-[#232323]/80 dark:hover:bg-[#2b2b2b]/80 cursor-pointer backdrop-blur-[10px] hover:backdrop-blur-[5px] focus:backdrop-blur-[5px];
+  @apply h-12 cursor-pointer bg-card-glass px-3 text-foreground transition hover:bg-card-glass-hover backdrop-blur-[10px] hover:backdrop-blur-[5px] focus:backdrop-blur-[5px];
 }
 
 .small-btn {
-  @apply h-8 px-2 transition cursor-pointer bg-card text-foreground/80 text-black hover:bg-[#d6d6d6] dark:bg-[#1c1c1c] dark:text-white dark:hover:bg-[#2b2b2b];
+  @apply h-8 cursor-pointer bg-card px-2 text-foreground/80 transition hover:bg-card-hover;
 }
 
 button {
@@ -53,7 +53,7 @@ button:active {
 .input-field {
   background-color: var(--card);
   color: var(--foreground);
-  @apply p-3 transition hover:bg-[#d6d6d6] dark:hover:bg-[#2b2b2b];
+  @apply p-3 transition hover:bg-card-hover;
 }
 
 input {

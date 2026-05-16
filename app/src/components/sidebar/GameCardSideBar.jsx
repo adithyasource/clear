@@ -79,7 +79,7 @@ export function GameCardSideBar({ gameId, gameIndex, folderName, folderIndex }) 
       <Show when={game().iconImagePath}>
         <img src={icon()} alt="" class="game-card-icon aspect-square h-[16px]" />
       </Show>
-      <span class="text-left text-black/50 transition active:text-black/80 dark:text-white/50 dark:active:text-white/80">
+      <span class="text-left text-muted transition active:text-muted-strong">
         {game().name}
       </span>
     </button>

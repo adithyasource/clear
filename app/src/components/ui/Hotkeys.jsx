@@ -9,7 +9,7 @@ export function Hotkeys(props) {
     <>
       <div class={`mt-8.75 grid gap-y-4 ${props.onSettingsPage ? "grid-cols-3" : "grid-cols-2"}`}>
         <div class="flex items-center gap-3">
-          <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+          <div class="w-max bg-card-muted px-3 py-1 text-muted">
             {modifierKeyPrefix} + n
           </div>
 
@@ -17,35 +17,35 @@ export function Hotkeys(props) {
         </div>
 
         <div class="flex items-center gap-3">
-          <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+          <div class="w-max bg-card-muted px-3 py-1 text-muted">
             {modifierKeyPrefix} + ,
           </div>
 
           {translateText("open settings")}
         </div>
         <div class="flex items-center gap-3">
-          <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+          <div class="w-max bg-card-muted px-3 py-1 text-muted">
             {modifierKeyPrefix} + f
           </div>
 
           {translateText("search bar")}
         </div>
         <div class="flex items-center gap-3">
-          <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+          <div class="w-max bg-card-muted px-3 py-1 text-muted">
             {modifierKeyPrefix} + m
           </div>
 
           {translateText("new folder")}
         </div>
         <div class="flex items-center gap-3">
-          <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+          <div class="w-max bg-card-muted px-3 py-1 text-muted">
             {modifierKeyPrefix} + l
           </div>
 
           {translateText("open notepad")}
         </div>
         <div class="flex items-center gap-3">
-          <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+          <div class="w-max bg-card-muted px-3 py-1 text-muted">
             {modifierKeyPrefix} + \\
           </div>
 
@@ -54,14 +54,14 @@ export function Hotkeys(props) {
 
         <Show when={props.onSettingsPage}>
           <div class="flex items-center gap-3">
-            <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+            <div class="w-max bg-card-muted px-3 py-1 text-muted">
               {modifierKeyPrefix} + w
             </div>
 
             {translateText("close app")}
           </div>
           <div class="flex items-center gap-3">
-            <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+            <div class="w-max bg-card-muted px-3 py-1 text-muted">
               {modifierKeyPrefix} - / =
             </div>
 
@@ -69,7 +69,7 @@ export function Hotkeys(props) {
           </div>
 
           <div class="flex items-center gap-3">
-            <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+            <div class="w-max bg-card-muted px-3 py-1 text-muted">
               {modifierKeyPrefix} + click
             </div>
 
@@ -81,21 +81,21 @@ export function Hotkeys(props) {
       <Show when={!props.onSettingsPage}>
         <div class="mt-8.75 grid gap-y-4">
           <div class="flex items-center gap-3">
-            <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+            <div class="w-max bg-card-muted px-3 py-1 text-muted">
               {modifierKeyPrefix} + f
             </div>
 
             {translateText("search bar")}
           </div>
           <div class="flex items-center gap-3">
-            <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+            <div class="w-max bg-card-muted px-3 py-1 text-muted">
               {modifierKeyPrefix} + \\
             </div>
 
             {translateText("hide sidebar")}
           </div>
           <div class="flex items-center gap-3">
-            <div class="w-max bg-[#f1f1f1] px-3 py-1 text-[#12121280] dark:bg-[#1c1c1c] dark:text-[#ffffff80]">
+            <div class="w-max bg-card-muted px-3 py-1 text-muted">
               {modifierKeyPrefix} + click
             </div>
 
