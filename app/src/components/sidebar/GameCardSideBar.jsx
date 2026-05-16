@@ -33,7 +33,7 @@ export function GameCardSideBar({ gameId, gameIndex, folderName, folderIndex }) 
   return (
     <button
       type="button"
-      class={`flex! game-card-sidebar tooltip-right w-full cursor-grab items-center gap-2.5 p-0 ${gameIndex === 0 ? "mt-4" : "mt-5"}`}
+      class={`flex! game-card-sidebar w-full cursor-grab items-center gap-2.5 p-0 ${gameIndex === 0 ? "mt-4" : "mt-5"}`}
       data-tooltip={game().gameLocation ? translateText("play") : translateText("no game file")}
       data-game-id={gameId}
       draggable={true}
