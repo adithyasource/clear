@@ -200,9 +200,12 @@ export function NewGameModal() {
 
             <SaveDisk />
           </button>
+          {
+            // bumping up z index for this button cause the tooltip gets hidden
+          }
           <button
             type="button"
-            class="tooltip-delayed-bottom btn w-max"
+            class="tooltip-delayed-bottom btn z-99999 w-max"
             onClick={() => {
               closeModal();
             }}
@@ -382,9 +385,7 @@ export function NewGameModal() {
                 }
               }}
               class={`absolute! tooltip-center bottom-[70px] left-[20px] z-100 h-[90px] w-[250px] cursor-pointer p-[2px]! max-large:h-[90px] max-large:w-[243px] ${
-                logoImage().data
-                  ? "asset-filled"
-                  : "asset-empty"
+                logoImage().data ? "asset-filled" : "asset-empty"
               } `}
               data-tooltip={
                 logoImage().type === "remote"
@@ -413,7 +414,6 @@ export function NewGameModal() {
               />
             </button>
           </div>
-
 
           <div class="flex cursor-pointer items-center gap-3">
             <button
@@ -444,9 +444,7 @@ export function NewGameModal() {
                 }
               }}
               class={`group tooltip-bottom relative cursor-pointer p-0 ${
-                iconImage().data
-                  ? "asset-filled-minimal"
-                  : "asset-empty"
+                iconImage().data ? "asset-filled-minimal" : "asset-empty"
               }`}
               data-tooltip={
                 iconImage().type === "remote"

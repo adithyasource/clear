@@ -186,7 +186,7 @@ export function SettingsModal() {
               setLibraryData(
                 "userSettings",
                 "fontName",
-                fonts[(themes.indexOf(libraryData.userSettings.fontName) + 1) % 3],
+                fonts[(fonts.indexOf(libraryData.userSettings.fontName) + 1) % 3],
               );
 
               await writeUpdateData();

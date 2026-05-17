@@ -9,7 +9,7 @@
   content: attr(data-tooltip);
   width: max-content;
   padding: 2px 8px;
-  z-index: 999999;
+  z-index: 99999999;
   backdrop-filter: blur(10px);
   opacity: 0;
   display: none;

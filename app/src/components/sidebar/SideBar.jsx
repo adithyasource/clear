@@ -313,10 +313,10 @@ export function SideBar() {
 
         <div
           id="sideBarFolders"
-          class={`mt-4 overflow-auto ${
+          class={`mt-4 mb-6 overflow-auto ${
             libraryData.userSettings.language === "fr"
-              ? "large:h-[calc(100vh-18rem)] medium:h-[calc(100vh-22rem)]"
-              : "h-[calc(100vh-18rem)]"
+              ? "large:h-[calc(100vh-18.4rem)] medium:h-[calc(100vh-22.2rem)]"
+              : "h-[calc(100vh-18.4rem)]"
           } `}
           // drag over and drop are triggered when folders inside are dragged over and dropped in the sidebar
           onDragOver={(e) => {

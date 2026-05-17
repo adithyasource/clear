@@ -41,8 +41,7 @@ button {
 }
 
 button:active {
-  transform: scale(0.975);
-  filter: brightness(0.96);
+  transform: scale(0.99);
 
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
