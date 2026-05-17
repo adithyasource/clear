@@ -182,11 +182,11 @@ export function SettingsModal() {
           <button
             type="button"
             onClick={async () => {
-              const themes = ["sans serif", "serif", "mono"];
+              const fonts = ["sans serif", "serif", "mono"];
               setLibraryData(
                 "userSettings",
                 "fontName",
-                themes[(themes.indexOf(libraryData.userSettings.fontName) + 1) % 3],
+                fonts[(themes.indexOf(libraryData.userSettings.fontName) + 1) % 3],
               );
 
               await writeUpdateData();
