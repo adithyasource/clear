@@ -5,6 +5,7 @@ import { openGame } from "@/services/gameService.js";
 import { libraryData } from "@/stores/libraryStore";
 import { openModal } from "@/stores/modalStore.js";
 import { triggerToast } from "@/stores/toastStore.js";
+import { preloadGameModalImages } from "@/utils/preloadGameImages.js";
 import { translateText } from "@/utils/translateText";
 import { getImagePath } from "../../data/storage/imageStroage";
 import { setSelectedGame } from "../../stores/selectedGameStore";
@@ -28,12 +29,19 @@ export function GameCards(props) {
         );
 
         const grid = () => gridImageFile();
+        const preloadModalAssets = () => preloadGameModalImages(game());
 
         return (
           <button
             type="button"
             class="gameCard group relative w-full cursor-pointer bg-transparent p-0"
             id={index() === 0 ? "firstGameCard" : ""}
+            onPointerEnter={async () => {
+              await preloadModalAssets();
+            }}
+            onFocus={async () => {
+              await preloadModalAssets();
+            }}
             onPointerMove={(e) => {
               if (e.metaKey) {
                 console.log("holding meta");
@@ -55,7 +63,8 @@ export function GameCards(props) {
                 }
                 return;
               }
-              await setSelectedGame(gameId);
+              setSelectedGame(gameId);
+              await preloadModalAssets();
 
               openModal({
                 type: "gamePopUp",

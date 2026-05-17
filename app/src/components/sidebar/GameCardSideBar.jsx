@@ -4,6 +4,7 @@ import { GamePopUpModal } from "@/components/modal/GamePopUp.jsx";
 import { openGame } from "@/services/gameService.js";
 import { openModal } from "@/stores/modalStore.js";
 import { triggerToast } from "@/stores/toastStore.js";
+import { preloadGameModalImages } from "@/utils/preloadGameImages.js";
 import { translateText } from "@/utils/translateText";
 import { getImagePath } from "../../data/storage/imageStroage";
 import { libraryData } from "../../stores/libraryStore";
@@ -26,6 +27,7 @@ export function GameCardSideBar({ gameId, gameIndex, folderName, folderIndex }) 
   );
 
   const icon = () => iconImageFile();
+  const preloadModalAssets = () => preloadGameModalImages(game());
 
   console.log(icon());
   console.log(game().iconImagePath);
@@ -37,6 +39,12 @@ export function GameCardSideBar({ gameId, gameIndex, folderName, folderIndex }) 
       data-tooltip={game().gameLocation ? translateText("play") : translateText("no game file")}
       data-game-id={gameId}
       draggable={true}
+      onPointerEnter={async () => {
+        await preloadModalAssets();
+      }}
+      onFocus={async () => {
+        await preloadModalAssets();
+      }}
       onDragStart={(e) => {
         setTimeout(() => {
           e.srcElement.classList.add("dragging");
@@ -65,6 +73,7 @@ export function GameCardSideBar({ gameId, gameIndex, folderName, folderIndex }) 
         }
 
         setSelectedGame(gameId);
+        await preloadModalAssets();
 
         openModal({
           type: "gamePopUp",
