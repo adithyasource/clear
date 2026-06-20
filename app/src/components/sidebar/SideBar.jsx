@@ -332,7 +332,7 @@ export function SideBar() {
             {(folder, folderIndex) => {
               return (
                 <div
-                  class="sideBarFolder mb-3 bg-card px-3 py-2"
+                  class="sideBarFolder group/edit-visible mb-3 bg-card px-3 py-2"
                   id={folder.name}
                   draggable={true}
                   data-folder-index={folderIndex()}
@@ -360,18 +360,16 @@ export function SideBar() {
                       when={folder.games.length > 0}
                       fallback={<s class="cursor-move break-all text-foreground">{folder.name}</s>}
                     >
-                      <span class="break-all text-foreground">{folder.name}</span>
+                      <span class={`break-all text-foreground ${folder.hide && "text-muted"}`}>{folder.name}</span>
                     </Show>
-
                     <Show when={folder.hide === true}>
                       <div class="tooltip-delayed-bottom" data-tooltip={translateText("hidden")}>
                         <EyeClosed />
                       </div>
                     </Show>
-
                     <button
                       type="button"
-                      class="tooltip-delayed-bottom small-btn"
+                      class="tooltip-delayed-bottom small-btn transition:opacity opacity-0 duration-100 group-hover/edit-visible:opacity-100"
                       onClick={() => {
                         setSelectedFolder(folderIndex());
 

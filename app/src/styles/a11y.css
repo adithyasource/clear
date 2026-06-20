@@ -5,6 +5,13 @@ body.user-is-tabbing select:focus {
   outline: 1px solid var(--focus-ring);
 }
 
+.truncate-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* REDUCED MOTION --------------------------- */
 
 @media (prefers-reduced-motion) {
