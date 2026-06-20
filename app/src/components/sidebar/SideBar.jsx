@@ -13,6 +13,7 @@ import { libraryData, setLibraryData } from "@/stores/libraryStore.js";
 import { openModal } from "@/stores/modalStore";
 import { triggerToast } from "@/stores/toastStore.js";
 import { translateText } from "@/utils/translateText";
+import { ChevronArrow } from "../../libraries/Icons";
 import { toggleSideBar } from "../../services/userSettingsService";
 import { setSearch } from "../../stores/searchStore";
 import { setSelectedFolder } from "../../stores/selectedFolderStore";
@@ -123,6 +124,14 @@ export function SideBar() {
 
     await writeUpdateData();
     clearDragStyles();
+  }
+
+  async function toggleCollapse(folderIndex) {
+    setLibraryData("folders", folderIndex, "collapse", (x) => !x);
+
+    console.log(JSON.stringify(libraryData.folders));
+
+    await writeUpdateData();
   }
 
   function folderContainerDragOverHandler(e) {
@@ -332,7 +341,7 @@ export function SideBar() {
             {(folder, folderIndex) => {
               return (
                 <div
-                  class="sideBarFolder group/edit-visible mb-3 bg-card px-3 py-2"
+                  class="sideBarFolder group/options-reveal mb-3 bg-card px-3 py-2"
                   id={folder.name}
                   draggable={true}
                   data-folder-index={folderIndex()}
@@ -355,47 +364,64 @@ export function SideBar() {
                     await gamesFolderDropHandler(e, folderIndex());
                   }}
                 >
-                  <div class="flex cursor-move items-center gap-[10px]">
-                    <Show
-                      when={folder.games.length > 0}
-                      fallback={<s class="cursor-move break-all text-foreground">{folder.name}</s>}
-                    >
-                      <span class={`break-all text-foreground ${folder.hide && "text-muted"}`}>{folder.name}</span>
-                    </Show>
-                    <Show when={folder.hide === true}>
-                      <div class="tooltip-delayed-bottom" data-tooltip={translateText("hidden")}>
-                        <EyeClosed />
-                      </div>
-                    </Show>
-                    <button
-                      type="button"
-                      class="tooltip-delayed-bottom small-btn transition:opacity opacity-0 duration-100 group-hover/edit-visible:opacity-100"
-                      onClick={() => {
-                        setSelectedFolder(folderIndex());
+                  <div class="flex cursor-move justify-between">
+                    <div class="flex items-center gap-2">
+                      <Show
+                        when={folder.games.length > 0}
+                        fallback={<s class="cursor-move break-all text-foreground">{folder.name}</s>}
+                      >
+                        <span class={`break-all text-foreground ${folder.hide && "text-muted"}`}>{folder.name}</span>
+                      </Show>
 
-                        openModal({
-                          type: "editFolder",
-                          component: EditFolderModal,
-                          confirmWhileClosing: true,
-                          onClose: () => {
-                            setSelectedFolder();
-                          },
-                        });
-                      }}
-                      onKeyDown={(e) => {
-                        if (folderIndex() === 0) {
-                          if (e.key === "Tab" && e.shiftKey === true) {
-                            setShowContentSkipButton(true);
+                      <Show when={folder.hide === true}>
+                        <div class="tooltip-delayed-bottom" data-tooltip={translateText("hidden")}>
+                          <EyeClosed />
+                        </div>
+                      </Show>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                      <button
+                        type="button"
+                        class="tooltip-delayed-bottom small-btn transition:opacity opacity-0 duration-100 group-hover/options-reveal:opacity-100"
+                        onClick={async () => {
+                          await toggleCollapse(folderIndex());
+                        }}
+                        data-tooltip={translateText("collapse")}
+                      >
+                        <ChevronArrow class={folder.collapse ? "-rotate-90" : "rotate-90"} />
+                      </button>
+
+                      <button
+                        type="button"
+                        class="tooltip-delayed-bottom small-btn transition:opacity opacity-0 duration-100 group-hover/options-reveal:opacity-100"
+                        onClick={() => {
+                          setSelectedFolder(folderIndex());
+
+                          openModal({
+                            type: "editFolder",
+                            component: EditFolderModal,
+                            confirmWhileClosing: true,
+                            onClose: () => {
+                              setSelectedFolder();
+                            },
+                          });
+                        }}
+                        onKeyDown={(e) => {
+                          if (folderIndex() === 0) {
+                            if (e.key === "Tab" && e.shiftKey === true) {
+                              setShowContentSkipButton(true);
+                            }
                           }
-                        }
-                      }}
-                      data-tooltip={translateText("edit")}
-                    >
-                      <Edit />
-                    </button>
+                        }}
+                        data-tooltip={translateText("edit")}
+                      >
+                        <Edit />
+                      </button>
+                    </div>
                   </div>
 
-                  <Show when={folder.games.length > 0}>
+                  <Show when={folder.games.length > 0 && !folder.collapse}>
                     <For each={folder.games}>
                       {(gameId, gameIndex) => (
                         <GameCardSideBar

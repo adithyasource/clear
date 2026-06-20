@@ -6,13 +6,7 @@
 export function ChevronArrows({ classProp }) {
   return (
     <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class={classProp}>
-      <path
-        d="M6 11L1 6L6 1"
-        class="stroke-muted"
-        stroke-width="1.3"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
+      <path d="M6 11L1 6L6 1" class="stroke-muted" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
       <path
         d="M11 11L6 6L11 1"
         class="stroke-muted"
@@ -27,13 +21,7 @@ export function ChevronArrows({ classProp }) {
 export function EyeClosed() {
   return (
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path
-        d="M2 2L22 22"
-        class="stroke-muted"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
+      <path d="M2 2L22 22" class="stroke-muted" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
       <path
         d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 5.05822C11.3254 5.02013 11.6588 5 12 5C18.3636 5 22 12 22 12C22 12 21.3082 13.3317 20 14.8335"
         class="stroke-muted"
@@ -161,10 +149,7 @@ export function Settings() {
 export function Steam() {
   return (
     <svg aria-hidden="true" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M9.33521 10.141L10.8362 11.166L11.8246 12.667L15.0096 10.3973L11.5683 6.88281"
-        class="fill-muted"
-      />
+      <path d="M9.33521 10.141L10.8362 11.166L11.8246 12.667L15.0096 10.3973L11.5683 6.88281" class="fill-muted" />
       <path
         d="M15.0827 8.6404C16.0734 8.6404 16.8765 7.83728 16.8765 6.84657C16.8765 5.85586 16.0734 5.05273 15.0827 5.05273C14.0919 5.05273 13.2888 5.85586 13.2888 6.84657C13.2888 7.83728 14.0919 8.6404 15.0827 8.6404Z"
         class="fill-muted"
@@ -174,12 +159,7 @@ export function Steam() {
         class="stroke-muted"
         stroke-width="0.695568"
       />
-      <path
-        d="M1.97681 9.81055L9.11554 12.7759"
-        class="stroke-muted"
-        stroke-width="2.92871"
-        stroke-linecap="round"
-      />
+      <path d="M1.97681 9.81055L9.11554 12.7759" class="stroke-muted" stroke-width="2.92871" stroke-linecap="round" />
       <path
         d="M15.0827 9.81149C16.7204 9.81149 18.0481 8.48388 18.0481 6.84618C18.0481 5.20848 16.7204 3.88086 15.0827 3.88086C13.445 3.88086 12.1174 5.20848 12.1174 6.84618C12.1174 8.48388 13.445 9.81149 15.0827 9.81149Z"
         class="stroke-muted"
@@ -311,9 +291,17 @@ export function Loading() {
   );
 }
 
-export function ChevronArrow() {
+export function ChevronArrow(props) {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <svg
+      {...props}
+      width="14"
+      height="14"
+      viewBox="7 5 10 14"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
       <path
         d="M14 8L10 12L14 16"
         stroke="var(--foreground-muted)"

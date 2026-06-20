@@ -12,6 +12,7 @@ export async function addFolder({ name, hide }) {
       data.folders.push({
         name,
         hide,
+        collapse: false,
         games: [],
       }),
     ),

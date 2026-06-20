@@ -168,6 +168,7 @@ function normalizeV2Data(data) {
     ? data.folders.map((folder) => ({
         name: folder?.name || "",
         hide: folder?.hide ?? false,
+        collapse: folder?.collapse ?? false,
         games: Array.isArray(folder?.games) ? folder.games : [],
       }))
     : [];
