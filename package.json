@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "dev": "concurrently \"cd app && bun run tauri dev\" \"cd api && bun run dev\""
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.3"
+  }
+}
