@@ -21,7 +21,7 @@ export function LanguageSelector({ onSettingsPage }) {
     switch (shortName) {
       case "en":
         return "english";
-      case "jp":
+      case "ja":
         return "日本語";
       case "es":
         return "Español";
@@ -94,7 +94,7 @@ export function LanguageSelector({ onSettingsPage }) {
             type="button"
             class="language-item"
             onClick={() => {
-              changeLanguage("jp");
+              changeLanguage("ja");
             }}
           >
             日本語 [japanese]

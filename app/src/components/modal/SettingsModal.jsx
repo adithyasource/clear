@@ -86,7 +86,7 @@ export function SettingsModal() {
       <div class="w-[70%] panel-surface p-6">
         <div class="flex justify-between">
           <div>
-            <h1 class="title">{translateText("settings")}</h1>
+            <h1 class="title">{translateText("settings.title")}</h1>
           </div>
 
           <button
@@ -95,7 +95,7 @@ export function SettingsModal() {
             onClick={() => {
               closeModal();
             }}
-            data-tooltip={translateText("close")}
+            data-tooltip={translateText("common.close")}
           >
             <Close />
           </button>
@@ -113,11 +113,11 @@ export function SettingsModal() {
           >
             <Show
               when={libraryData.userSettings.roundedBorders}
-              fallback={<div class="">{translateText("rounded borders")}</div>}
+              fallback={<div class="">{translateText("settings.rounded_borders")}</div>}
             >
               <div class="relative">
-                <div class="">{translateText("rounded borders")}</div>
-                <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("rounded borders")}</div>
+                <div class="">{translateText("settings.rounded_borders")}</div>
+                <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("settings.rounded_borders")}</div>
               </div>
             </Show>
           </button>
@@ -132,11 +132,11 @@ export function SettingsModal() {
           >
             <Show
               when={libraryData.userSettings.gameTitle}
-              fallback={<div class="">{translateText("game title")}</div>}
+              fallback={<div class="">{translateText("game.title")}</div>}
             >
               <div class="relative">
-                <div class="">{translateText("game title")}</div>
-                <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("game title")}</div>
+                <div class="">{translateText("game.title")}</div>
+                <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("game.title")}</div>
               </div>
             </Show>
           </button>
@@ -151,11 +151,11 @@ export function SettingsModal() {
           >
             <Show
               when={libraryData.userSettings.folderTitle}
-              fallback={<div class="">{translateText("folder title")}</div>}
+              fallback={<div class="">{translateText("folder.title")}</div>}
             >
               <div class="relative">
-                <div class="">{translateText("folder title")}</div>
-                <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("folder title")}</div>
+                <div class="">{translateText("folder.title")}</div>
+                <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("folder.title")}</div>
               </div>
             </Show>
           </button>
@@ -170,11 +170,11 @@ export function SettingsModal() {
           >
             <Show
               when={libraryData.userSettings.quitAfterOpen}
-              fallback={<div class="">{translateText("quit after opening game")}</div>}
+              fallback={<div class="">{translateText("settings.quit_after_launch")}</div>}
             >
               <div class="relative">
-                <div class="">{translateText("quit after opening game")}</div>
-                <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("quit after opening game")}</div>
+                <div class="">{translateText("settings.quit_after_launch")}</div>
+                <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("settings.quit_after_launch")}</div>
               </div>
             </Show>
           </button>
@@ -193,8 +193,10 @@ export function SettingsModal() {
             }}
             class="flex cursor-pointer gap-2 p-0 text-left"
           >
-            <span class="text-muted">[{translateText("font")}]</span>
-            <div class="">{translateText(libraryData.userSettings.fontName) || translateText("sans serif")}</div>
+            <span class="text-muted">[{translateText("settings.font")}]</span>
+            <div class="">
+              {translateText(libraryData.userSettings.fontName) || translateText("settings.font_sans")}
+            </div>
           </button>
           <button
             type="button"
@@ -210,8 +212,10 @@ export function SettingsModal() {
             }}
             class="flex cursor-pointer gap-2 p-0 text-left"
           >
-            <span class="text-muted">[{translateText("theme")}]</span>
-            <div class="">{translateText(libraryData.userSettings.currentTheme) || translateText("dark")}</div>
+            <span class="text-muted">[{translateText("settings.theme")}]</span>
+            <div class="">
+              {translateText(libraryData.userSettings.currentTheme) || translateText("settings.theme_dark")}
+            </div>
           </button>
           <div class="relative z-999999 flex cursor-pointer gap-2">
             <LanguageSelector onSettingsPage={true} />
@@ -223,11 +227,11 @@ export function SettingsModal() {
             <button
               type="button"
               class="tooltip-bottom icon-btn"
-              data-tooltip={translateText("might not work perfectly!")}
+              data-tooltip={translateText("sidebar.import_steam_warning")}
               onClick={handleImportSteamGames}
             >
-              <Show when={!libraryData.folders["imported from steam"]} fallback={translateText("import Steam games")}>
-                <Show when={showImportAndOverwriteConfirm()} fallback={translateText("import Steam games")}>
+              <Show when={!libraryData.folders["imported from steam"]} fallback={translateText("sidebar.import_steam")}>
+                <Show when={showImportAndOverwriteConfirm()} fallback={translateText("sidebar.import_steam")}>
                   <span class="danger-text">
                     {translateText("'imported from steam' folder will be overwritten. confirm?")}
                   </span>
@@ -315,7 +319,7 @@ export function SettingsModal() {
             {translateText("website")}
           </button>
           <div>
-            {translateText("made by")}{" "}
+            {t("made_by")}{" "}
             <button
               type="button"
               onClick={() => {
@@ -338,7 +342,7 @@ export function SettingsModal() {
             }}
             class="cursor-pointer p-0 underline"
           >
-            {translateText("buy me a coffee")}
+            {t("about.buy_me_a_coffee")}
           </button>
         </div>
       </div>

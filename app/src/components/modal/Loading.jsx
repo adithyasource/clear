@@ -7,7 +7,7 @@ export function LoadingModal() {
     <div class="flex h-screen w-screen items-center justify-center bg-overlay align-middle">
       <div class="flex w-max items-center justify-between gap-2 panel-surface p-3">
         <Show when={totalSteamGames()}>{`${totalImportedSteamGames() + 1} / ${totalSteamGames()}`} </Show>
-        {translateText("loading")}{" "}
+        {translateText("common.loading")}{" "}
         <div class="relative">
           <LoadingIcon />
         </div>
@@ -19,7 +19,7 @@ export function LoadingModal() {
 export function LoadingTextAndIcon() {
   return (
     <div class="flex w-max items-center justify-between gap-2">
-      {translateText("loading")}{" "}
+      {translateText("common.loading")}{" "}
       <div class="relative">
         <LoadingIcon />
       </div>

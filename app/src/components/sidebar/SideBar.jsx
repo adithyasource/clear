@@ -267,7 +267,7 @@ export function SideBar() {
               id="searchInput"
               name=""
               class="input-field w-full"
-              placeholder={translateText("search")}
+              placeholder={translateText("search.title")}
               onInput={(e) => {
                 setSearch(e.currentTarget.value);
               }}
@@ -279,7 +279,7 @@ export function SideBar() {
             onClick={() => {
               toggleSideBar();
             }}
-            data-tooltip={translateText("close sidebar")}
+            data-tooltip={translateText("sidebar.close")}
             onKeyDown={(e) => {
               if (e.key === "Tab" && e.shiftKey === false) {
                 setShowContentSkipButton(true);
@@ -302,7 +302,7 @@ export function SideBar() {
               if (firstGameCard !== undefined) {
                 firstGameCard.focus();
               } else {
-                triggerToast(translateText("no games found"));
+                triggerToast(translateText("search.no_games_found"));
               }
             }}
             onKeyDown={(e) => {
@@ -374,7 +374,7 @@ export function SideBar() {
                       </Show>
 
                       <Show when={folder.hide === true}>
-                        <div class="tooltip-delayed-bottom" data-tooltip={translateText("hidden")}>
+                        <div class="tooltip-delayed-bottom" data-tooltip={translateText("common.hidden")}>
                           <EyeClosed />
                         </div>
                       </Show>
@@ -414,7 +414,7 @@ export function SideBar() {
                             }
                           }
                         }}
-                        data-tooltip={translateText("edit")}
+                        data-tooltip={translateText("common.edit")}
                       >
                         <Edit />
                       </button>
@@ -469,7 +469,7 @@ export function SideBar() {
             }}
           >
             <div class="flex cursor-default items-center gap-[10px]">
-              <p class="pd-3 text-muted">{translateText("uncategorized")}</p>
+              <p class="pd-3 text-muted">{translateText("library.uncategorized")}</p>
             </div>
 
             <For each={uncategorizedGames()}>
@@ -498,7 +498,7 @@ export function SideBar() {
           console.log(JSON.stringify(libraryData.games));
         }}
       >
-        {translateText("add game")}
+        {translateText("library.add_game")}
         <div class="opacity-50">
           <GameController />
         </div>
@@ -510,7 +510,7 @@ export function SideBar() {
           openModal({ type: "newFolder", component: NewFolderModal, confirmWhileClosing: true });
         }}
       >
-        {translateText("add folder")}
+        {translateText("library.add_folder")}
         <div class="opacity-50">
           <Folder />
         </div>
@@ -530,7 +530,7 @@ export function SideBar() {
             openModal({ type: "notepad", component: NotepadModal, confirmWhileClosing: false });
           }}
         >
-          {translateText("notepad")}
+          {translateText("notepad.title")}
           <div class="opacity-50">
             <Notepad />
           </div>
@@ -542,7 +542,7 @@ export function SideBar() {
             openModal({ type: "settings", component: SettingsModal, confirmWhileClosing: false });
           }}
         >
-          {translateText("settings")}
+          {translateText("settings.title")}
           <div class="opacity-50">
             <Settings />
           </div>

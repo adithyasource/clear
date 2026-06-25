@@ -7,7 +7,7 @@ import { LanguageSelector } from "@/components/ui/LanguageSelector.jsx";
 import { ChevronArrows, EmptyTray, Steam } from "@/libraries/Icons.jsx";
 import { getErrorMessage, logError } from "@/utils/errorHandling";
 import { fuzzysearch } from "@/utils/fuzzysearch.js";
-import { translateText } from "@/utils/translateText";
+import { t } from "@/utils/translateText";
 import "./App.css";
 import { Toast } from "@/components/Toast.jsx";
 import { ContextMenu } from "@/components/ui/ContextMenu.jsx";
@@ -15,13 +15,13 @@ import { getData } from "@/services/libraryService.js";
 import { importSteamGames } from "@/services/steamService.js";
 import { triggerToast } from "@/stores/toastStore.js";
 import { checkIfConnectedToInternet, checkIfConnectedToServer } from "@/utils/internet.js";
+import { LoadingModal } from "./components/modal/Loading.jsx";
 import { addEventListeners } from "./services/keyboardService.js";
 import { toggleSideBar } from "./services/userSettingsService.js";
 import { initApplicationStore, windowWidth } from "./stores/applicationStore.js";
 import { libraryData } from "./stores/libraryStore.js";
 import { closeModal, openModal } from "./stores/modalStore.js";
 import { search } from "./stores/searchStore.js";
-import { LoadingModal } from "./components/modal/Loading.jsx";
 
 // import { checkForUpdatesAndNotify } from "@/services/updaterService.js";
 
@@ -166,7 +166,7 @@ function App() {
             onClick={() => {
               toggleSideBar();
             }}
-            data-tooltip={translateText("open sidebar")}
+            data-tooltip={t("sidebar.open")}
           >
             <ChevronArrows classProp="rotate-180" />
           </button>
@@ -180,23 +180,23 @@ function App() {
           <div class="absolute flex h-screen flex-col items-center justify-center overflow-y-scroll py-5 pr-7.5">
             <div class="z-50!">
               <p class="subtle-text">
-                {translateText("hey there! thank you so much for using clear")}
+                {t("welcome.thank_you")}
                 <br />
-                <br />- {translateText("add some new games using the sidebar buttons")}
+                <br />- {t("welcome.add_games")}
                 <br />
-                <br />- {translateText("create new folders and drag and drop your games into them")}
+                <br />- {t("welcome.create_folders")}
                 <br />
-                <br />- {translateText("don't forget to check out the settings!")}
+                <br />- {t("welcome.check_settings")}
               </p>
 
               <div class="mt-8.5 flex gap-6">
                 <button
                   type="button"
                   class="standardButton tooltip-bottom icon-btn w-max!"
-                  data-tooltip={translateText("might not work perfectly!")}
+                  data-tooltip={t("sidebar.import_steam_warning")}
                   onClick={handleImportSteamGames}
                 >
-                  {translateText("import Steam games")}
+                  {t("sidebar.import_steam")}
                   <Steam />
                 </button>
 
@@ -252,7 +252,7 @@ function App() {
                 <Show when={searchResults()?.length === 0}>
                   <div class="flex h-[calc(100vh-100px)] w-full items-center justify-center gap-3 align-middle">
                     <EmptyTray />
-                    {translateText("no games found")}
+                    {t("search.no_games_found")}
                   </div>
                 </Show>
               </div>

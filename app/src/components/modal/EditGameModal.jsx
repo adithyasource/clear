@@ -252,7 +252,7 @@ export function EditGameModal() {
     <div class="flex w-336 flex-col items-center justify-center gap-3 max-large:w-244">
       <div class="flex w-full justify-between">
         <div>
-          <h1 class="title">{translateText("add new game")}</h1>
+          <h1 class="title">{translateText("game.add_new")}</h1>
         </div>
         <div class="flex items-center gap-4">
           <button
@@ -262,10 +262,10 @@ export function EditGameModal() {
               setFavourite((x) => !x);
             }}
           >
-            <Show when={favourite()} fallback={<div class="w-max!">{translateText("favourite")}</div>}>
+            <Show when={favourite()} fallback={<div class="w-max!">{translateText("common.favourite")}</div>}>
               <div class="relative">
-                <div class="w-max!">{translateText("favourite")}</div>
-                <div class="absolute inset-0 w-max! opacity-70 blur-[5px]">{translateText("favourite")}</div>
+                <div class="w-max!">{translateText("common.favourite")}</div>
+                <div class="absolute inset-0 w-max! opacity-70 blur-[5px]">{translateText("common.favourite")}</div>
               </div>
             </Show>
           </button>
@@ -303,7 +303,7 @@ export function EditGameModal() {
             }}
             class="icon-btn"
           >
-            <p class="w-max!">{translateText("save")}</p>
+            <p class="w-max!">{translateText("common.save")}</p>
 
             <SaveDisk />
           </button>
@@ -318,7 +318,7 @@ export function EditGameModal() {
             class="icon-btn"
           >
             <span class="danger-text w-max">
-              {showDeleteConfirm() ? translateText("confirm?") : translateText("delete")}
+              {showDeleteConfirm() ? translateText("common.confirm") : translateText("common.delete")}
             </span>
             <TrashDelete />
           </button>
@@ -331,10 +331,10 @@ export function EditGameModal() {
             onClick={() => {
               closeModal();
             }}
-            data-tooltip={translateText("close")}
+            data-tooltip={translateText("common.close")}
           >
             {modalShowCloseConfirm() ? (
-              <span class="danger-text whitespace-nowrap">{translateText("hit again to confirm")}</span>
+              <span class="danger-text whitespace-nowrap">{translateText("common.hit_confirm")}</span>
             ) : (
               <Close />
             )}
@@ -377,10 +377,10 @@ export function EditGameModal() {
             gridImage().type === "remote"
               ? showGridImageLoading() === false
                 ? userIsTabbing()
-                  ? `${gridImage().index + 1} / ${gridImage().data.length} ${translateText("arrow keys")}`
-                  : `${gridImage().index + 1} / ${gridImage().data.length} (a / d scroll)`
-                : `${gridImage().index + 1} / ${gridImage().data.length} ${translateText("loading")}`
-              : translateText("grid/cover")
+                  ? `${gridImage().index + 1} / ${gridImage().data.length} ${translateText("assets.arrow_keys")}`
+                  : `${gridImage().index + 1} / ${gridImage().data.length} ${translateText("assets.scroll")}`
+                : `${gridImage().index + 1} / ${gridImage().data.length} ${translateText("common.loading")}`
+              : t("assets.cover")
           }
         >
           <img
@@ -436,10 +436,10 @@ export function EditGameModal() {
                 heroImage().type === "remote"
                   ? showHeroImageLoading() === false
                     ? userIsTabbing()
-                      ? `${heroImage().index + 1} / ${heroImage().data.length} ${translateText("arrow keys")}`
-                      : `${heroImage().index + 1} / ${heroImage().data.length} (a / d scroll)`
-                    : `${heroImage().index + 1} / ${heroImage().data.length} ${translateText("loading")}`
-                  : translateText("hero")
+                      ? `${heroImage().index + 1} / ${heroImage().data.length} ${translateText("assets.arrow_keys")}`
+                      : `${heroImage().index + 1} / ${heroImage().data.length} ${translateText("assets.scroll")}`
+                    : `${heroImage().index + 1} / ${heroImage().data.length} ${translateText("common.loading")}`
+                  : translateText("assets.hero")
               }
             >
               <img
@@ -510,10 +510,10 @@ export function EditGameModal() {
                 logoImage().type === "remote"
                   ? showLogoImageLoading() === false
                     ? userIsTabbing()
-                      ? `${logoImage().index + 1} / ${logoImage().data.length} ${translateText("arrow keys")}`
-                      : `${logoImage().index + 1} / ${logoImage().data.length} (a / d scroll)`
-                    : `${logoImage().index + 1} / ${logoImage().data.length} ${translateText("loading")}`
-                  : translateText("logo")
+                      ? `${logoImage().index + 1} / ${logoImage().data.length} ${translateText("assets.arrow_keys")}`
+                      : `${logoImage().index + 1} / ${logoImage().data.length} ${translateText("assets.scroll")}`
+                    : `${logoImage().index + 1} / ${logoImage().data.length} ${translateText("common.loading")}`
+                  : translateText("assets.logo")
               }
             >
               <img
@@ -569,10 +569,10 @@ export function EditGameModal() {
                 iconImage().type === "remote"
                   ? showIconImageLoading() === false
                     ? userIsTabbing()
-                      ? `${iconImage().index + 1} / ${iconImage().data.length} ${translateText("arrow keys")}`
-                      : `${iconImage().index + 1} / ${iconImage().data.length} (a / d scroll)`
-                    : `${iconImage().index + 1} / ${iconImage().data.length} ${translateText("loading")}`
-                  : translateText("icon")
+                      ? `${iconImage().index + 1} / ${iconImage().data.length} ${translateText("assets.arrow_keys")}`
+                      : `${iconImage().index + 1} / ${iconImage().data.length} ${translateText("assets.scroll")}`
+                    : `${iconImage().index + 1} / ${iconImage().data.length} ${translateText("common.loading")}`
+                  : translateText("assets.icon")
               }
             >
               <img
@@ -603,14 +603,14 @@ export function EditGameModal() {
                 }}
                 value={gameName()}
                 class="input-field grow bg-transparent!"
-                placeholder={translateText("name of game")}
+                placeholder={translateText("game.name")}
               />
               <button
                 type="button"
                 class="small-btn mt-0! mr-2! w-max! px-3 py-1"
                 onClick={() => {
                   if (!gameName()) {
-                    triggerToast(translateText("no game name"));
+                    triggerToast(translateText("error.no_game_name"));
                     return;
                   }
 
@@ -621,14 +621,14 @@ export function EditGameModal() {
                 <Show when={!fetchingAssetsLoading()} fallback={LoadingTextAndIcon()}>
                   <Switch>
                     <Match when={libraryData.userSettings.language === "fr" && windowWidth() >= 1500}>
-                      {translateText("auto find assets")}
+                      {t("auto_find")}
                     </Match>
 
                     <Match when={libraryData.userSettings.language === "fr" && windowWidth() <= 1500}>
-                      <p class="w-[70px] text-clip text-[10px]">{translateText("auto find assets")}</p>
+                      <p class="w-[70px] text-clip text-[10px]">{translateText("assets.auto_find")}</p>
                     </Match>
 
-                    <Match when={libraryData.userSettings.language !== "fr"}>{translateText("auto find assets")}</Match>
+                    <Match when={libraryData.userSettings.language !== "fr"}>{translateText("assets.auto_find")}</Match>
                   </Switch>
                 </Show>
               </button>
@@ -650,15 +650,13 @@ export function EditGameModal() {
                 }}
               >
                 <Switch>
-                  <Match when={libraryData.userSettings.language === "fr" && windowWidth() >= 1500}>
-                    {translateText("find assets")}
-                  </Match>
+                  <Match when={libraryData.userSettings.language === "fr" && windowWidth() >= 1500}>{t("find")}</Match>
 
                   <Match when={libraryData.userSettings.language === "fr" && windowWidth() <= 1500}>
-                    <p class="w-[100px] text-clip text-[10px]">{translateText("find assets")}</p>
+                    <p class="w-[100px] text-clip text-[10px]">{t("find")}</p>
                   </Match>
 
-                  <Match when={libraryData.userSettings.language !== "fr"}>{translateText("find assets")}</Match>
+                  <Match when={libraryData.userSettings.language !== "fr"}>{t("find")}</Match>
                 </Switch>
               </button>
             </div>
@@ -684,18 +682,18 @@ export function EditGameModal() {
                 }
               }}
               class="btn tooltip-bottom w-max"
-              data-tooltip={translateText("right click to clear / middle click to open")}
+              data-tooltip={translateText("game.location_edit_tooltip")}
             >
-              {!gameLocation() ? translateText("locate game") : getExecutableFileName(gameLocation())}
+              {!gameLocation() ? translateText("game.locate") : getExecutableFileName(gameLocation())}
             </button>
           </div>
         </div>
       </div>
 
       <div class="flex w-336 justify-between max-large:w-244">
-        <span class="opacity-50">{translateText("right click to undo / empty image selection")}</span>
+        <span class="opacity-50">{translateText("game.undo_empty_asset")}</span>
         <Show when={searchResults()}>
-          <span class="opacity-80">{translateText("select the official name of your game (shift+scroll)")}</span>
+          <span class="opacity-80">{translateText("game.select_official_name")}</span>
         </Show>
       </div>
 
@@ -707,7 +705,7 @@ export function EditGameModal() {
               document.getElementById("SGDBGamesContainer").scrollLeft -= 40;
             }}
             class="tooltip-delayed-bottom cursor-pointer"
-            data-tooltip={translateText("scroll left")}
+            data-tooltip={translateText("assets.scroll_left")}
           >
             <ChevronArrow />
           </button>
@@ -755,7 +753,7 @@ export function EditGameModal() {
               document.getElementById("SGDBGamesContainer").scrollLeft += 40;
             }}
             class="tooltip-delayed-bottom cursor-pointer"
-            data-tooltip={translateText("scroll right")}
+            data-tooltip={translateText("assets.scroll_right")}
           >
             <div class="rotate-180">
               <ChevronArrow />

@@ -50,7 +50,7 @@ export function EditFolderModal() {
           >
             <div>
               <h1 class="title">
-                {translateText("edit")} {folder().name}
+                {translateText("common.edit")} {folder().name}
               </h1>
             </div>
 
@@ -68,11 +68,11 @@ export function EditFolderModal() {
               >
                 <Switch>
                   <Match when={editedHideFolder() === undefined}>
-                    <Show when={folder().hide} fallback={<div class="">{translateText("hide in expanded view")}</div>}>
+                    <Show when={folder().hide} fallback={<div class="">{translateText("folder.hide_expanded")}</div>}>
                       <div class="relative">
-                        <div class="">{translateText("hide in expanded view")}</div>
+                        <div class="">{translateText("folder.hide_expanded")}</div>
                         <div class="absolute inset-0 opacity-70 blur-[5px]">
-                          {translateText("hide in expanded view")}
+                          {translateText("folder.hide_expanded")}
                         </div>
                       </div>
                     </Show>
@@ -80,19 +80,19 @@ export function EditFolderModal() {
 
                   <Match when={editedHideFolder() === true}>
                     <div class="relative">
-                      <div class="">{translateText("hide in expanded view")}</div>
-                      <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("hide in expanded view")}</div>
+                      <div class="">{translateText("folder.hide_expanded")}</div>
+                      <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("folder.hide_expanded")}</div>
                     </div>
                   </Match>
 
                   <Match when={editedHideFolder() === false}>
-                    <div class="">{translateText("hide in expanded view")}</div>
+                    <div class="">{translateText("folder.hide_expanded")}</div>
                   </Match>
                 </Switch>
               </button>
 
               <button type="button" onClick={saveChanges} class="icon-btn w-max">
-                {translateText("save")}
+                {translateText("common.save")}
                 <SaveDisk />
               </button>
 
@@ -108,7 +108,7 @@ export function EditFolderModal() {
                 class="icon-btn w-max"
               >
                 <span class="danger-text">
-                  {showDeleteConfirm() ? translateText("confirm?") : translateText("delete")}
+                  {showDeleteConfirm() ? translateText("common.confirm") : translateText("common.delete")}
                 </span>
                 <TrashDelete />
               </button>
@@ -119,10 +119,10 @@ export function EditFolderModal() {
                 onClick={() => {
                   closeModal();
                 }}
-                data-tooltip={translateText("close")}
+                data-tooltip={translateText("common.close")}
               >
                 {modalShowCloseConfirm() ? (
-                  <span class="danger-text whitespace-nowrap">{translateText("hit again to confirm")}</span>
+                  <span class="danger-text whitespace-nowrap">{translateText("common.hit_confirm")}</span>
                 ) : (
                   <Close />
                 )}
@@ -140,7 +140,7 @@ export function EditFolderModal() {
               onInput={(e) => {
                 setEditedFolderName(e.currentTarget.value);
               }}
-              placeholder={translateText("name of folder")}
+              placeholder={translateText("folder.name")}
               value={folder().name}
             />
           </div>

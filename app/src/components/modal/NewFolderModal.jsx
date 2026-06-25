@@ -16,7 +16,7 @@ export function NewFolderModal() {
           class={`flex justify-between ${libraryData.userSettings.language !== "en" ? "large:flex-row flex-col" : ""} `}
         >
           <div>
-            <h1 class="title">{translateText("add new folder")}</h1>
+            <h1 class="title">{translateText("folder.add_new")}</h1>
           </div>
           <div class="flex items-center gap-5">
             <button
@@ -26,10 +26,10 @@ export function NewFolderModal() {
               }}
               class="relative cursor-pointer"
             >
-              <Show when={hideFolder()} fallback={<div class="">{translateText("hide in expanded view")}</div>}>
+              <Show when={hideFolder()} fallback={<div class="">{translateText("folder.hide_expanded")}</div>}>
                 <div class="relative">
-                  <div class="">{translateText("hide in expanded view")}</div>
-                  <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("hide in expanded view")}</div>
+                  <div class="">{translateText("folder.hide_expanded")}</div>
+                  <div class="absolute inset-0 opacity-70 blur-[5px]">{translateText("folder.hide_expanded")}</div>
                 </div>
               </Show>
             </button>
@@ -42,7 +42,7 @@ export function NewFolderModal() {
               }}
               class="icon-btn w-max"
             >
-              {translateText("save")}
+              {translateText("common.save")}
               <SaveDisk />
             </button>
             <button
@@ -51,10 +51,10 @@ export function NewFolderModal() {
               onClick={() => {
                 closeModal();
               }}
-              data-tooltip={translateText("close")}
+              data-tooltip={translateText("common.close")}
             >
               {modalShowCloseConfirm() ? (
-                <span class="danger-text whitespace-nowrap">{translateText("hit again to confirm")}</span>
+                <span class="danger-text whitespace-nowrap">{translateText("common.hit_confirm")}</span>
               ) : (
                 <Close />
               )}
@@ -72,7 +72,7 @@ export function NewFolderModal() {
               setFolderName(e.currentTarget.value);
             }}
             value={folderName() || ""}
-            placeholder={translateText("name of folder")}
+            placeholder={translateText("folder.name")}
           />
         </div>
       </div>

@@ -1,20 +1,29 @@
 import { libraryData } from "@/stores/libraryStore";
-import { textLanguages } from "@/Text";
 
-export function translateText(text) {
-  if (libraryData.userSettings.language === "en") {
-    return text;
-  }
+import en from "./en.json";
+import es from "./es.json";
+import fr from "./fr.json";
+import hi from "./hi.json";
+import ja from "./ja.json";
+import ru from "./ru.json";
 
-  if (!Object.prototype.hasOwnProperty.call(textLanguages, text)) {
-    console.trace(`missing text translation '${text}'`);
-    return text;
-  }
+const locales = {
+  en,
+  ja,
+  es,
+  hi,
+  ru,
+  fr,
+};
 
-  const translatedText = textLanguages[text][libraryData.userSettings.language];
+export function t(namespace) {
+  const language = libraryData.userSettings.language;
 
-  if (translatedText === "") {
-    return text;
+  const translatedText = locales[language][namespace];
+
+  if (!translatedText) {
+    console.trace(`missing translation '${key}'`);
+    return locales.en[key] ?? key;
   }
 
   return translatedText;

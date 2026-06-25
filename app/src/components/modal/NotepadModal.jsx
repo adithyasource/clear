@@ -38,7 +38,7 @@ export function NotepadModal() {
         <div class="flex justify-between">
           <div>
             <h1 class="title">
-              {translateText("notepad")}
+              {translateText("notepad.title")}
               <Show when={libraryData.notepad !== notepadValue()}>*</Show>
             </h1>
           </div>
@@ -49,7 +49,7 @@ export function NotepadModal() {
             onClick={() => {
               closeModal();
             }}
-            data-tooltip={translateText("close")}
+            data-tooltip={translateText("common.close")}
           >
             <Close />
           </button>
@@ -60,7 +60,7 @@ export function NotepadModal() {
             debounceSaveNotepad();
           }}
           class="mt-6 h-[40vh] w-full resize-none bg-transparent focus:outline-hidden"
-          placeholder={translateText("write anything you want over here!")}
+          placeholder={translateText("notepad.placeholder")}
           spellcheck="false"
           value={notepadValue()}
         />

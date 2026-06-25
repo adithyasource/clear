@@ -81,9 +81,9 @@ export function GamePopUpModal() {
               <button
                 type="button"
                 class="tooltip-bottom icon-btn-transparent w-max cursor-not-allowed!"
-                data-tooltip={translateText("no game file")}
+                data-tooltip={translateText("error.no_game_file")}
               >
-                <div class="w-max! opacity-50">{translateText("play")}</div>
+                <div class="w-max! opacity-50">{translateText("common.play")}</div>
                 <div class="opacity-50">
                   <Play />
                 </div>
@@ -105,7 +105,7 @@ export function GamePopUpModal() {
                 return;
               }}
             >
-              <div class="w-max!">{translateText("play")}</div>
+              <div class="w-max!">{translateText("common.play")}</div>
               <Play />
             </button>
           </Show>
@@ -123,7 +123,7 @@ export function GamePopUpModal() {
                 },
               });
             }}
-            data-tooltip={translateText("settings")}
+            data-tooltip={translateText("settings.title")}
           >
             <Settings />
           </button>
@@ -133,7 +133,7 @@ export function GamePopUpModal() {
             onClick={() => {
               closeModal(true);
             }}
-            data-tooltip={translateText("close")}
+            data-tooltip={translateText("common.close")}
           >
             <Close />
           </button>
