@@ -45,7 +45,7 @@ export function LanguageSelector({ onSettingsPage }) {
       }}
       class={onSettingsPage ? "w-full cursor-pointer p-0 text-left" : "btn relative"}
     >
-      <span class="text-muted">[{translateText("language")}]</span>
+      <span class="text-muted">[{translateText("settings.language")}]</span>
       &nbsp;
       {returnLanguageFullName(libraryData.userSettings.language)}
       <Show when={onSettingsPage ? showSettingsLanguageSelector() : showLanguageSelector()}>

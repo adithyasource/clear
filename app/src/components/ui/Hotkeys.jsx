@@ -9,71 +9,53 @@ export function Hotkeys(props) {
     <>
       <div class={`mt-8.75 grid gap-y-4 ${props.onSettingsPage ? "grid-cols-3" : "grid-cols-2"}`}>
         <div class="flex items-center gap-3">
-          <div class="w-max bg-card-muted px-3 py-1 text-muted">
-            {modifierKeyPrefix} + n
-          </div>
+          <div class="w-max bg-card-muted px-3 py-1 text-muted">{modifierKeyPrefix} + n</div>
 
-          {translateText("new game")}
+          {translateText("sidebar.new_game")}
         </div>
 
         <div class="flex items-center gap-3">
-          <div class="w-max bg-card-muted px-3 py-1 text-muted">
-            {modifierKeyPrefix} + ,
-          </div>
+          <div class="w-max bg-card-muted px-3 py-1 text-muted">{modifierKeyPrefix} + ,</div>
 
-          {translateText("open settings")}
+          {translateText("sidebar.open_settings")}
         </div>
         <div class="flex items-center gap-3">
-          <div class="w-max bg-card-muted px-3 py-1 text-muted">
-            {modifierKeyPrefix} + f
-          </div>
+          <div class="w-max bg-card-muted px-3 py-1 text-muted">{modifierKeyPrefix} + f</div>
 
-          {translateText("search bar")}
+          {translateText("search.search_bar")}
         </div>
         <div class="flex items-center gap-3">
-          <div class="w-max bg-card-muted px-3 py-1 text-muted">
-            {modifierKeyPrefix} + m
-          </div>
+          <div class="w-max bg-card-muted px-3 py-1 text-muted">{modifierKeyPrefix} + m</div>
 
-          {translateText("new folder")}
+          {translateText("sidebar.new_folder")}
         </div>
         <div class="flex items-center gap-3">
-          <div class="w-max bg-card-muted px-3 py-1 text-muted">
-            {modifierKeyPrefix} + l
-          </div>
+          <div class="w-max bg-card-muted px-3 py-1 text-muted">{modifierKeyPrefix} + l</div>
 
-          {translateText("open notepad")}
+          {translateText("sidebar.open_notepad")}
         </div>
         <div class="flex items-center gap-3">
-          <div class="w-max bg-card-muted px-3 py-1 text-muted">
-            {modifierKeyPrefix} + \\
-          </div>
+          <div class="w-max bg-card-muted px-3 py-1 text-muted">{modifierKeyPrefix} + \\</div>
 
-          {translateText("hide sidebar")}
+          {translateText("sidebar.hide")}
         </div>
 
         <Show when={props.onSettingsPage}>
           <div class="flex items-center gap-3">
-            <div class="w-max bg-card-muted px-3 py-1 text-muted">
-              {modifierKeyPrefix} + w
-            </div>
+            <div class="w-max bg-card-muted px-3 py-1 text-muted">{modifierKeyPrefix} + w</div>
 
-            {translateText("close app")}
+            {translateText("sidebar.close_app")}
           </div>
           <div class="flex items-center gap-3">
-            <div class="w-max bg-card-muted px-3 py-1 text-muted">
-              {modifierKeyPrefix} - / =
-            </div>
+            <div class="w-max bg-card-muted px-3 py-1 text-muted">{modifierKeyPrefix} - / =</div>
 
-            {translateText("change zoom")}
+            {translateText("sidebar.change_zoom")}
           </div>
 
           <div class="flex items-center gap-3">
-            <div class="w-max bg-card-muted px-3 py-1 text-muted">
-              {modifierKeyPrefix} + click
-            </div>
+            <div class="w-max bg-card-muted px-3 py-1 text-muted">{modifierKeyPrefix} + click</div>
 
-            {translateText("quick open game")}
+            {translateText("search.quick_open")}
           </div>
         </Show>
       </div>
@@ -81,25 +63,19 @@ export function Hotkeys(props) {
       <Show when={!props.onSettingsPage}>
         <div class="mt-8.75 grid gap-y-4">
           <div class="flex items-center gap-3">
-            <div class="w-max bg-card-muted px-3 py-1 text-muted">
-              {modifierKeyPrefix} + f
-            </div>
+            <div class="w-max bg-card-muted px-3 py-1 text-muted">{modifierKeyPrefix} + f</div>
 
-            {translateText("search bar")}
+            {translateText("search.search_bar")}
           </div>
           <div class="flex items-center gap-3">
-            <div class="w-max bg-card-muted px-3 py-1 text-muted">
-              {modifierKeyPrefix} + \\
-            </div>
+            <div class="w-max bg-card-muted px-3 py-1 text-muted">{modifierKeyPrefix} + \\</div>
 
-            {translateText("hide sidebar")}
+            {translateText("sidebar.hide")}
           </div>
           <div class="flex items-center gap-3">
-            <div class="w-max bg-card-muted px-3 py-1 text-muted">
-              {modifierKeyPrefix} + click
-            </div>
+            <div class="w-max bg-card-muted px-3 py-1 text-muted">{modifierKeyPrefix} + click</div>
 
-            {translateText("quick open game")}
+            {translateText("search.quick_open")}
           </div>
         </div>
       </Show>

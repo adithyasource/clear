@@ -7,7 +7,7 @@ import { LanguageSelector } from "@/components/ui/LanguageSelector.jsx";
 import { ChevronArrows, EmptyTray, Steam } from "@/libraries/Icons.jsx";
 import { getErrorMessage, logError } from "@/utils/errorHandling";
 import { fuzzysearch } from "@/utils/fuzzysearch.js";
-import { t } from "@/utils/translateText";
+import { translateText } from "@/utils/translateText";
 import "./App.css";
 import { Toast } from "@/components/Toast.jsx";
 import { ContextMenu } from "@/components/ui/ContextMenu.jsx";
@@ -166,7 +166,7 @@ function App() {
             onClick={() => {
               toggleSideBar();
             }}
-            data-tooltip={t("sidebar.open")}
+            data-tooltip={translateText("sidebar.open")}
           >
             <ChevronArrows classProp="rotate-180" />
           </button>
@@ -180,23 +180,23 @@ function App() {
           <div class="absolute flex h-screen flex-col items-center justify-center overflow-y-scroll py-5 pr-7.5">
             <div class="z-50!">
               <p class="subtle-text">
-                {t("welcome.thank_you")}
+                {translateText("welcome.thank_you")}
                 <br />
-                <br />- {t("welcome.add_games")}
+                <br />- {translateText("welcome.add_games")}
                 <br />
-                <br />- {t("welcome.create_folders")}
+                <br />- {translateText("welcome.create_folders")}
                 <br />
-                <br />- {t("welcome.check_settings")}
+                <br />- {translateText("welcome.check_settings")}
               </p>
 
               <div class="mt-8.5 flex gap-6">
                 <button
                   type="button"
                   class="standardButton tooltip-bottom icon-btn w-max!"
-                  data-tooltip={t("sidebar.import_steam_warning")}
+                  data-tooltip={translateText("sidebar.import_steam_warning")}
                   onClick={handleImportSteamGames}
                 >
-                  {t("sidebar.import_steam")}
+                  {translateText("sidebar.import_steam")}
                   <Steam />
                 </button>
 
@@ -252,7 +252,7 @@ function App() {
                 <Show when={searchResults()?.length === 0}>
                   <div class="flex h-[calc(100vh-100px)] w-full items-center justify-center gap-3 align-middle">
                     <EmptyTray />
-                    {t("search.no_games_found")}
+                    {translateText("search.no_games_found")}
                   </div>
                 </Show>
               </div>

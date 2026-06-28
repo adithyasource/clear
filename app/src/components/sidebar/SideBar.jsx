@@ -314,7 +314,7 @@ export function SideBar() {
               setShowContentSkipButton(false);
             }}
           >
-            {translateText("skip to games")}
+            {translateText("sidebar.skip_to_games")}
           </button>
         </Show>
 
@@ -387,7 +387,7 @@ export function SideBar() {
                         onClick={async () => {
                           await toggleCollapse(folderIndex());
                         }}
-                        data-tooltip={translateText("collapse")}
+                        data-tooltip={translateText("sidebar.collapse")}
                       >
                         <ChevronArrow class={folder.collapse ? "-rotate-90" : "rotate-90"} />
                       </button>

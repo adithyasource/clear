@@ -47,7 +47,7 @@ export function GameCards(props) {
                 console.log("holding meta");
               }
             }}
-            data-tooltip={game().gameLocation ? translateText("play") : translateText("no game file")}
+            data-tooltip={game().gameLocation ? translateText("common.play") : translateText("game.no_file")}
             onDragStart={(e) => {
               e.preventDefault();
             }}

@@ -227,14 +227,12 @@ export function SettingsModal() {
             <button
               type="button"
               class="tooltip-bottom icon-btn"
-              data-tooltip={translateText("sidebar.import_steam_warning")}
+              data-tooltip={translateText("steam.import_warning")}
               onClick={handleImportSteamGames}
             >
-              <Show when={!libraryData.folders["imported from steam"]} fallback={translateText("sidebar.import_steam")}>
-                <Show when={showImportAndOverwriteConfirm()} fallback={translateText("sidebar.import_steam")}>
-                  <span class="danger-text">
-                    {translateText("'imported from steam' folder will be overwritten. confirm?")}
-                  </span>
+              <Show when={!libraryData.folders["imported from steam"]} fallback={translateText("steam.import")}>
+                <Show when={showImportAndOverwriteConfirm()} fallback={translateText("steam.import")}>
+                  <span class="danger-text">{translateText("steam.import_overwrite_warning")}</span>
                 </Show>
               </Show>
 
@@ -254,11 +252,9 @@ export function SettingsModal() {
                 });
               }}
             >
-              {translateText("open library location")}
+              {translateText("settings.open_library_location")}
             </button>
-            <span class="w-[50%] text-muted">
-              {translateText("these are all the files that the app stores on your pc")}
-            </span>
+            <span class="w-[50%] text-muted">{translateText("settings.library_description")}</span>
           </div>
         </div>
 
@@ -268,7 +264,7 @@ export function SettingsModal() {
           <div class="flex items-center gap-2">
             <button
               class="small-btn tooltip-bottom"
-              data-tooltip={translateText("re-test connection")}
+              data-tooltip={translateText("settings.connection_retest")}
               type="button"
               onClick={checkConnections}
             >
@@ -276,22 +272,22 @@ export function SettingsModal() {
             </button>
             {connectedToInternet() ? (
               <>
-                <div data-tooltip={translateText("connected to internet")} class="tooltip-bottom">
+                <div data-tooltip={translateText("settings.connected_internet")} class="tooltip-bottom">
                   <Globe />
                 </div>
 
                 {connectedToServer() ? (
-                  <div data-tooltip={translateText("connected to server")} class="tooltip-bottom">
+                  <div data-tooltip={translateText("settings.connected_server")} class="tooltip-bottom">
                     <Server />
                   </div>
                 ) : (
-                  <div data-tooltip={translateText("not connected to server")} class="tooltip-bottom">
+                  <div data-tooltip={translateText("settings.disconnected_server")} class="tooltip-bottom">
                     <Disconnected />
                   </div>
                 )}
               </>
             ) : (
-              <div data-tooltip={translateText("not connected to internet")} class="tooltip-bottom">
+              <div data-tooltip={translateText("settings.disconnected_internet")} class="tooltip-bottom">
                 <Disconnected />
               </div>
             )}
@@ -305,7 +301,7 @@ export function SettingsModal() {
             }}
             class="cursor-pointer p-0 underline"
           >
-            {translateText("feedback")}
+            {translateText("settings.feedback")}
           </button>
           <button
             type="button"
@@ -316,10 +312,10 @@ export function SettingsModal() {
             }}
             class="cursor-pointer p-0 underline"
           >
-            {translateText("website")}
+            {translateText("settings.website")}
           </button>
           <div>
-            {t("made_by")}{" "}
+            {translateText("made_by")}{" "}
             <button
               type="button"
               onClick={() => {
@@ -342,7 +338,7 @@ export function SettingsModal() {
             }}
             class="cursor-pointer p-0 underline"
           >
-            {t("about.buy_me_a_coffee")}
+            {translateText("about.buy_me_a_coffee")}
           </button>
         </div>
       </div>
